@@ -13,14 +13,30 @@ REM ==== Python Version Check ====
 echo Checking Python environment...
 if not exist "D:\Ideas\content_factory\venv" (
     echo ERROR: Virtual environment not found at D:\Ideas\content_factory\venv
-    echo Please run install.bat first.
+    echo.
+    echo Please run install.bat first to create the virtual environment.
     pause
     exit /b 1
 )
 
 if not exist "D:\Ideas\content_factory\venv\Scripts\activate.bat" (
-    echo ERROR: Virtual environment activation script not found.
-    echo Please run install.bat to recreate the environment.
+    echo ERROR: Virtual environment is incomplete or corrupted.
+    echo The venv folder exists but Scripts\activate.bat is missing.
+    echo.
+    echo This usually means the venv creation was interrupted or failed.
+    echo.
+    echo To fix this:
+    echo   1. Delete the 'venv' folder manually
+    echo   2. Run install.bat to recreate it properly
+    echo.
+    echo Or press Y to delete it now and then run install.bat:
+    set /p DELETE_VENV="Delete broken venv now? (Y/N): "
+    if /i "%DELETE_VENV%"=="Y" (
+        echo Deleting broken venv...
+        rmdir /s /q "D:\Ideas\content_factory\venv"
+        echo.
+        echo Venv deleted. Please run install.bat to recreate it.
+    )
     pause
     exit /b 1
 )
