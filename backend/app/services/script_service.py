@@ -104,7 +104,13 @@ Requirements:
 Script:"""
         
         try:
-            if settings.llm_provider == "mcp" and settings.mcp_enabled and settings.mcp_llm_connector:
+            if settings.llm_provider == "hf_router":
+                text = await self._generate_section_via_hf_router(
+                    prompt=full_prompt,
+                    model=model,
+                    temperature=temperature
+                )
+            elif settings.llm_provider == "mcp" and settings.mcp_enabled and settings.mcp_llm_connector:
                 text = await self._generate_section_via_mcp(
                     prompt=full_prompt,
                     model=model,
@@ -192,7 +198,13 @@ Script:"""
         temperature: float = 0.7
     ) -> str:
         """Improve a script based on feedback."""
-        llm_model = model or settings.ollama_model
+        # Use appropriate model based on provider
+        if settings.llm_provider == "hf_router":
+            llm_model = model or settings.hf_router_model
+        elif settings.llm_provider == "mcp":
+            llm_model = model or settings.mcp_llm_model
+        else:
+            llm_model = model or settings.ollama_model
         
         prompt = f"""You are a video script editor.
 
@@ -208,7 +220,10 @@ Return ONLY the improved script, nothing else.
 Improved script:"""
         
         try:
-            if settings.llm_provider == "mcp" and settings.mcp_enabled and settings.mcp_llm_connector:
+            if settings.llm_provider == "hf_router":
+                text = await self._generate_section_via_hf_router(prompt, llm_model, temperature)
+                return self._clean_script(text)
+            elif settings.llm_provider == "mcp" and settings.mcp_enabled and settings.mcp_llm_connector:
                 text = await self._generate_section_via_mcp(prompt, llm_model, temperature)
                 return self._clean_script(text)
 

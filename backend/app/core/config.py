@@ -99,13 +99,22 @@ class Settings(BaseSettings):
     # Database
     database_url: str = "sqlite:///D:/Ideas/content_factory/data/content_factory.db"
     
-    # LLM - Provider (ollama | mcp)
+    # LLM - Provider (ollama | mcp | hf_router)
     llm_provider: str = "ollama"
 
     # LLM - Ollama (Global defaults, can be overridden per-niche)
     ollama_base_url: str = "http://localhost:11434"
     ollama_model: str = "llama3.1:8b"
     ollama_fast_model: str = "llama3.2:3b"
+    
+    # LLM - Hugging Face Router (OpenAI-compatible intelligent routing)
+    hf_router_base_url: str = "https://router.huggingface.co/v1"
+    hf_router_api_key: Optional[str] = None  # HF_TOKEN env var
+    hf_router_model: Optional[str] = None  # Auto-routed if None, or specify model
+    hf_router_reasoning_level: str = "medium"  # low, medium, high (reasoning effort)
+    hf_router_temperature: float = 0.7  # 0.0-2.0
+    hf_router_max_tokens: int = 2048
+    hf_router_timeout: float = 120.0  # seconds
 
     # MCP LLM settings (OpenAI-compatible via MCP forward)
     mcp_llm_connector: Optional[str] = None

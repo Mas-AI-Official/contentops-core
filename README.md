@@ -114,12 +114,30 @@ Other model caches (Whisper, PyTorch) are automatically configured to use the `m
 
 Edit `backend\.env` to configure:
 
-### LLM (Ollama)
+### LLM Providers
+
+**Option 1: Ollama (Local, Default)**
 ```env
 LLM_PROVIDER=ollama
 OLLAMA_BASE_URL=http://localhost:11434
 OLLAMA_MODEL=llama3.1:8b
 OLLAMA_FAST_MODEL=llama3.2:3b
+```
+
+**Option 2: Hugging Face Router (Recommended for Best Quality)**
+```env
+LLM_PROVIDER=hf_router
+HF_ROUTER_BASE_URL=https://router.huggingface.co/v1
+HF_TOKEN=your_huggingface_token
+HF_ROUTER_REASONING_LEVEL=medium  # low, medium, high
+HF_ROUTER_TEMPERATURE=0.7
+```
+The HF Router intelligently routes requests to the best available model (Llama-3.3-70B, Qwen3-Coder, etc.) for optimal reasoning and quality.
+
+**Option 3: MCP (External APIs)**
+```env
+LLM_PROVIDER=mcp
+MCP_CONNECTORS_JSON=[{"name":"openai",...}]
 ```
 
 ### TTS Options

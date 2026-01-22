@@ -106,6 +106,10 @@ async def get_settings():
         mcp_llm_connector=settings.mcp_llm_connector,
         mcp_llm_model=settings.mcp_llm_model,
         mcp_llm_path=settings.mcp_llm_path,
+        hf_router_base_url=settings.hf_router_base_url if settings.llm_provider == "hf_router" else None,
+        hf_router_model=settings.hf_router_model if settings.llm_provider == "hf_router" else None,
+        hf_router_reasoning_level=settings.hf_router_reasoning_level if settings.llm_provider == "hf_router" else None,
+        hf_router_configured=bool(settings.hf_router_api_key or settings.get_env_value("HF_TOKEN")) if settings.llm_provider == "hf_router" else False,
         tts_provider=settings.tts_provider,
         xtts_enabled=settings.xtts_enabled,
         xtts_server_url=settings.xtts_server_url,
@@ -286,17 +290,61 @@ async def check_services():
     }
     
     # Check Ollama
-    try:
-        async with httpx.AsyncClient(timeout=5.0) as client:
-            response = await client.get(f"{settings.ollama_base_url}/api/tags")
-            models = [m["name"] for m in response.json().get("models", [])]
-            results["ollama"] = {
-                "status": "running",
-                "models": models,
-                "model_count": len(models)
-            }
-    except Exception as e:
-        results["ollama"] = {"status": "not_running", "error": str(e)}
+    if settings.llm_provider == "ollama":
+        try:
+            async with httpx.AsyncClient(timeout=5.0) as client:
+                response = await client.get(f"{settings.ollama_base_url}/api/tags")
+                models = [m["name"] for m in response.json().get("models", [])]
+                results["ollama"] = {
+                    "status": "running",
+                    "models": models,
+                    "model_count": len(models)
+                }
+        except Exception as e:
+            results["ollama"] = {"status": "not_running", "error": str(e)}
+    else:
+        results["ollama"] = {"status": "not_configured", "note": "Ollama is not the active LLM provider"}
+    
+    # Check Hugging Face Router
+    if settings.llm_provider == "hf_router":
+        try:
+            api_key = settings.hf_router_api_key or settings.get_env_value("HF_TOKEN")
+            headers = {}
+            if api_key:
+                headers["Authorization"] = f"Bearer {api_key}"
+            
+            async with httpx.AsyncClient(timeout=10.0) as client:
+                # Test with a simple request
+                response = await client.post(
+                    f"{settings.hf_router_base_url}/chat/completions",
+                    json={
+                        "model": settings.hf_router_model or "auto",  # Auto-route if no model specified
+                        "messages": [{"role": "user", "content": "test"}],
+                        "max_tokens": 5
+                    },
+                    headers=headers
+                )
+                if response.status_code == 200:
+                    data = response.json()
+                    selected_model = data.get("model", "auto-routed")
+                    results["hf_router"] = {
+                        "status": "connected",
+                        "base_url": settings.hf_router_base_url,
+                        "selected_model": selected_model,
+                        "reasoning_level": settings.hf_router_reasoning_level,
+                        "api_key_configured": bool(api_key)
+                    }
+                else:
+                    results["hf_router"] = {
+                        "status": "error",
+                        "error": f"HTTP {response.status_code}: {response.text[:200]}"
+                    }
+        except httpx.TimeoutException:
+            results["hf_router"] = {"status": "timeout", "error": "Connection timeout"}
+        except Exception as e:
+            results["hf_router"] = {"status": "error", "error": str(e)}
+    else:
+        results["hf_router"] = {"status": "not_configured", "note": "HF Router is not the active LLM provider"}
     
     # Check FFmpeg
     try:
