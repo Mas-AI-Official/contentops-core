@@ -1,5 +1,6 @@
 """
-Render service - creates final video using FFmpeg.
+Render service - creates final video using FFmpeg or LTX.
+Supports hybrid: LTX generates base video, FFmpeg adds audio/subtitles/logo.
 """
 import os
 import subprocess
@@ -10,6 +11,14 @@ from dataclasses import dataclass
 from loguru import logger
 
 from app.core.config import settings
+
+# Import LTX service conditionally
+try:
+    from app.services.ltx_service import ltx_service
+    LTX_AVAILABLE = True
+except ImportError:
+    LTX_AVAILABLE = False
+    ltx_service = None
 
 
 @dataclass
@@ -48,14 +57,56 @@ class RenderService:
     def __init__(self):
         self.ffmpeg = settings.ffmpeg_path
     
-    async def render_video(self, config: RenderConfig) -> Path:
-        """Render a video with all components."""
+    async def render_video(self, config: RenderConfig, script_text: Optional[str] = None) -> Path:
+        """
+        Render a video with all components.
+        
+        Args:
+            config: Render configuration
+            script_text: Optional script text for LTX generation
+        """
         
         if not config.output_path:
             raise ValueError("Output path is required")
         
         output_path = Path(config.output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
+        
+        # Use LTX if enabled and script provided
+        if (settings.video_gen_provider == "ltx" and script_text and 
+            LTX_AVAILABLE and ltx_service):
+            try:
+                logger.info("Using LTX for video generation...")
+                # Generate base video with LTX
+                ltx_output = output_path.parent / f"{output_path.stem}_ltx.mp4"
+                
+                # Get audio duration for LTX clip length
+                audio_duration = 5  # default
+                if config.audio_path and Path(config.audio_path).exists():
+                    audio_duration = self.get_audio_duration(config.audio_path)
+                
+                # Limit to 5 seconds for 8GB VRAM
+                ltx_duration = min(int(audio_duration), 5)
+                
+                await ltx_service.generate_video_from_text(
+                    text=script_text,
+                    output_path=ltx_output,
+                    width=854,  # 480p for 8GB VRAM
+                    height=480,
+                    duration_seconds=ltx_duration,
+                    fps=24
+                )
+                
+                # Now composite with FFmpeg: add audio, subtitles, logo, music
+                config.background_video = ltx_output
+                config.width = 1080  # Scale up to final resolution
+                config.height = 1920
+                
+                logger.info("Compositing LTX video with audio/subtitles/logo...")
+                
+            except Exception as e:
+                logger.warning(f"LTX generation failed, falling back to FFmpeg: {e}")
+                # Fall through to FFmpeg rendering
         
         # Build FFmpeg command
         cmd = self._build_ffmpeg_command(config)
@@ -86,6 +137,22 @@ class RenderService:
         except subprocess.TimeoutExpired:
             logger.error("Render timed out")
             raise Exception("Render timed out after 10 minutes")
+    
+    def get_audio_duration(self, audio_path: Path) -> float:
+        """Get duration of audio file in seconds."""
+        try:
+            cmd = [
+                settings.ffprobe_path,
+                "-v", "error",
+                "-show_entries", "format=duration",
+                "-of", "default=noprint_wrappers=1:nokey=1",
+                str(audio_path)
+            ]
+            result = subprocess.run(cmd, capture_output=True, text=True)
+            return float(result.stdout.strip())
+        except Exception as e:
+            logger.warning(f"Failed to get audio duration: {e}")
+            return 5.0
     
     def _build_ffmpeg_command(self, config: RenderConfig) -> List[str]:
         """Build the FFmpeg command for rendering."""

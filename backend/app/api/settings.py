@@ -7,6 +7,7 @@ from pydantic import BaseModel
 from typing import Optional, Dict, List
 import os
 import sys
+import json
 from pathlib import Path
 
 from app.core.config import settings
@@ -22,9 +23,15 @@ class SettingsResponse(BaseModel):
     models_path: str
     
     # LLM
+    llm_provider: str
     ollama_base_url: str
     ollama_model: str
     ollama_fast_model: str
+    mcp_enabled: bool
+    mcp_connector_count: int
+    mcp_llm_connector: Optional[str]
+    mcp_llm_model: Optional[str]
+    mcp_llm_path: Optional[str]
     
     # TTS
     tts_provider: str
@@ -42,6 +49,8 @@ class SettingsResponse(BaseModel):
     default_video_height: int
     default_video_fps: int
     default_bg_music_volume: float
+    video_gen_provider: str
+    ltx_api_url: Optional[str]
     
     # Worker
     worker_enabled: bool
@@ -74,13 +83,27 @@ class ModelPathsResponse(BaseModel):
 @router.get("/", response_model=SettingsResponse)
 async def get_settings():
     """Get current settings (excludes secrets)."""
+    connectors_count = 0
+    if settings.mcp_connectors_json:
+        try:
+            parsed = json.loads(settings.mcp_connectors_json)
+            connectors_count = len(parsed) if isinstance(parsed, list) else 0
+        except Exception:
+            connectors_count = 0
+
     return SettingsResponse(
         base_path=str(settings.base_path),
         data_path=str(settings.data_path),
         models_path=str(settings.models_path),
+        llm_provider=settings.llm_provider,
         ollama_base_url=settings.ollama_base_url,
         ollama_model=settings.ollama_model,
         ollama_fast_model=settings.ollama_fast_model,
+        mcp_enabled=settings.mcp_enabled,
+        mcp_connector_count=connectors_count,
+        mcp_llm_connector=settings.mcp_llm_connector,
+        mcp_llm_model=settings.mcp_llm_model,
+        mcp_llm_path=settings.mcp_llm_path,
         tts_provider=settings.tts_provider,
         xtts_enabled=settings.xtts_enabled,
         xtts_server_url=settings.xtts_server_url,
@@ -92,6 +115,8 @@ async def get_settings():
         default_video_height=settings.default_video_height,
         default_video_fps=settings.default_video_fps,
         default_bg_music_volume=settings.default_bg_music_volume,
+        video_gen_provider=settings.video_gen_provider,
+        ltx_api_url=settings.ltx_api_url,
         worker_enabled=settings.worker_enabled,
         worker_interval_seconds=settings.worker_interval_seconds,
         max_concurrent_jobs=settings.max_concurrent_jobs,
@@ -334,6 +359,31 @@ async def check_services():
             results["elevenlabs"] = {"status": "error", "error": str(e)}
     else:
         results["elevenlabs"] = {"status": "not_configured"}
+
+    # MCP status
+    connector_count = 0
+    if settings.mcp_connectors_json:
+        try:
+            parsed = json.loads(settings.mcp_connectors_json)
+            connector_count = len(parsed) if isinstance(parsed, list) else 0
+        except Exception:
+            connector_count = 0
+    results["mcp"] = {
+        "status": "configured" if settings.mcp_enabled and connector_count > 0 else ("disabled" if not settings.mcp_enabled else "not_configured"),
+        "connector_count": connector_count,
+        "provider": settings.llm_provider
+    }
+
+    # LTX video status (optional)
+    if settings.video_gen_provider == "ltx" and settings.ltx_api_url:
+        try:
+            async with httpx.AsyncClient(timeout=5.0) as client:
+                response = await client.get(settings.ltx_api_url)
+                results["ltx_video"] = {"status": "running" if response.status_code < 400 else "error", "url": settings.ltx_api_url}
+        except Exception as e:
+            results["ltx_video"] = {"status": "not_running", "error": str(e)}
+    else:
+        results["ltx_video"] = {"status": "not_configured"}
     
     return results
 
@@ -358,8 +408,9 @@ async def get_env_template():
 # XDG_CACHE_HOME=D:/Ideas/content_factory/models/cache
 
 # ============================================
-# LLM Settings (Ollama)
+# LLM Settings (Ollama / MCP)
 # ============================================
+LLM_PROVIDER=ollama
 OLLAMA_BASE_URL=http://localhost:11434
 OLLAMA_MODEL=llama3.1:8b
 OLLAMA_FAST_MODEL=llama3.2:3b
@@ -425,12 +476,26 @@ WORKER_INTERVAL_SECONDS=60
 MAX_CONCURRENT_JOBS=2
 
 # ============================================
+# MCP / External Connectors (optional)
+# ============================================
+# MCP_ENABLED=false
+# MCP_DEFAULT_TIMEOUT=60
+# MCP_CONNECTORS_JSON=[{"name":"openai","type":"llm","base_url":"https://api.openai.com/v1","auth_header":"Authorization","auth_env":"OPENAI_API_KEY","auth_prefix":"Bearer "}]
+# MCP_LLM_CONNECTOR=openai
+# MCP_LLM_PATH=v1/chat/completions
+# MCP_LLM_MODEL=gpt-4o-mini
+
+# ============================================
 # Video Defaults
 # ============================================
 DEFAULT_VIDEO_WIDTH=1080
 DEFAULT_VIDEO_HEIGHT=1920
 DEFAULT_VIDEO_FPS=30
 DEFAULT_BG_MUSIC_VOLUME=0.1
+
+# Video Generator Provider (optional)
+# VIDEO_GEN_PROVIDER=ffmpeg
+# LTX_API_URL=http://127.0.0.1:8188
 """
     }
 

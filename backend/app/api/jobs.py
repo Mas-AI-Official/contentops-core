@@ -8,6 +8,8 @@ from sqlmodel import Session, select
 
 from app.db import get_async_session
 from app.models import Job, JobCreate, JobUpdate, JobRead, JobLog, JobStatus, JobType
+from app.models import Niche
+from app.services import topic_service
 from app.workers import run_job_now
 
 router = APIRouter(prefix="/jobs", tags=["jobs"])
@@ -77,7 +79,23 @@ async def create_job(
     session: Session = Depends(get_async_session)
 ):
     """Create a new job."""
-    db_job = Job.model_validate(job)
+    topic = job.topic
+    topic_source = job.topic_source
+
+    if not topic:
+        niche = await session.get(Niche, job.niche_id)
+        if not niche:
+            raise HTTPException(status_code=404, detail="Niche not found")
+        topic = await topic_service.generate_topic_auto(niche.name, niche.description or "")
+        topic_source = "auto"
+
+    db_job = Job.model_validate(
+        {
+            **job.model_dump(),
+            "topic": topic,
+            "topic_source": topic_source
+        }
+    )
     session.add(db_job)
     await session.commit()
     await session.refresh(db_job)

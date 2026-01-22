@@ -8,6 +8,7 @@ from loguru import logger
 from dataclasses import dataclass
 
 from app.core.config import settings
+from app.services.mcp_service import mcp_service
 
 
 @dataclass
@@ -103,31 +104,64 @@ Requirements:
 Script:"""
         
         try:
-            async with httpx.AsyncClient(timeout=120.0) as client:
-                response = await client.post(
-                    self.ollama_url,
-                    json={
-                        "model": model,
-                        "prompt": full_prompt,
-                        "stream": False,
-                        "options": {
-                            "temperature": temperature
-                        }
-                    }
+            if settings.llm_provider == "mcp" and settings.mcp_enabled and settings.mcp_llm_connector:
+                text = await self._generate_section_via_mcp(
+                    prompt=full_prompt,
+                    model=model,
+                    temperature=temperature
                 )
-                response.raise_for_status()
-                data = response.json()
-                text = data.get("response", "").strip()
-                
-                # Clean up the response
-                text = self._clean_script(text)
-                
-                logger.info(f"Generated {section_type} using {model}: {len(text)} chars, ~{len(text.split())} words")
-                return text
-                
+            else:
+                async with httpx.AsyncClient(timeout=120.0) as client:
+                    response = await client.post(
+                        self.ollama_url,
+                        json={
+                            "model": model,
+                            "prompt": full_prompt,
+                            "stream": False,
+                            "options": {
+                                "temperature": temperature
+                            }
+                        }
+                    )
+                    response.raise_for_status()
+                    data = response.json()
+                    text = data.get("response", "").strip()
+
+            # Clean up the response
+            text = self._clean_script(text)
+
+            logger.info(f"Generated {section_type} using {settings.llm_provider}: {len(text)} chars, ~{len(text.split())} words")
+            return text
+
         except Exception as e:
-            logger.error(f"Failed to generate {section_type} with {model}: {e}")
+            logger.error(f"Failed to generate {section_type} with {settings.llm_provider}: {e}")
             raise
+
+    async def _generate_section_via_mcp(self, prompt: str, model: str, temperature: float) -> str:
+        """Generate a section using MCP (OpenAI-compatible)."""
+        mcp_model = settings.mcp_llm_model or model
+        payload = {
+            "model": mcp_model,
+            "messages": [
+                {"role": "system", "content": "You are a concise video script writer."},
+                {"role": "user", "content": prompt}
+            ],
+            "temperature": temperature
+        }
+        result = await mcp_service.forward_request(
+            connector_name=settings.mcp_llm_connector,
+            method="POST",
+            path=settings.mcp_llm_path,
+            json_body=payload
+        )
+        if result.get("error"):
+            raise RuntimeError(result)
+
+        data = result.get("data", {})
+        try:
+            return data["choices"][0]["message"]["content"].strip()
+        except Exception:
+            return str(data).strip()
     
     def _clean_script(self, text: str) -> str:
         """Clean up generated script text."""
@@ -174,6 +208,10 @@ Return ONLY the improved script, nothing else.
 Improved script:"""
         
         try:
+            if settings.llm_provider == "mcp" and settings.mcp_enabled and settings.mcp_llm_connector:
+                text = await self._generate_section_via_mcp(prompt, llm_model, temperature)
+                return self._clean_script(text)
+
             async with httpx.AsyncClient(timeout=120.0) as client:
                 response = await client.post(
                     self.ollama_url,
@@ -189,7 +227,7 @@ Improved script:"""
                 response.raise_for_status()
                 data = response.json()
                 return self._clean_script(data.get("response", "").strip())
-                
+
         except Exception as e:
             logger.error(f"Failed to improve script with {llm_model}: {e}")
             raise

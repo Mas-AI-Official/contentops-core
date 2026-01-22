@@ -10,6 +10,12 @@ from .render_service import render_service, RenderConfig
 from .publish_service import publish_service, PublishResult, PublishStatus
 from .analytics_service import analytics_service
 
+# Optional LTX service
+try:
+    from .ltx_service import ltx_service
+except ImportError:
+    ltx_service = None
+
 __all__ = [
     "topic_service",
     "script_service",

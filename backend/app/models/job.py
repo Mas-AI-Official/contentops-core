@@ -87,7 +87,7 @@ class JobCreate(SQLModel):
     """Schema for creating a job."""
     niche_id: int
     job_type: JobType = JobType.GENERATE_ONLY
-    topic: str
+    topic: Optional[str] = None
     topic_source: str = "manual"
     scheduled_at: Optional[datetime] = None
     publish_youtube: bool = False

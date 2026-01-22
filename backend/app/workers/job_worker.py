@@ -153,13 +153,10 @@ class JobWorker:
         session.commit()
         self._log(session, job_id, "INFO", "Generating script...")
         
-        script = await script_service.generate_script(
+        script = await script_service.generate_with_niche_config(
             topic=job.topic,
-            prompt_hook=niche.prompt_hook,
-            prompt_body=niche.prompt_body,
-            prompt_cta=niche.prompt_cta,
-            target_duration=niche.max_duration_seconds,
-            style=niche.style.value
+            niche=niche,
+            target_duration=niche.max_duration_seconds
         )
         
         job.script_hook = script.hook
@@ -200,9 +197,11 @@ class JobWorker:
         self._log(session, job_id, "INFO", "Generating audio...")
         
         audio_path = outputs_dir / "narration.wav"
-        await tts_service.generate_audio(
+        await tts_service.generate_with_niche_config(
             text=script.full_script,
-            output_path=audio_path
+            output_path=audio_path,
+            niche=niche,
+            language=settings.xtts_language
         )
         
         job.audio_path = str(audio_path.relative_to(settings.data_path))
@@ -218,7 +217,11 @@ class JobWorker:
         self._log(session, job_id, "INFO", "Generating subtitles...")
         
         subtitle_path = outputs_dir / "subtitles.srt"
-        subtitle_service.generate_srt(audio_path, subtitle_path)
+        subtitle_service.generate_srt_with_niche_config(
+            audio_path=audio_path,
+            output_path=subtitle_path,
+            niche=niche
+        )
         
         job.subtitle_path = str(subtitle_path.relative_to(settings.data_path))
         session.commit()
@@ -253,7 +256,7 @@ class JobWorker:
             output_path=video_path
         )
         
-        await render_service.render_video(render_config)
+        await render_service.render_video(render_config, script_text=script.full_script)
         
         job.video_path = str(video_path.relative_to(settings.data_path))
         job.duration_seconds = render_service.get_video_duration(video_path)

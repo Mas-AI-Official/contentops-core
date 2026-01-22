@@ -99,10 +99,18 @@ class Settings(BaseSettings):
     # Database
     database_url: str = "sqlite:///D:/Ideas/content_factory/data/content_factory.db"
     
+    # LLM - Provider (ollama | mcp)
+    llm_provider: str = "ollama"
+
     # LLM - Ollama (Global defaults, can be overridden per-niche)
     ollama_base_url: str = "http://localhost:11434"
     ollama_model: str = "llama3.1:8b"
     ollama_fast_model: str = "llama3.2:3b"
+
+    # MCP LLM settings (OpenAI-compatible via MCP forward)
+    mcp_llm_connector: Optional[str] = None
+    mcp_llm_path: str = "v1/chat/completions"
+    mcp_llm_model: Optional[str] = None
     
     # TTS Provider (Global default)
     tts_provider: str = "xtts"  # "xtts" or "elevenlabs"
@@ -154,9 +162,22 @@ class Settings(BaseSettings):
     default_video_height: int = 1920
     default_video_fps: int = 30
     default_bg_music_volume: float = 0.1
+
+    # Video generation provider (ffmpeg | ltx)
+    video_gen_provider: str = "ffmpeg"
+    ltx_api_url: Optional[str] = None
     
+    # MCP / External connectors (optional)
+    mcp_enabled: bool = False
+    mcp_connectors_json: Optional[str] = None
+    mcp_default_timeout: int = 60
+
     # Required Python version (for startup check)
     required_python_version: str = "3.11"
+
+    def get_env_value(self, key: str) -> Optional[str]:
+        """Fetch an environment value safely."""
+        return os.environ.get(key)
 
 
 settings = Settings()

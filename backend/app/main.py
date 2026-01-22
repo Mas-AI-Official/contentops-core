@@ -5,16 +5,19 @@ A local-first content generation system for creating and publishing
 short-form vertical videos across multiple platforms.
 """
 from contextlib import asynccontextmanager
+import asyncio
 from pathlib import Path
-from fastapi import FastAPI
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from loguru import logger
 import sys
 
 from app.core.config import settings
-from app.db import create_db_and_tables
+from app.db import create_db_and_tables, get_sync_session
+from app.models import Niche
 from app.api import api_router
+from app.api.compat import router as compat_router
 from app.workers import job_worker
 
 
@@ -58,6 +61,20 @@ async def lifespan(app: FastAPI):
     ]:
         path.mkdir(parents=True, exist_ok=True)
     logger.info("Directory structure verified")
+
+    # Ensure niche folders exist
+    from sqlmodel import select
+    with get_sync_session() as session:
+        niches = session.exec(select(Niche)).all()
+        for niche in niches:
+            niche_dir = settings.niches_path / niche.name
+            niche_dir.mkdir(parents=True, exist_ok=True)
+            topics_file = niche_dir / "topics.json"
+            feeds_file = niche_dir / "feeds.json"
+            if not topics_file.exists():
+                topics_file.write_text('{"topics": [], "used": []}', encoding="utf-8")
+            if not feeds_file.exists():
+                feeds_file.write_text('{"feeds": []}', encoding="utf-8")
     
     # Start worker if enabled
     if settings.worker_enabled:
@@ -94,6 +111,7 @@ app.add_middleware(
 
 # Include API routes
 app.include_router(api_router)
+app.include_router(compat_router)
 
 # Mount static files for outputs (video previews)
 if settings.outputs_path.exists():
@@ -120,6 +138,18 @@ async def health():
         "worker_running": job_worker.running,
         "current_job": job_worker.current_job_id
     }
+
+
+@app.websocket("/ws/events")
+async def ws_events(websocket: WebSocket):
+    """Lightweight websocket endpoint for external dashboards."""
+    await websocket.accept()
+    try:
+        while True:
+            await websocket.send_json({"type": "heartbeat"})
+            await asyncio.sleep(10)
+    except WebSocketDisconnect:
+        return
 
 
 if __name__ == "__main__":

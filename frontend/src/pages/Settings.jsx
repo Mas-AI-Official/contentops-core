@@ -232,8 +232,12 @@ export default function Settings() {
         {settings && (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <h4 className="font-medium text-gray-900 mb-3">LLM (Ollama)</h4>
+              <h4 className="font-medium text-gray-900 mb-3">LLM</h4>
               <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Provider</span>
+                  <span className="text-gray-900">{settings.llm_provider}</span>
+                </div>
                 <div className="flex justify-between">
                   <span className="text-gray-500">Base URL</span>
                   <span className="text-gray-900 font-mono">{settings.ollama_base_url}</span>
@@ -246,6 +250,22 @@ export default function Settings() {
                   <span className="text-gray-500">Fast Model</span>
                   <span className="text-gray-900">{settings.ollama_fast_model}</span>
                 </div>
+                {settings.llm_provider === 'mcp' && (
+                  <>
+                    <div className="flex justify-between">
+                      <span className="text-gray-500">MCP Connector</span>
+                      <span className="text-gray-900">{settings.mcp_llm_connector || 'not set'}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-500">MCP Model</span>
+                      <span className="text-gray-900">{settings.mcp_llm_model || 'not set'}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-500">MCP Path</span>
+                      <span className="text-gray-900">{settings.mcp_llm_path || 'not set'}</span>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
 
@@ -300,6 +320,16 @@ export default function Settings() {
                   <span className="text-gray-500">BG Music Volume</span>
                   <span className="text-gray-900">{(settings.default_bg_music_volume * 100).toFixed(0)}%</span>
                 </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Video Provider</span>
+                  <span className="text-gray-900">{settings.video_gen_provider}</span>
+                </div>
+                {settings.video_gen_provider === 'ltx' && (
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">LTX API</span>
+                    <span className="text-gray-900 font-mono">{settings.ltx_api_url || 'not set'}</span>
+                  </div>
+                )}
               </div>
             </div>
 

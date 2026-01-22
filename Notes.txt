@@ -1,0 +1,1452 @@
+INFO:     Will watch for changes in these directories: ['D:\\Ideas\\content_factory\\backend']
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [25248] using WatchFiles
+INFO:     Started server process [44648]
+INFO:     Waiting for application startup.
+2026-01-22 15:40:56 | INFO     | app.main:lifespan:40 - Starting Content Factory...
+2026-01-22 15:40:56,332 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:40:56,332 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("niches")
+2026-01-22 15:40:56,332 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-22 15:40:56,333 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("niches")
+2026-01-22 15:40:56,333 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-22 15:40:56,334 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("accounts")
+2026-01-22 15:40:56,334 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-22 15:40:56,334 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("accounts")
+2026-01-22 15:40:56,334 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-22 15:40:56,334 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("jobs")
+2026-01-22 15:40:56,334 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-22 15:40:56,336 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("jobs")
+2026-01-22 15:40:56,336 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-22 15:40:56,336 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("job_logs")
+2026-01-22 15:40:56,336 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-22 15:40:56,337 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("job_logs")
+2026-01-22 15:40:56,337 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-22 15:40:56,337 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("videos")
+2026-01-22 15:40:56,337 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-22 15:40:56,337 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("videos")
+2026-01-22 15:40:56,337 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-22 15:40:56,339 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("video_publishes")
+2026-01-22 15:40:56,339 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-22 15:40:56,339 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("video_publishes")
+2026-01-22 15:40:56,339 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-22 15:40:56,339 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("video_metrics")
+2026-01-22 15:40:56,339 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-22 15:40:56,340 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("video_metrics")
+2026-01-22 15:40:56,340 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-22 15:40:56,340 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("daily_niche_stats")
+2026-01-22 15:40:56,340 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-22 15:40:56,340 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("daily_niche_stats")
+2026-01-22 15:40:56,340 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-22 15:40:56,341 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("video_scores")
+2026-01-22 15:40:56,341 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-22 15:40:56,341 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("video_scores")
+2026-01-22 15:40:56,341 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-22 15:40:56,343 INFO sqlalchemy.engine.Engine
+CREATE TABLE niches (
+        name VARCHAR NOT NULL,
+        description VARCHAR,
+        style VARCHAR(14) NOT NULL,
+        post_to_youtube BOOLEAN NOT NULL,
+        post_to_instagram BOOLEAN NOT NULL,
+        post_to_tiktok BOOLEAN NOT NULL,
+        posts_per_day INTEGER NOT NULL,
+        prompt_hook VARCHAR NOT NULL,
+        prompt_body VARCHAR NOT NULL,
+        prompt_cta VARCHAR NOT NULL,
+        hashtags JSON,
+        min_duration_seconds INTEGER NOT NULL,
+        max_duration_seconds INTEGER NOT NULL,
+        llm_model VARCHAR,
+        llm_temperature FLOAT NOT NULL,
+        tts_provider VARCHAR,
+        voice_id VARCHAR,
+        voice_name VARCHAR,
+        whisper_model VARCHAR,
+        whisper_device VARCHAR,
+        style_preset VARCHAR,
+        is_active BOOLEAN NOT NULL,
+        id INTEGER NOT NULL,
+        created_at DATETIME NOT NULL,
+        updated_at DATETIME NOT NULL,
+        PRIMARY KEY (id)
+)
+
+
+2026-01-22 15:40:56,343 INFO sqlalchemy.engine.Engine [no key 0.00027s] ()
+2026-01-22 15:40:56,348 INFO sqlalchemy.engine.Engine CREATE UNIQUE INDEX ix_niches_name ON niches (name)
+2026-01-22 15:40:56,348 INFO sqlalchemy.engine.Engine [no key 0.00026s] ()
+2026-01-22 15:40:56,352 INFO sqlalchemy.engine.Engine
+CREATE TABLE accounts (
+        platform VARCHAR(9) NOT NULL,
+        account_name VARCHAR NOT NULL,
+        account_handle VARCHAR,
+        credentials_env_prefix VARCHAR NOT NULL,
+        is_active BOOLEAN NOT NULL,
+        last_verified DATETIME,
+        platform_user_id VARCHAR,
+        platform_channel_id VARCHAR,
+        id INTEGER NOT NULL,
+        created_at DATETIME NOT NULL,
+        updated_at DATETIME NOT NULL,
+        PRIMARY KEY (id)
+)
+
+
+2026-01-22 15:40:56,352 INFO sqlalchemy.engine.Engine [no key 0.00021s] ()
+2026-01-22 15:40:56,354 INFO sqlalchemy.engine.Engine CREATE INDEX ix_accounts_account_name ON accounts (account_name)
+2026-01-22 15:40:56,354 INFO sqlalchemy.engine.Engine [no key 0.00021s] ()
+2026-01-22 15:40:56,358 INFO sqlalchemy.engine.Engine
+CREATE TABLE jobs (
+        niche_id INTEGER NOT NULL,
+        job_type VARCHAR(20) NOT NULL,
+        topic VARCHAR NOT NULL,
+        topic_source VARCHAR NOT NULL,
+        script_hook VARCHAR,
+        script_body VARCHAR,
+        script_cta VARCHAR,
+        full_script VARCHAR,
+        audio_path VARCHAR,
+        subtitle_path VARCHAR,
+        video_path VARCHAR,
+        thumbnail_path VARCHAR,
+        status VARCHAR(20) NOT NULL,
+        progress_percent INTEGER NOT NULL,
+        error_message VARCHAR,
+        scheduled_at DATETIME,
+        publish_youtube BOOLEAN NOT NULL,
+        publish_instagram BOOLEAN NOT NULL,
+        publish_tiktok BOOLEAN NOT NULL,
+        publish_results JSON,
+        duration_seconds FLOAT,
+        file_size_bytes INTEGER,
+        id INTEGER NOT NULL,
+        created_at DATETIME NOT NULL,
+        updated_at DATETIME NOT NULL,
+        started_at DATETIME,
+        completed_at DATETIME,
+        PRIMARY KEY (id),
+        FOREIGN KEY(niche_id) REFERENCES niches (id)
+)
+
+
+2026-01-22 15:40:56,358 INFO sqlalchemy.engine.Engine [no key 0.00052s] ()
+2026-01-22 15:40:56,361 INFO sqlalchemy.engine.Engine
+CREATE TABLE daily_niche_stats (
+        id INTEGER NOT NULL,
+        niche_id INTEGER NOT NULL,
+        stats_date DATE NOT NULL,
+        videos_created INTEGER NOT NULL,
+        videos_published INTEGER NOT NULL,
+        videos_failed INTEGER NOT NULL,
+        total_views INTEGER NOT NULL,
+        total_likes INTEGER NOT NULL,
+        total_comments INTEGER NOT NULL,
+        total_shares INTEGER NOT NULL,
+        top_video_id INTEGER,
+        top_video_views INTEGER NOT NULL,
+        PRIMARY KEY (id),
+        FOREIGN KEY(niche_id) REFERENCES niches (id)
+)
+
+
+2026-01-22 15:40:56,361 INFO sqlalchemy.engine.Engine [no key 0.00026s] ()
+2026-01-22 15:40:56,364 INFO sqlalchemy.engine.Engine CREATE INDEX ix_daily_niche_stats_niche_id ON daily_niche_stats (niche_id)
+2026-01-22 15:40:56,364 INFO sqlalchemy.engine.Engine [no key 0.00021s] ()
+2026-01-22 15:40:56,366 INFO sqlalchemy.engine.Engine CREATE INDEX ix_daily_niche_stats_stats_date ON daily_niche_stats (stats_date)
+2026-01-22 15:40:56,366 INFO sqlalchemy.engine.Engine [no key 0.00038s] ()
+2026-01-22 15:40:56,373 INFO sqlalchemy.engine.Engine
+CREATE TABLE job_logs (
+        id INTEGER NOT NULL,
+        job_id INTEGER NOT NULL,
+        timestamp DATETIME NOT NULL,
+        level VARCHAR NOT NULL,
+        message VARCHAR NOT NULL,
+        details VARCHAR,
+        PRIMARY KEY (id),
+        FOREIGN KEY(job_id) REFERENCES jobs (id)
+)
+
+
+2026-01-22 15:40:56,374 INFO sqlalchemy.engine.Engine [no key 0.00094s] ()
+2026-01-22 15:40:56,378 INFO sqlalchemy.engine.Engine CREATE INDEX ix_job_logs_job_id ON job_logs (job_id)
+2026-01-22 15:40:56,378 INFO sqlalchemy.engine.Engine [no key 0.00035s] ()
+2026-01-22 15:40:56,383 INFO sqlalchemy.engine.Engine
+CREATE TABLE videos (
+        job_id INTEGER NOT NULL,
+        niche_id INTEGER NOT NULL,
+        title VARCHAR NOT NULL,
+        description VARCHAR,
+        topic VARCHAR NOT NULL,
+        file_path VARCHAR NOT NULL,
+        thumbnail_path VARCHAR,
+        duration_seconds FLOAT NOT NULL,
+        file_size_bytes INTEGER NOT NULL,
+        width INTEGER NOT NULL,
+        height INTEGER NOT NULL,
+        fps INTEGER NOT NULL,
+        tags JSON,
+        hashtags JSON,
+        id INTEGER NOT NULL,
+        created_at DATETIME NOT NULL,
+        PRIMARY KEY (id),
+        FOREIGN KEY(job_id) REFERENCES jobs (id),
+        FOREIGN KEY(niche_id) REFERENCES niches (id)
+)
+
+
+2026-01-22 15:40:56,386 INFO sqlalchemy.engine.Engine [no key 0.00244s] ()
+2026-01-22 15:40:56,390 INFO sqlalchemy.engine.Engine CREATE INDEX ix_videos_job_id ON videos (job_id)
+2026-01-22 15:40:56,391 INFO sqlalchemy.engine.Engine [no key 0.00146s] ()
+2026-01-22 15:40:56,396 INFO sqlalchemy.engine.Engine CREATE INDEX ix_videos_niche_id ON videos (niche_id)
+2026-01-22 15:40:56,396 INFO sqlalchemy.engine.Engine [no key 0.00038s] ()
+2026-01-22 15:40:56,400 INFO sqlalchemy.engine.Engine
+CREATE TABLE video_publishes (
+        id INTEGER NOT NULL,
+        video_id INTEGER NOT NULL,
+        platform VARCHAR NOT NULL,
+        platform_video_id VARCHAR,
+        platform_url VARCHAR,
+        status VARCHAR NOT NULL,
+        error_message VARCHAR,
+        published_at DATETIME,
+        created_at DATETIME NOT NULL,
+        PRIMARY KEY (id),
+        FOREIGN KEY(video_id) REFERENCES videos (id)
+)
+
+
+2026-01-22 15:40:56,400 INFO sqlalchemy.engine.Engine [no key 0.00030s] ()
+2026-01-22 15:40:56,405 INFO sqlalchemy.engine.Engine CREATE INDEX ix_video_publishes_video_id ON video_publishes (video_id)
+2026-01-22 15:40:56,406 INFO sqlalchemy.engine.Engine [no key 0.00037s] ()
+2026-01-22 15:40:56,409 INFO sqlalchemy.engine.Engine
+CREATE TABLE video_metrics (
+        id INTEGER NOT NULL,
+        video_id INTEGER NOT NULL,
+        platform VARCHAR NOT NULL,
+        metrics_date DATE NOT NULL,
+        views INTEGER NOT NULL,
+        likes INTEGER NOT NULL,
+        comments INTEGER NOT NULL,
+        shares INTEGER NOT NULL,
+        watch_time_seconds INTEGER,
+        average_view_duration FLOAT,
+        impressions INTEGER,
+        reach INTEGER,
+        saves INTEGER,
+        engagement_rate FLOAT,
+        fetched_at DATETIME NOT NULL,
+        PRIMARY KEY (id),
+        FOREIGN KEY(video_id) REFERENCES videos (id)
+)
+
+
+2026-01-22 15:40:56,410 INFO sqlalchemy.engine.Engine [no key 0.00031s] ()
+2026-01-22 15:40:56,413 INFO sqlalchemy.engine.Engine CREATE INDEX ix_video_metrics_metrics_date ON video_metrics (metrics_date)
+2026-01-22 15:40:56,414 INFO sqlalchemy.engine.Engine [no key 0.00142s] ()
+2026-01-22 15:40:56,419 INFO sqlalchemy.engine.Engine CREATE INDEX ix_video_metrics_video_id ON video_metrics (video_id)
+2026-01-22 15:40:56,420 INFO sqlalchemy.engine.Engine [no key 0.00059s] ()
+2026-01-22 15:40:56,424 INFO sqlalchemy.engine.Engine
+CREATE TABLE video_scores (
+        id INTEGER NOT NULL,
+        video_id INTEGER NOT NULL,
+        views_velocity FLOAT NOT NULL,
+        engagement_score FLOAT NOT NULL,
+        virality_score FLOAT NOT NULL,
+        is_winner BOOLEAN NOT NULL,
+        is_underperformer BOOLEAN NOT NULL,
+        calculated_at DATETIME NOT NULL,
+        PRIMARY KEY (id),
+        FOREIGN KEY(video_id) REFERENCES videos (id)
+)
+
+
+2026-01-22 15:40:56,424 INFO sqlalchemy.engine.Engine [no key 0.00034s] ()
+2026-01-22 15:40:56,427 INFO sqlalchemy.engine.Engine CREATE UNIQUE INDEX ix_video_scores_video_id ON video_scores (video_id)
+2026-01-22 15:40:56,427 INFO sqlalchemy.engine.Engine [no key 0.00026s] ()
+2026-01-22 15:40:56,430 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-22 15:40:56 | INFO     | app.main:lifespan:44 - Database initialized
+2026-01-22 15:40:56 | INFO     | app.main:lifespan:60 - Directory structure verified
+2026-01-22 15:40:56 | INFO     | app.workers.job_worker:start:54 - Job worker started
+2026-01-22 15:40:56 | INFO     | app.main:lifespan:65 - Job worker started
+2026-01-22 15:40:56 | INFO     | app.main:lifespan:67 - Content Factory ready at http://127.0.0.1:8000
+INFO:     Application startup complete.
+INFO:     127.0.0.1:60146 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:64086 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:58375 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58880 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57417 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60301 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53087 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53308 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58375 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56051 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:62814 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:62955 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56135 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52188 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63484 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49838 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64594 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62955 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62955 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50363 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:65354 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:60343 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:59762 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60719 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61187 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63484 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62567 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54345 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59762 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59415 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:55626 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:51002 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:63007 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:53692 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:55093 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:61779 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63308 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:65456 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49283 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64969 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49678 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61779 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61269 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+2026-01-22 15:41:34,872 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:41:34,884 INFO sqlalchemy.engine.Engine SELECT videos.job_id, videos.niche_id, videos.title, videos.description, videos.topic, videos.file_path, videos.thumbnail_path, videos.duration_seconds, videos.file_size_bytes, videos.width, videos.height, videos.fps, videos.tags, videos.hashtags, videos.id, videos.created_at
+FROM videos
+2026-01-22 15:41:34,884 INFO sqlalchemy.engine.Engine [generated in 0.00055s] ()
+2026-01-22 15:41:34,884 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:61277 - "GET /api/analytics/summary HTTP/1.1" 200 OK
+2026-01-22 15:41:35,164 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:41:35,164 INFO sqlalchemy.engine.Engine SELECT videos.job_id, videos.niche_id, videos.title, videos.description, videos.topic, videos.file_path, videos.thumbnail_path, videos.duration_seconds, videos.file_size_bytes, videos.width, videos.height, videos.fps, videos.tags, videos.hashtags, videos.id, videos.created_at
+FROM videos
+2026-01-22 15:41:35,164 INFO sqlalchemy.engine.Engine [cached since 0.2808s ago] ()
+2026-01-22 15:41:35,165 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:61280 - "GET /api/analytics/summary HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50402 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+2026-01-22 15:41:35,171 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:41:35,173 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at
+FROM jobs
+2026-01-22 15:41:35,173 INFO sqlalchemy.engine.Engine [generated in 0.00036s] ()
+2026-01-22 15:41:35,174 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:41:35,176 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-22 15:41:35,176 INFO sqlalchemy.engine.Engine [generated in 0.00026s] (5, 0)
+INFO:     127.0.0.1:61275 - "GET /api/jobs/today HTTP/1.1" 200 OK
+2026-01-22 15:41:37,593 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:64181 - "WebSocket /ws/events" 403
+INFO:     127.0.0.1:61276 - "GET /api/jobs/?limit=5 HTTP/1.1" 200 OK
+2026-01-22 15:41:37,597 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+2026-01-22 15:41:37,599 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:41:37,599 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at
+FROM jobs
+2026-01-22 15:41:37,599 INFO sqlalchemy.engine.Engine [cached since 2.427s ago] ()
+2026-01-22 15:41:37,601 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:41:37,602 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-22 15:41:37,602 INFO sqlalchemy.engine.Engine [cached since 2.427s ago] (5, 0)
+INFO:     127.0.0.1:64184 - "GET /api/jobs/today HTTP/1.1" 200 OK
+2026-01-22 15:41:37,603 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:57081 - "GET /api/jobs/?limit=5 HTTP/1.1" 200 OK
+2026-01-22 15:41:37,606 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:63782 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:61278 - "GET /api/settings/services/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51921 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:59006 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55396 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59006 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54103 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57712 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51126 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62761 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61286 - "GET /api/settings/services/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62761 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49670 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:57971 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:57619 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:52068 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:58883 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:59427 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52766 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61357 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51232 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52080 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54562 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59427 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+2026-01-22 15:41:56,440 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:41:56,443 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at
+FROM jobs
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-22 15:41:56,443 INFO sqlalchemy.engine.Engine [generated in 0.00031s] ('PENDING', 2, 0)
+2026-01-22 15:41:56,444 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-22 15:41:56,444 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:41:56,446 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at
+FROM jobs
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-22 15:41:56,446 INFO sqlalchemy.engine.Engine [generated in 0.00037s] ('PENDING', '2026-01-22 20:41:56.444093')
+2026-01-22 15:41:56,447 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:60755 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:63641 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:62830 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64552 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58231 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61908 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58882 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55775 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62830 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52786 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:59656 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:64803 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:58663 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63506 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62160 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51652 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:65319 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57028 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58663 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58663 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52916 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:51792 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:58797 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52357 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60624 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54070 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63119 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55479 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58797 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58814 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:58586 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:49838 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55656 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53871 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49838 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55412 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55270 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50559 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61807 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:53923 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56804 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55337 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56692 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54277 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51970 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53923 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58847 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:53923 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55009 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:61825 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:55830 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55199 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60785 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51235 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57203 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50578 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55830 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+2026-01-22 15:42:56,439 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:42:56,440 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at
+FROM jobs
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-22 15:42:56,440 INFO sqlalchemy.engine.Engine [cached since 60s ago] ('PENDING', 2, 0)
+2026-01-22 15:42:56,441 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-22 15:42:56,441 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:42:56,442 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at
+FROM jobs
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-22 15:42:56,442 INFO sqlalchemy.engine.Engine [cached since 60s ago] ('PENDING', '2026-01-22 20:42:56.441529')
+2026-01-22 15:42:56,442 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:59220 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:56512 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:50364 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51274 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54396 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56599 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57269 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:65470 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50364 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62128 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:62829 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:61553 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57241 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56325 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64180 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:65142 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61553 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60605 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60605 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55271 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:59887 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55402 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57395 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59887 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59144 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55969 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59642 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60866 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:58188 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:60858 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52894 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58170 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61727 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53477 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63658 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60858 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51232 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:62136 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:59741 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:56812 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64873 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56153 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52712 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56142 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56812 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58727 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58727 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61603 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:54672 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:65073 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54583 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63430 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:65073 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62082 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51354 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51788 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61101 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+2026-01-22 15:43:56,437 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:43:56,437 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at
+FROM jobs
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-22 15:43:56,437 INFO sqlalchemy.engine.Engine [cached since 120s ago] ('PENDING', 2, 0)
+2026-01-22 15:43:56,438 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-22 15:43:56,438 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:43:56,438 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at
+FROM jobs
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-22 15:43:56,438 INFO sqlalchemy.engine.Engine [cached since 120s ago] ('PENDING', '2026-01-22 20:43:56.438317')
+2026-01-22 15:43:56,438 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:58873 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:60564 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62522 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54685 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53860 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57684 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60165 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60564 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59998 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:55648 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:53797 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63393 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62782 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55796 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58763 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63505 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53797 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53797 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50967 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:57090 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:53129 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63757 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53347 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58689 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61744 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64359 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53129 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60706 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:61049 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:62626 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59458 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49737 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58955 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51934 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50363 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62626 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58466 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:65079 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:54217 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:58583 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60473 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56101 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51911 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55768 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58583 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52598 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52598 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55301 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:64823 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:57341 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:52613 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53388 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50985 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58337 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52418 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57942 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52613 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+2026-01-22 15:44:56,434 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:44:56,435 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at
+FROM jobs
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-22 15:44:56,435 INFO sqlalchemy.engine.Engine [cached since 180s ago] ('PENDING', 2, 0)
+2026-01-22 15:44:56,435 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-22 15:44:56,437 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:44:56,437 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at
+FROM jobs
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-22 15:44:56,437 INFO sqlalchemy.engine.Engine [cached since 180s ago] ('PENDING', '2026-01-22 20:44:56.437306')
+2026-01-22 15:44:56,438 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:53292 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:61124 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:57580 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50943 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58838 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:65077 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61630 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57580 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64312 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:65513 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:53360 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:59460 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56511 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59194 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59460 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52180 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60068 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63881 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61281 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:63881 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52973 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:62304 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:60742 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57064 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49670 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63165 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49671 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60742 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49350 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55957 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:63988 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:56496 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54878 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57114 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61331 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52067 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64916 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56496 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50499 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:56899 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:51455 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54072 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:65274 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51449 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51455 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55468 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63514 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49838 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:63514 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+2026-01-22 15:45:45,426 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:45:45,437 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.description, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at
+FROM niches
+ LIMIT ? OFFSET ?
+2026-01-22 15:45:45,437 INFO sqlalchemy.engine.Engine [generated in 0.00057s] (100, 0)
+INFO:     127.0.0.1:64981 - "GET /api/niches/ HTTP/1.1" 200 OK
+2026-01-22 15:45:45,638 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-22 15:45:45,645 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:45:45,646 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.description, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at
+FROM niches
+ LIMIT ? OFFSET ?
+2026-01-22 15:45:45,648 INFO sqlalchemy.engine.Engine [cached since 0.2117s ago] (100, 0)
+INFO:     127.0.0.1:52702 - "GET /api/niches/ HTTP/1.1" 200 OK
+2026-01-22 15:45:45,651 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:64982 - "GET /api/models/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61434 - "GET /api/models/ HTTP/1.1" 200 OK
+2026-01-22 15:45:47,166 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:45:47,170 INFO sqlalchemy.engine.Engine SELECT accounts.platform, accounts.account_name, accounts.account_handle, accounts.credentials_env_prefix, accounts.is_active, accounts.last_verified, accounts.platform_user_id, accounts.platform_channel_id, accounts.id, accounts.created_at, accounts.updated_at
+FROM accounts
+2026-01-22 15:45:47,170 INFO sqlalchemy.engine.Engine [generated in 0.00048s] ()
+INFO:     127.0.0.1:62478 - "GET /api/accounts/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62477 - "GET /api/accounts/ HTTP/1.1" 200 OK
+2026-01-22 15:45:47,174 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:61120 - "GET /api/accounts/status HTTP/1.1" 200 OK
+2026-01-22 15:45:47,180 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:45:47,182 INFO sqlalchemy.engine.Engine SELECT accounts.platform, accounts.account_name, accounts.account_handle, accounts.credentials_env_prefix, accounts.is_active, accounts.last_verified, accounts.platform_user_id, accounts.platform_channel_id, accounts.id, accounts.created_at, accounts.updated_at
+FROM accounts
+2026-01-22 15:45:47,182 INFO sqlalchemy.engine.Engine [cached since 0.01263s ago] ()
+INFO:     127.0.0.1:61122 - "GET /api/accounts/ HTTP/1.1" 200 OK
+2026-01-22 15:45:47,184 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:64825 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:56928 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+2026-01-22 15:45:51,534 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:45:51,534 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.description, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at
+FROM niches
+ LIMIT ? OFFSET ?
+2026-01-22 15:45:51,534 INFO sqlalchemy.engine.Engine [cached since 6.098s ago] (100, 0)
+INFO:     127.0.0.1:63577 - "GET /api/niches/ HTTP/1.1" 200 OK
+2026-01-22 15:45:51,537 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-22 15:45:51,543 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:45:51,543 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.description, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at
+FROM niches
+ LIMIT ? OFFSET ?
+2026-01-22 15:45:51,544 INFO sqlalchemy.engine.Engine [cached since 6.108s ago] (100, 0)
+INFO:     127.0.0.1:56007 - "GET /api/niches/ HTTP/1.1" 200 OK
+2026-01-22 15:45:51,546 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:56858 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56421 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53357 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53187 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50599 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54682 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56858 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+2026-01-22 15:45:53,390 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:45:53,391 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-22 15:45:53,392 INFO sqlalchemy.engine.Engine [cached since 258.2s ago] (50, 0)
+INFO:     127.0.0.1:61837 - "GET /api/jobs/ HTTP/1.1" 200 OK
+2026-01-22 15:45:53,394 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-22 15:45:53,401 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:45:53,401 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-22 15:45:53,402 INFO sqlalchemy.engine.Engine [cached since 258.2s ago] (50, 0)
+INFO:     127.0.0.1:56959 - "GET /api/jobs/ HTTP/1.1" 200 OK
+2026-01-22 15:45:53,404 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-22 15:45:54,419 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:45:54,420 INFO sqlalchemy.engine.Engine SELECT videos.job_id, videos.niche_id, videos.title, videos.description, videos.topic, videos.file_path, videos.thumbnail_path, videos.duration_seconds, videos.file_size_bytes, videos.width, videos.height, videos.fps, videos.tags, videos.hashtags, videos.id, videos.created_at
+FROM videos ORDER BY videos.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-22 15:45:54,420 INFO sqlalchemy.engine.Engine [generated in 0.00051s] (50, 0)
+2026-01-22 15:45:54,422 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:45:54,422 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.description, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at
+FROM niches
+ LIMIT ? OFFSET ?
+2026-01-22 15:45:54,422 INFO sqlalchemy.engine.Engine [cached since 8.987s ago] (100, 0)
+INFO:     127.0.0.1:58854 - "GET /api/videos/?limit=50 HTTP/1.1" 200 OK
+2026-01-22 15:45:54,425 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:58855 - "GET /api/niches/ HTTP/1.1" 200 OK
+2026-01-22 15:45:54,426 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-22 15:45:54,432 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:45:54,433 INFO sqlalchemy.engine.Engine SELECT videos.job_id, videos.niche_id, videos.title, videos.description, videos.topic, videos.file_path, videos.thumbnail_path, videos.duration_seconds, videos.file_size_bytes, videos.width, videos.height, videos.fps, videos.tags, videos.hashtags, videos.id, videos.created_at
+FROM videos ORDER BY videos.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-22 15:45:54,433 INFO sqlalchemy.engine.Engine [cached since 0.01288s ago] (50, 0)
+2026-01-22 15:45:54,434 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:45:54,434 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.description, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at
+FROM niches
+ LIMIT ? OFFSET ?
+2026-01-22 15:45:54,435 INFO sqlalchemy.engine.Engine [cached since 8.999s ago] (100, 0)
+INFO:     127.0.0.1:58587 - "GET /api/niches/ HTTP/1.1" 200 OK
+2026-01-22 15:45:54,437 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:58585 - "GET /api/videos/?limit=50 HTTP/1.1" 200 OK
+2026-01-22 15:45:54,437 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-22 15:45:55,044 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:45:55,045 INFO sqlalchemy.engine.Engine SELECT videos.job_id, videos.niche_id, videos.title, videos.description, videos.topic, videos.file_path, videos.thumbnail_path, videos.duration_seconds, videos.file_size_bytes, videos.width, videos.height, videos.fps, videos.tags, videos.hashtags, videos.id, videos.created_at
+FROM videos
+2026-01-22 15:45:55,045 INFO sqlalchemy.engine.Engine [cached since 260.2s ago] ()
+2026-01-22 15:45:55,046 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:55297 - "GET /api/analytics/summary HTTP/1.1" 200 OK
+2026-01-22 15:45:55,050 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:45:55,053 INFO sqlalchemy.engine.Engine SELECT video_metrics.id, video_metrics.video_id, video_metrics.platform, video_metrics.metrics_date, video_metrics.views, video_metrics.likes, video_metrics.comments, video_metrics.shares, video_metrics.watch_time_seconds, video_metrics.average_view_duration, video_metrics.impressions, video_metrics.reach, video_metrics.saves, video_metrics.engagement_rate, video_metrics.fetched_at
+FROM video_metrics
+WHERE video_metrics.metrics_date >= ? ORDER BY video_metrics.metrics_date
+2026-01-22 15:45:55,053 INFO sqlalchemy.engine.Engine [generated in 0.00035s] ('2025-12-23',)
+2026-01-22 15:45:55,054 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:55304 - "GET /api/analytics/trends?days=30 HTTP/1.1" 200 OK
+2026-01-22 15:45:55,058 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:45:55,061 INFO sqlalchemy.engine.Engine SELECT video_scores.id, video_scores.video_id, video_scores.views_velocity, video_scores.engagement_score, video_scores.virality_score, video_scores.is_winner, video_scores.is_underperformer, video_scores.calculated_at, videos.job_id, videos.niche_id, videos.title, videos.description, videos.topic, videos.file_path, videos.thumbnail_path, videos.duration_seconds, videos.file_size_bytes, videos.width, videos.height, videos.fps, videos.tags, videos.hashtags, videos.id AS id_1, videos.created_at
+FROM video_scores JOIN videos ON video_scores.video_id = videos.id
+WHERE video_scores.is_winner = 1 ORDER BY video_scores.virality_score DESC
+ LIMIT ? OFFSET ?
+2026-01-22 15:45:55,062 INFO sqlalchemy.engine.Engine [generated in 0.00068s] (5, 0)
+2026-01-22 15:45:55,065 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:45:55,067 INFO sqlalchemy.engine.Engine SELECT video_metrics.id, video_metrics.video_id, video_metrics.platform, video_metrics.metrics_date, video_metrics.views, video_metrics.likes, video_metrics.comments, video_metrics.shares, video_metrics.watch_time_seconds, video_metrics.average_view_duration, video_metrics.impressions, video_metrics.reach, video_metrics.saves, video_metrics.engagement_rate, video_metrics.fetched_at
+FROM video_metrics
+WHERE video_metrics.platform = ?
+2026-01-22 15:45:55,067 INFO sqlalchemy.engine.Engine [generated in 0.00034s] ('youtube',)
+2026-01-22 15:45:55,075 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:45:55,075 INFO sqlalchemy.engine.Engine SELECT videos.job_id, videos.niche_id, videos.title, videos.description, videos.topic, videos.file_path, videos.thumbnail_path, videos.duration_seconds, videos.file_size_bytes, videos.width, videos.height, videos.fps, videos.tags, videos.hashtags, videos.id, videos.created_at
+FROM videos
+2026-01-22 15:45:55,076 INFO sqlalchemy.engine.Engine [cached since 260.2s ago] ()
+2026-01-22 15:45:55,076 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:61661 - "GET /api/analytics/summary HTTP/1.1" 200 OK
+2026-01-22 15:45:55,077 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:45:55,079 INFO sqlalchemy.engine.Engine SELECT video_scores.id, video_scores.video_id, video_scores.views_velocity, video_scores.engagement_score, video_scores.virality_score, video_scores.is_winner, video_scores.is_underperformer, video_scores.calculated_at, videos.job_id, videos.niche_id, videos.title, videos.description, videos.topic, videos.file_path, videos.thumbnail_path, videos.duration_seconds, videos.file_size_bytes, videos.width, videos.height, videos.fps, videos.tags, videos.hashtags, videos.id AS id_1, videos.created_at
+FROM video_scores JOIN videos ON video_scores.video_id = videos.id
+WHERE video_scores.is_underperformer = 1 ORDER BY video_scores.virality_score ASC
+ LIMIT ? OFFSET ?
+2026-01-22 15:45:55,079 INFO sqlalchemy.engine.Engine [generated in 0.00035s] (5, 0)
+2026-01-22 15:45:55,080 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:45:55,080 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.description, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at
+FROM niches
+2026-01-22 15:45:55,080 INFO sqlalchemy.engine.Engine [generated in 0.00027s] ()
+INFO:     127.0.0.1:55305 - "GET /api/analytics/top-videos?limit=5 HTTP/1.1" 200 OK
+2026-01-22 15:45:55,083 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-22 15:45:55,083 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:45:55,084 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.description, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at
+FROM niches
+ LIMIT ? OFFSET ?
+2026-01-22 15:45:55,085 INFO sqlalchemy.engine.Engine [cached since 9.649s ago] (100, 0)
+2026-01-22 15:45:55,086 INFO sqlalchemy.engine.Engine SELECT video_metrics.id, video_metrics.video_id, video_metrics.platform, video_metrics.metrics_date, video_metrics.views, video_metrics.likes, video_metrics.comments, video_metrics.shares, video_metrics.watch_time_seconds, video_metrics.average_view_duration, video_metrics.impressions, video_metrics.reach, video_metrics.saves, video_metrics.engagement_rate, video_metrics.fetched_at
+FROM video_metrics
+WHERE video_metrics.platform = ?
+2026-01-22 15:45:55,087 INFO sqlalchemy.engine.Engine [cached since 0.01972s ago] ('instagram',)
+2026-01-22 15:45:55,089 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:45:55,089 INFO sqlalchemy.engine.Engine SELECT video_metrics.id, video_metrics.video_id, video_metrics.platform, video_metrics.metrics_date, video_metrics.views, video_metrics.likes, video_metrics.comments, video_metrics.shares, video_metrics.watch_time_seconds, video_metrics.average_view_duration, video_metrics.impressions, video_metrics.reach, video_metrics.saves, video_metrics.engagement_rate, video_metrics.fetched_at
+FROM video_metrics
+WHERE video_metrics.metrics_date >= ? ORDER BY video_metrics.metrics_date
+2026-01-22 15:45:55,089 INFO sqlalchemy.engine.Engine [cached since 0.03636s ago] ('2025-12-23',)
+2026-01-22 15:45:55,090 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:54071 - "GET /api/analytics/trends?days=30 HTTP/1.1" 200 OK
+INFO:     127.0.0.1:55306 - "GET /api/analytics/underperformers?limit=5 HTTP/1.1" 200 OK
+2026-01-22 15:45:55,092 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:55307 - "GET /api/analytics/by-niche HTTP/1.1" 200 OK
+2026-01-22 15:45:55,092 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-22 15:45:55,093 INFO sqlalchemy.engine.Engine SELECT video_metrics.id, video_metrics.video_id, video_metrics.platform, video_metrics.metrics_date, video_metrics.views, video_metrics.likes, video_metrics.comments, video_metrics.shares, video_metrics.watch_time_seconds, video_metrics.average_view_duration, video_metrics.impressions, video_metrics.reach, video_metrics.saves, video_metrics.engagement_rate, video_metrics.fetched_at
+FROM video_metrics
+WHERE video_metrics.platform = ?
+2026-01-22 15:45:55,093 INFO sqlalchemy.engine.Engine [cached since 0.02677s ago] ('tiktok',)
+2026-01-22 15:45:55,095 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:45:55,097 INFO sqlalchemy.engine.Engine SELECT video_scores.id, video_scores.video_id, video_scores.views_velocity, video_scores.engagement_score, video_scores.virality_score, video_scores.is_winner, video_scores.is_underperformer, video_scores.calculated_at, videos.job_id, videos.niche_id, videos.title, videos.description, videos.topic, videos.file_path, videos.thumbnail_path, videos.duration_seconds, videos.file_size_bytes, videos.width, videos.height, videos.fps, videos.tags, videos.hashtags, videos.id AS id_1, videos.created_at
+FROM video_scores JOIN videos ON video_scores.video_id = videos.id
+WHERE video_scores.is_winner = 1 ORDER BY video_scores.virality_score DESC
+ LIMIT ? OFFSET ?
+2026-01-22 15:45:55,097 INFO sqlalchemy.engine.Engine [cached since 0.03576s ago] (5, 0)
+INFO:     127.0.0.1:50366 - "GET /api/niches/ HTTP/1.1" 200 OK
+2026-01-22 15:45:55,098 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-22 15:45:55,101 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:45:55,101 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.description, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at
+FROM niches
+2026-01-22 15:45:55,101 INFO sqlalchemy.engine.Engine [cached since 0.01988s ago] ()
+2026-01-22 15:45:55,102 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:45:55,102 INFO sqlalchemy.engine.Engine SELECT video_scores.id, video_scores.video_id, video_scores.views_velocity, video_scores.engagement_score, video_scores.virality_score, video_scores.is_winner, video_scores.is_underperformer, video_scores.calculated_at, videos.job_id, videos.niche_id, videos.title, videos.description, videos.topic, videos.file_path, videos.thumbnail_path, videos.duration_seconds, videos.file_size_bytes, videos.width, videos.height, videos.fps, videos.tags, videos.hashtags, videos.id AS id_1, videos.created_at
+FROM video_scores JOIN videos ON video_scores.video_id = videos.id
+WHERE video_scores.is_underperformer = 1 ORDER BY video_scores.virality_score ASC
+ LIMIT ? OFFSET ?
+2026-01-22 15:45:55,102 INFO sqlalchemy.engine.Engine [cached since 0.02292s ago] (5, 0)
+INFO:     127.0.0.1:55308 - "GET /api/analytics/by-platform HTTP/1.1" 200 OK
+2026-01-22 15:45:55,104 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:64607 - "GET /api/analytics/top-videos?limit=5 HTTP/1.1" 200 OK
+2026-01-22 15:45:55,106 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-22 15:45:55,108 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:45:55,109 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.description, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at
+FROM niches
+ LIMIT ? OFFSET ?
+2026-01-22 15:45:55,109 INFO sqlalchemy.engine.Engine [cached since 9.673s ago] (100, 0)
+INFO:     127.0.0.1:53807 - "GET /api/analytics/by-niche HTTP/1.1" 200 OK
+2026-01-22 15:45:55,111 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:53805 - "GET /api/analytics/underperformers?limit=5 HTTP/1.1" 200 OK
+2026-01-22 15:45:55,111 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-22 15:45:55,114 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:45:55,114 INFO sqlalchemy.engine.Engine SELECT video_metrics.id, video_metrics.video_id, video_metrics.platform, video_metrics.metrics_date, video_metrics.views, video_metrics.likes, video_metrics.comments, video_metrics.shares, video_metrics.watch_time_seconds, video_metrics.average_view_duration, video_metrics.impressions, video_metrics.reach, video_metrics.saves, video_metrics.engagement_rate, video_metrics.fetched_at
+FROM video_metrics
+WHERE video_metrics.platform = ?
+2026-01-22 15:45:55,114 INFO sqlalchemy.engine.Engine [cached since 0.04732s ago] ('youtube',)
+INFO:     127.0.0.1:65002 - "GET /api/niches/ HTTP/1.1" 200 OK
+2026-01-22 15:45:55,116 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-22 15:45:55,123 INFO sqlalchemy.engine.Engine SELECT video_metrics.id, video_metrics.video_id, video_metrics.platform, video_metrics.metrics_date, video_metrics.views, video_metrics.likes, video_metrics.comments, video_metrics.shares, video_metrics.watch_time_seconds, video_metrics.average_view_duration, video_metrics.impressions, video_metrics.reach, video_metrics.saves, video_metrics.engagement_rate, video_metrics.fetched_at
+FROM video_metrics
+WHERE video_metrics.platform = ?
+2026-01-22 15:45:55,124 INFO sqlalchemy.engine.Engine [cached since 0.05695s ago] ('instagram',)
+2026-01-22 15:45:55,125 INFO sqlalchemy.engine.Engine SELECT video_metrics.id, video_metrics.video_id, video_metrics.platform, video_metrics.metrics_date, video_metrics.views, video_metrics.likes, video_metrics.comments, video_metrics.shares, video_metrics.watch_time_seconds, video_metrics.average_view_duration, video_metrics.impressions, video_metrics.reach, video_metrics.saves, video_metrics.engagement_rate, video_metrics.fetched_at
+FROM video_metrics
+WHERE video_metrics.platform = ?
+2026-01-22 15:45:55,125 INFO sqlalchemy.engine.Engine [cached since 0.05832s ago] ('tiktok',)
+INFO:     127.0.0.1:62855 - "GET /api/analytics/by-platform HTTP/1.1" 200 OK
+2026-01-22 15:45:55,127 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:60536 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:61980 - "GET /api/scripts/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61982 - "GET /api/scripts/dates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61981 - "GET /api/scripts/stats HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61984 - "GET /api/scripts/niches HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65312 - "GET /api/scripts/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65313 - "GET /api/scripts/dates HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65317 - "GET /api/scripts/niches HTTP/1.1" 200 OK
+INFO:     127.0.0.1:65316 - "GET /api/scripts/stats HTTP/1.1" 200 OK
+2026-01-22 15:45:56,449 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:45:56,450 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at
+FROM jobs
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-22 15:45:56,450 INFO sqlalchemy.engine.Engine [cached since 240s ago] ('PENDING', 2, 0)
+2026-01-22 15:45:56,451 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-22 15:45:56,451 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:45:56,452 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at
+FROM jobs
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-22 15:45:56,452 INFO sqlalchemy.engine.Engine [cached since 240s ago] ('PENDING', '2026-01-22 20:45:56.451508')
+2026-01-22 15:45:56,453 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:57455 - "GET /api/models/available HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57456 - "GET /api/models/current HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60583 - "GET /api/models/available HTTP/1.1" 200 OK
+INFO:     127.0.0.1:60585 - "GET /api/models/current HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57452 - "GET /api/models/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:64840 - "GET /api/models/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:56145 - "GET /api/settings/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62012 - "GET /api/settings/paths/check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62013 - "GET /api/settings/env-template HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62014 - "GET /api/settings/model-paths/check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62017 - "GET /api/settings/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53911 - "GET /api/settings/env-template HTTP/1.1" 200 OK
+INFO:     127.0.0.1:53910 - "GET /api/settings/paths/check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61290 - "GET /api/settings/model-paths/check HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57519 - "GET /api/models/available HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57520 - "GET /api/models/current HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51452 - "GET /api/models/current HTTP/1.1" 200 OK
+INFO:     127.0.0.1:51450 - "GET /api/models/available HTTP/1.1" 200 OK
+INFO:     127.0.0.1:57518 - "GET /api/models/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62208 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:58104 - "GET /api/models/ HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62015 - "GET /api/settings/services/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:62806 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:63796 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53895 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52515 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59303 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50743 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63796 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62530 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49678 - "GET /api/settings/services/status HTTP/1.1" 200 OK
+INFO:     127.0.0.1:50490 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:58416 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64740 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53796 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50363 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49840 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64497 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58416 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58416 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61659 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:52521 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:65484 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54601 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59215 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52596 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63689 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50363 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:65484 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52772 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:49670 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:55741 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:56481 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60636 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55122 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49940 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60452 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58696 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56481 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51657 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:59709 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:61039 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61314 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60895 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54801 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59986 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61039 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:65166 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:65166 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51675 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:52017 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:59308 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53438 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55644 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61297 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56671 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60553 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59308 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63422 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+2026-01-22 15:46:56,441 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:46:56,442 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at
+FROM jobs
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-22 15:46:56,442 INFO sqlalchemy.engine.Engine [cached since 300s ago] ('PENDING', 2, 0)
+2026-01-22 15:46:56,443 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-22 15:46:56,443 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:46:56,444 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at
+FROM jobs
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-22 15:46:56,444 INFO sqlalchemy.engine.Engine [cached since 300s ago] ('PENDING', '2026-01-22 20:46:56.443458')
+2026-01-22 15:46:56,444 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:55841 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:55828 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56567 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52514 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51357 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56584 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57429 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55828 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59067 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:55397 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:63932 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:56423 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64931 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57283 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50811 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56423 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54755 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:65423 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:65423 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56300 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:59686 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:56390 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52485 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52372 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61731 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61963 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58855 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56390 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57583 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:53845 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:53306 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50698 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62837 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59625 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64988 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53306 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52948 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59496 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:62366 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:61547 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62293 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49253 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50262 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59297 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61547 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53305 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53305 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56079 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:50634 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:61269 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59278 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62301 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50665 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58370 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60952 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61269 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52901 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+2026-01-22 15:47:56,438 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:47:56,439 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at
+FROM jobs
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-22 15:47:56,439 INFO sqlalchemy.engine.Engine [cached since 360s ago] ('PENDING', 2, 0)
+2026-01-22 15:47:56,440 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-22 15:47:56,440 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:47:56,440 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at
+FROM jobs
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-22 15:47:56,440 INFO sqlalchemy.engine.Engine [cached since 360s ago] ('PENDING', '2026-01-22 20:47:56.440596')
+2026-01-22 15:47:56,441 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:54585 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:50262 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54185 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63305 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59922 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52984 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58052 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50262 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54984 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:63232 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:52086 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59534 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49679 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63622 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61067 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51232 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52086 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52863 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:52086 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61846 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:56965 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:63897 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62726 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63897 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56614 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62076 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51832 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60631 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57282 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:59147 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:60790 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58121 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60433 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62964 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54786 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52735 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60790 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:56440 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:53485 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:61897 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58215 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64613 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59393 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60878 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61897 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61092 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60697 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:61092 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57827 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:57948 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:53001 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63652 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52454 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63732 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53001 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61187 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58717 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+2026-01-22 15:48:56,442 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:48:56,442 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at
+FROM jobs
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-22 15:48:56,442 INFO sqlalchemy.engine.Engine [cached since 420s ago] ('PENDING', 2, 0)
+2026-01-22 15:48:56,443 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-22 15:48:56,443 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:48:56,443 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at
+FROM jobs
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-22 15:48:56,443 INFO sqlalchemy.engine.Engine [cached since 420s ago] ('PENDING', '2026-01-22 20:48:56.443186')
+2026-01-22 15:48:56,444 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     127.0.0.1:50799 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:64068 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:64163 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58029 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51902 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64163 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:53887 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50698 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50675 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60111 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:58775 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:51308 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63983 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63723 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:62245 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:63155 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60207 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51308 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51308 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57220 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:50262 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:52037 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64919 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61655 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57957 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52037 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61483 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61002 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51110 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:49936 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:50517 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:50524 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49838 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55089 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59113 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50524 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49897 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57405 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:55186 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:57656 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:49915 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:54701 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60985 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:51819 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:64585 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49915 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:61004 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:60747 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:61004 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:57250 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:58592 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:58005 - "GET /api/v1/brain/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59252 - "GET /api/v1/agents/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:50739 - "GET /api/v1/voice/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:59486 - "GET /api/v1/tasks/stats/overview HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49889 - "GET /api/v1/system/status HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:52896 - "GET /api/v1/projects/ HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:58005 - "GET /api/v1/council/list HTTP/1.1" 404 Not Found
+INFO:     127.0.0.1:49670 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:60973 - "WebSocket /ws/events" 403
+INFO:     connection rejected (403 Forbidden)
+INFO:     connection closed
+INFO:     127.0.0.1:58005 - "POST /api/v1/chat-history/sessions HTTP/1.1" 404 Not Found
+2026-01-22 15:49:56,444 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:49:56,445 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at
+FROM jobs
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-22 15:49:56,445 INFO sqlalchemy.engine.Engine [cached since 480s ago] ('PENDING', 2, 0)
+2026-01-22 15:49:56,445 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-22 15:49:56,447 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-22 15:49:56,447 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at
+FROM jobs
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-22 15:49:56,447 INFO sqlalchemy.engine.Engine [cached since 480s ago] ('PENDING', '2026-01-22 20:49:56.446840')
+2026-01-22 15:49:56,447 INFO sqlalchemy.engine.Engine COMMIT

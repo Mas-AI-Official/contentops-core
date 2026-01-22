@@ -116,6 +116,7 @@ Edit `backend\.env` to configure:
 
 ### LLM (Ollama)
 ```env
+LLM_PROVIDER=ollama
 OLLAMA_BASE_URL=http://localhost:11434
 OLLAMA_MODEL=llama3.1:8b
 OLLAMA_FAST_MODEL=llama3.2:3b
@@ -140,6 +141,25 @@ WHISPER_COMPUTE_TYPE=float16
 
 ### Platform APIs
 See `backend\.env` template for YouTube, Instagram, and TikTok API configuration.
+
+### MCP / External Connectors (Optional)
+You can wire external providers (hosted LLMs, TTS, or tools) using the MCP-style proxy.
+
+Add to `backend\.env`:
+```env
+MCP_ENABLED=true
+MCP_DEFAULT_TIMEOUT=60
+MCP_CONNECTORS_JSON=[{"name":"openai","type":"llm","base_url":"https://api.openai.com/v1","auth_header":"Authorization","auth_env":"OPENAI_API_KEY","auth_prefix":"Bearer "}]
+MCP_LLM_CONNECTOR=openai
+MCP_LLM_PATH=v1/chat/completions
+MCP_LLM_MODEL=gpt-4o-mini
+LLM_PROVIDER=mcp
+```
+
+Then call:
+- `GET /api/mcp/status`
+- `GET /api/mcp/connectors`
+- `POST /api/mcp/forward`
 
 ## Per-Niche Model Settings
 
@@ -169,12 +189,80 @@ Each niche can override global AI settings:
 
 ## Content Pipeline
 
-1. **Topic Selection** - AI-generated or manual
-2. **Script Generation** - Ollama LLM with niche prompts
-3. **Voice Synthesis** - XTTS (local) or ElevenLabs (API)
-4. **Subtitle Generation** - Whisper/faster-whisper
-5. **Video Rendering** - FFmpeg with platform-specific encoding
-6. **Publishing** - Official APIs (YouTube, Instagram, TikTok)
+**📊 See [PIPELINE.md](PIPELINE.md) for complete visual diagram and architecture details.**
+
+1. **Topic Selection** - RSS feeds → LLM picks best story, or topic lists, or LLM generation
+2. **Script Generation** - Ollama/MCP LLM with niche prompts (hook, body, CTA)
+3. **Voice Synthesis** - XTTS (local) or ElevenLabs (API) with per-niche voice config
+4. **Subtitle Generation** - Whisper/faster-whisper with per-niche model/device
+5. **Video Rendering** - **LTX AI generation** (new!) or FFmpeg compositing with stock B-roll
+6. **Review & Approval** - Manual review in dashboard (required before publishing)
+7. **Publishing** - Official APIs (YouTube, Instagram, TikTok)
+
+## News/RSS Automation
+
+To let the system pull real-world stories automatically, add RSS/Atom feeds per niche:
+
+`data/niches/<niche_name>/feeds.json`
+```json
+{
+  "feeds": [
+    "https://rss.cnn.com/rss/edition_technology.rss",
+    "https://www.theverge.com/rss/index.xml"
+  ]
+}
+```
+
+When you click **Generate Topic**, the backend will:
+1. Pull headlines from RSS feeds
+2. Use the LLM to pick the best story
+3. Generate script → audio → subtitles → video
+
+If no feeds exist, it falls back to topic lists or LLM generation.
+
+## Local LTX Video Generation (Optional)
+
+**LTX (Lightricks)** is one of the newest open-source video models. You can run it locally,
+but laptop GPUs (like RTX 4060 8GB) are limited to short, low-res clips unless heavily optimized.
+
+### Setup LTX
+
+Run the setup script:
+```batch
+setup_ltx.bat
+```
+
+This will:
+- Install ComfyUI-LTXVideo (or guide you to manual setup)
+- Download LTX models (distilled FP8 recommended for 8GB VRAM)
+- Configure for local generation
+
+### Configuration
+
+In `backend\.env`:
+```env
+VIDEO_GEN_PROVIDER=ltx
+LTX_API_URL=http://127.0.0.1:8188
+```
+
+### How It Works
+
+When `VIDEO_GEN_PROVIDER=ltx`:
+1. **LTX generates base video** from script text (480p, 3-5 seconds)
+2. **FFmpeg composites** audio, subtitles, logo, music on top
+3. **Final output** is 1080x1920 vertical video
+
+### System Requirements
+
+- **8GB VRAM**: Max 480p, 3-5 seconds per clip
+- **ComfyUI**: Run with `--lowvram` flag
+- **Models**: Use distilled/FP8 variants
+
+See:
+- [LTX System Requirements](https://docs.ltx.video/open-source-model/getting-started/system-requirements)
+- [ComfyUI LTX Memory Management](https://deepwiki.com/Lightricks/ComfyUI-LTXVideo/4.3-memory-management)
+
+The Settings page will show LTX connection status.
 
 ## Compliance Notes
 
@@ -211,7 +299,7 @@ WHISPER_COMPUTE_TYPE=int8
 Delete and recreate:
 ```batch
 rmdir /s /q venv
-install.bat
+launch.bat
 ```
 
 ## Development
@@ -247,10 +335,10 @@ npm run dev
 - Recharts
 
 **AI/ML**:
-- Ollama (LLM)
-- XTTS v2 (TTS)
+- Ollama (LLM) or MCP (external LLMs)
+- XTTS v2 (TTS) or ElevenLabs (API)
 - faster-whisper (STT)
-- FFmpeg (video)
+- LTX (AI video generation) or FFmpeg (compositing)
 
 ## License
 

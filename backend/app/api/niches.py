@@ -1,6 +1,7 @@
 """
 API routes for niche management.
 """
+import json
 from typing import List
 from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException
@@ -9,6 +10,7 @@ from sqlmodel import Session, select
 from app.db import get_async_session
 from app.models import Niche, NicheCreate, NicheUpdate, NicheRead
 from app.services import topic_service
+from app.core.config import settings
 
 router = APIRouter(prefix="/niches", tags=["niches"])
 
@@ -59,6 +61,17 @@ async def create_niche(
     session.add(db_niche)
     await session.commit()
     await session.refresh(db_niche)
+
+    # Create niche folder and default topic/feed files
+    niche_dir = settings.niches_path / db_niche.name
+    niche_dir.mkdir(parents=True, exist_ok=True)
+    topics_file = niche_dir / "topics.json"
+    feeds_file = niche_dir / "feeds.json"
+    if not topics_file.exists():
+        topics_file.write_text(json.dumps({"topics": [], "used": []}, indent=2), encoding="utf-8")
+    if not feeds_file.exists():
+        feeds_file.write_text(json.dumps({"feeds": []}, indent=2), encoding="utf-8")
+
     return db_niche
 
 

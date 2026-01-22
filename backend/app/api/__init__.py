@@ -13,6 +13,7 @@ from .settings import router as settings_router
 from .models import router as models_router
 from .scripts import router as scripts_router
 from .export import router as export_router
+from .mcp import router as mcp_router
 
 api_router = APIRouter(prefix="/api")
 
@@ -26,5 +27,6 @@ api_router.include_router(settings_router)
 api_router.include_router(models_router)
 api_router.include_router(scripts_router)
 api_router.include_router(export_router)
+api_router.include_router(mcp_router)
 
 __all__ = ["api_router"]

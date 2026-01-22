@@ -21,6 +21,7 @@ class GeneratePreviewRequest(BaseModel):
     niche_id: int
     topic: Optional[str] = None
     custom_script: Optional[str] = None
+    topic_source: Optional[str] = "auto"  # auto, rss, list, llm
 
 
 class ScriptPreviewRequest(BaseModel):
@@ -31,15 +32,29 @@ class ScriptPreviewRequest(BaseModel):
 @router.post("/topic")
 async def generate_topic(
     niche_id: int,
+    source: str = "auto",
     session: Session = Depends(get_async_session)
 ):
     """Generate a topic for a niche."""
     niche = await session.get(Niche, niche_id)
     if not niche:
         raise HTTPException(status_code=404, detail="Niche not found")
-    
-    topic = await topic_service.generate_topic(niche.name, niche.description or "")
-    return {"topic": topic}
+
+    if source == "rss":
+        topic = await topic_service.generate_topic_auto(niche.name, niche.description or "")
+        return {"topic": topic, "source": "rss"}
+    if source == "list":
+        topic = topic_service.select_from_list(niche.name)
+        if not topic:
+            topic = await topic_service.generate_topic(niche.name, niche.description or "")
+            source = "llm"
+        return {"topic": topic, "source": source}
+    if source == "llm":
+        topic = await topic_service.generate_topic(niche.name, niche.description or "")
+        return {"topic": topic, "source": "llm"}
+
+    topic = await topic_service.generate_topic_auto(niche.name, niche.description or "")
+    return {"topic": topic, "source": "auto"}
 
 
 @router.post("/script")
@@ -52,13 +67,10 @@ async def generate_script_preview(
     if not niche:
         raise HTTPException(status_code=404, detail="Niche not found")
     
-    script = await script_service.generate_script(
+    script = await script_service.generate_with_niche_config(
         topic=request.topic,
-        prompt_hook=niche.prompt_hook,
-        prompt_body=niche.prompt_body,
-        prompt_cta=niche.prompt_cta,
-        target_duration=niche.max_duration_seconds,
-        style=niche.style.value
+        niche=niche,
+        target_duration=niche.max_duration_seconds
     )
     
     return {
@@ -85,7 +97,7 @@ async def generate_test_video(
     # Generate topic if not provided
     topic = request.topic
     if not topic:
-        topic = await topic_service.generate_topic(niche.name, niche.description or "")
+        topic = await topic_service.generate_topic_auto(niche.name, niche.description or "")
     
     # Create job
     job = Job(
