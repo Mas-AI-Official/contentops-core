@@ -187,7 +187,7 @@ if "%CHOICE%"=="1" (
             echo WARNING: huggingface-cli not found in PATH.
             echo Please install: pip install huggingface-hub
             pause
-            goto :end_models
+            goto :skip_download
         )
         
         echo Downloading LTX-2 models first...
@@ -217,7 +217,7 @@ if "%CHOICE%"=="1" (
         set /p CONFIRM="Continue with legacy LTX? (y/N): "
         if /i not "%CONFIRM%"=="y" (
             echo Cancelled.
-            goto :end_models
+            goto :skip_download
         )
         
         REM Check if huggingface-cli is available
@@ -226,7 +226,7 @@ if "%CHOICE%"=="1" (
             echo WARNING: huggingface-cli not found in PATH.
             echo Please install: pip install huggingface-hub
             pause
-            goto :end_models
+            goto :skip_download
         )
         
         echo Downloading legacy LTX models...
