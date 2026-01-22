@@ -1,181 +1,261 @@
 # Content Factory
 
-A local-first, end-to-end content generation system for creating and publishing short-form vertical videos across YouTube Shorts, Instagram Reels, and TikTok.
+A local-first, end-to-end content generation system for creating short-form vertical videos across multiple niches and platforms.
 
 ## Features
 
-- **Multi-Niche Support**: Create content for different niches with customized prompts
-- **AI-Powered Scripts**: Generate video scripts using local Ollama LLMs
-- **Model Management**: Download, test, and switch AI models from the UI
-- **Text-to-Speech**: Convert scripts to audio using XTTS (local) or ElevenLabs
-- **Auto Subtitles**: Generate subtitles using Whisper/faster-whisper
-- **Video Rendering**: FFmpeg-based rendering with B-roll, music, subtitles, and watermarks
-- **Platform-Specific Export**: Optimized exports for YouTube Shorts, Instagram Reels, TikTok
-- **Multi-Platform Publishing**: Official API integrations for all platforms
-- **Script Library**: All scripts saved organized by date and niche
-- **Analytics Dashboard**: Track video performance and identify winners
-- **Job Queue**: Background processing with scheduling support
+- **Multi-Niche Content Generation**: Create content for AI/Tech, Finance, Health, Travel, Comedy, and more
+- **AI-Powered Pipeline**: Script generation (Ollama), TTS (XTTS/ElevenLabs), Subtitles (Whisper)
+- **Multi-Platform Publishing**: YouTube Shorts, Instagram Reels, TikTok
+- **Per-Niche Model Selection**: Configure different AI models per content niche
+- **Local Model Management**: Download and manage Ollama models from the dashboard
+- **Script Library**: Organized script storage by date/niche with search
+- **Platform-Specific Export**: Optimized video encoding per platform requirements
+- **Modern Dashboard**: React + Tailwind UI with 10 feature pages
 
-## Requirements
+## System Requirements
 
-- Windows 10/11
-- Python 3.11+
-- Node.js 18+
-- NVIDIA GPU (optional, for faster processing)
-- FFmpeg
-- Ollama
+- **OS**: Windows 10/11
+- **GPU**: NVIDIA GPU (4060 or better recommended for local AI)
+- **Python**: 3.11.x (Required - located at `C:\Python311`)
+- **Node.js**: 18.x or later
+- **FFmpeg**: Required for video processing
 
-## Quick Start (One-Click)
+## Quick Start (One-Click Setup)
 
-### Option 1: Batch Files (Recommended)
+### Step 1: Install Dependencies
 
-**Double-click these files in order:**
+Double-click `install.bat` to:
+- Verify Python 3.11 is available
+- Create virtual environment in project root
+- Install Python packages
+- Install Node.js dependencies
+- Create initial `.env` configuration
 
-1. **`install.bat`** - First time setup (installs Python deps, Node deps)
-2. **`setup_models.bat`** - Download AI models (llama3.1:8b, llama3.2:3b)
-3. **`run.bat`** - Start everything and open browser!
-
-### Option 2: PowerShell Scripts
-
-```powershell
-cd D:\Ideas\content_factory\ops
-.\install.ps1       # Install dependencies
-.\setup_models.ps1  # Download AI models
-.\run_all.ps1       # Start all services
+```batch
+install.bat
 ```
 
-### Configure API Keys (Optional)
+### Step 2: Install Ollama
 
-Edit `backend\.env` to add your platform API keys:
+Download and install from: https://ollama.ai/download
 
-- **YouTube**: Follow [YouTube Data API setup](https://developers.google.com/youtube/v3/getting-started)
-- **Instagram**: Follow [Instagram Graph API setup](https://developers.facebook.com/docs/instagram-api/getting-started)
-- **TikTok**: Follow [TikTok Content Posting API setup](https://developers.tiktok.com/doc/content-posting-api-get-started)
+### Step 3: Setup AI Models
 
-Note: You can generate videos without API keys. Publishing will work in "export for manual upload" mode.
+Double-click `setup_models.bat` to:
+- Start Ollama service
+- Download llama3.1:8b (main model)
+- Download llama3.2:3b (fast model)
+- Seed default niches
 
-### 5. Create Your First Video
+```batch
+setup_models.bat
+```
 
-1. Open http://localhost:3000
-2. Go to **Niches** - verify default niches are loaded
-3. Go to **Generator**
-4. Select a niche, generate a topic, preview the script
-5. Click "Generate Full Video"
-6. Wait for processing (check Queue for status)
-7. Preview and approve in Library
+### Step 4: Start the System
+
+Double-click `run.bat` to:
+- Start Ollama (if not running)
+- Start backend API server
+- Start frontend development server
+- Open dashboard in browser
+
+```batch
+run.bat
+```
+
+**Dashboard**: http://localhost:3000  
+**API Docs**: http://localhost:8000/docs
 
 ## Directory Structure
 
 ```
-content_factory/
-├── run.bat               # One-click start (double-click this!)
-├── install.bat           # One-click install
-├── setup_models.bat      # Download AI models
-├── backend/
-│   ├── app/
-│   │   ├── api/          # API routes
-│   │   ├── core/         # Configuration + platform specs
-│   │   ├── db/           # Database setup
-│   │   ├── models/       # Pydantic/SQLModel models
-│   │   ├── services/     # Business logic + script storage
-│   │   ├── workers/      # Background job processing
-│   │   └── main.py       # FastAPI application
-│   ├── scripts/          # Utility scripts
-│   └── tests/
-├── frontend/             # React + Vite dashboard (10 pages!)
-├── data/
-│   ├── assets/
-│   │   ├── music/        # Background music tracks
-│   │   ├── logos/        # Watermark logos
-│   │   ├── fonts/        # Subtitle fonts
-│   │   └── stock/        # B-roll footage by niche
-│   ├── niches/           # Niche configurations
-│   ├── outputs/          # Generated videos
-│   ├── scripts/          # Saved scripts (by date/niche)
-│   ├── uploads/          # User uploads
-│   └── logs/             # Application logs
-└── ops/
-    ├── install.ps1       # PowerShell install
-    ├── setup_models.ps1
-    ├── run_all.ps1
-    └── env.example
+D:\Ideas\content_factory\
+├── backend\           # FastAPI backend
+│   ├── app\
+│   │   ├── api\       # API routes
+│   │   ├── core\      # Configuration
+│   │   ├── db\        # Database
+│   │   ├── models\    # SQLModel schemas
+│   │   ├── services\  # Business logic
+│   │   └── workers\   # Background jobs
+│   └── scripts\       # Utility scripts
+├── frontend\          # React + Tailwind
+├── data\              # Runtime data
+│   ├── assets\        # Stock media, fonts, logos
+│   ├── outputs\       # Generated videos
+│   ├── scripts\       # Saved scripts
+│   └── logs\          # Application logs
+├── models\            # Local AI model cache
+│   ├── ollama\        # Ollama models
+│   ├── whisper\       # Whisper models
+│   ├── xtts\          # TTS models
+│   └── torch\         # PyTorch cache
+├── ops\               # Operations scripts
+├── venv\              # Python virtual environment
+├── install.bat        # One-click install
+├── run.bat            # One-click start
+└── setup_models.bat   # Model download
 ```
 
-## Adding Assets
+## Local Model Storage
 
-### Stock Videos (B-Roll)
+To store Ollama models in this project folder, set the environment variable:
 
-Place stock videos in `data/assets/stock/`:
-- Organize by niche: `stock/ai_tech/`, `stock/finance_tax/`
-- Or use `stock/general/` for universal footage
-- Supported formats: MP4, MOV, AVI, MKV, WebM
+```batch
+setx OLLAMA_MODELS "D:\Ideas\content_factory\models\ollama"
+```
 
-### Background Music
+Then restart Ollama.
 
-Place music files in `data/assets/music/`:
-- Organize by mood: `music/upbeat/`, `music/calm/`
-- Or by niche: `music/ai_tech/`
-- Supported formats: MP3, WAV
+Other model caches (Whisper, PyTorch) are automatically configured to use the `models\` directory.
 
-### Logos
+## Configuration
 
-Place watermark logos in `data/assets/logos/`:
-- Use `default.png` for all videos
-- Or `{niche_name}.png` for niche-specific logos
-- Recommended: PNG with transparency, ~200px width
+Edit `backend\.env` to configure:
 
-### Fonts
+### LLM (Ollama)
+```env
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_MODEL=llama3.1:8b
+OLLAMA_FAST_MODEL=llama3.2:3b
+```
 
-Place subtitle fonts in `data/assets/fonts/`:
-- TTF or OTF format
-- First font found will be used for subtitles
+### TTS Options
+```env
+TTS_PROVIDER=xtts
+XTTS_ENABLED=true
 
-## API Documentation
+# Or use ElevenLabs
+ELEVENLABS_API_KEY=your_key
+ELEVENLABS_VOICE_ID=21m00Tcm4TlvDq8ikWAM
+```
 
-Once running, visit:
-- Swagger UI: http://localhost:8000/docs
-- ReDoc: http://localhost:8000/redoc
+### Whisper (Subtitles)
+```env
+WHISPER_MODEL=base
+WHISPER_DEVICE=cuda
+WHISPER_COMPUTE_TYPE=float16
+```
+
+### Platform APIs
+See `backend\.env` template for YouTube, Instagram, and TikTok API configuration.
+
+## Per-Niche Model Settings
+
+Each niche can override global AI settings:
+
+| Setting | Options | Description |
+|---------|---------|-------------|
+| LLM Model | Any installed Ollama model | Script generation model |
+| Temperature | 0.0 - 2.0 | Creativity level |
+| TTS Provider | xtts, elevenlabs | Voice synthesis |
+| Voice ID | ElevenLabs ID or speaker wav | Voice selection |
+| Whisper Model | tiny, base, small, medium, large | Subtitle accuracy |
+| Whisper Device | cuda, cpu | Processing device |
+
+## Dashboard Pages
+
+1. **Overview** - Today's jobs, success/fail stats, scheduled runs
+2. **Niches** - Create/edit content niches and AI settings
+3. **Accounts** - Platform connection status
+4. **Generator** - Generate test videos, preview, approve
+5. **Queue** - Job management, retry, logs
+6. **Library** - Video outputs, metadata, preview, platform compatibility
+7. **Analytics** - Performance metrics, trends, winners
+8. **Settings** - Paths, models, service status
+9. **Models** - Download/manage Ollama models
+10. **Scripts** - Browse saved scripts by date/niche
+
+## Content Pipeline
+
+1. **Topic Selection** - AI-generated or manual
+2. **Script Generation** - Ollama LLM with niche prompts
+3. **Voice Synthesis** - XTTS (local) or ElevenLabs (API)
+4. **Subtitle Generation** - Whisper/faster-whisper
+5. **Video Rendering** - FFmpeg with platform-specific encoding
+6. **Publishing** - Official APIs (YouTube, Instagram, TikTok)
 
 ## Compliance Notes
 
-This tool is designed for **legitimate content creation** only:
-
-1. **Official APIs Only**: Publishing uses official platform APIs
-2. **No Engagement Automation**: No auto-liking, auto-commenting, or follow/unfollow
-3. **Content Creation Only**: Generate, render, and publish your own content
-4. **Platform Guidelines**: You are responsible for ensuring content compliance
-
-### TikTok Important Note
-
-TikTok's Content Posting API has a **verification requirement**:
-- Unverified apps can only post videos as **PRIVATE**
-- Videos will be private/self-only until TikTok completes audit
-- Use "export for manual upload" until verified
-- Apply for verification at developers.tiktok.com
+- **Official APIs Only**: Uses YouTube Data API, Instagram Graph API, TikTok Content Posting API
+- **No Engagement Bots**: Only content creation and publishing
+- **TikTok Unverified**: Posts as private until app audit approval
+- **Rate Limiting**: Respects platform API limits
+- **Content Guidelines**: User responsible for content compliance
 
 ## Troubleshooting
 
-### Ollama not connecting
-```powershell
+### Python Version Mismatch
+Ensure Python 3.11 is at `C:\Python311`. The install script specifically uses this path.
+
+### Ollama Not Running
+```batch
 ollama serve
 ```
 
-### FFmpeg not found
-```powershell
+### FFmpeg Not Found
+Install via winget:
+```batch
 winget install Gyan.FFmpeg
-# Restart terminal after install
 ```
 
-### CUDA/GPU errors
-Set `WHISPER_DEVICE=cpu` in `.env` if no GPU available
+### GPU/CUDA Issues
+Set Whisper to CPU fallback:
+```env
+WHISPER_DEVICE=cpu
+WHISPER_COMPUTE_TYPE=int8
+```
 
-### Python module not found
-```powershell
+### Virtual Environment Issues
+Delete and recreate:
+```batch
+rmdir /s /q venv
+install.bat
+```
+
+## Development
+
+### Backend (FastAPI)
+```batch
+cd D:\Ideas\content_factory
+call venv\Scripts\activate
 cd backend
-.\venv\Scripts\Activate.ps1
-pip install -r requirements.txt
+uvicorn app.main:app --reload
 ```
+
+### Frontend (Vite + React)
+```batch
+cd D:\Ideas\content_factory\frontend
+npm run dev
+```
+
+## Tech Stack
+
+**Backend**:
+- Python 3.11
+- FastAPI
+- SQLModel (SQLite)
+- APScheduler
+- httpx (async HTTP)
+
+**Frontend**:
+- Vite
+- React 18
+- Tailwind CSS
+- Lucide Icons
+- Recharts
+
+**AI/ML**:
+- Ollama (LLM)
+- XTTS v2 (TTS)
+- faster-whisper (STT)
+- FFmpeg (video)
 
 ## License
 
-Private use only. Do not distribute.
+Private project for personal content automation.
+
+---
+
+Built for local-first content creation with privacy and control.

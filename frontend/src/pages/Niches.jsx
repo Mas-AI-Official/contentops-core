@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
-import { Plus, Edit, Trash2, Lightbulb } from 'lucide-react'
+import { Plus, Edit, Trash2, Lightbulb, Settings2 } from 'lucide-react'
 import Card from '../components/Card'
 import Button from '../components/Button'
 import Modal from '../components/Modal'
-import { getNiches, createNiche, updateNiche, deleteNiche, generateTopics } from '../api'
+import { getNiches, createNiche, updateNiche, deleteNiche, generateTopics, getModels } from '../api'
 
 const VIDEO_STYLES = [
   { value: 'narrator_broll', label: 'Narrator + B-Roll' },
@@ -13,6 +13,27 @@ const VIDEO_STYLES = [
   { value: 'slideshow', label: 'Image Slideshow' },
 ]
 
+const TTS_PROVIDERS = [
+  { value: '', label: 'Use Global Default' },
+  { value: 'xtts', label: 'XTTS (Local)' },
+  { value: 'elevenlabs', label: 'ElevenLabs' },
+]
+
+const WHISPER_MODELS = [
+  { value: '', label: 'Use Global Default' },
+  { value: 'tiny', label: 'Tiny (fastest)' },
+  { value: 'base', label: 'Base' },
+  { value: 'small', label: 'Small' },
+  { value: 'medium', label: 'Medium' },
+  { value: 'large', label: 'Large (best quality)' },
+]
+
+const WHISPER_DEVICES = [
+  { value: '', label: 'Use Global Default' },
+  { value: 'cuda', label: 'GPU (CUDA)' },
+  { value: 'cpu', label: 'CPU' },
+]
+
 export default function Niches() {
   const [niches, setNiches] = useState([])
   const [loading, setLoading] = useState(true)
@@ -20,6 +41,8 @@ export default function Niches() {
   const [editingNiche, setEditingNiche] = useState(null)
   const [topicSuggestions, setTopicSuggestions] = useState({})
   const [generatingTopics, setGeneratingTopics] = useState(null)
+  const [installedModels, setInstalledModels] = useState([])
+  const [showAdvanced, setShowAdvanced] = useState(false)
   
   const [form, setForm] = useState({
     name: '',
@@ -35,10 +58,20 @@ export default function Niches() {
     hashtags: '',
     min_duration_seconds: 30,
     max_duration_seconds: 60,
+    // Per-niche AI settings
+    llm_model: '',
+    llm_temperature: 0.7,
+    tts_provider: '',
+    voice_id: '',
+    voice_name: '',
+    whisper_model: '',
+    whisper_device: '',
+    style_preset: '',
   })
 
   useEffect(() => {
     loadNiches()
+    loadModels()
   }, [])
 
   const loadNiches = async () => {
@@ -52,12 +85,29 @@ export default function Niches() {
     }
   }
 
+  const loadModels = async () => {
+    try {
+      const res = await getModels()
+      setInstalledModels(res.data || [])
+    } catch (error) {
+      console.error('Failed to load models:', error)
+    }
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
       const data = {
         ...form,
-        hashtags: form.hashtags.split(',').map(t => t.trim()).filter(Boolean)
+        hashtags: form.hashtags.split(',').map(t => t.trim()).filter(Boolean),
+        // Convert empty strings to null for optional fields
+        llm_model: form.llm_model || null,
+        tts_provider: form.tts_provider || null,
+        voice_id: form.voice_id || null,
+        voice_name: form.voice_name || null,
+        whisper_model: form.whisper_model || null,
+        whisper_device: form.whisper_device || null,
+        style_preset: form.style_preset || null,
       }
       
       if (editingNiche) {
@@ -91,7 +141,16 @@ export default function Niches() {
       hashtags: (niche.hashtags || []).join(', '),
       min_duration_seconds: niche.min_duration_seconds,
       max_duration_seconds: niche.max_duration_seconds,
+      llm_model: niche.llm_model || '',
+      llm_temperature: niche.llm_temperature || 0.7,
+      tts_provider: niche.tts_provider || '',
+      voice_id: niche.voice_id || '',
+      voice_name: niche.voice_name || '',
+      whisper_model: niche.whisper_model || '',
+      whisper_device: niche.whisper_device || '',
+      style_preset: niche.style_preset || '',
     })
+    setShowAdvanced(Boolean(niche.llm_model || niche.tts_provider || niche.whisper_model))
     setShowModal(true)
   }
 
@@ -135,7 +194,16 @@ export default function Niches() {
       hashtags: '',
       min_duration_seconds: 30,
       max_duration_seconds: 60,
+      llm_model: '',
+      llm_temperature: 0.7,
+      tts_provider: '',
+      voice_id: '',
+      voice_name: '',
+      whisper_model: '',
+      whisper_device: '',
+      style_preset: '',
     })
+    setShowAdvanced(false)
   }
 
   if (loading) {
@@ -194,6 +262,18 @@ export default function Niches() {
                 <span className="text-gray-500">Duration</span>
                 <span className="text-gray-900">{niche.min_duration_seconds}-{niche.max_duration_seconds}s</span>
               </div>
+              {niche.llm_model && (
+                <div className="flex justify-between">
+                  <span className="text-gray-500">LLM</span>
+                  <span className="text-gray-900 text-xs">{niche.llm_model}</span>
+                </div>
+              )}
+              {niche.tts_provider && (
+                <div className="flex justify-between">
+                  <span className="text-gray-500">TTS</span>
+                  <span className="text-gray-900">{niche.tts_provider}</span>
+                </div>
+              )}
               <div className="flex gap-1 flex-wrap">
                 {niche.post_to_youtube && <span className="px-2 py-0.5 bg-red-100 text-red-700 rounded text-xs">YouTube</span>}
                 {niche.post_to_instagram && <span className="px-2 py-0.5 bg-pink-100 text-pink-700 rounded text-xs">Instagram</span>}
@@ -246,7 +326,7 @@ export default function Niches() {
         title={editingNiche ? 'Edit Niche' : 'Create Niche'}
         size="lg"
       >
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 max-h-[70vh] overflow-y-auto pr-2">
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
@@ -358,6 +438,107 @@ export default function Niches() {
             />
           </div>
 
+          {/* Advanced AI Settings Toggle */}
+          <div className="border-t pt-4">
+            <button
+              type="button"
+              onClick={() => setShowAdvanced(!showAdvanced)}
+              className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-gray-900"
+            >
+              <Settings2 className="h-4 w-4" />
+              Advanced AI Settings
+              <span className="text-xs text-gray-400">{showAdvanced ? '(hide)' : '(show)'}</span>
+            </button>
+          </div>
+
+          {showAdvanced && (
+            <div className="space-y-4 pl-4 border-l-2 border-primary-200">
+              <p className="text-xs text-gray-500">
+                Override global settings for this niche. Leave empty to use defaults.
+              </p>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">LLM Model</label>
+                  <select
+                    value={form.llm_model}
+                    onChange={(e) => setForm(prev => ({ ...prev, llm_model: e.target.value }))}
+                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm"
+                  >
+                    <option value="">Use Global Default</option>
+                    {installedModels.map(model => (
+                      <option key={model.name} value={model.name}>{model.name}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Temperature</label>
+                  <input
+                    type="number"
+                    step="0.1"
+                    min="0"
+                    max="2"
+                    value={form.llm_temperature}
+                    onChange={(e) => setForm(prev => ({ ...prev, llm_temperature: parseFloat(e.target.value) }))}
+                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">TTS Provider</label>
+                  <select
+                    value={form.tts_provider}
+                    onChange={(e) => setForm(prev => ({ ...prev, tts_provider: e.target.value }))}
+                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  >
+                    {TTS_PROVIDERS.map(p => (
+                      <option key={p.value} value={p.value}>{p.label}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Voice ID / Speaker WAV</label>
+                  <input
+                    type="text"
+                    value={form.voice_id}
+                    onChange={(e) => setForm(prev => ({ ...prev, voice_id: e.target.value }))}
+                    placeholder="ElevenLabs ID or XTTS wav path"
+                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Whisper Model</label>
+                  <select
+                    value={form.whisper_model}
+                    onChange={(e) => setForm(prev => ({ ...prev, whisper_model: e.target.value }))}
+                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  >
+                    {WHISPER_MODELS.map(m => (
+                      <option key={m.value} value={m.value}>{m.label}</option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Whisper Device</label>
+                  <select
+                    value={form.whisper_device}
+                    onChange={(e) => setForm(prev => ({ ...prev, whisper_device: e.target.value }))}
+                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  >
+                    {WHISPER_DEVICES.map(d => (
+                      <option key={d.value} value={d.value}>{d.label}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+          )}
+
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Hook Prompt</label>
             <textarea
@@ -388,7 +569,7 @@ export default function Niches() {
             />
           </div>
 
-          <div className="flex justify-end gap-3 pt-4">
+          <div className="flex justify-end gap-3 pt-4 border-t">
             <Button type="button" variant="secondary" onClick={() => { setShowModal(false); setEditingNiche(null); }}>
               Cancel
             </Button>

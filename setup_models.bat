@@ -9,36 +9,79 @@ echo.
 
 cd /d D:\Ideas\content_factory
 
-REM Check if Ollama is running
-echo [1/3] Checking Ollama...
+REM ==== Check Ollama ====
+echo [1/4] Checking Ollama service...
 curl -s http://localhost:11434/api/tags >nul 2>&1
 if %errorlevel% neq 0 (
     echo Starting Ollama...
     start /min "" ollama serve
     timeout /t 5 /nobreak >nul
+    
+    curl -s http://localhost:11434/api/tags >nul 2>&1
+    if %errorlevel% neq 0 (
+        echo ERROR: Ollama is not running and could not be started.
+        echo Please install Ollama from: https://ollama.ai/download
+        pause
+        exit /b 1
+    )
 )
-echo Ollama is ready
+echo Ollama is running.
 echo.
 
-REM Pull models
-echo [2/3] Downloading AI models...
-echo This may take a while depending on your internet speed.
+REM ==== Optional: Set Ollama Models Path ====
+echo TIP: To store Ollama models in this project folder, run:
+echo   setx OLLAMA_MODELS "D:\Ideas\content_factory\models\ollama"
+echo   Then restart Ollama.
 echo.
 
-echo Pulling llama3.1:8b (main model, ~4.7GB)...
+REM ==== Pull Main Model ====
+echo [2/4] Pulling main LLM model (llama3.1:8b)...
+echo This may take a few minutes depending on your connection...
 ollama pull llama3.1:8b
+if %errorlevel% neq 0 (
+    echo WARNING: Failed to pull llama3.1:8b
+    echo You can try manually: ollama pull llama3.1:8b
+)
 echo.
 
-echo Pulling llama3.2:3b (fast model, ~2GB)...
+REM ==== Pull Fast Model ====
+echo [3/4] Pulling fast LLM model (llama3.2:3b)...
 ollama pull llama3.2:3b
+if %errorlevel% neq 0 (
+    echo WARNING: Failed to pull llama3.2:3b
+    echo You can try manually: ollama pull llama3.2:3b
+)
 echo.
 
-REM Seed database with niches
-echo [3/3] Setting up default niches...
-cd backend
+REM ==== Seed Database with Default Niches ====
+echo [4/4] Seeding database with default niches...
+if not exist venv (
+    echo ERROR: Virtual environment not found. Run install.bat first.
+    pause
+    exit /b 1
+)
+
 call venv\Scripts\activate.bat
+
+REM Set environment variables for model caching
+set HF_HOME=D:\Ideas\content_factory\models\whisper\hf
+set TORCH_HOME=D:\Ideas\content_factory\models\torch
+
+cd backend
 python scripts\seed_niches.py
+if %errorlevel% neq 0 (
+    echo WARNING: Failed to seed niches.
+    echo Database may need to be created first. Try running the app once.
+)
 cd ..
+echo.
+
+REM ==== List Installed Models ====
+echo.
+echo ========================================
+echo   Installed Ollama Models:
+echo ========================================
+ollama list
 echo.
 
 echo ========================================
@@ -46,9 +89,14 @@ echo   Model Setup Complete!
 echo ========================================
 echo.
 echo Installed models:
-echo   - llama3.1:8b (main model for scripts)
-echo   - llama3.2:3b (fast model for topics)
+echo   - llama3.1:8b (main content generation)
+echo   - llama3.2:3b (fast topic generation)
 echo.
-echo You can now run: run.bat
+echo You can download additional models:
+echo   ollama pull mistral:7b
+echo   ollama pull gemma2:9b
+echo   ollama pull phi3:mini
+echo.
+echo Or use the Models page in the dashboard.
 echo.
 pause

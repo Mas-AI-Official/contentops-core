@@ -20,11 +20,19 @@ wheels/
 .installed.cfg
 *.egg
 
-# Virtual environment
-venv/
-ENV/
-env/
-.venv/
+# Virtual environment (any subfolder)
+**/venv/
+**/.venv/
+**/ENV/
+**/env/
+
+# Models folder contents (large files, download locally)
+models/ollama/*
+models/whisper/*
+models/xtts/*
+models/image/*
+models/torch/*
+!models/**/.gitkeep
 
 # Environment variables
 .env

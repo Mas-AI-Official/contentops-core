@@ -1,5 +1,6 @@
 """
 Script service - generates video scripts using Ollama LLM.
+Supports per-niche model configuration.
 """
 import httpx
 from typing import Optional
@@ -32,9 +33,25 @@ class ScriptService:
         prompt_body: str,
         prompt_cta: str,
         target_duration: int = 60,
-        style: str = "narrator_broll"
+        style: str = "narrator_broll",
+        model: Optional[str] = None,
+        temperature: float = 0.7
     ) -> VideoScript:
-        """Generate a complete video script."""
+        """
+        Generate a complete video script.
+        
+        Args:
+            topic: The topic to generate content about
+            prompt_hook: Template for the hook section
+            prompt_body: Template for the body section
+            prompt_cta: Template for the CTA section
+            target_duration: Target video duration in seconds
+            style: Video style (narrator_broll, stick_caption, etc.)
+            model: Ollama model to use (defaults to global setting)
+            temperature: LLM temperature (0.0-2.0)
+        """
+        # Use provided model or fall back to global default
+        llm_model = model or settings.ollama_model
         
         # Format prompts with topic
         hook_prompt = prompt_hook.format(topic=topic)
@@ -42,9 +59,9 @@ class ScriptService:
         cta_prompt = prompt_cta.format(topic=topic)
         
         # Generate each section
-        hook = await self._generate_section(hook_prompt, "hook", 5)
-        body = await self._generate_section(body_prompt, "body", target_duration - 15)
-        cta = await self._generate_section(cta_prompt, "cta", 10)
+        hook = await self._generate_section(hook_prompt, "hook", 5, llm_model, temperature)
+        body = await self._generate_section(body_prompt, "body", target_duration - 15, llm_model, temperature)
+        cta = await self._generate_section(cta_prompt, "cta", 10, llm_model, temperature)
         
         # Combine into full script
         full_script = f"{hook}\n\n{body}\n\n{cta}"
@@ -65,7 +82,9 @@ class ScriptService:
         self, 
         prompt: str, 
         section_type: str,
-        target_seconds: int
+        target_seconds: int,
+        model: str,
+        temperature: float = 0.7
     ) -> str:
         """Generate a single section of the script."""
         
@@ -88,9 +107,12 @@ Script:"""
                 response = await client.post(
                     self.ollama_url,
                     json={
-                        "model": settings.ollama_model,
+                        "model": model,
                         "prompt": full_prompt,
-                        "stream": False
+                        "stream": False,
+                        "options": {
+                            "temperature": temperature
+                        }
                     }
                 )
                 response.raise_for_status()
@@ -100,11 +122,11 @@ Script:"""
                 # Clean up the response
                 text = self._clean_script(text)
                 
-                logger.info(f"Generated {section_type}: {len(text)} chars, ~{len(text.split())} words")
+                logger.info(f"Generated {section_type} using {model}: {len(text)} chars, ~{len(text.split())} words")
                 return text
                 
         except Exception as e:
-            logger.error(f"Failed to generate {section_type}: {e}")
+            logger.error(f"Failed to generate {section_type} with {model}: {e}")
             raise
     
     def _clean_script(self, text: str) -> str:
@@ -128,8 +150,16 @@ Script:"""
         
         return text.strip()
     
-    async def improve_script(self, script: str, feedback: str) -> str:
+    async def improve_script(
+        self, 
+        script: str, 
+        feedback: str,
+        model: Optional[str] = None,
+        temperature: float = 0.7
+    ) -> str:
         """Improve a script based on feedback."""
+        llm_model = model or settings.ollama_model
+        
         prompt = f"""You are a video script editor.
 
 Original script:
@@ -148,9 +178,12 @@ Improved script:"""
                 response = await client.post(
                     self.ollama_url,
                     json={
-                        "model": settings.ollama_model,
+                        "model": llm_model,
                         "prompt": prompt,
-                        "stream": False
+                        "stream": False,
+                        "options": {
+                            "temperature": temperature
+                        }
                     }
                 )
                 response.raise_for_status()
@@ -158,8 +191,39 @@ Improved script:"""
                 return self._clean_script(data.get("response", "").strip())
                 
         except Exception as e:
-            logger.error(f"Failed to improve script: {e}")
+            logger.error(f"Failed to improve script with {llm_model}: {e}")
             raise
+    
+    async def generate_with_niche_config(
+        self,
+        topic: str,
+        niche,
+        target_duration: Optional[int] = None
+    ) -> VideoScript:
+        """
+        Generate a script using niche-specific configuration.
+        
+        Args:
+            topic: The topic to generate content about
+            niche: Niche object with configuration
+            target_duration: Override for target duration
+        """
+        from app.models.niche import NicheModelConfig
+        
+        config = NicheModelConfig.from_niche(niche, settings)
+        
+        duration = target_duration or niche.max_duration_seconds
+        
+        return await self.generate_script(
+            topic=topic,
+            prompt_hook=niche.prompt_hook,
+            prompt_body=niche.prompt_body,
+            prompt_cta=niche.prompt_cta,
+            target_duration=duration,
+            style=niche.style,
+            model=config.llm_model,
+            temperature=config.llm_temperature
+        )
 
 
 script_service = ScriptService()

@@ -1,5 +1,6 @@
 """
 Subtitle service - generates subtitles using Whisper/faster-whisper.
+Supports per-niche model configuration.
 """
 import subprocess
 from pathlib import Path
@@ -22,34 +23,75 @@ class SubtitleService:
     """Service for generating and processing subtitles."""
     
     def __init__(self):
-        self.model_size = settings.whisper_model
-        self.device = settings.whisper_device
-        self._model = None
+        self.default_model_size = settings.whisper_model
+        self.default_device = settings.whisper_device
+        self.default_compute_type = settings.whisper_compute_type
+        self._models = {}  # Cache models by (size, device) tuple
     
-    def _get_model(self):
-        """Lazy load the whisper model."""
-        if self._model is None:
+    def _get_model(
+        self, 
+        model_size: Optional[str] = None, 
+        device: Optional[str] = None,
+        compute_type: Optional[str] = None
+    ):
+        """
+        Lazy load the whisper model with caching.
+        
+        Args:
+            model_size: Whisper model size (tiny, base, small, medium, large)
+            device: Device to use (cuda, cpu)
+            compute_type: Compute type (float16, int8, float32)
+        """
+        size = model_size or self.default_model_size
+        dev = device or self.default_device
+        comp = compute_type or (self.default_compute_type if dev == "cuda" else "int8")
+        
+        cache_key = (size, dev, comp)
+        
+        if cache_key not in self._models:
             try:
                 from faster_whisper import WhisperModel
-                self._model = WhisperModel(
-                    self.model_size,
-                    device=self.device,
-                    compute_type="float16" if self.device == "cuda" else "int8"
+                
+                # Use local cache path if set
+                download_root = str(settings.whisper_cache_path) if settings.whisper_cache_path.exists() else None
+                
+                self._models[cache_key] = WhisperModel(
+                    size,
+                    device=dev,
+                    compute_type=comp,
+                    download_root=download_root
                 )
-                logger.info(f"Loaded faster-whisper model: {self.model_size}")
+                logger.info(f"Loaded faster-whisper model: {size} on {dev} ({comp})")
             except Exception as e:
-                logger.error(f"Failed to load whisper model: {e}")
+                logger.error(f"Failed to load whisper model {size}: {e}")
+                
+                # Try CPU fallback if CUDA fails
+                if dev == "cuda":
+                    logger.info("Trying CPU fallback...")
+                    return self._get_model(size, "cpu", "int8")
                 raise
-        return self._model
-    
-    def transcribe(self, audio_path: Path) -> List[SubtitleSegment]:
-        """Transcribe audio file to subtitle segments."""
         
+        return self._models[cache_key]
+    
+    def transcribe(
+        self, 
+        audio_path: Path,
+        model_size: Optional[str] = None,
+        device: Optional[str] = None
+    ) -> List[SubtitleSegment]:
+        """
+        Transcribe audio file to subtitle segments.
+        
+        Args:
+            audio_path: Path to audio file
+            model_size: Whisper model size (overrides default)
+            device: Device to use (overrides default)
+        """
         audio_path = Path(audio_path)
         if not audio_path.exists():
             raise FileNotFoundError(f"Audio file not found: {audio_path}")
         
-        model = self._get_model()
+        model = self._get_model(model_size, device)
         
         try:
             segments, info = model.transcribe(
@@ -78,11 +120,13 @@ class SubtitleService:
         self,
         audio_path: Path,
         output_path: Path,
-        max_chars_per_line: int = 40
+        max_chars_per_line: int = 40,
+        model_size: Optional[str] = None,
+        device: Optional[str] = None
     ) -> Path:
         """Generate SRT subtitle file from audio."""
         
-        segments = self.transcribe(audio_path)
+        segments = self.transcribe(audio_path, model_size, device)
         
         output_path = Path(output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -102,6 +146,26 @@ class SubtitleService:
         
         logger.info(f"Generated SRT file: {output_path}")
         return output_path
+    
+    def generate_srt_with_niche_config(
+        self,
+        audio_path: Path,
+        output_path: Path,
+        niche,
+        max_chars_per_line: int = 40
+    ) -> Path:
+        """Generate SRT using niche-specific Whisper configuration."""
+        from app.models.niche import NicheModelConfig
+        
+        config = NicheModelConfig.from_niche(niche, settings)
+        
+        return self.generate_srt(
+            audio_path=audio_path,
+            output_path=output_path,
+            max_chars_per_line=max_chars_per_line,
+            model_size=config.whisper_model,
+            device=config.whisper_device
+        )
     
     def _format_srt_time(self, seconds: float) -> str:
         """Format seconds to SRT time format (HH:MM:SS,mmm)."""
@@ -137,11 +201,13 @@ class SubtitleService:
         self,
         audio_path: Path,
         output_path: Path,
-        style: str = "default"
+        style: str = "default",
+        model_size: Optional[str] = None,
+        device: Optional[str] = None
     ) -> Path:
         """Generate ASS subtitle file with styling."""
         
-        segments = self.transcribe(audio_path)
+        segments = self.transcribe(audio_path, model_size, device)
         
         output_path = Path(output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)

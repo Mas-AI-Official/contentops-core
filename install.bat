@@ -9,47 +9,81 @@ echo.
 
 cd /d D:\Ideas\content_factory
 
-REM Check Python
-echo [1/5] Checking Python...
-python --version >nul 2>&1
-if %errorlevel% neq 0 (
-    echo ERROR: Python not found. Please install Python 3.11+
-    echo Download from: https://www.python.org/downloads/
+REM ==== Python 3.11 Check ====
+echo [1/6] Checking Python 3.11...
+set PYTHON_PATH=C:\Python311\python.exe
+
+if exist "%PYTHON_PATH%" (
+    echo Found Python 3.11 at %PYTHON_PATH%
+    "%PYTHON_PATH%" --version
+) else (
+    echo WARNING: Python 3.11 not found at C:\Python311
+    echo.
+    echo Please install Python 3.11:
+    echo   Option 1: winget install Python.Python.3.11
+    echo   Option 2: https://www.python.org/downloads/release/python-3119/
+    echo.
+    echo After installing, ensure it's at C:\Python311 or update PYTHON_PATH in this script.
     pause
     exit /b 1
 )
+echo.
+
+REM ==== Create Virtual Environment in Project Root ====
+echo [2/6] Setting up Python virtual environment...
+if exist venv (
+    echo Virtual environment already exists.
+    echo To recreate, delete the 'venv' folder and run this script again.
+) else (
+    echo Creating virtual environment with Python 3.11...
+    "%PYTHON_PATH%" -m venv venv
+    if %errorlevel% neq 0 (
+        echo ERROR: Failed to create virtual environment
+        pause
+        exit /b 1
+    )
+    echo Virtual environment created successfully.
+)
+echo.
+
+REM ==== Install Python Dependencies ====
+echo [3/6] Installing Python dependencies...
+call venv\Scripts\activate.bat
 python --version
 echo.
 
-REM Create venv and install Python deps
-echo [2/5] Setting up Python environment...
-cd backend
-if not exist venv (
-    python -m venv venv
-    echo Created virtual environment
+REM Upgrade pip first
+python -m pip install --upgrade pip
+
+REM Install requirements from backend folder
+pip install -r backend\requirements.txt
+if %errorlevel% neq 0 (
+    echo ERROR: Failed to install Python dependencies
+    pause
+    exit /b 1
 )
-call venv\Scripts\activate.bat
-pip install --upgrade pip
-pip install -r requirements.txt
-echo Python dependencies installed
-cd ..
+echo Python dependencies installed successfully.
 echo.
 
-REM Check FFmpeg
-echo [3/5] Checking FFmpeg...
+REM ==== Check FFmpeg ====
+echo [4/6] Checking FFmpeg...
 where ffmpeg >nul 2>&1
 if %errorlevel% neq 0 (
-    echo FFmpeg not found. Please install FFmpeg:
+    echo.
+    echo WARNING: FFmpeg not found in PATH.
+    echo Please install FFmpeg:
     echo   Option 1: winget install Gyan.FFmpeg
-    echo   Option 2: https://ffmpeg.org/download.html
+    echo   Option 2: Download from https://ffmpeg.org/download.html
+    echo   Then add to PATH or set FFMPEG_PATH in .env
     echo.
 ) else (
-    echo FFmpeg found
+    echo FFmpeg found:
+    ffmpeg -version | findstr "ffmpeg version"
 )
 echo.
 
-REM Check Node.js
-echo [4/5] Checking Node.js...
+REM ==== Check Node.js ====
+echo [5/6] Checking Node.js...
 node --version >nul 2>&1
 if %errorlevel% neq 0 (
     echo ERROR: Node.js not found. Please install Node.js 18+
@@ -57,36 +91,64 @@ if %errorlevel% neq 0 (
     pause
     exit /b 1
 )
+echo Node.js found:
 node --version
+echo.
 
-REM Install frontend deps
+REM Install frontend dependencies
 echo Installing frontend dependencies...
 cd frontend
 call npm install
+if %errorlevel% neq 0 (
+    echo ERROR: Failed to install frontend dependencies
+    cd ..
+    pause
+    exit /b 1
+)
 cd ..
+echo Frontend dependencies installed successfully.
 echo.
 
-REM Create .env
-echo [5/5] Setting up configuration...
+REM ==== Setup Configuration ====
+echo [6/6] Setting up configuration...
 if not exist backend\.env (
     copy ops\env.example backend\.env
-    echo Created backend\.env from template
-    echo Please edit backend\.env to add your API keys
+    echo Created backend\.env from template.
+    echo.
+    echo IMPORTANT: Edit backend\.env to configure:
+    echo   - API keys (ElevenLabs, YouTube, Instagram, TikTok)
+    echo   - Model paths and settings
 ) else (
-    echo backend\.env already exists
+    echo backend\.env already exists.
 )
+echo.
+
+REM ==== Create models directory structure ====
+echo Setting up models directory...
+if not exist models\ollama mkdir models\ollama
+if not exist models\whisper mkdir models\whisper
+if not exist models\xtts mkdir models\xtts
+if not exist models\image mkdir models\image
+if not exist models\torch mkdir models\torch
+echo Models directory ready.
 echo.
 
 echo ========================================
 echo   Installation Complete!
 echo ========================================
 echo.
+echo Python Version: 3.11 (from C:\Python311)
+echo Virtual Env: D:\Ideas\content_factory\venv
+echo.
 echo Next steps:
 echo   1. Install Ollama from https://ollama.ai/download
-echo   2. Run: ollama serve
-echo   3. Run: setup_models.bat (to download AI models)
-echo   4. Edit backend\.env with your settings
-echo   5. Run: run.bat (to start everything)
+echo   2. Run: setup_models.bat (to download AI models)
+echo   3. Edit backend\.env with your API keys
+echo   4. Run: run.bat (to start everything)
+echo.
+echo TIP: To use local model storage, set this environment variable:
+echo   setx OLLAMA_MODELS "D:\Ideas\content_factory\models\ollama"
+echo   Then restart Ollama.
 echo.
 echo Dashboard will be at: http://localhost:3000
 echo.
