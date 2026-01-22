@@ -55,14 +55,25 @@ echo.
 REM Upgrade pip first
 python -m pip install --upgrade pip
 
-REM Install requirements from backend folder
+REM Install packages that might need pre-built wheels first
+echo Installing packages with pre-built wheels...
+pip install --only-binary :all: av 2>nul
+if %errorlevel% neq 0 (
+    echo Note: av package not available as wheel, skipping ^(optional^)
+)
+
+REM Install main requirements
+echo.
+echo Installing main requirements...
 pip install -r backend\requirements.txt
 if %errorlevel% neq 0 (
-    echo ERROR: Failed to install Python dependencies
-    pause
-    exit /b 1
+    echo.
+    echo WARNING: Some packages failed to install.
+    echo Trying to continue with essential packages...
+    echo.
+    pip install fastapi uvicorn sqlmodel aiosqlite apscheduler httpx pydantic pydantic-settings faster-whisper loguru Pillow
 )
-echo Python dependencies installed successfully.
+echo Python dependencies installed.
 echo.
 
 REM ==== Check FFmpeg ====
@@ -78,7 +89,7 @@ if %errorlevel% neq 0 (
     echo.
 ) else (
     echo FFmpeg found:
-    ffmpeg -version | findstr "ffmpeg version"
+    ffmpeg -version 2>&1 | findstr "ffmpeg version"
 )
 echo.
 
