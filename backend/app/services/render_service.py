@@ -91,6 +91,7 @@ class RenderService:
                 await ltx_service.generate_video_from_text(
                     text=script_text,
                     output_path=ltx_output,
+                    prompt=None,  # Use text as prompt
                     width=854,  # 480p for 8GB VRAM
                     height=480,
                     duration_seconds=ltx_duration,

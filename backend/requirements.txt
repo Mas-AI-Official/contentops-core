@@ -28,6 +28,8 @@ faster-whisper>=0.10.0
 pysrt>=1.1.2
 pydub>=0.25.1
 Pillow>=10.2.0
+imageio>=2.31.0  # For LTX video saving
+imageio-ffmpeg>=0.4.9  # FFmpeg backend for imageio
 
 # Utilities
 python-dotenv>=1.0.0

@@ -132,39 +132,79 @@ if "%CHOICE%"=="1" (
         where huggingface-cli >nul 2>&1
         if %errorlevel% neq 0 (
             echo WARNING: huggingface-cli not found in PATH.
-            echo Please install: pip install huggingface-hub
-            echo.
-            echo Manual download instructions:
-            echo 1. Visit: https://huggingface.co/Lightricks/ltx-2
-            echo 2. Download these files to: %MODELS_DIR%
-            echo    - ltx-2-19b-distilled-fp8.safetensors
-            echo    - ltx-2-spatial-upscaler-x2-1.0.safetensors
-            echo    - ltx-2-19b-distilled-lora-384.safetensors
-            echo.
-            pause
-            goto :skip_download
+            echo Installing huggingface-hub...
+            cd /d %ROOT%
+            if exist "venv\Scripts\activate.bat" (
+                call venv\Scripts\activate.bat
+                pip install huggingface-hub --quiet
+                if %errorlevel% neq 0 (
+                    echo ERROR: Failed to install huggingface-hub.
+                    echo Please install manually: pip install huggingface-hub
+                    pause
+                    goto :skip_download
+                )
+            ) else (
+                echo ERROR: Virtual environment not found.
+                echo Please run launch.bat first to set up the environment.
+                echo.
+                echo Manual download instructions:
+                echo 1. Visit: https://huggingface.co/Lightricks/ltx-2
+                echo 2. Download these files to: %MODELS_DIR%
+                echo    - ltx-2-19b-distilled-fp8.safetensors
+                echo    - ltx-2-spatial-upscaler-x2-1.0.safetensors
+                echo    - ltx-2-19b-distilled-lora-384.safetensors
+                echo.
+                pause
+                goto :skip_download
+            )
         )
         
         echo Starting download (this may take a while, models are large)...
+        echo Models will be saved to: %MODELS_DIR%
         echo.
         
+        REM Check if user is logged in to HuggingFace
+        huggingface-cli whoami >nul 2>&1
+        if %errorlevel% neq 0 (
+            echo You are not logged in to HuggingFace.
+            echo Some models may require authentication.
+            echo To login, run: huggingface-cli login
+            echo.
+            set /p LOGIN_NOW="Login now? (y/N): "
+            if /i "%LOGIN_NOW%"=="y" (
+                huggingface-cli login
+            )
+        )
+        
         REM Download LTX-2 models (specific files for 8GB VRAM)
+        echo.
+        echo [1/3] Downloading main model (ltx-2-19b-distilled-fp8.safetensors)...
         huggingface-cli download Lightricks/ltx-2 --include "ltx-2-19b-distilled-fp8.safetensors" --local-dir %MODELS_DIR%
         if %errorlevel% neq 0 (
             echo ERROR: Failed to download main model.
             echo You may need to login: huggingface-cli login
+            echo Or download manually from: https://huggingface.co/Lightricks/ltx-2
             pause
             goto :skip_download
         )
+        echo [OK] Main model downloaded.
         
+        echo.
+        echo [2/3] Downloading upscaler (ltx-2-spatial-upscaler-x2-1.0.safetensors)...
         huggingface-cli download Lightricks/ltx-2 --include "ltx-2-spatial-upscaler-x2-1.0.safetensors" --local-dir %MODELS_DIR%
         if %errorlevel% neq 0 (
             echo WARNING: Failed to download upscaler. Continuing...
+        ) else (
+            echo [OK] Upscaler downloaded.
         )
         
+        echo.
+        echo [3/3] Downloading LoRA (ltx-2-19b-distilled-lora-384.safetensors)...
         huggingface-cli download Lightricks/ltx-2 --include "ltx-2-19b-distilled-lora-384.safetensors" --local-dir %MODELS_DIR%
         if %errorlevel% neq 0 (
             echo WARNING: Failed to download LoRA. Continuing...
+        ) else (
+            echo [OK] LoRA downloaded.
         )
         
         echo.

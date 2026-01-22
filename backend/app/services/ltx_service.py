@@ -66,8 +66,8 @@ class LTXService:
     async def generate_video_from_text(
         self,
         text: str,
-        prompt: Optional[str] = None,
         output_path: Path,
+        prompt: Optional[str] = None,
         width: int = 854,
         height: int = 480,
         duration_seconds: int = 5,
@@ -437,8 +437,8 @@ class LTXService:
     async def generate_video_from_image(
         self,
         image_path: Path,
-        prompt: Optional[str] = None,
         output_path: Path,
+        prompt: Optional[str] = None,
         width: int = 854,
         height: int = 480,
         duration_seconds: int = 5
