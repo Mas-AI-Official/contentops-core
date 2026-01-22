@@ -1,0 +1,5 @@
+# Generated scripts are stored here organized by:
+# {niche}/{date}/{time}_{job_id}_{topic}/
+#   - script.json (structured data)
+#   - script.txt (human-readable)
+#   - metadata.json (prompts used, settings)
