@@ -31,12 +31,25 @@ echo.
 
 REM ==== Create Virtual Environment in Project Root ====
 echo [2/6] Setting up Python virtual environment...
-if exist venv (
-    echo Virtual environment already exists.
-    echo To recreate, delete the 'venv' folder and run this script again.
+if exist "D:\Ideas\content_factory\venv" (
+    if exist "D:\Ideas\content_factory\venv\Scripts\activate.bat" (
+        echo Virtual environment already exists and appears complete.
+    ) else (
+        echo WARNING: Virtual environment exists but is incomplete.
+        echo Deleting broken venv and recreating...
+        rmdir /s /q "D:\Ideas\content_factory\venv"
+        echo Creating virtual environment with Python 3.11...
+        "%PYTHON_PATH%" -m venv "D:\Ideas\content_factory\venv"
+        if %errorlevel% neq 0 (
+            echo ERROR: Failed to create virtual environment
+            pause
+            exit /b 1
+        )
+        echo Virtual environment created successfully.
+    )
 ) else (
     echo Creating virtual environment with Python 3.11...
-    "%PYTHON_PATH%" -m venv venv
+    "%PYTHON_PATH%" -m venv "D:\Ideas\content_factory\venv"
     if %errorlevel% neq 0 (
         echo ERROR: Failed to create virtual environment
         pause
@@ -44,20 +57,38 @@ if exist venv (
     )
     echo Virtual environment created successfully.
 )
+
+REM Verify venv is complete
+if not exist "D:\Ideas\content_factory\venv\Scripts\activate.bat" (
+    echo ERROR: Virtual environment creation failed - activate.bat not found.
+    echo Please check Python installation and try again.
+    pause
+    exit /b 1
+)
 echo.
 
 REM ==== Install Python Dependencies ====
 echo [3/6] Installing Python dependencies...
-call venv\Scripts\activate.bat
-python --version
+set VENV_PYTHON=D:\Ideas\content_factory\venv\Scripts\python.exe
+set VENV_PIP=D:\Ideas\content_factory\venv\Scripts\pip.exe
+
+REM Verify venv Python exists
+if not exist "%VENV_PYTHON%" (
+    echo ERROR: Virtual environment Python not found at %VENV_PYTHON%
+    echo The venv may be corrupted. Please delete it and run install.bat again.
+    pause
+    exit /b 1
+)
+
+"%VENV_PYTHON%" --version
 echo.
 
 REM Upgrade pip first
-python -m pip install --upgrade pip
+"%VENV_PYTHON%" -m pip install --upgrade pip
 
 REM Install packages that might need pre-built wheels first
 echo Installing packages with pre-built wheels...
-pip install --only-binary :all: av 2>nul
+"%VENV_PIP%" install --only-binary :all: av 2>nul
 if %errorlevel% neq 0 (
     echo Note: av package not available as wheel, skipping ^(optional^)
 )
@@ -65,13 +96,13 @@ if %errorlevel% neq 0 (
 REM Install main requirements
 echo.
 echo Installing main requirements...
-pip install -r backend\requirements.txt
+"%VENV_PIP%" install -r backend\requirements.txt
 if %errorlevel% neq 0 (
     echo.
     echo WARNING: Some packages failed to install.
     echo Trying to continue with essential packages...
     echo.
-    pip install fastapi uvicorn sqlmodel aiosqlite apscheduler httpx pydantic pydantic-settings faster-whisper loguru Pillow
+    "%VENV_PIP%" install fastapi uvicorn sqlmodel aiosqlite apscheduler httpx pydantic pydantic-settings faster-whisper loguru Pillow
 )
 echo Python dependencies installed.
 echo.
