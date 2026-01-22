@@ -11,15 +11,22 @@ cd /d D:\Ideas\content_factory
 
 REM ==== Python Version Check ====
 echo Checking Python environment...
-if not exist venv (
-    echo ERROR: Virtual environment not found.
+if not exist "D:\Ideas\content_factory\venv" (
+    echo ERROR: Virtual environment not found at D:\Ideas\content_factory\venv
     echo Please run install.bat first.
     pause
     exit /b 1
 )
 
+if not exist "D:\Ideas\content_factory\venv\Scripts\activate.bat" (
+    echo ERROR: Virtual environment activation script not found.
+    echo Please run install.bat to recreate the environment.
+    pause
+    exit /b 1
+)
+
 REM Activate venv and check Python version
-call venv\Scripts\activate.bat
+call "D:\Ideas\content_factory\venv\Scripts\activate.bat"
 for /f "tokens=2" %%v in ('python --version 2^>^&1') do set PYVER=%%v
 echo Python version: %PYVER%
 
@@ -65,7 +72,7 @@ set XDG_CACHE_HOME=D:\Ideas\content_factory\models\cache
 
 REM ==== Start Backend ====
 echo [2/4] Starting Backend API...
-start "Content Factory - Backend" cmd /k "cd /d D:\Ideas\content_factory && call venv\Scripts\activate && set HF_HOME=%HF_HOME% && set TORCH_HOME=%TORCH_HOME% && cd backend && python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload"
+start "Content Factory - Backend" cmd /k "cd /d D:\Ideas\content_factory && call D:\Ideas\content_factory\venv\Scripts\activate.bat && set HF_HOME=%HF_HOME% && set TORCH_HOME=%TORCH_HOME% && set XDG_CACHE_HOME=%XDG_CACHE_HOME% && cd backend && python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload"
 
 REM Wait for backend
 echo Waiting for backend to start...
