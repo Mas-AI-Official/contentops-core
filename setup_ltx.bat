@@ -96,23 +96,173 @@ if "%CHOICE%"=="1" (
     
 ) else if "%CHOICE%"=="3" (
     echo.
-    echo Downloading LTX-2 models...
+    echo ========================================
+    echo   Model Download Options
+    echo ========================================
     echo.
-    echo Models will be downloaded to: %MODELS_DIR%
+    echo LTX-2 (NEW, RECOMMENDED):
+    echo - Official DiT-based audio-video model
+    echo - Synchronized audio/video, high fidelity
+    echo - Multiple performance modes (DistilledPipeline fastest)
+    echo - Production-ready outputs
     echo.
-    echo For 8GB VRAM (RTX 4060), download:
-    echo - ltx-2-19b-distilled-fp8.safetensors (RECOMMENDED)
-    echo - ltx-2-spatial-upscaler-x2-1.0.safetensors (required)
-    echo - ltx-2-19b-distilled-lora-384.safetensors (required)
+    echo LTX Video Distilled (OLD, Legacy):
+    echo - Older model, still functional
+    echo - Simpler but less capable
     echo.
-    echo Download from:
-    echo https://huggingface.co/Lightricks/ltx-2
+    echo Which models to download?
+    echo 1. LTX-2 only (RECOMMENDED for RTX 4060)
+    echo 2. Both LTX-2 and legacy LTX (for compatibility)
+    echo 3. Legacy LTX only (not recommended)
+    echo 4. Show download commands only (manual)
     echo.
-    echo Or use huggingface-cli:
-    echo huggingface-cli download Lightricks/ltx-2 --local-dir %MODELS_DIR%
-    echo.
-    echo NOTE: Models are LARGE (several GB). Use distilled FP8 for 8GB VRAM.
-    echo.
+    set /p MODEL_CHOICE="Choose option (1-4): "
+    
+    if "%MODEL_CHOICE%"=="1" (
+        echo.
+        echo Downloading LTX-2 models (RECOMMENDED)...
+        echo.
+        echo For 8GB VRAM (RTX 4060), downloading:
+        echo - ltx-2-19b-distilled-fp8.safetensors (main model)
+        echo - ltx-2-spatial-upscaler-x2-1.0.safetensors (upscaler)
+        echo - ltx-2-19b-distilled-lora-384.safetensors (LoRA)
+        echo.
+        
+        REM Check if huggingface-cli is available
+        where huggingface-cli >nul 2>&1
+        if %errorlevel% neq 0 (
+            echo WARNING: huggingface-cli not found in PATH.
+            echo Please install: pip install huggingface-hub
+            echo.
+            echo Manual download instructions:
+            echo 1. Visit: https://huggingface.co/Lightricks/ltx-2
+            echo 2. Download these files to: %MODELS_DIR%
+            echo    - ltx-2-19b-distilled-fp8.safetensors
+            echo    - ltx-2-spatial-upscaler-x2-1.0.safetensors
+            echo    - ltx-2-19b-distilled-lora-384.safetensors
+            echo.
+            pause
+            goto :end_models
+        )
+        
+        echo Starting download (this may take a while, models are large)...
+        echo.
+        
+        REM Download LTX-2 models (specific files for 8GB VRAM)
+        huggingface-cli download Lightricks/ltx-2 --include "ltx-2-19b-distilled-fp8.safetensors" --local-dir %MODELS_DIR%
+        if %errorlevel% neq 0 (
+            echo ERROR: Failed to download main model.
+            echo You may need to login: huggingface-cli login
+            pause
+            goto :end_models
+        )
+        
+        huggingface-cli download Lightricks/ltx-2 --include "ltx-2-spatial-upscaler-x2-1.0.safetensors" --local-dir %MODELS_DIR%
+        if %errorlevel% neq 0 (
+            echo WARNING: Failed to download upscaler. Continuing...
+        )
+        
+        huggingface-cli download Lightricks/ltx-2 --include "ltx-2-19b-distilled-lora-384.safetensors" --local-dir %MODELS_DIR%
+        if %errorlevel% neq 0 (
+            echo WARNING: Failed to download LoRA. Continuing...
+        )
+        
+        echo.
+        echo LTX-2 models downloaded successfully!
+        echo Location: %MODELS_DIR%
+        echo.
+        
+    ) else if "%MODEL_CHOICE%"=="2" (
+        echo.
+        echo Downloading both LTX-2 and legacy LTX models...
+        echo.
+        echo This will download:
+        echo 1. LTX-2 models (recommended)
+        echo 2. Legacy ltx-video-distilled models (for compatibility)
+        echo.
+        
+        REM Check if huggingface-cli is available
+        where huggingface-cli >nul 2>&1
+        if %errorlevel% neq 0 (
+            echo WARNING: huggingface-cli not found in PATH.
+            echo Please install: pip install huggingface-hub
+            pause
+            goto :end_models
+        )
+        
+        echo Downloading LTX-2 models first...
+        huggingface-cli download Lightricks/ltx-2 --include "ltx-2-19b-distilled-fp8.safetensors" --local-dir %MODELS_DIR%
+        huggingface-cli download Lightricks/ltx-2 --include "ltx-2-spatial-upscaler-x2-1.0.safetensors" --local-dir %MODELS_DIR%
+        huggingface-cli download Lightricks/ltx-2 --include "ltx-2-19b-distilled-lora-384.safetensors" --local-dir %MODELS_DIR%
+        
+        echo.
+        echo Downloading legacy LTX models...
+        REM Create subdirectory for legacy models
+        set LEGACY_DIR=%MODELS_DIR%\legacy
+        if not exist "%LEGACY_DIR%" mkdir "%LEGACY_DIR%"
+        
+        huggingface-cli download Lightricks/ltx-video-distilled --local-dir %LEGACY_DIR%
+        
+        echo.
+        echo All models downloaded!
+        echo LTX-2: %MODELS_DIR%
+        echo Legacy: %LEGACY_DIR%
+        echo.
+        
+    ) else if "%MODEL_CHOICE%"=="3" (
+        echo.
+        echo WARNING: Legacy LTX is older and less capable than LTX-2.
+        echo LTX-2 is strongly recommended for better quality and features.
+        echo.
+        set /p CONFIRM="Continue with legacy LTX? (y/N): "
+        if /i not "%CONFIRM%"=="y" (
+            echo Cancelled.
+            goto :end_models
+        )
+        
+        REM Check if huggingface-cli is available
+        where huggingface-cli >nul 2>&1
+        if %errorlevel% neq 0 (
+            echo WARNING: huggingface-cli not found in PATH.
+            echo Please install: pip install huggingface-hub
+            pause
+            goto :end_models
+        )
+        
+        echo Downloading legacy LTX models...
+        huggingface-cli download Lightricks/ltx-video-distilled --local-dir %MODELS_DIR%
+        echo.
+        echo Legacy models downloaded to: %MODELS_DIR%
+        echo.
+        
+    ) else if "%MODEL_CHOICE%"=="4" (
+        echo.
+        echo ========================================
+        echo   Manual Download Commands
+        echo ========================================
+        echo.
+        echo LTX-2 (RECOMMENDED):
+        echo huggingface-cli download Lightricks/ltx-2 --include "ltx-2-19b-distilled-fp8.safetensors" --local-dir %MODELS_DIR%
+        echo huggingface-cli download Lightricks/ltx-2 --include "ltx-2-spatial-upscaler-x2-1.0.safetensors" --local-dir %MODELS_DIR%
+        echo huggingface-cli download Lightricks/ltx-2 --include "ltx-2-19b-distilled-lora-384.safetensors" --local-dir %MODELS_DIR%
+        echo.
+        echo Or download all LTX-2 files:
+        echo huggingface-cli download Lightricks/ltx-2 --local-dir %MODELS_DIR%
+        echo.
+        echo Legacy LTX (not recommended):
+        echo huggingface-cli download Lightricks/ltx-video-distilled --local-dir %MODELS_DIR%\legacy
+        echo.
+        echo Manual download URLs:
+        echo LTX-2: https://huggingface.co/Lightricks/ltx-2
+        echo Legacy: https://huggingface.co/spaces/Lightricks/ltx-video-distilled
+        echo.
+        
+    ) else (
+        echo Invalid choice. Showing manual commands...
+        goto :end_models
+    )
+    
+    :end_models
     
 ) else if "%CHOICE%"=="4" (
     echo Skipping automatic setup.

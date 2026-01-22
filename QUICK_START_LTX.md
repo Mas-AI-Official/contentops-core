@@ -35,14 +35,27 @@ Choose option **1** for direct Python API (fastest) or **2** for ComfyUI API.
    ```
 
 2. **Download LTX-2 Models** (from HuggingFace)
+   
+   **RECOMMENDED: Use setup script**
    ```batch
-   huggingface-cli download Lightricks/ltx-2 --local-dir D:\Ideas\content_factory\models\ltx
+   setup_ltx.bat
+   ```
+   Choose option 3, then option 1 (LTX-2 only)
+   
+   **OR Manual download:**
+   ```batch
+   huggingface-cli download Lightricks/ltx-2 --include "ltx-2-19b-distilled-fp8.safetensors" --local-dir D:\Ideas\content_factory\models\ltx
+   huggingface-cli download Lightricks/ltx-2 --include "ltx-2-spatial-upscaler-x2-1.0.safetensors" --local-dir D:\Ideas\content_factory\models\ltx
+   huggingface-cli download Lightricks/ltx-2 --include "ltx-2-19b-distilled-lora-384.safetensors" --local-dir D:\Ideas\content_factory\models\ltx
    ```
    
    **For 8GB VRAM, download these specific files:**
    - `ltx-2-19b-distilled-fp8.safetensors` (main model - REQUIRED)
    - `ltx-2-spatial-upscaler-x2-1.0.safetensors` (upscaler - REQUIRED)
    - `ltx-2-19b-distilled-lora-384.safetensors` (LoRA - REQUIRED)
+   
+   **Note:** Legacy `ltx-video-distilled` models are also supported but not recommended. 
+   LTX-2 is newer, better quality, and has more features.
 
 3. **Configure Content Factory**
    
@@ -134,10 +147,32 @@ When LTX-2 is enabled:
 3. **Monitor VRAM**: Use Task Manager → Performance → GPU
 4. **CPU Fallback**: Use `--cpu-vae` if CUDA OOM
 
+## Model Comparison
+
+### LTX-2 (Recommended) ✅
+- **Official, newer model** (2024-2025)
+- First DiT-based audio-video foundation model
+- Synchronized audio/video generation
+- Multiple performance modes (DistilledPipeline fastest)
+- Production-ready outputs
+- Better documentation and support
+- **Repository**: https://github.com/Lightricks/LTX-2
+- **Models**: https://huggingface.co/Lightricks/ltx-2
+
+### Legacy LTX Video Distilled (Not Recommended) ⚠️
+- Older model (2023-2024)
+- Simpler architecture
+- Limited features
+- Less active development
+- **Models**: https://huggingface.co/spaces/Lightricks/ltx-video-distilled
+
+**Recommendation**: Use LTX-2 for best results. Legacy models are only supported for backward compatibility.
+
 ## Resources
 
 - [LTX-2 Official GitHub](https://github.com/Lightricks/LTX-2)
 - [LTX-2 on Hugging Face](https://huggingface.co/Lightricks/ltx-2)
+- [Legacy LTX Models](https://huggingface.co/spaces/Lightricks/ltx-video-distilled)
 - [LTX Documentation](https://docs.ltx.video/)
 - [ComfyUI LTX Memory Guide](https://deepwiki.com/Lightricks/ComfyUI-LTXVideo/4.3-memory-management)
 

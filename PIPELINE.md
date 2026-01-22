@@ -373,7 +373,7 @@ D:\Ideas\content_factory\
 - **LLM**: Ollama (local) or MCP (external)
 - **TTS**: XTTS v2 (local) or ElevenLabs (API)
 - **STT**: faster-whisper (local)
-- **Video Gen**: **LTX-2** (local Python API or ComfyUI) or FFmpeg (compositing)
+- **Video Gen**: **LTX-2** (recommended, local Python API or ComfyUI) or legacy LTX (compatibility) or FFmpeg (compositing)
 
 ### Backend
 - **Framework**: FastAPI

@@ -113,25 +113,52 @@ class LTXService:
         
         logger.info("Using LTX-2 direct Python API...")
         
-        # Find model checkpoint (prefer distilled FP8 for 8GB VRAM)
-        model_files = {
-            "distilled_fp8": list(self.model_path.glob("*distilled*fp8*.safetensors")),
-            "distilled": list(self.model_path.glob("*distilled*.safetensors")),
-            "full": list(self.model_path.glob("*.safetensors"))
+        # Find model checkpoint (prefer LTX-2, then legacy LTX)
+        # Priority: LTX-2 distilled FP8 > LTX-2 distilled > LTX-2 full > legacy LTX
+        
+        # Check for LTX-2 models first (recommended)
+        ltx2_files = {
+            "distilled_fp8": list(self.model_path.glob("ltx-2*distilled*fp8*.safetensors")),
+            "distilled": list(self.model_path.glob("ltx-2*distilled*.safetensors")),
+            "full": list(self.model_path.glob("ltx-2*.safetensors"))
         }
         
         checkpoint_path = None
+        model_type = "ltx2"
+        
         for key in ["distilled_fp8", "distilled", "full"]:
-            if model_files[key]:
-                checkpoint_path = model_files[key][0]
+            if ltx2_files[key]:
+                checkpoint_path = ltx2_files[key][0]
                 logger.info(f"Using LTX-2 model: {checkpoint_path.name}")
+                model_type = "ltx2"
                 break
         
+        # Fallback to legacy LTX models if LTX-2 not found
         if not checkpoint_path:
-            raise FileNotFoundError(f"No LTX-2 model found in {self.model_path}")
+            legacy_files = {
+                "distilled": list(self.model_path.glob("*ltx-video-distilled*.safetensors")),
+                "legacy_dir": list((self.model_path / "legacy").glob("*.safetensors")) if (self.model_path / "legacy").exists() else []
+            }
+            
+            if legacy_files["distilled"]:
+                checkpoint_path = legacy_files["distilled"][0]
+                logger.warning(f"Using legacy LTX model: {checkpoint_path.name} (LTX-2 recommended)")
+                model_type = "legacy"
+            elif legacy_files["legacy_dir"]:
+                checkpoint_path = legacy_files["legacy_dir"][0]
+                logger.warning(f"Using legacy LTX model from legacy/ folder: {checkpoint_path.name}")
+                model_type = "legacy"
         
-        # Use DistilledPipeline for speed (8GB VRAM friendly)
+        if not checkpoint_path:
+            raise FileNotFoundError(
+                f"No LTX model found in {self.model_path}\n"
+                f"Download LTX-2 models from: https://huggingface.co/Lightricks/ltx-2\n"
+                f"Or legacy models from: https://huggingface.co/spaces/Lightricks/ltx-video-distilled"
+            )
+        
+        # Determine pipeline type based on model
         use_distilled = "distilled" in checkpoint_path.name.lower()
+        is_ltx2 = model_type == "ltx2"
         
         # Run in thread pool to avoid blocking
         loop = asyncio.get_event_loop()
@@ -145,7 +172,8 @@ class LTXService:
             height,
             duration_seconds,
             fps,
-            use_distilled
+            use_distilled,
+            is_ltx2
         )
         
         return result
@@ -159,32 +187,57 @@ class LTXService:
         height: int,
         duration_seconds: int,
         fps: int,
-        use_distilled: bool
+        use_distilled: bool,
+        is_ltx2: bool = True
     ) -> Path:
-        """Run LTX-2 inference synchronously (called in executor)."""
+        """Run LTX inference synchronously (called in executor)."""
         import torch
         
         try:
             # Load model
             device = "cuda" if torch.cuda.is_available() else "cpu"
-            logger.info(f"Loading LTX-2 model on {device}...")
             
-            # Use DistilledPipeline for speed (8GB VRAM)
-            if use_distilled and DistilledPipeline:
-                pipeline = DistilledPipeline.from_pretrained(
-                    str(checkpoint_path.parent),
-                    checkpoint_name=checkpoint_path.name,
-                    device=device,
-                    enable_fp8=True  # FP8 for 8GB VRAM
-                )
+            if is_ltx2:
+                logger.info(f"Loading LTX-2 model on {device}...")
+                
+                # Use DistilledPipeline for speed (8GB VRAM) - LTX-2 only
+                if use_distilled and DistilledPipeline:
+                    pipeline = DistilledPipeline.from_pretrained(
+                        str(checkpoint_path.parent),
+                        checkpoint_name=checkpoint_path.name,
+                        device=device,
+                        enable_fp8=self.use_fp8  # FP8 for 8GB VRAM
+                    )
+                else:
+                    # Fallback to one-stage pipeline
+                    pipeline = TI2VidOneStagePipeline.from_pretrained(
+                        str(checkpoint_path.parent),
+                        checkpoint_name=checkpoint_path.name,
+                        device=device,
+                        enable_fp8=self.use_fp8
+                    )
             else:
-                # Fallback to one-stage pipeline
-                pipeline = TI2VidOneStagePipeline.from_pretrained(
-                    str(checkpoint_path.parent),
-                    checkpoint_name=checkpoint_path.name,
-                    device=device,
-                    enable_fp8=True
-                )
+                # Legacy LTX model (older format, may need different loading)
+                logger.warning(f"Loading legacy LTX model on {device}...")
+                logger.warning("Legacy LTX has limited features. Consider upgrading to LTX-2.")
+                
+                # Legacy models may need ComfyUI API instead
+                # For now, try to use one-stage pipeline if available
+                if TI2VidOneStagePipeline:
+                    try:
+                        pipeline = TI2VidOneStagePipeline.from_pretrained(
+                            str(checkpoint_path.parent),
+                            checkpoint_name=checkpoint_path.name,
+                            device=device
+                        )
+                    except Exception as e:
+                        logger.error(f"Legacy LTX model incompatible with LTX-2 pipeline: {e}")
+                        raise ValueError(
+                            "Legacy LTX models require ComfyUI API. "
+                            "Set LTX_API_URL in backend/.env and use ComfyUI mode."
+                        )
+                else:
+                    raise ValueError("LTX-2 package not installed. Legacy models require ComfyUI API.")
             
             # Generate video
             num_frames = duration_seconds * fps
