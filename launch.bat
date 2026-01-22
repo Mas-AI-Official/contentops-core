@@ -32,31 +32,105 @@ set VENV_PIP=%VENV_PATH%\Scripts\pip.exe
 if not exist "%VENV_PYTHON%" (
     echo Virtual environment is missing or incomplete.
     echo.
+    
+    REM Kill any Python processes first
+    echo Closing any running Python processes...
+    taskkill /F /IM python.exe /T >nul 2>&1
+    taskkill /F /IM pythonw.exe /T >nul 2>&1
+    taskkill /F /IM uvicorn.exe /T >nul 2>&1
+    timeout /t 2 /nobreak >nul
+    
     if exist "%VENV_PATH%" (
-        echo Deleting incomplete venv...
-        rmdir /s /q "%VENV_PATH%" 2>nul
+        echo Attempting to delete incomplete venv...
+        
+        REM Try renaming first (avoids access issues)
+        set VENV_OLD=%VENV_PATH%_old_%RANDOM%
+        if exist "%VENV_OLD%" rmdir /s /q "%VENV_OLD%" >nul 2>&1
+        
+        ren "%VENV_PATH%" "venv_old_%RANDOM%" >nul 2>&1
+        if %errorlevel% equ 0 (
+            echo Old venv renamed. Will delete in background...
+            start /min "" cmd /c "timeout /t 5 /nobreak >nul && rmdir /s /q \"%VENV_OLD%\" >nul 2>&1"
+        ) else (
+            REM Rename failed, try direct deletion
+            rmdir /s /q "%VENV_PATH%" >nul 2>&1
+            if exist "%VENV_PATH%" (
+                powershell -Command "Remove-Item -Path '%VENV_PATH%' -Recurse -Force -ErrorAction SilentlyContinue" >nul 2>&1
+            )
+        )
+        timeout /t 1 /nobreak >nul
     )
+    
     echo Creating new virtual environment...
-    "%PYTHON_PATH%" -m venv --clear "%VENV_PATH%"
-    if %errorlevel% neq 0 (
+    
+    REM Try creating venv - Python will handle existing files
+    "%PYTHON_PATH%" -m venv "%VENV_PATH%" 2>&1
+    set VENV_CREATE_ERROR=%errorlevel%
+    
+    if %VENV_CREATE_ERROR% neq 0 (
         echo.
-        echo ERROR: Failed to create venv. This might be a Python installation issue.
+        echo ERROR: Failed to create venv (Error: %VENV_CREATE_ERROR%)
         echo.
-        echo Try running this manually:
-        echo   C:\Python311\python.exe -m venv D:\Ideas\content_factory\venv
+        echo Trying alternative method (creating in temp location)...
+        
+        REM Try creating in a different location first
+        set TEMP_VENV=%VENV_PATH%_new
+        if exist "%TEMP_VENV%" rmdir /s /q "%TEMP_VENV%" >nul 2>&1
+        
+        "%PYTHON_PATH%" -m venv "%TEMP_VENV%"
+        if %errorlevel% equ 0 (
+            timeout /t 2 /nobreak >nul
+            if exist "%TEMP_VENV%\Scripts\python.exe" (
+                echo Temp venv created successfully. Moving to final location...
+                
+                REM Remove old if still exists
+                if exist "%VENV_PATH%" (
+                    call cleanup_venv.bat --silent
+                    timeout /t 2 /nobreak >nul
+                )
+                
+                REM Move temp to final
+                if not exist "%VENV_PATH%" (
+                    move "%TEMP_VENV%" "%VENV_PATH%" >nul 2>&1
+                    if %errorlevel% equ 0 (
+                        echo Venv moved successfully.
+                        goto venv_created
+                    )
+                )
+            )
+        )
+        
         echo.
-        echo Or reinstall Python 3.11 with "Add Python to PATH" enabled.
+        echo ERROR: All venv creation methods failed.
+        echo.
+        echo Please try:
+        echo   1. Run as Administrator
+        echo   2. Or manually: C:\Python311\python.exe -m venv D:\Ideas\content_factory\venv
+        echo   3. Or run: cleanup_venv.bat then launch.bat again
+        echo.
         pause
         exit /b 1
     )
     
+    :venv_created
+    
     REM Wait a moment for files to be written
-    timeout /t 2 /nobreak >nul
+    timeout /t 3 /nobreak >nul
     
     REM Verify it was created
     if not exist "%VENV_PYTHON%" (
         echo ERROR: Venv created but Python executable not found.
         echo This may indicate a Python installation problem.
+        echo.
+        echo Checking venv structure...
+        if exist "%VENV_PATH%" (
+            dir "%VENV_PATH%" /b
+            if exist "%VENV_PATH%\Scripts" (
+                dir "%VENV_PATH%\Scripts" /b
+            ) else (
+                echo Scripts folder is missing!
+            )
+        )
         pause
         exit /b 1
     )
