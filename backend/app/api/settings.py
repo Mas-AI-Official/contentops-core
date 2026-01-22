@@ -51,6 +51,8 @@ class SettingsResponse(BaseModel):
     default_bg_music_volume: float
     video_gen_provider: str
     ltx_api_url: Optional[str]
+    ltx_model_path: Optional[str]
+    ltx_use_fp8: bool
     
     # Worker
     worker_enabled: bool
@@ -117,6 +119,8 @@ async def get_settings():
         default_bg_music_volume=settings.default_bg_music_volume,
         video_gen_provider=settings.video_gen_provider,
         ltx_api_url=settings.ltx_api_url,
+        ltx_model_path=str(settings.ltx_model_path) if settings.ltx_model_path else None,
+        ltx_use_fp8=settings.ltx_use_fp8,
         worker_enabled=settings.worker_enabled,
         worker_interval_seconds=settings.worker_interval_seconds,
         max_concurrent_jobs=settings.max_concurrent_jobs,

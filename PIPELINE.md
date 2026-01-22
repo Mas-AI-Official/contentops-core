@@ -107,10 +107,12 @@
         │  Video Provider Selection            │
         │                                      │
         │  ┌──────────────────────────────┐   │
-        │  │ LTX (AI Video Gen)            │   │
+        │  │ LTX-2 (AI Video Gen)           │   │
         │  │ → Text-to-Video from script   │   │
-        │  │ → ComfyUI API (local)         │   │
+        │  │ → Direct Python API (fast)    │   │
+        │  │ → Or ComfyUI API (fallback)    │   │
         │  │ → 480p, 3-5s (8GB VRAM limit) │   │
+        │  │ → DistilledPipeline (FP8)     │   │
         │  └──────────────────────────────┘   │
         │              │                       │
         │              ▼                       │
@@ -239,15 +241,19 @@
 
 ### 4. Video Generation Modes
 
-#### Mode A: LTX AI Generation (New!)
+#### Mode A: LTX-2 AI Generation (New!)
 ```
-Script Text → LTX Model → AI Video (480p, 3-5s)
+Script Text → LTX-2 Model (Direct Python API)
+                         ↓
+              AI Video (480p, 3-5s, FP8 quantized)
                          ↓
                     FFmpeg Composite
                          ↓
               + Audio, Subtitles, Logo, Music
                          ↓
                   Final Video (1080x1920)
+             
+Alternative: ComfyUI API mode (if direct API unavailable)
 ```
 
 #### Mode B: FFmpeg Compositing (Default)
@@ -367,7 +373,7 @@ D:\Ideas\content_factory\
 - **LLM**: Ollama (local) or MCP (external)
 - **TTS**: XTTS v2 (local) or ElevenLabs (API)
 - **STT**: faster-whisper (local)
-- **Video Gen**: LTX (local ComfyUI) or FFmpeg (compositing)
+- **Video Gen**: **LTX-2** (local Python API or ComfyUI) or FFmpeg (compositing)
 
 ### Backend
 - **Framework**: FastAPI
@@ -432,17 +438,21 @@ WHISPER_DEVICE=cuda
 ## Performance Notes
 
 ### RTX 4060 8GB VRAM Constraints
-- **LTX Video**: Max 480p, 3-5 seconds per clip
+- **LTX-2 Video**: Max 480p, 3-5 seconds per clip
+  - Use `ltx-2-19b-distilled-fp8.safetensors` model
+  - Use `DistilledPipeline` (fastest, 8 steps)
+  - Enable FP8 transformer: `enable_fp8=True`
 - **Whisper**: Use `base` model, `float16` compute
 - **XTTS**: Server mode recommended
 - **Ollama**: `llama3.2:3b` for speed, `llama3.1:8b` for quality
 
 ### Optimization Tips
-1. Use **distilled/FP8** LTX models
-2. Run ComfyUI with `--lowvram` flag
-3. Close other GPU applications
-4. Use CPU fallback for Whisper if CUDA OOM
-5. Batch process during off-hours
+1. Use **LTX-2 DistilledPipeline** with FP8 quantization
+2. Download `ltx-2-19b-distilled-fp8.safetensors` (smaller, faster)
+3. Use direct Python API (faster than ComfyUI HTTP)
+4. Close other GPU applications
+5. Use CPU fallback for Whisper if CUDA OOM
+6. Batch process during off-hours
 
 ---
 

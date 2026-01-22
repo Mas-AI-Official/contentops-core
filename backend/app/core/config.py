@@ -165,7 +165,9 @@ class Settings(BaseSettings):
 
     # Video generation provider (ffmpeg | ltx)
     video_gen_provider: str = "ffmpeg"
-    ltx_api_url: Optional[str] = None
+    ltx_api_url: Optional[str] = None  # ComfyUI API URL (fallback)
+    ltx_model_path: Optional[str] = None  # Path to LTX-2 model checkpoint
+    ltx_use_fp8: bool = True  # Use FP8 quantization for 8GB VRAM
     
     # MCP / External connectors (optional)
     mcp_enabled: bool = False

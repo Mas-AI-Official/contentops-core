@@ -220,10 +220,12 @@ When you click **Generate Topic**, the backend will:
 
 If no feeds exist, it falls back to topic lists or LLM generation.
 
-## Local LTX Video Generation (Optional)
+## Local LTX-2 Video Generation (Optional)
 
-**LTX (Lightricks)** is one of the newest open-source video models. You can run it locally,
+**LTX-2 (Lightricks)** is the official open-source AI video generation model. It's the first DiT-based audio-video foundation model. You can run it locally,
 but laptop GPUs (like RTX 4060 8GB) are limited to short, low-res clips unless heavily optimized.
+
+**Official Repository**: https://github.com/Lightricks/LTX-2
 
 ### Setup LTX
 

@@ -1,35 +1,67 @@
 """
-LTX Video Generation Service - generates video using LTX (Lightricks) model.
-Supports local ComfyUI-LTXVideo API.
+LTX Video Generation Service - generates video using LTX-2 (Lightricks) model.
+Supports direct Python API (preferred) and ComfyUI API (fallback).
 """
 import json
 import httpx
+import asyncio
 from pathlib import Path
 from typing import Optional, Dict, Any
 from loguru import logger
 
 from app.core.config import settings
 
+# Try to import LTX-2 Python package
+try:
+    from ltx_pipelines import DistilledPipeline, TI2VidOneStagePipeline
+    from ltx_core import LTXModel
+    LTX_DIRECT_AVAILABLE = True
+except ImportError:
+    LTX_DIRECT_AVAILABLE = False
+    DistilledPipeline = None
+    TI2VidOneStagePipeline = None
+    LTXModel = None
+
 
 class LTXService:
-    """Service for generating video using LTX model via ComfyUI API."""
+    """Service for generating video using LTX-2 model (direct Python or ComfyUI API)."""
     
     def __init__(self):
         self.api_url = settings.ltx_api_url or "http://127.0.0.1:8188"
         self.enabled = settings.video_gen_provider == "ltx"
+        self.use_direct = LTX_DIRECT_AVAILABLE
+        self.model_path = Path(settings.ltx_model_path) if settings.ltx_model_path else settings.models_path / "ltx"
+        self.use_fp8 = settings.ltx_use_fp8
     
     async def check_connection(self) -> bool:
-        """Check if LTX API is available."""
+        """Check if LTX is available (direct Python or ComfyUI API)."""
         if not self.enabled:
             return False
         
+        # Check direct Python package first
+        if self.use_direct:
+            try:
+                # Check if model files exist
+                model_files = list(self.model_path.glob("*.safetensors"))
+                if model_files:
+                    logger.info(f"LTX-2 direct mode available with {len(model_files)} model files")
+                    return True
+                else:
+                    logger.warning("LTX-2 package available but no model files found")
+            except Exception as e:
+                logger.warning(f"LTX-2 direct mode check failed: {e}")
+        
+        # Fallback to ComfyUI API check
         try:
             async with httpx.AsyncClient(timeout=5.0) as client:
                 response = await client.get(f"{self.api_url}/system_stats")
-                return response.status_code < 400
+                if response.status_code < 400:
+                    logger.info("LTX ComfyUI API mode available")
+                    return True
         except Exception as e:
-            logger.warning(f"LTX API not available: {e}")
-            return False
+            logger.warning(f"LTX ComfyUI API not available: {e}")
+        
+        return False
     
     async def generate_video_from_text(
         self,
@@ -42,7 +74,7 @@ class LTXService:
         fps: int = 24
     ) -> Path:
         """
-        Generate video from text using LTX.
+        Generate video from text using LTX-2.
         
         Args:
             text: Script text to visualize
@@ -57,9 +89,174 @@ class LTXService:
             raise ValueError("LTX provider is not enabled")
         
         if not await self.check_connection():
-            raise ConnectionError("LTX API is not available")
+            raise ConnectionError("LTX is not available (check models or ComfyUI)")
         
-        # Create a simple ComfyUI workflow for LTX text-to-video
+        # Use direct Python API if available (faster, no HTTP overhead)
+        if self.use_direct and LTX_DIRECT_AVAILABLE:
+            return await self._generate_direct(text, prompt, output_path, width, height, duration_seconds, fps)
+        
+        # Fallback to ComfyUI API
+        return await self._generate_via_comfyui(text, prompt, output_path, width, height, duration_seconds, fps)
+    
+    async def _generate_direct(
+        self,
+        text: str,
+        prompt: Optional[str],
+        output_path: Path,
+        width: int,
+        height: int,
+        duration_seconds: int,
+        fps: int
+    ) -> Path:
+        """Generate video using LTX-2 Python package directly."""
+        import torch
+        
+        logger.info("Using LTX-2 direct Python API...")
+        
+        # Find model checkpoint (prefer distilled FP8 for 8GB VRAM)
+        model_files = {
+            "distilled_fp8": list(self.model_path.glob("*distilled*fp8*.safetensors")),
+            "distilled": list(self.model_path.glob("*distilled*.safetensors")),
+            "full": list(self.model_path.glob("*.safetensors"))
+        }
+        
+        checkpoint_path = None
+        for key in ["distilled_fp8", "distilled", "full"]:
+            if model_files[key]:
+                checkpoint_path = model_files[key][0]
+                logger.info(f"Using LTX-2 model: {checkpoint_path.name}")
+                break
+        
+        if not checkpoint_path:
+            raise FileNotFoundError(f"No LTX-2 model found in {self.model_path}")
+        
+        # Use DistilledPipeline for speed (8GB VRAM friendly)
+        use_distilled = "distilled" in checkpoint_path.name.lower()
+        
+        # Run in thread pool to avoid blocking
+        loop = asyncio.get_event_loop()
+        result = await loop.run_in_executor(
+            None,
+            self._run_ltx_inference,
+            checkpoint_path,
+            prompt or text,
+            output_path,
+            width,
+            height,
+            duration_seconds,
+            fps,
+            use_distilled
+        )
+        
+        return result
+    
+    def _run_ltx_inference(
+        self,
+        checkpoint_path: Path,
+        prompt: str,
+        output_path: Path,
+        width: int,
+        height: int,
+        duration_seconds: int,
+        fps: int,
+        use_distilled: bool
+    ) -> Path:
+        """Run LTX-2 inference synchronously (called in executor)."""
+        import torch
+        
+        try:
+            # Load model
+            device = "cuda" if torch.cuda.is_available() else "cpu"
+            logger.info(f"Loading LTX-2 model on {device}...")
+            
+            # Use DistilledPipeline for speed (8GB VRAM)
+            if use_distilled and DistilledPipeline:
+                pipeline = DistilledPipeline.from_pretrained(
+                    str(checkpoint_path.parent),
+                    checkpoint_name=checkpoint_path.name,
+                    device=device,
+                    enable_fp8=True  # FP8 for 8GB VRAM
+                )
+            else:
+                # Fallback to one-stage pipeline
+                pipeline = TI2VidOneStagePipeline.from_pretrained(
+                    str(checkpoint_path.parent),
+                    checkpoint_name=checkpoint_path.name,
+                    device=device,
+                    enable_fp8=True
+                )
+            
+            # Generate video
+            num_frames = duration_seconds * fps
+            logger.info(f"Generating {num_frames} frames ({duration_seconds}s @ {fps}fps)...")
+            
+            output = pipeline(
+                prompt=prompt,
+                width=width,
+                height=height,
+                num_frames=num_frames,
+                fps=fps,
+                enable_fp8=True
+            )
+            
+            # Save video
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+            
+            # LTX-2 pipeline outputs vary by pipeline type
+            # DistilledPipeline and TI2VidOneStagePipeline typically return video tensors
+            # Convert to video file
+            try:
+                # Try pipeline's built-in save method
+                if hasattr(output, 'save'):
+                    output.save(str(output_path))
+                elif hasattr(pipeline, 'save_video'):
+                    pipeline.save_video(output, str(output_path), fps=fps)
+                else:
+                    # Manual conversion: tensor/array to video
+                    import torch
+                    import numpy as np
+                    from PIL import Image
+                    import imageio
+                    
+                    # Convert tensor to numpy if needed
+                    if isinstance(output, torch.Tensor):
+                        frames = output.cpu().numpy()
+                    elif isinstance(output, np.ndarray):
+                        frames = output
+                    else:
+                        frames = [output] if not isinstance(output, list) else output
+                    
+                    # Normalize to 0-255 uint8
+                    if frames.dtype != np.uint8:
+                        frames = (frames * 255).astype(np.uint8)
+                    
+                    # Save as video
+                    imageio.mimwrite(str(output_path), frames, fps=fps, codec='libx264')
+                    
+            except Exception as save_error:
+                logger.error(f"Failed to save LTX-2 video: {save_error}")
+                raise
+            
+            logger.info(f"LTX-2 video generated: {output_path}")
+            return output_path
+            
+        except Exception as e:
+            logger.error(f"LTX-2 direct inference failed: {e}")
+            raise
+    
+    async def _generate_via_comfyui(
+        self,
+        text: str,
+        prompt: Optional[str],
+        output_path: Path,
+        width: int,
+        height: int,
+        duration_seconds: int,
+        fps: int
+    ) -> Path:
+        """Generate video via ComfyUI API (fallback)."""
+        logger.info("Using LTX ComfyUI API mode...")
+        
         workflow = self._create_ltx_workflow(
             prompt=prompt or text,
             width=width,
@@ -68,10 +265,7 @@ class LTXService:
             fps=fps
         )
         
-        # Submit workflow to ComfyUI
         prompt_id = await self._queue_prompt(workflow)
-        
-        # Wait for completion and download
         output_path = await self._wait_and_download(prompt_id, output_path)
         
         return output_path
