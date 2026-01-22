@@ -142,7 +142,7 @@ if "%CHOICE%"=="1" (
             echo    - ltx-2-19b-distilled-lora-384.safetensors
             echo.
             pause
-            goto :end_models
+            goto :skip_download
         )
         
         echo Starting download (this may take a while, models are large)...
@@ -154,7 +154,7 @@ if "%CHOICE%"=="1" (
             echo ERROR: Failed to download main model.
             echo You may need to login: huggingface-cli login
             pause
-            goto :end_models
+            goto :skip_download
         )
         
         huggingface-cli download Lightricks/ltx-2 --include "ltx-2-spatial-upscaler-x2-1.0.safetensors" --local-dir %MODELS_DIR%
@@ -259,10 +259,10 @@ if "%CHOICE%"=="1" (
         
     ) else (
         echo Invalid choice. Showing manual commands...
-        goto :end_models
+        goto :skip_download
     )
     
-    :end_models
+    :skip_download
     
 ) else if "%CHOICE%"=="4" (
     echo Skipping automatic setup.
