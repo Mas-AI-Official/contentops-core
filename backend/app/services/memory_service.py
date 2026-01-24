@@ -13,7 +13,7 @@ import hashlib
 class MemoryService:
     def __init__(self):
         self.ollama_base_url = settings.ollama_base_url
-        self.embedding_model = "nomic-embed-text" # Default, should be configurable
+        self.embedding_model = settings.ollama_embedding_model
     
     async def get_embedding(self, text: str) -> List[float]:
         """Get embedding for text using Ollama."""

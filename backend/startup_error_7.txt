@@ -16673,3 +16673,1103 @@ FROM jobs ORDER BY jobs.created_at DESC
 2026-01-23 21:06:09,942 INFO sqlalchemy.engine.Engine [cached since 4460s ago] (20, 0)
 INFO:     127.0.0.1:59654 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
 2026-01-23 21:06:09,945 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:06:55,104 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:06:55,104 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:06:55,104 INFO sqlalchemy.engine.Engine [cached since 4500s ago] ('PENDING', 2, 0)
+2026-01-23 21:06:55,105 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:06:55,105 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:06:55,106 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:06:55,106 INFO sqlalchemy.engine.Engine [cached since 4500s ago] ('PENDING', '2026-01-24 02:06:55.105350')
+2026-01-23 21:06:55,106 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:07:09,852 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:07:09,852 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:07:09,852 INFO sqlalchemy.engine.Engine [cached since 4520s ago] (20, 0)
+INFO:     127.0.0.1:63614 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:07:09,855 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:07:55,107 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:07:55,107 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:07:55,107 INFO sqlalchemy.engine.Engine [cached since 4560s ago] ('PENDING', 2, 0)
+2026-01-23 21:07:55,107 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:07:55,108 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:07:55,108 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:07:55,108 INFO sqlalchemy.engine.Engine [cached since 4560s ago] ('PENDING', '2026-01-24 02:07:55.108305')
+2026-01-23 21:07:55,108 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:08:09,843 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:08:09,843 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:08:09,843 INFO sqlalchemy.engine.Engine [cached since 4580s ago] (20, 0)
+INFO:     127.0.0.1:58900 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:08:09,846 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:08:55,104 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:08:55,104 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:08:55,104 INFO sqlalchemy.engine.Engine [cached since 4620s ago] ('PENDING', 2, 0)
+2026-01-23 21:08:55,104 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:08:55,104 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:08:55,104 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:08:55,104 INFO sqlalchemy.engine.Engine [cached since 4620s ago] ('PENDING', '2026-01-24 02:08:55.104599')
+2026-01-23 21:08:55,104 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:09:09,842 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:09:09,842 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:09:09,842 INFO sqlalchemy.engine.Engine [cached since 4640s ago] (20, 0)
+INFO:     127.0.0.1:57465 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:09:09,844 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:09:55,106 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:09:55,107 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:09:55,107 INFO sqlalchemy.engine.Engine [cached since 4680s ago] ('PENDING', 2, 0)
+2026-01-23 21:09:55,108 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:09:55,108 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:09:55,110 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:09:55,110 INFO sqlalchemy.engine.Engine [cached since 4680s ago] ('PENDING', '2026-01-24 02:09:55.108875')
+2026-01-23 21:09:55,110 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:10:09,851 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:10:09,851 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:10:09,851 INFO sqlalchemy.engine.Engine [cached since 4700s ago] (20, 0)
+INFO:     127.0.0.1:58472 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:10:09,854 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:10:55,100 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:10:55,101 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:10:55,101 INFO sqlalchemy.engine.Engine [cached since 4740s ago] ('PENDING', 2, 0)
+2026-01-23 21:10:55,101 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:10:55,102 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:10:55,102 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:10:55,102 INFO sqlalchemy.engine.Engine [cached since 4740s ago] ('PENDING', '2026-01-24 02:10:55.101772')
+2026-01-23 21:10:55,102 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:11:09,849 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:11:09,849 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:11:09,849 INFO sqlalchemy.engine.Engine [cached since 4760s ago] (20, 0)
+INFO:     127.0.0.1:58764 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:11:09,851 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:11:55,109 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:11:55,111 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:11:55,111 INFO sqlalchemy.engine.Engine [cached since 4800s ago] ('PENDING', 2, 0)
+2026-01-23 21:11:55,111 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:11:55,112 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:11:55,112 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:11:55,112 INFO sqlalchemy.engine.Engine [cached since 4800s ago] ('PENDING', '2026-01-24 02:11:55.111030')
+2026-01-23 21:11:55,113 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:12:09,845 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:12:09,846 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:12:09,846 INFO sqlalchemy.engine.Engine [cached since 4820s ago] (20, 0)
+INFO:     127.0.0.1:61251 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:12:09,848 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:12:55,121 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:12:55,121 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:12:55,121 INFO sqlalchemy.engine.Engine [cached since 4860s ago] ('PENDING', 2, 0)
+2026-01-23 21:12:55,121 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:12:55,122 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:12:55,122 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:12:55,122 INFO sqlalchemy.engine.Engine [cached since 4860s ago] ('PENDING', '2026-01-24 02:12:55.122965')
+2026-01-23 21:12:55,122 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:13:09,844 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:13:09,845 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:13:09,845 INFO sqlalchemy.engine.Engine [cached since 4880s ago] (20, 0)
+INFO:     127.0.0.1:63368 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:13:09,847 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:13:55,109 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:13:55,109 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:13:55,111 INFO sqlalchemy.engine.Engine [cached since 4920s ago] ('PENDING', 2, 0)
+2026-01-23 21:13:55,111 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:13:55,113 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:13:55,113 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:13:55,113 INFO sqlalchemy.engine.Engine [cached since 4920s ago] ('PENDING', '2026-01-24 02:13:55.111923')
+2026-01-23 21:13:55,113 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:14:09,842 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:14:09,843 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:14:09,843 INFO sqlalchemy.engine.Engine [cached since 4940s ago] (20, 0)
+INFO:     127.0.0.1:63683 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:14:09,847 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:14:55,097 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:14:55,098 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:14:55,098 INFO sqlalchemy.engine.Engine [cached since 4980s ago] ('PENDING', 2, 0)
+2026-01-23 21:14:55,098 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:14:55,100 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:14:55,100 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:14:55,100 INFO sqlalchemy.engine.Engine [cached since 4980s ago] ('PENDING', '2026-01-24 02:14:55.100183')
+2026-01-23 21:14:55,100 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:15:09,845 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:15:09,845 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:15:09,845 INFO sqlalchemy.engine.Engine [cached since 5000s ago] (20, 0)
+INFO:     127.0.0.1:64209 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:15:09,848 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:15:55,120 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:15:55,120 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:15:55,120 INFO sqlalchemy.engine.Engine [cached since 5040s ago] ('PENDING', 2, 0)
+2026-01-23 21:15:55,120 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:15:55,121 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:15:55,121 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:15:55,121 INFO sqlalchemy.engine.Engine [cached since 5040s ago] ('PENDING', '2026-01-24 02:15:55.121879')
+2026-01-23 21:15:55,121 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:16:09,848 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:16:09,850 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:16:09,850 INFO sqlalchemy.engine.Engine [cached since 5060s ago] (20, 0)
+INFO:     127.0.0.1:52427 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:16:09,852 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:16:55,103 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:16:55,105 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:16:55,105 INFO sqlalchemy.engine.Engine [cached since 5100s ago] ('PENDING', 2, 0)
+2026-01-23 21:16:55,105 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:16:55,106 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:16:55,106 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:16:55,106 INFO sqlalchemy.engine.Engine [cached since 5100s ago] ('PENDING', '2026-01-24 02:16:55.106325')
+2026-01-23 21:16:55,107 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:17:09,842 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:17:09,842 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:17:09,842 INFO sqlalchemy.engine.Engine [cached since 5120s ago] (20, 0)
+INFO:     127.0.0.1:55394 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:17:09,845 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:17:55,104 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:17:55,104 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:17:55,105 INFO sqlalchemy.engine.Engine [cached since 5160s ago] ('PENDING', 2, 0)
+2026-01-23 21:17:55,105 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:17:55,105 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:17:55,107 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:17:55,107 INFO sqlalchemy.engine.Engine [cached since 5160s ago] ('PENDING', '2026-01-24 02:17:55.105872')
+2026-01-23 21:17:55,107 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:18:09,850 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:18:09,850 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:18:09,851 INFO sqlalchemy.engine.Engine [cached since 5180s ago] (20, 0)
+INFO:     127.0.0.1:62223 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:18:09,852 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:18:55,111 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:18:55,112 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:18:55,112 INFO sqlalchemy.engine.Engine [cached since 5220s ago] ('PENDING', 2, 0)
+2026-01-23 21:18:55,112 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:18:55,113 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:18:55,114 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:18:55,114 INFO sqlalchemy.engine.Engine [cached since 5220s ago] ('PENDING', '2026-01-24 02:18:55.113796')
+2026-01-23 21:18:55,114 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:19:09,839 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:19:09,839 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:19:09,839 INFO sqlalchemy.engine.Engine [cached since 5240s ago] (20, 0)
+INFO:     127.0.0.1:50392 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:19:09,842 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:19:55,118 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:19:55,119 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:19:55,119 INFO sqlalchemy.engine.Engine [cached since 5280s ago] ('PENDING', 2, 0)
+2026-01-23 21:19:55,119 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:19:55,120 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:19:55,120 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:19:55,120 INFO sqlalchemy.engine.Engine [cached since 5280s ago] ('PENDING', '2026-01-24 02:19:55.120103')
+2026-01-23 21:19:55,121 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:20:09,855 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:20:09,855 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:20:09,855 INFO sqlalchemy.engine.Engine [cached since 5300s ago] (20, 0)
+INFO:     127.0.0.1:51366 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:20:09,857 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:20:55,109 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:20:55,110 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:20:55,110 INFO sqlalchemy.engine.Engine [cached since 5340s ago] ('PENDING', 2, 0)
+2026-01-23 21:20:55,110 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:20:55,111 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:20:55,111 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:20:55,111 INFO sqlalchemy.engine.Engine [cached since 5340s ago] ('PENDING', '2026-01-24 02:20:55.110568')
+2026-01-23 21:20:55,112 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:21:09,841 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:21:09,842 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:21:09,842 INFO sqlalchemy.engine.Engine [cached since 5360s ago] (20, 0)
+INFO:     127.0.0.1:65104 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:21:09,844 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:21:55,100 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:21:55,100 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:21:55,100 INFO sqlalchemy.engine.Engine [cached since 5400s ago] ('PENDING', 2, 0)
+2026-01-23 21:21:55,102 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:21:55,102 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:21:55,103 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:21:55,103 INFO sqlalchemy.engine.Engine [cached since 5400s ago] ('PENDING', '2026-01-24 02:21:55.102305')
+2026-01-23 21:21:55,103 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:22:09,839 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:22:09,840 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:22:09,840 INFO sqlalchemy.engine.Engine [cached since 5420s ago] (20, 0)
+INFO:     127.0.0.1:61375 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:22:09,842 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:22:55,109 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:22:55,109 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:22:55,109 INFO sqlalchemy.engine.Engine [cached since 5460s ago] ('PENDING', 2, 0)
+2026-01-23 21:22:55,109 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:22:55,110 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:22:55,110 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:22:55,110 INFO sqlalchemy.engine.Engine [cached since 5460s ago] ('PENDING', '2026-01-24 02:22:55.109208')
+2026-01-23 21:22:55,111 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:23:09,841 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:23:09,841 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:23:09,841 INFO sqlalchemy.engine.Engine [cached since 5480s ago] (20, 0)
+INFO:     127.0.0.1:54452 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:23:09,843 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:23:55,102 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:23:55,104 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:23:55,104 INFO sqlalchemy.engine.Engine [cached since 5520s ago] ('PENDING', 2, 0)
+2026-01-23 21:23:55,104 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:23:55,105 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:23:55,106 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:23:55,106 INFO sqlalchemy.engine.Engine [cached since 5520s ago] ('PENDING', '2026-01-24 02:23:55.104941')
+2026-01-23 21:23:55,106 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:24:09,846 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:24:09,847 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:24:09,847 INFO sqlalchemy.engine.Engine [cached since 5540s ago] (20, 0)
+INFO:     127.0.0.1:64578 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:24:09,850 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:24:55,098 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:24:55,099 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:24:55,099 INFO sqlalchemy.engine.Engine [cached since 5580s ago] ('PENDING', 2, 0)
+2026-01-23 21:24:55,100 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:24:55,102 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:24:55,102 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:24:55,102 INFO sqlalchemy.engine.Engine [cached since 5580s ago] ('PENDING', '2026-01-24 02:24:55.100712')
+2026-01-23 21:24:55,103 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:25:09,852 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:25:09,853 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:25:09,853 INFO sqlalchemy.engine.Engine [cached since 5600s ago] (20, 0)
+INFO:     127.0.0.1:50424 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:25:09,856 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:25:55,107 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:25:55,107 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:25:55,107 INFO sqlalchemy.engine.Engine [cached since 5640s ago] ('PENDING', 2, 0)
+2026-01-23 21:25:55,107 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:25:55,108 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:25:55,109 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:25:55,109 INFO sqlalchemy.engine.Engine [cached since 5640s ago] ('PENDING', '2026-01-24 02:25:55.108737')
+2026-01-23 21:25:55,110 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:26:09,842 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:26:09,843 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:26:09,843 INFO sqlalchemy.engine.Engine [cached since 5660s ago] (20, 0)
+INFO:     127.0.0.1:55999 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:26:09,846 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:26:55,102 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:26:55,103 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:26:55,103 INFO sqlalchemy.engine.Engine [cached since 5700s ago] ('PENDING', 2, 0)
+2026-01-23 21:26:55,103 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:26:55,104 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:26:55,104 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:26:55,104 INFO sqlalchemy.engine.Engine [cached since 5700s ago] ('PENDING', '2026-01-24 02:26:55.104333')
+2026-01-23 21:26:55,104 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:27:09,852 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:27:09,853 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:27:09,853 INFO sqlalchemy.engine.Engine [cached since 5720s ago] (20, 0)
+INFO:     127.0.0.1:55612 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:27:09,855 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:27:55,111 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:27:55,111 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:27:55,111 INFO sqlalchemy.engine.Engine [cached since 5760s ago] ('PENDING', 2, 0)
+2026-01-23 21:27:55,111 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:27:55,112 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:27:55,113 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:27:55,113 INFO sqlalchemy.engine.Engine [cached since 5760s ago] ('PENDING', '2026-01-24 02:27:55.111879')
+2026-01-23 21:27:55,113 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:28:09,842 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:28:09,843 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:28:09,843 INFO sqlalchemy.engine.Engine [cached since 5780s ago] (20, 0)
+INFO:     127.0.0.1:59627 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:28:09,845 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:28:55,121 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:28:55,121 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:28:55,121 INFO sqlalchemy.engine.Engine [cached since 5820s ago] ('PENDING', 2, 0)
+2026-01-23 21:28:55,122 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:28:55,123 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:28:55,123 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:28:55,123 INFO sqlalchemy.engine.Engine [cached since 5820s ago] ('PENDING', '2026-01-24 02:28:55.123173')
+2026-01-23 21:28:55,123 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:29:09,851 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:29:09,852 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:29:09,852 INFO sqlalchemy.engine.Engine [cached since 5840s ago] (20, 0)
+INFO:     127.0.0.1:50725 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:29:09,855 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:29:55,104 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:29:55,104 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:29:55,105 INFO sqlalchemy.engine.Engine [cached since 5880s ago] ('PENDING', 2, 0)
+2026-01-23 21:29:55,105 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:29:55,106 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:29:55,106 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:29:55,106 INFO sqlalchemy.engine.Engine [cached since 5880s ago] ('PENDING', '2026-01-24 02:29:55.105002')
+2026-01-23 21:29:55,106 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:30:09,853 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:30:09,853 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:30:09,853 INFO sqlalchemy.engine.Engine [cached since 5900s ago] (20, 0)
+INFO:     127.0.0.1:52744 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:30:09,855 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:30:55,105 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:30:55,105 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:30:55,105 INFO sqlalchemy.engine.Engine [cached since 5940s ago] ('PENDING', 2, 0)
+2026-01-23 21:30:55,106 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:30:55,107 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:30:55,107 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:30:55,107 INFO sqlalchemy.engine.Engine [cached since 5940s ago] ('PENDING', '2026-01-24 02:30:55.107368')
+2026-01-23 21:30:55,108 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:31:09,853 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:31:09,853 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:31:09,853 INFO sqlalchemy.engine.Engine [cached since 5960s ago] (20, 0)
+INFO:     127.0.0.1:63110 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:31:09,857 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:31:55,099 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:31:55,099 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:31:55,099 INFO sqlalchemy.engine.Engine [cached since 6000s ago] ('PENDING', 2, 0)
+2026-01-23 21:31:55,100 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:31:55,100 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:31:55,100 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:31:55,100 INFO sqlalchemy.engine.Engine [cached since 6000s ago] ('PENDING', '2026-01-24 02:31:55.100610')
+2026-01-23 21:31:55,102 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:32:09,839 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:32:09,840 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:32:09,840 INFO sqlalchemy.engine.Engine [cached since 6020s ago] (20, 0)
+INFO:     127.0.0.1:62400 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:32:09,843 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:32:55,100 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:32:55,101 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:32:55,101 INFO sqlalchemy.engine.Engine [cached since 6060s ago] ('PENDING', 2, 0)
+2026-01-23 21:32:55,101 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:32:55,102 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:32:55,102 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:32:55,102 INFO sqlalchemy.engine.Engine [cached since 6060s ago] ('PENDING', '2026-01-24 02:32:55.101021')
+2026-01-23 21:32:55,103 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:33:09,856 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:33:09,856 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:33:09,856 INFO sqlalchemy.engine.Engine [cached since 6080s ago] (20, 0)
+INFO:     127.0.0.1:49946 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:33:09,858 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:33:55,099 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:33:55,099 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:33:55,100 INFO sqlalchemy.engine.Engine [cached since 6120s ago] ('PENDING', 2, 0)
+2026-01-23 21:33:55,100 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:33:55,100 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:33:55,102 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:33:55,102 INFO sqlalchemy.engine.Engine [cached since 6120s ago] ('PENDING', '2026-01-24 02:33:55.100771')
+2026-01-23 21:33:55,102 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:34:09,851 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:34:09,851 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:34:09,851 INFO sqlalchemy.engine.Engine [cached since 6140s ago] (20, 0)
+INFO:     127.0.0.1:49681 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:34:09,854 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:34:55,108 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:34:55,110 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:34:55,110 INFO sqlalchemy.engine.Engine [cached since 6180s ago] ('PENDING', 2, 0)
+2026-01-23 21:34:55,110 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:34:55,110 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:34:55,110 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:34:55,110 INFO sqlalchemy.engine.Engine [cached since 6180s ago] ('PENDING', '2026-01-24 02:34:55.110746')
+2026-01-23 21:34:55,112 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:35:09,851 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:35:09,851 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:35:09,851 INFO sqlalchemy.engine.Engine [cached since 6200s ago] (20, 0)
+INFO:     127.0.0.1:61838 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:35:09,853 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:35:55,102 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:35:55,103 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:35:55,103 INFO sqlalchemy.engine.Engine [cached since 6240s ago] ('PENDING', 2, 0)
+2026-01-23 21:35:55,103 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:35:55,105 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:35:55,105 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:35:55,105 INFO sqlalchemy.engine.Engine [cached since 6240s ago] ('PENDING', '2026-01-24 02:35:55.103877')
+2026-01-23 21:35:55,105 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:36:09,858 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:36:09,858 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:36:09,858 INFO sqlalchemy.engine.Engine [cached since 6260s ago] (20, 0)
+INFO:     127.0.0.1:53044 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:36:09,860 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:36:55,100 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:36:55,101 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:36:55,101 INFO sqlalchemy.engine.Engine [cached since 6300s ago] ('PENDING', 2, 0)
+2026-01-23 21:36:55,101 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:36:55,102 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:36:55,103 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:36:55,103 INFO sqlalchemy.engine.Engine [cached since 6300s ago] ('PENDING', '2026-01-24 02:36:55.102332')
+2026-01-23 21:36:55,103 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:37:09,852 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:37:09,852 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:37:09,852 INFO sqlalchemy.engine.Engine [cached since 6320s ago] (20, 0)
+INFO:     127.0.0.1:63762 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:37:09,855 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:37:55,117 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:37:55,117 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:37:55,119 INFO sqlalchemy.engine.Engine [cached since 6360s ago] ('PENDING', 2, 0)
+2026-01-23 21:37:55,119 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:37:55,120 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:37:55,120 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:37:55,120 INFO sqlalchemy.engine.Engine [cached since 6360s ago] ('PENDING', '2026-01-24 02:37:55.119374')
+2026-01-23 21:37:55,120 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:38:09,838 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:38:09,838 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:38:09,838 INFO sqlalchemy.engine.Engine [cached since 6380s ago] (20, 0)
+INFO:     127.0.0.1:54855 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:38:09,842 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:38:55,109 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:38:55,109 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:38:55,109 INFO sqlalchemy.engine.Engine [cached since 6420s ago] ('PENDING', 2, 0)
+2026-01-23 21:38:55,109 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:38:55,110 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:38:55,110 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:38:55,110 INFO sqlalchemy.engine.Engine [cached since 6420s ago] ('PENDING', '2026-01-24 02:38:55.110690')
+2026-01-23 21:38:55,111 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:39:09,844 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:39:09,844 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:39:09,844 INFO sqlalchemy.engine.Engine [cached since 6440s ago] (20, 0)
+INFO:     127.0.0.1:58057 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:39:09,846 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:39:55,107 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:39:55,107 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:39:55,107 INFO sqlalchemy.engine.Engine [cached since 6480s ago] ('PENDING', 2, 0)
+2026-01-23 21:39:55,108 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:39:55,108 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:39:55,109 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:39:55,109 INFO sqlalchemy.engine.Engine [cached since 6480s ago] ('PENDING', '2026-01-24 02:39:55.108655')
+2026-01-23 21:39:55,109 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:40:09,847 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:40:09,848 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:40:09,848 INFO sqlalchemy.engine.Engine [cached since 6500s ago] (20, 0)
+INFO:     127.0.0.1:54761 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:40:09,850 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:40:55,104 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:40:55,105 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:40:55,105 INFO sqlalchemy.engine.Engine [cached since 6540s ago] ('PENDING', 2, 0)
+2026-01-23 21:40:55,105 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:40:55,106 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:40:55,106 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:40:55,106 INFO sqlalchemy.engine.Engine [cached since 6540s ago] ('PENDING', '2026-01-24 02:40:55.106301')
+2026-01-23 21:40:55,106 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:41:09,851 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:41:09,852 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:41:09,852 INFO sqlalchemy.engine.Engine [cached since 6560s ago] (20, 0)
+INFO:     127.0.0.1:54041 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:41:09,854 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:41:55,098 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:41:55,099 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:41:55,099 INFO sqlalchemy.engine.Engine [cached since 6600s ago] ('PENDING', 2, 0)
+2026-01-23 21:41:55,099 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:41:55,100 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:41:55,101 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:41:55,101 INFO sqlalchemy.engine.Engine [cached since 6600s ago] ('PENDING', '2026-01-24 02:41:55.100939')
+2026-01-23 21:41:55,101 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:42:09,847 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:42:09,848 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:42:09,848 INFO sqlalchemy.engine.Engine [cached since 6620s ago] (20, 0)
+INFO:     127.0.0.1:49940 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:42:09,850 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:42:55,111 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:42:55,112 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:42:55,112 INFO sqlalchemy.engine.Engine [cached since 6660s ago] ('PENDING', 2, 0)
+2026-01-23 21:42:55,113 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:42:55,113 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:42:55,113 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:42:55,113 INFO sqlalchemy.engine.Engine [cached since 6660s ago] ('PENDING', '2026-01-24 02:42:55.113609')
+2026-01-23 21:42:55,115 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:43:09,838 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:43:09,839 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:43:09,839 INFO sqlalchemy.engine.Engine [cached since 6680s ago] (20, 0)
+INFO:     127.0.0.1:54042 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:43:09,842 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:43:55,128 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:43:55,128 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:43:55,128 INFO sqlalchemy.engine.Engine [cached since 6720s ago] ('PENDING', 2, 0)
+2026-01-23 21:43:55,129 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:43:55,130 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:43:55,131 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:43:55,131 INFO sqlalchemy.engine.Engine [cached since 6720s ago] ('PENDING', '2026-01-24 02:43:55.130314')
+2026-01-23 21:43:55,131 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:44:09,849 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:44:09,849 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:44:09,849 INFO sqlalchemy.engine.Engine [cached since 6740s ago] (20, 0)
+INFO:     127.0.0.1:54042 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:44:09,853 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:44:55,117 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:44:55,118 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:44:55,118 INFO sqlalchemy.engine.Engine [cached since 6780s ago] ('PENDING', 2, 0)
+2026-01-23 21:44:55,119 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:44:55,119 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:44:55,119 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:44:55,119 INFO sqlalchemy.engine.Engine [cached since 6780s ago] ('PENDING', '2026-01-24 02:44:55.119318')
+2026-01-23 21:44:55,120 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:45:09,839 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:45:09,839 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:45:09,839 INFO sqlalchemy.engine.Engine [cached since 6800s ago] (20, 0)
+INFO:     127.0.0.1:58188 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:45:09,842 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:45:55,108 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:45:55,108 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:45:55,108 INFO sqlalchemy.engine.Engine [cached since 6840s ago] ('PENDING', 2, 0)
+2026-01-23 21:45:55,109 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:45:55,111 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:45:55,111 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:45:55,111 INFO sqlalchemy.engine.Engine [cached since 6840s ago] ('PENDING', '2026-01-24 02:45:55.109804')
+2026-01-23 21:45:55,112 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:46:09,864 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:46:09,865 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:46:09,865 INFO sqlalchemy.engine.Engine [cached since 6860s ago] (20, 0)
+INFO:     127.0.0.1:53400 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:46:09,867 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:46:55,101 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:46:55,102 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:46:55,102 INFO sqlalchemy.engine.Engine [cached since 6900s ago] ('PENDING', 2, 0)
+2026-01-23 21:46:55,102 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:46:55,104 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:46:55,104 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:46:55,104 INFO sqlalchemy.engine.Engine [cached since 6900s ago] ('PENDING', '2026-01-24 02:46:55.102816')
+2026-01-23 21:46:55,105 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:47:09,867 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:47:09,867 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:47:09,867 INFO sqlalchemy.engine.Engine [cached since 6920s ago] (20, 0)
+INFO:     127.0.0.1:50261 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:47:09,868 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:47:55,097 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:47:55,098 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:47:55,098 INFO sqlalchemy.engine.Engine [cached since 6960s ago] ('PENDING', 2, 0)
+2026-01-23 21:47:55,098 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:47:55,099 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:47:55,100 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:47:55,100 INFO sqlalchemy.engine.Engine [cached since 6960s ago] ('PENDING', '2026-01-24 02:47:55.099249')
+2026-01-23 21:47:55,100 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:48:09,865 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:48:09,866 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:48:09,867 INFO sqlalchemy.engine.Engine [cached since 6980s ago] (20, 0)
+INFO:     127.0.0.1:62730 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:48:09,873 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:48:55,125 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:48:55,126 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:48:55,126 INFO sqlalchemy.engine.Engine [cached since 7020s ago] ('PENDING', 2, 0)
+2026-01-23 21:48:55,126 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:48:55,127 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:48:55,128 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:48:55,128 INFO sqlalchemy.engine.Engine [cached since 7020s ago] ('PENDING', '2026-01-24 02:48:55.127395')
+2026-01-23 21:48:55,128 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:49:09,855 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:49:09,856 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:49:09,856 INFO sqlalchemy.engine.Engine [cached since 7040s ago] (20, 0)
+INFO:     127.0.0.1:60890 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:49:09,858 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:49:55,099 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:49:55,099 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:49:55,099 INFO sqlalchemy.engine.Engine [cached since 7080s ago] ('PENDING', 2, 0)
+2026-01-23 21:49:55,100 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:49:55,100 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:49:55,102 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:49:55,102 INFO sqlalchemy.engine.Engine [cached since 7080s ago] ('PENDING', '2026-01-24 02:49:55.100591')
+2026-01-23 21:49:55,102 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:50:09,852 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:50:09,852 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:50:09,853 INFO sqlalchemy.engine.Engine [cached since 7100s ago] (20, 0)
+INFO:     127.0.0.1:56585 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:50:09,855 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:50:55,124 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:50:55,124 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:50:55,125 INFO sqlalchemy.engine.Engine [cached since 7140s ago] ('PENDING', 2, 0)
+2026-01-23 21:50:55,125 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:50:55,126 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:50:55,127 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:50:55,127 INFO sqlalchemy.engine.Engine [cached since 7140s ago] ('PENDING', '2026-01-24 02:50:55.125331')
+2026-01-23 21:50:55,128 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:51:09,843 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:51:09,843 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:51:09,843 INFO sqlalchemy.engine.Engine [cached since 7160s ago] (20, 0)
+INFO:     127.0.0.1:59455 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:51:09,846 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:51:55,107 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:51:55,107 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:51:55,107 INFO sqlalchemy.engine.Engine [cached since 7200s ago] ('PENDING', 2, 0)
+2026-01-23 21:51:55,108 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:51:55,108 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:51:55,108 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:51:55,108 INFO sqlalchemy.engine.Engine [cached since 7200s ago] ('PENDING', '2026-01-24 02:51:55.108142')
+2026-01-23 21:51:55,109 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:52:09,859 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:52:09,860 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:52:09,860 INFO sqlalchemy.engine.Engine [cached since 7220s ago] (20, 0)
+INFO:     127.0.0.1:58350 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:52:09,862 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:52:55,099 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:52:55,100 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:52:55,100 INFO sqlalchemy.engine.Engine [cached since 7260s ago] ('PENDING', 2, 0)
+2026-01-23 21:52:55,100 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:52:55,101 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:52:55,102 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:52:55,102 INFO sqlalchemy.engine.Engine [cached since 7260s ago] ('PENDING', '2026-01-24 02:52:55.101010')
+2026-01-23 21:52:55,102 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:53:09,856 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:53:09,856 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:53:09,856 INFO sqlalchemy.engine.Engine [cached since 7280s ago] (20, 0)
+INFO:     127.0.0.1:64809 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:53:09,859 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:53:55,108 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:53:55,108 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:53:55,108 INFO sqlalchemy.engine.Engine [cached since 7320s ago] ('PENDING', 2, 0)
+2026-01-23 21:53:55,109 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:53:55,109 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:53:55,110 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:53:55,110 INFO sqlalchemy.engine.Engine [cached since 7320s ago] ('PENDING', '2026-01-24 02:53:55.109710')
+2026-01-23 21:53:55,110 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:54:09,849 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:54:09,849 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:54:09,849 INFO sqlalchemy.engine.Engine [cached since 7340s ago] (20, 0)
+INFO:     127.0.0.1:56244 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:54:09,852 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:54:55,108 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:54:55,110 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:54:55,110 INFO sqlalchemy.engine.Engine [cached since 7380s ago] ('PENDING', 2, 0)
+2026-01-23 21:54:55,111 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:54:55,111 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:54:55,111 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:54:55,111 INFO sqlalchemy.engine.Engine [cached since 7380s ago] ('PENDING', '2026-01-24 02:54:55.111462')
+2026-01-23 21:54:55,113 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:55:09,845 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:55:09,847 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:55:09,847 INFO sqlalchemy.engine.Engine [cached since 7400s ago] (20, 0)
+INFO:     127.0.0.1:62848 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:55:09,849 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:55:55,108 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:55:55,108 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:55:55,109 INFO sqlalchemy.engine.Engine [cached since 7440s ago] ('PENDING', 2, 0)
+2026-01-23 21:55:55,110 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:55:55,110 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:55:55,110 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:55:55,110 INFO sqlalchemy.engine.Engine [cached since 7440s ago] ('PENDING', '2026-01-24 02:55:55.110393')
+2026-01-23 21:55:55,111 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:56:09,853 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:56:09,854 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:56:09,854 INFO sqlalchemy.engine.Engine [cached since 7460s ago] (20, 0)
+INFO:     127.0.0.1:56548 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:56:09,856 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:56:55,110 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:56:55,110 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:56:55,110 INFO sqlalchemy.engine.Engine [cached since 7500s ago] ('PENDING', 2, 0)
+2026-01-23 21:56:55,111 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:56:55,112 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:56:55,113 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:56:55,113 INFO sqlalchemy.engine.Engine [cached since 7500s ago] ('PENDING', '2026-01-24 02:56:55.111739')
+2026-01-23 21:56:55,113 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:57:09,844 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:57:09,845 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:57:09,845 INFO sqlalchemy.engine.Engine [cached since 7520s ago] (20, 0)
+INFO:     127.0.0.1:64350 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:57:09,848 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:57:55,111 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:57:55,111 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:57:55,112 INFO sqlalchemy.engine.Engine [cached since 7560s ago] ('PENDING', 2, 0)
+2026-01-23 21:57:55,113 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:57:55,113 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:57:55,113 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:57:55,113 INFO sqlalchemy.engine.Engine [cached since 7560s ago] ('PENDING', '2026-01-24 02:57:55.113192')
+2026-01-23 21:57:55,114 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:58:09,854 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:58:09,855 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:58:09,855 INFO sqlalchemy.engine.Engine [cached since 7580s ago] (20, 0)
+INFO:     127.0.0.1:52487 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:58:09,858 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:58:55,100 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:58:55,101 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:58:55,101 INFO sqlalchemy.engine.Engine [cached since 7620s ago] ('PENDING', 2, 0)
+2026-01-23 21:58:55,101 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:58:55,102 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:58:55,102 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:58:55,102 INFO sqlalchemy.engine.Engine [cached since 7620s ago] ('PENDING', '2026-01-24 02:58:55.102174')
+2026-01-23 21:58:55,103 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:59:09,844 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:59:09,844 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 21:59:09,845 INFO sqlalchemy.engine.Engine [cached since 7640s ago] (20, 0)
+INFO:     127.0.0.1:51042 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 21:59:09,847 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:59:55,108 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:59:55,108 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 21:59:55,108 INFO sqlalchemy.engine.Engine [cached since 7680s ago] ('PENDING', 2, 0)
+2026-01-23 21:59:55,109 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 21:59:55,109 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 21:59:55,110 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 21:59:55,110 INFO sqlalchemy.engine.Engine [cached since 7680s ago] ('PENDING', '2026-01-24 02:59:55.109485')
+2026-01-23 21:59:55,110 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 22:00:09,879 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 22:00:09,880 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 22:00:09,880 INFO sqlalchemy.engine.Engine [cached since 7700s ago] (20, 0)
+INFO:     127.0.0.1:59659 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 22:00:09,882 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 22:00:55,101 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 22:00:55,101 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 22:00:55,101 INFO sqlalchemy.engine.Engine [cached since 7740s ago] ('PENDING', 2, 0)
+2026-01-23 22:00:55,101 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 22:00:55,101 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 22:00:55,102 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 22:00:55,102 INFO sqlalchemy.engine.Engine [cached since 7740s ago] ('PENDING', '2026-01-24 03:00:55.101992')
+2026-01-23 22:00:55,102 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 22:01:09,858 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 22:01:09,858 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.created_at DESC
+ LIMIT ? OFFSET ?
+2026-01-23 22:01:09,858 INFO sqlalchemy.engine.Engine [cached since 7760s ago] (20, 0)
+INFO:     127.0.0.1:59914 - "GET /api/jobs/?limit=20 HTTP/1.1" 200 OK
+2026-01-23 22:01:09,860 INFO sqlalchemy.engine.Engine COMMIT

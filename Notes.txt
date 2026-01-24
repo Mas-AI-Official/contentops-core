@@ -1,329 +1,118 @@
--23 19:32:46,571 INFO sqlalchemy.engine.Engine [raw sql] ()
-2026-01-23 19:32:46,571 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("accounts")
-2026-01-23 19:32:46,571 INFO sqlalchemy.engine.Engine [raw sql] ()
-2026-01-23 19:32:46,571 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("jobs")
-2026-01-23 19:32:46,571 INFO sqlalchemy.engine.Engine [raw sql] ()
-2026-01-23 19:32:46,571 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("job_logs")
-2026-01-23 19:32:46,571 INFO sqlalchemy.engine.Engine [raw sql] ()
-2026-01-23 19:32:46,572 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("videos")
-2026-01-23 19:32:46,572 INFO sqlalchemy.engine.Engine [raw sql] ()
-2026-01-23 19:32:46,573 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("video_publishes")
-2026-01-23 19:32:46,573 INFO sqlalchemy.engine.Engine [raw sql] ()
-2026-01-23 19:32:46,573 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("video_metrics")
-2026-01-23 19:32:46,573 INFO sqlalchemy.engine.Engine [raw sql] ()
-2026-01-23 19:32:46,573 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("daily_niche_stats")
-2026-01-23 19:32:46,573 INFO sqlalchemy.engine.Engine [raw sql] ()
-2026-01-23 19:32:46,574 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("video_scores")
-2026-01-23 19:32:46,582 INFO sqlalchemy.engine.Engine [raw sql] ()
-2026-01-23 19:32:46,582 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("niche_targets")
-2026-01-23 19:32:46,584 INFO sqlalchemy.engine.Engine [raw sql] ()
-2026-01-23 19:32:46,584 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("niche_targets")
-2026-01-23 19:32:46,584 INFO sqlalchemy.engine.Engine [raw sql] ()
-2026-01-23 19:32:46,584 INFO sqlalchemy.engine.Engine ROLLBACK
-ERROR:    Traceback (most recent call last):
-  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\routing.py", line 694, in lifespan
-    async with self.lifespan_context(app) as maybe_state:
-  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
-    return await anext(self.gen)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
-    async with original_context(app) as maybe_original_state:
-  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
-    return await anext(self.gen)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
-    async with original_context(app) as maybe_original_state:
-  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
-    return await anext(self.gen)
-           ^^^^^^^^^^^^^^^^^^^^^
-  File "D:\Ideas\content_factory\backend\app\main.py", line 463, in lifespan
-    create_db_and_tables()
-  File "D:\Ideas\content_factory\backend\app\db\database.py", line 36, in create_db_and_tables
-    SQLModel.metadata.create_all(sync_engine)
-  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\sql\schema.py", line 5928, in create_all
-    bind._run_ddl_visitor(
-  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 3260, in _run_ddl_visitor
-    conn._run_ddl_visitor(visitorcallable, element, **kwargs)
-  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2467, in _run_ddl_visitor
-    ).traverse_single(element)
-      ^^^^^^^^^^^^^^^^^^^^^^^^
-  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\sql\visitors.py", line 661, in traverse_single
-    return meth(obj, **kw)
-           ^^^^^^^^^^^^^^^
-  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\sql\ddl.py", line 962, in visit_metadata
-    collection = sort_tables_and_constraints(
-                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\sql\ddl.py", line 1394, in sort_tables_and_constraints
-    dependent_on = fkc.referred_table
-                   ^^^^^^^^^^^^^^^^^^
-  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\sql\schema.py", line 4799, in referred_table
-    return self.elements[0].column.table
-           ^^^^^^^^^^^^^^^^^^^^^^^
-  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 1226, in __get__
-    obj.__dict__[self.__name__] = result = self.fget(obj)
-                                           ^^^^^^^^^^^^^^
-  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\sql\schema.py", line 3199, in column
-    return self._resolve_column()
-           ^^^^^^^^^^^^^^^^^^^^^^
-  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\sql\schema.py", line 3222, in _resolve_column
-    raise exc.NoReferencedTableError(
-sqlalchemy.exc.NoReferencedTableError: Foreign key associated with column 'niche_targets.account_id' could not find table 'publishing_accounts' with which to generate a foreign key to target column 'id'
+=======================================
+  Content Factory - Setup Models
+========================================                                                                                                                                                                                                        Models Directory: D:\Ideas\content_factory\models                                                                       Ollama Models: D:\Ideas\content_factory\models\ollama                                                                   LTX Models: D:\Ideas\content_factory\models\ltx                                                                                                                                                                                                 [STEP] Activating virtual environment...                                                                                [OK] Virtual environment activated
+[STEP] Creating model directories...
+[OK] Model directories created
+[STEP] Setting up Ollama models...
+[OK] Ollama found: ollama version is 0.14.3
+Setting OLLAMA_MODELS to: D:\Ideas\content_factory\models\ollama
+[OK] OLLAMA_MODELS set system-wide
+Checking Ollama service...
 
-ERROR:    Application startup failed. Exiting.
+Security Warning: Script Execution Risk
+Invoke-WebRequest parses the content of the web page. Script code in the web page might be run when the page is
+parsed.
+      RECOMMENDED ACTION:
+      Use the -UseBasicParsing switch to avoid script code execution.
 
+      Do you want to continue?
 
-> content-factory-dashboard@1.0.0 dev
-> vite
+[Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "N"): a
+[OK] Ollama is running
+Ollama is already running. Using existing instance.
+Downloads will work with the current Ollama setup.
+NOTE: If you need to change OLLAMA_MODELS, stop Ollama first.
+Verifying Ollama is accessible...
+[OK] Ollama is running and accessible
 
+Starting model downloads...
+Models will be saved to: D:\Ideas\content_factory\models\ollama
 
-  VITE v5.4.21  ready in 491 ms
+========================================
+Downloading llama3.1:8b...
+========================================
+This may take several minutes depending on your connection...
 
-  ➜  Local:   http://localhost:3000/
-  ➜  Network: use --host to expose
-  ➜  press h + enter to show help
-7:33:01 PM [vite] http proxy error: /api/jobs/?limit=20
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:01 PM [vite] http proxy error: /api/jobs/today
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:01 PM [vite] http proxy error: /api/jobs/?limit=10
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:01 PM [vite] http proxy error: /api/analytics/summary
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:01 PM [vite] http proxy error: /api/settings/services/status
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:01 PM [vite] http proxy error: /api/niches/
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:01 PM [vite] http proxy error: /api/jobs/?limit=20
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:01 PM [vite] http proxy error: /api/jobs/today
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:01 PM [vite] http proxy error: /api/jobs/?limit=10
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:01 PM [vite] http proxy error: /api/analytics/summary
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:01 PM [vite] http proxy error: /api/settings/services/status
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:01 PM [vite] http proxy error: /api/niches/
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:03 PM [vite] http proxy error: /api/jobs/?limit=20
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:05 PM [vite] http proxy error: /api/jobs/today
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:05 PM [vite] http proxy error: /api/jobs/?limit=10
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:05 PM [vite] http proxy error: /api/analytics/summary
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:05 PM [vite] http proxy error: /api/settings/services/status
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:05 PM [vite] http proxy error: /api/niches/
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:06 PM [vite] http proxy error: /api/jobs/?limit=20
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:09 PM [vite] http proxy error: /api/niches/
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:09 PM [vite] http proxy error: /api/niches/platforms/stats
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:09 PM [vite] http proxy error: /api/niches/
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:09 PM [vite] http proxy error: /api/niches/platforms/stats
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:09 PM [vite] http proxy error: /api/niches/
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:09 PM [vite] http proxy error: /api/models/
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:09 PM [vite] http proxy error: /api/accounts/
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:09 PM [vite] http proxy error: /api/niches/
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:09 PM [vite] http proxy error: /api/models/
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:09 PM [vite] http proxy error: /api/accounts/
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:09 PM [vite] http proxy error: /api/jobs/?limit=20
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:10 PM [vite] http proxy error: /api/publishing/accounts
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:10 PM [vite] http proxy error: /api/publishing/accounts
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7) (x2)
-7:33:11 PM [vite] http proxy error: /api/niches/
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:11 PM [vite] http proxy error: /api/models/ltx
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:11 PM [vite] http proxy error: /api/niches/
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:11 PM [vite] http proxy error: /api/models/ltx
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:12 PM [vite] http proxy error: /api/jobs/?limit=20
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:13 PM [vite] http proxy error: /api/jobs/
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:13 PM [vite] http proxy error: /api/jobs/
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7) (x2)
-7:33:15 PM [vite] http proxy error: /api/jobs/?limit=20
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:17 PM [vite] http proxy error: /api/videos/?limit=50
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:17 PM [vite] http proxy error: /api/niches/
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:17 PM [vite] http proxy error: /api/videos/?limit=50
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:17 PM [vite] http proxy error: /api/niches/
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:18 PM [vite] http proxy error: /api/jobs/
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:18 PM [vite] http proxy error: /api/jobs/
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7) (x2)
-7:33:18 PM [vite] http proxy error: /api/jobs/?limit=20
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:21 PM [vite] http proxy error: /api/jobs/?limit=20
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7) (x2)
-7:33:23 PM [vite] http proxy error: /api/jobs/
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:24 PM [vite] http proxy error: /api/jobs/?limit=20
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:27 PM [vite] http proxy error: /api/jobs/?limit=20
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7) (x2)
-7:33:28 PM [vite] http proxy error: /api/jobs/
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:30 PM [vite] http proxy error: /api/jobs/?limit=20
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:33 PM [vite] http proxy error: /api/jobs/
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:33 PM [vite] http proxy error: /api/jobs/?limit=20
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:36 PM [vite] http proxy error: /api/jobs/?limit=20
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7) (x2)
-7:33:38 PM [vite] http proxy error: /api/jobs/
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:39 PM [vite] http proxy error: /api/jobs/?limit=20
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
-7:33:42 PM [vite] http proxy error: /api/jobs/?limit=20
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7) (x2)
-7:33:43 PM [vite] http proxy error: /api/jobs/
-AggregateError [ECONNREFUSED]:
-    at internalConnectMultiple (node:net:1116:18)
-    at afterConnectMultiple (node:net:1683:7)
+Attempt 1 of 3...
+pulling manifest
+pulling 667b0c1932bc: 100% ▕██████████████████████████████████████████████████████████▏ 4.9 GB
+pulling 948af2743fc7: 100% ▕██████████████████████████████████████████████████████████▏ 1.5 KB
+pulling 0ba8f0e314b4: 100% ▕██████████████████████████████████████████████████████████▏  12 KB
+pulling 56bb8bd477a5: 100% ▕██████████████████████████████████████████████████████████▏   96 B
+pulling 455f34728c9b: 100% ▕██████████████████████████████████████████████████████████▏  487 B
+verifying sha256 digest
+writing manifest
+success
+[OK] llama3.1:8b downloaded successfully
 
+========================================
+Downloading llama3.2:3b...
+========================================
+This may take several minutes depending on your connection...
 
+Attempt 1 of 3...
+pulling manifest
+pulling dde5aa3fc5ff: 100% ▕██████████████████████████████████████████████████████████▏ 2.0 GB
+pulling 966de95ca8a6: 100% ▕██████████████████████████████████████████████████████████▏ 1.4 KB
+pulling fcc5a6bec9da: 100% ▕██████████████████████████████████████████████████████████▏ 7.7 KB
+pulling a70ff7e570d9: 100% ▕██████████████████████████████████████████████████████████▏ 6.0 KB
+pulling 56bb8bd477a5: 100% ▕██████████████████████████████████████████████████████████▏   96 B
+pulling 34bb5ab01051: 100% ▕██████████████████████████████████████████████████████████▏  561 B
+verifying sha256 digest
+writing manifest
+success
+[OK] llama3.2:3b downloaded successfully
 
+Verifying installed models...
+Installed models:
+NAME                       ID              SIZE      MODIFIED                llama3.2:3b                a80c4f17acd5    2.0 GB    Less than a second ago     llama3.1:8b                46e0c10c039e    4.9 GB    1 second ago               nomic-embed-text:latest    0a109f422b47    274 MB    34 minutes ago             deepseek-r1:8b             6995872bfe4c    5.2 GB    3 weeks ago                qwen2.5:7b-instruct        845dbda0ea48    4.7 GB    4 weeks ago                daena-brain:latest         68617f141d22    9.0 GB    5 weeks ago                qwen2.5:14b-instruct       7cdf5a0187d5    9.0 GB    5 weeks ago
 
+Verifying model file locations...
+OLLAMA_MODELS is set to: D:\Ideas\content_factory\models\ollama
+[OK] Found 1 file(s) in: D:\Ideas\content_factory\models\ollama
+Total size: 0 GB
+[STEP] Setting up LTX models...
+Checking for huggingface_hub...
+[OK] huggingface_hub is available
+LTX-2 models for RTX 4060 (8GB VRAM):
+- Main model: ltx-2-19b-distilled-fp8.safetensors
+- Upscaler: ltx-2-spatial-upscaler-x2-1.0.safetensors
+- LoRA: ltx-2-19b-distilled-lora-384.safetensors
 
+Downloading ltx-2-19b-distilled-fp8.safetensors from Lightricks/ltx-2...
+Downloading ltx-2-19b-distilled-fp8.safetensors from Lightricks/ltx-2 to D:\Ideas\content_factory\models\ltx...
+D:\Ideas\content_factory\venv\Lib\site-packages\huggingface_hub\file_download.py:979: UserWarning: `local_dir_use_symlinks` parameter is deprecated and will be ignored. The process to download files to a local folder has been updated and do not rely on symlinks anymore. You only need to pass a destination folder as`local_dir`.
+For more details, check out https://huggingface.co/docs/huggingface_hub/main/en/guides/download#download-files-to-local-folder.
+  warnings.warn(
+ltx-2-19b-distilled-fp8.safetensors:   0%|                                      | 32.4M/27.1G [00:19<3:32:11, 2.12MB/s][ERROR] Failed to download ltx-2-19b-distilled-fp8.safetensors (exit code: 1)
+Downloading ltx-2-spatial-upscaler-x2-1.0.safetensors from Lightricks/ltx-2...
+Downloading ltx-2-spatial-upscaler-x2-1.0.safetensors from Lightricks/ltx-2 to D:\Ideas\content_factory\models\ltx...
+D:\Ideas\content_factory\venv\Lib\site-packages\huggingface_hub\file_download.py:979: UserWarning: `local_dir_use_symlinks` parameter is deprecated and will be ignored. The process to download files to a local folder has been updated and do not rely on symlinks anymore. You only need to pass a destination folder as`local_dir`.
+For more details, check out https://huggingface.co/docs/huggingface_hub/main/en/guides/download#download-files-to-local-folder.
+  warnings.warn(
+Successfully downloaded to: D:\Ideas\content_factory\models\ltx\ltx-2-spatial-upscaler-x2-1.0.safetensors
+[OK] ltx-2-spatial-upscaler-x2-1.0.safetensors downloaded
+Downloading ltx-2-19b-distilled-lora-384.safetensors from Lightricks/ltx-2...
+Downloading ltx-2-19b-distilled-lora-384.safetensors from Lightricks/ltx-2 to D:\Ideas\content_factory\models\ltx...
+D:\Ideas\content_factory\venv\Lib\site-packages\huggingface_hub\file_download.py:979: UserWarning: `local_dir_use_symlinks` parameter is deprecated and will be ignored. The process to download files to a local folder has been updated and do not rely on symlinks anymore. You only need to pass a destination folder as`local_dir`.
+For more details, check out https://huggingface.co/docs/huggingface_hub/main/en/guides/download#download-files-to-local-folder.
+  warnings.warn(
+Successfully downloaded to: D:\Ideas\content_factory\models\ltx\ltx-2-19b-distilled-lora-384.safetensors
+[OK] ltx-2-19b-distilled-lora-384.safetensors downloaded
+[OK] LTX models downloaded: 3 files
+  - ltx-2-19b-distilled-lora-384.safetensors (7.15 GB)
+  - ltx-2-spatial-upscaler-x2-1.0.safetensors (0.93 GB)
+  - ltx-2-temporal-upscaler-x2-1.0.safetensors (0 GB)
 
+========================================
+  Model Setup Complete!
+========================================
+
+Ollama models: D:\Ideas\content_factory\models\ollama
+LTX models: D:\Ideas\content_factory\models\ltx
+
+Next steps:
+- Run the application: .\ops\run_all.ps1
+- Configure niches in the web interface
+
+Press any key to exit...

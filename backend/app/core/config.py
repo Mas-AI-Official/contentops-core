@@ -104,8 +104,10 @@ class Settings(BaseSettings):
 
     # LLM - Ollama (Global defaults, can be overridden per-niche)
     ollama_base_url: str = "http://localhost:11434"
-    ollama_model: str = "llama3.1:8b"
-    ollama_fast_model: str = "llama3.2:3b"
+    ollama_model: str = "qwen2.5:14b-instruct"
+    ollama_fast_model: str = "qwen2.5:7b-instruct"
+    ollama_reasoning_model: str = "deepseek-r1:14b"
+    ollama_embedding_model: str = "nomic-embed-text"
     
     # LLM - Hugging Face Router (OpenAI-compatible intelligent routing)
     hf_router_base_url: str = "https://router.huggingface.co/v1"

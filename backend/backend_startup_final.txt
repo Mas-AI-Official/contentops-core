@@ -1,0 +1,803 @@
+INFO:     Will watch for changes in these directories: ['D:\\Ideas\\content_factory\\backend']
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [37100] using StatReload
+D:\Ideas\content_factory\backend\app\api\mcp.py:14: UserWarning: Field name "json" in "MCPForwardRequest" shadows an attribute in parent "BaseModel"
+  class MCPForwardRequest(BaseModel):
+INFO:     Started server process [36592]
+INFO:     Waiting for application startup.
+2026-01-24 16:58:57 | INFO     | app.main:lifespan:458 - Starting Content Factory...
+2026-01-24 16:58:57 | INFO     | app.db.migrations:run_migrations:11 - Checking for pending database migrations...
+2026-01-24 16:58:57,932 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 16:58:57,933 INFO sqlalchemy.engine.Engine PRAGMA table_info(niches)
+2026-01-24 16:58:57,933 INFO sqlalchemy.engine.Engine [generated in 0.00013s] ()
+2026-01-24 16:58:57,933 INFO sqlalchemy.engine.Engine PRAGMA table_info(accounts)
+2026-01-24 16:58:57,933 INFO sqlalchemy.engine.Engine [generated in 0.00015s] ()
+2026-01-24 16:58:57,934 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 16:58:57 | INFO     | app.db.migrations:run_migrations:59 - Database migrations completed
+2026-01-24 16:58:57,934 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 16:58:57,934 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("niches")
+2026-01-24 16:58:57,934 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-24 16:58:57,935 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("accounts")
+2026-01-24 16:58:57,935 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-24 16:58:57,935 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("jobs")
+2026-01-24 16:58:57,935 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-24 16:58:57,935 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("job_logs")
+2026-01-24 16:58:57,935 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-24 16:58:57,935 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("videos")
+2026-01-24 16:58:57,935 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-24 16:58:57,935 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("video_publishes")
+2026-01-24 16:58:57,935 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-24 16:58:57,935 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("video_metrics")
+2026-01-24 16:58:57,935 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-24 16:58:57,935 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("daily_niche_stats")
+2026-01-24 16:58:57,937 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-24 16:58:57,937 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("video_scores")
+2026-01-24 16:58:57,937 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-24 16:58:57,937 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("niche_targets")
+2026-01-24 16:58:57,937 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-24 16:58:57,937 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("trend_candidates")
+2026-01-24 16:58:57,937 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-24 16:58:57,937 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("pattern_analysis")
+2026-01-24 16:58:57,937 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-24 16:58:57,937 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("promptpacks")
+2026-01-24 16:58:57,937 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-24 16:58:57,938 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("artifacts")
+2026-01-24 16:58:57,938 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-24 16:58:57,938 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("compliance_events")
+2026-01-24 16:58:57,938 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-24 16:58:57,938 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("memory_index")
+2026-01-24 16:58:57,938 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-24 16:58:57,938 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 16:58:57 | INFO     | app.db.migrations:run_migrations:11 - Checking for pending database migrations...
+2026-01-24 16:58:57,939 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 16:58:57,939 INFO sqlalchemy.engine.Engine PRAGMA table_info(niches)
+2026-01-24 16:58:57,939 INFO sqlalchemy.engine.Engine [cached since 0.00627s ago] ()
+2026-01-24 16:58:57,939 INFO sqlalchemy.engine.Engine PRAGMA table_info(accounts)
+2026-01-24 16:58:57,939 INFO sqlalchemy.engine.Engine [cached since 0.005344s ago] ()
+2026-01-24 16:58:57,939 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 16:58:57 | INFO     | app.db.migrations:run_migrations:59 - Database migrations completed
+2026-01-24 16:58:57 | INFO     | app.main:lifespan:465 - Database initialized
+2026-01-24 16:58:57,939 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 16:58:57,958 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.target_audience, niches.content_type, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches
+2026-01-24 16:58:57,958 INFO sqlalchemy.engine.Engine [generated in 0.00022s] ()
+2026-01-24 16:58:57 | INFO     | app.main:seed_default_niches:35 - Found 16 existing niches, skipping seed
+2026-01-24 16:58:57,960 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 16:58:57 | INFO     | app.main:lifespan:469 - Default niches verified
+2026-01-24 16:58:57 | INFO     | app.main:lifespan:485 - Directory structure verified
+2026-01-24 16:58:57 | INFO     | app.services.niche_sync_service:sync_niches_to_db:58 - Starting niche sync from disk to database...
+2026-01-24 16:58:58,073 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 16:58:58,076 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-24 16:58:58,076 INFO sqlalchemy.engine.Engine [generated in 0.00018s] ('ai-that-saves-you-money-ca', 1, 0)
+2026-01-24 16:58:58,078 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-24 16:58:58,078 INFO sqlalchemy.engine.Engine [cached since 0.001197s ago] ('asmr-relaxation', 1, 0)
+2026-01-24 16:58:58,080 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-24 16:58:58,080 INFO sqlalchemy.engine.Engine [cached since 0.003028s ago] ('beauty-trends-now', 1, 0)
+2026-01-24 16:58:58,080 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-24 16:58:58,080 INFO sqlalchemy.engine.Engine [cached since 0.003583s ago] ('comedy-sketches', 1, 0)
+2026-01-24 16:58:58,081 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-24 16:58:58,081 INFO sqlalchemy.engine.Engine [cached since 0.004182s ago] ('cooking-hacks-pro', 1, 0)
+2026-01-24 16:58:58,082 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-24 16:58:58,082 INFO sqlalchemy.engine.Engine [cached since 0.005297s ago] ('dance-challenges', 1, 0)
+2026-01-24 16:58:58,083 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-24 16:58:58,083 INFO sqlalchemy.engine.Engine [cached since 0.005914s ago] ('fashion-finds-daily', 1, 0)
+2026-01-24 16:58:58,083 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-24 16:58:58,083 INFO sqlalchemy.engine.Engine [cached since 0.006519s ago] ('health-tips-daily', 1, 0)
+2026-01-24 16:58:58,084 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-24 16:58:58,084 INFO sqlalchemy.engine.Engine [cached since 0.007192s ago] ('home-decor-hacks', 1, 0)
+2026-01-24 16:58:58,084 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-24 16:58:58,084 INFO sqlalchemy.engine.Engine [cached since 0.007644s ago] ('life-hacks-daily', 1, 0)
+2026-01-24 16:58:58,084 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-24 16:58:58,084 INFO sqlalchemy.engine.Engine [cached since 0.008091s ago] ('life-systems-scripts', 1, 0)
+2026-01-24 16:58:58,085 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-24 16:58:58,085 INFO sqlalchemy.engine.Engine [cached since 0.008558s ago] ('magic-tricks', 1, 0)
+2026-01-24 16:58:58,086 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-24 16:58:58,086 INFO sqlalchemy.engine.Engine [cached since 0.009005s ago] ('micro-money-moves-ca', 1, 0)
+2026-01-24 16:58:58,086 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-24 16:58:58,086 INFO sqlalchemy.engine.Engine [cached since 0.009447s ago] ('pet-care-tips', 1, 0)
+2026-01-24 16:58:58,086 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-24 16:58:58,087 INFO sqlalchemy.engine.Engine [cached since 0.009913s ago] ('quick-recipes', 1, 0)
+2026-01-24 16:58:58,087 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-24 16:58:58,087 INFO sqlalchemy.engine.Engine [cached since 0.01037s ago] ('tech-news-you-can-use', 1, 0)
+2026-01-24 16:58:58 | INFO     | app.services.niche_sync_service:sync_niches_to_db:135 - Niche sync complete: 0 new, 0 updated
+2026-01-24 16:58:58,087 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 16:58:58,087 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 16:58:58,087 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.target_audience, niches.content_type, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches
+2026-01-24 16:58:58,087 INFO sqlalchemy.engine.Engine [cached since 0.13s ago] ()
+2026-01-24 16:58:58,101 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 16:58:58 | INFO     | app.workers.job_worker:start:54 - Job worker started
+2026-01-24 16:58:58 | INFO     | app.main:lifespan:500 - Job worker started
+2026-01-24 16:58:58 | INFO     | app.services.scheduler_service:initialize:59 - Content scheduler initialized
+2026-01-24 16:58:58 | INFO     | app.services.scheduler_service:start:69 - Content scheduler started
+2026-01-24 16:58:58,102 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 16:58:58,104 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.auto_mode = 1
+2026-01-24 16:58:58,104 INFO sqlalchemy.engine.Engine [generated in 0.00015s] ()
+2026-01-24 16:58:58,104 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 16:58:58 | INFO     | app.services.scheduler_service:_schedule_daily_generation:134 - Scheduled content generation for 0 niches (0 total jobs)
+2026-01-24 16:58:58 | INFO     | app.services.scheduler_service:start:82 - Scheduled RSS scraping every 3 hours
+2026-01-24 16:58:58 | INFO     | app.main:lifespan:506 - Content scheduler started
+2026-01-24 16:58:58 | INFO     | app.main:lifespan:511 - Content Factory ready at http://127.0.0.1:8000
+INFO:     Application startup complete.
+2026-01-24 16:59:58,107 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 16:59:58,110 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 16:59:58,110 INFO sqlalchemy.engine.Engine [generated in 0.00026s] ('PENDING', 2, 0)
+2026-01-24 16:59:58,111 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 16:59:58,112 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 16:59:58,113 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 16:59:58,113 INFO sqlalchemy.engine.Engine [generated in 0.00018s] ('PENDING', '2026-01-24 21:59:58.111770')
+2026-01-24 16:59:58,114 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:00:58,118 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:00:58,118 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 17:00:58,119 INFO sqlalchemy.engine.Engine [cached since 60.01s ago] ('PENDING', 2, 0)
+2026-01-24 17:00:58,120 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:00:58,120 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:00:58,122 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 17:00:58,122 INFO sqlalchemy.engine.Engine [cached since 60.01s ago] ('PENDING', '2026-01-24 22:00:58.120501')
+2026-01-24 17:00:58,122 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:01:58,119 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:01:58,120 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 17:01:58,120 INFO sqlalchemy.engine.Engine [cached since 120s ago] ('PENDING', 2, 0)
+2026-01-24 17:01:58,120 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:01:58,121 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:01:58,122 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 17:01:58,122 INFO sqlalchemy.engine.Engine [cached since 120s ago] ('PENDING', '2026-01-24 22:01:58.120794')
+2026-01-24 17:01:58,122 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:02:58,106 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:02:58,107 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 17:02:58,107 INFO sqlalchemy.engine.Engine [cached since 180s ago] ('PENDING', 2, 0)
+2026-01-24 17:02:58,107 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:02:58,108 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:02:58,108 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 17:02:58,108 INFO sqlalchemy.engine.Engine [cached since 180s ago] ('PENDING', '2026-01-24 22:02:58.107393')
+2026-01-24 17:02:58,108 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:03:58,116 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:03:58,118 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 17:03:58,118 INFO sqlalchemy.engine.Engine [cached since 240s ago] ('PENDING', 2, 0)
+2026-01-24 17:03:58,118 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:03:58,118 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:03:58,118 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 17:03:58,118 INFO sqlalchemy.engine.Engine [cached since 240s ago] ('PENDING', '2026-01-24 22:03:58.118765')
+2026-01-24 17:03:58,119 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:04:58,123 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:04:58,124 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 17:04:58,124 INFO sqlalchemy.engine.Engine [cached since 300s ago] ('PENDING', 2, 0)
+2026-01-24 17:04:58,124 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:04:58,124 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:04:58,125 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 17:04:58,125 INFO sqlalchemy.engine.Engine [cached since 300s ago] ('PENDING', '2026-01-24 22:04:58.124090')
+2026-01-24 17:04:58,125 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:05:58,106 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:05:58,107 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 17:05:58,108 INFO sqlalchemy.engine.Engine [cached since 360s ago] ('PENDING', 2, 0)
+2026-01-24 17:05:58,108 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:05:58,109 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:05:58,110 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 17:05:58,110 INFO sqlalchemy.engine.Engine [cached since 360s ago] ('PENDING', '2026-01-24 22:05:58.109814')
+2026-01-24 17:05:58,110 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:06:58,105 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:06:58,105 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 17:06:58,105 INFO sqlalchemy.engine.Engine [cached since 420s ago] ('PENDING', 2, 0)
+2026-01-24 17:06:58,106 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:06:58,107 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:06:58,108 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 17:06:58,108 INFO sqlalchemy.engine.Engine [cached since 420s ago] ('PENDING', '2026-01-24 22:06:58.107487')
+2026-01-24 17:06:58,108 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:07:58,118 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:07:58,118 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 17:07:58,119 INFO sqlalchemy.engine.Engine [cached since 480s ago] ('PENDING', 2, 0)
+2026-01-24 17:07:58,120 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:07:58,121 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:07:58,129 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 17:07:58,129 INFO sqlalchemy.engine.Engine [cached since 480s ago] ('PENDING', '2026-01-24 22:07:58.121095')
+2026-01-24 17:07:58,129 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:08:58,103 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:08:58,105 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 17:08:58,105 INFO sqlalchemy.engine.Engine [cached since 540s ago] ('PENDING', 2, 0)
+2026-01-24 17:08:58,107 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:08:58,108 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:08:58,108 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 17:08:58,108 INFO sqlalchemy.engine.Engine [cached since 540s ago] ('PENDING', '2026-01-24 22:08:58.108350')
+2026-01-24 17:08:58,109 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:09:58,109 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:09:58,110 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 17:09:58,110 INFO sqlalchemy.engine.Engine [cached since 600s ago] ('PENDING', 2, 0)
+2026-01-24 17:09:58,112 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:09:58,113 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:09:58,113 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 17:09:58,113 INFO sqlalchemy.engine.Engine [cached since 600s ago] ('PENDING', '2026-01-24 22:09:58.112861')
+2026-01-24 17:09:58,113 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:10:58,118 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:10:58,118 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 17:10:58,118 INFO sqlalchemy.engine.Engine [cached since 660s ago] ('PENDING', 2, 0)
+2026-01-24 17:10:58,119 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:10:58,121 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:10:58,121 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 17:10:58,121 INFO sqlalchemy.engine.Engine [cached since 660s ago] ('PENDING', '2026-01-24 22:10:58.120552')
+2026-01-24 17:10:58,122 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:11:58,118 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:11:58,119 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 17:11:58,119 INFO sqlalchemy.engine.Engine [cached since 720s ago] ('PENDING', 2, 0)
+2026-01-24 17:11:58,120 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:11:58,121 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:11:58,122 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 17:11:58,123 INFO sqlalchemy.engine.Engine [cached since 720s ago] ('PENDING', '2026-01-24 22:11:58.121676')
+2026-01-24 17:11:58,123 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:12:58,118 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:12:58,119 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 17:12:58,119 INFO sqlalchemy.engine.Engine [cached since 780s ago] ('PENDING', 2, 0)
+2026-01-24 17:12:58,120 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:12:58,121 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:12:58,121 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 17:12:58,123 INFO sqlalchemy.engine.Engine [cached since 780s ago] ('PENDING', '2026-01-24 22:12:58.121562')
+2026-01-24 17:12:58,123 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:13:58,128 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:13:58,129 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 17:13:58,129 INFO sqlalchemy.engine.Engine [cached since 840s ago] ('PENDING', 2, 0)
+2026-01-24 17:13:58,130 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:13:58,131 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:13:58,131 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 17:13:58,132 INFO sqlalchemy.engine.Engine [cached since 840s ago] ('PENDING', '2026-01-24 22:13:58.131329')
+2026-01-24 17:13:58,132 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:14:58,116 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:14:58,117 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 17:14:58,117 INFO sqlalchemy.engine.Engine [cached since 900s ago] ('PENDING', 2, 0)
+2026-01-24 17:14:58,117 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:14:58,117 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:14:58,117 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 17:14:58,117 INFO sqlalchemy.engine.Engine [cached since 900s ago] ('PENDING', '2026-01-24 22:14:58.117453')
+2026-01-24 17:14:58,118 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:15:58,113 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:15:58,114 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 17:15:58,114 INFO sqlalchemy.engine.Engine [cached since 960s ago] ('PENDING', 2, 0)
+2026-01-24 17:15:58,115 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:15:58,115 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:15:58,116 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 17:15:58,116 INFO sqlalchemy.engine.Engine [cached since 960s ago] ('PENDING', '2026-01-24 22:15:58.115368')
+2026-01-24 17:15:58,116 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:16:58,115 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:16:58,116 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 17:16:58,116 INFO sqlalchemy.engine.Engine [cached since 1020s ago] ('PENDING', 2, 0)
+2026-01-24 17:16:58,116 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:16:58,116 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:16:58,117 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 17:16:58,117 INFO sqlalchemy.engine.Engine [cached since 1020s ago] ('PENDING', '2026-01-24 22:16:58.116557')
+2026-01-24 17:16:58,118 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:17:58,105 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:17:58,105 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 17:17:58,105 INFO sqlalchemy.engine.Engine [cached since 1080s ago] ('PENDING', 2, 0)
+2026-01-24 17:17:58,106 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:17:58,108 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:17:58,108 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 17:17:58,108 INFO sqlalchemy.engine.Engine [cached since 1080s ago] ('PENDING', '2026-01-24 22:17:58.106606')
+2026-01-24 17:17:58,108 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:18:58,116 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:18:58,116 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 17:18:58,117 INFO sqlalchemy.engine.Engine [cached since 1140s ago] ('PENDING', 2, 0)
+2026-01-24 17:18:58,117 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:18:58,118 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:18:58,118 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 17:18:58,119 INFO sqlalchemy.engine.Engine [cached since 1140s ago] ('PENDING', '2026-01-24 22:18:58.117319')
+2026-01-24 17:18:58,119 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:19:58,110 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:19:58,111 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 17:19:58,111 INFO sqlalchemy.engine.Engine [cached since 1200s ago] ('PENDING', 2, 0)
+2026-01-24 17:19:58,111 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:19:58,112 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:19:58,112 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 17:19:58,112 INFO sqlalchemy.engine.Engine [cached since 1200s ago] ('PENDING', '2026-01-24 22:19:58.111478')
+2026-01-24 17:19:58,114 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:20:58,114 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:20:58,116 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 17:20:58,116 INFO sqlalchemy.engine.Engine [cached since 1260s ago] ('PENDING', 2, 0)
+2026-01-24 17:20:58,116 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:20:58,117 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:20:58,118 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 17:20:58,118 INFO sqlalchemy.engine.Engine [cached since 1260s ago] ('PENDING', '2026-01-24 22:20:58.117185')
+2026-01-24 17:20:58,118 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:21:58,109 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:21:58,110 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 17:21:58,110 INFO sqlalchemy.engine.Engine [cached since 1320s ago] ('PENDING', 2, 0)
+2026-01-24 17:21:58,110 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:21:58,111 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:21:58,111 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 17:21:58,111 INFO sqlalchemy.engine.Engine [cached since 1320s ago] ('PENDING', '2026-01-24 22:21:58.111081')
+2026-01-24 17:21:58,111 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:22:58,106 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:22:58,107 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 17:22:58,107 INFO sqlalchemy.engine.Engine [cached since 1380s ago] ('PENDING', 2, 0)
+2026-01-24 17:22:58,107 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:22:58,107 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:22:58,109 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 17:22:58,109 INFO sqlalchemy.engine.Engine [cached since 1380s ago] ('PENDING', '2026-01-24 22:22:58.107767')
+2026-01-24 17:22:58,109 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:23:58,110 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:23:58,110 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 17:23:58,110 INFO sqlalchemy.engine.Engine [cached since 1440s ago] ('PENDING', 2, 0)
+2026-01-24 17:23:58,110 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:23:58,112 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:23:58,113 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 17:23:58,113 INFO sqlalchemy.engine.Engine [cached since 1440s ago] ('PENDING', '2026-01-24 22:23:58.112017')
+2026-01-24 17:23:58,113 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:24:58,108 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:24:58,108 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 17:24:58,108 INFO sqlalchemy.engine.Engine [cached since 1500s ago] ('PENDING', 2, 0)
+2026-01-24 17:24:58,108 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:24:58,108 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:24:58,109 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 17:24:58,109 INFO sqlalchemy.engine.Engine [cached since 1500s ago] ('PENDING', '2026-01-24 22:24:58.108897')
+2026-01-24 17:24:58,110 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:25:58,107 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:25:58,108 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 17:25:58,108 INFO sqlalchemy.engine.Engine [cached since 1560s ago] ('PENDING', 2, 0)
+2026-01-24 17:25:58,108 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:25:58,109 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:25:58,109 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 17:25:58,109 INFO sqlalchemy.engine.Engine [cached since 1560s ago] ('PENDING', '2026-01-24 22:25:58.109261')
+2026-01-24 17:25:58,110 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:26:58,110 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:26:58,110 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 17:26:58,110 INFO sqlalchemy.engine.Engine [cached since 1620s ago] ('PENDING', 2, 0)
+2026-01-24 17:26:58,111 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:26:58,111 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:26:58,111 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 17:26:58,112 INFO sqlalchemy.engine.Engine [cached since 1620s ago] ('PENDING', '2026-01-24 22:26:58.111371')
+2026-01-24 17:26:58,112 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:27:58,107 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:27:58,107 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 17:27:58,107 INFO sqlalchemy.engine.Engine [cached since 1680s ago] ('PENDING', 2, 0)
+2026-01-24 17:27:58,108 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:27:58,109 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:27:58,109 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 17:27:58,109 INFO sqlalchemy.engine.Engine [cached since 1680s ago] ('PENDING', '2026-01-24 22:27:58.108313')
+2026-01-24 17:27:58,109 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:28:58,118 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:28:58,119 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 17:28:58,119 INFO sqlalchemy.engine.Engine [cached since 1740s ago] ('PENDING', 2, 0)
+2026-01-24 17:28:58,119 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:28:58,121 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:28:58,122 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 17:28:58,122 INFO sqlalchemy.engine.Engine [cached since 1740s ago] ('PENDING', '2026-01-24 22:28:58.121015')
+2026-01-24 17:28:58,122 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:29:58,113 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:29:58,114 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 17:29:58,114 INFO sqlalchemy.engine.Engine [cached since 1800s ago] ('PENDING', 2, 0)
+2026-01-24 17:29:58,116 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:29:58,117 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:29:58,118 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 17:29:58,118 INFO sqlalchemy.engine.Engine [cached since 1800s ago] ('PENDING', '2026-01-24 22:29:58.117007')
+2026-01-24 17:29:58,118 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:30:58,116 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:30:58,116 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 17:30:58,116 INFO sqlalchemy.engine.Engine [cached since 1860s ago] ('PENDING', 2, 0)
+2026-01-24 17:30:58,117 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:30:58,117 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:30:58,117 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 17:30:58,117 INFO sqlalchemy.engine.Engine [cached since 1860s ago] ('PENDING', '2026-01-24 22:30:58.117636')
+2026-01-24 17:30:58,117 INFO sqlalchemy.engine.Engine COMMIT
+WARNING:  StatReload detected changes in 'app\core\config.py'. Reloading...
+ 2026-01-24 17:31:58,123 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:31:58,124 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 17:31:58,124 INFO sqlalchemy.engine.Engine [cached since 1920s ago] ('PENDING', 2, 0)
+2026-01-24 17:31:58,124 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:31:58,124 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:31:58,125 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 17:31:58,125 INFO sqlalchemy.engine.Engine [cached since 1920s ago] ('PENDING', '2026-01-24 22:31:58.124805')
+2026-01-24 17:31:58,126 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+2026-01-24 17:32:23 | INFO     | app.main:lifespan:516 - Shutting down Content Factory...
+2026-01-24 17:32:23 | INFO     | app.workers.job_worker:stop:63 - Job worker stopped
+2026-01-24 17:32:23 | INFO     | app.main:lifespan:519 - Shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [36592]
+D:\Ideas\content_factory\backend\app\api\mcp.py:14: UserWarning: Field name "json" in "MCPForwardRequest" shadows an attribute in parent "BaseModel"
+  class MCPForwardRequest(BaseModel):
+INFO:     Started server process [34192]
+INFO:     Waiting for application startup.
+2026-01-24 17:32:30 | INFO     | app.main:lifespan:458 - Starting Content Factory...
+2026-01-24 17:32:30 | INFO     | app.db.migrations:run_migrations:11 - Checking for pending database migrations...
+2026-01-24 17:32:30,733 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:32:30,734 INFO sqlalchemy.engine.Engine PRAGMA table_info(niches)
+2026-01-24 17:32:30,734 INFO sqlalchemy.engine.Engine [generated in 0.00033s] ()
+2026-01-24 17:32:30,736 INFO sqlalchemy.engine.Engine PRAGMA table_info(accounts)
+2026-01-24 17:32:30,736 INFO sqlalchemy.engine.Engine [generated in 0.00029s] ()
+2026-01-24 17:32:30,737 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:32:30 | INFO     | app.db.migrations:run_migrations:59 - Database migrations completed
+2026-01-24 17:32:30,737 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:32:30,737 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("niches")
+2026-01-24 17:32:30,737 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-24 17:32:30,739 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("accounts")
+2026-01-24 17:32:30,739 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-24 17:32:30,740 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("jobs")
+2026-01-24 17:32:30,740 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-24 17:32:30,740 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("job_logs")
+2026-01-24 17:32:30,740 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-24 17:32:30,740 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("videos")
+2026-01-24 17:32:30,741 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-24 17:32:30,741 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("video_publishes")
+2026-01-24 17:32:30,741 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-24 17:32:30,741 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("video_metrics")
+2026-01-24 17:32:30,741 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-24 17:32:30,741 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("daily_niche_stats")
+2026-01-24 17:32:30,741 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-24 17:32:30,742 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("video_scores")
+2026-01-24 17:32:30,742 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-24 17:32:30,742 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("niche_targets")
+2026-01-24 17:32:30,743 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-24 17:32:30,743 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("trend_candidates")
+2026-01-24 17:32:30,743 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-24 17:32:30,743 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("pattern_analysis")
+2026-01-24 17:32:30,743 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-24 17:32:30,743 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("promptpacks")
+2026-01-24 17:32:30,743 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-24 17:32:30,743 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("artifacts")
+2026-01-24 17:32:30,744 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-24 17:32:30,744 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("compliance_events")
+2026-01-24 17:32:30,744 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-24 17:32:30,744 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("memory_index")
+2026-01-24 17:32:30,744 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-24 17:32:30,746 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:32:30 | INFO     | app.db.migrations:run_migrations:11 - Checking for pending database migrations...
+2026-01-24 17:32:30,748 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:32:30,748 INFO sqlalchemy.engine.Engine PRAGMA table_info(niches)
+2026-01-24 17:32:30,748 INFO sqlalchemy.engine.Engine [cached since 0.01388s ago] ()
+2026-01-24 17:32:30,749 INFO sqlalchemy.engine.Engine PRAGMA table_info(accounts)
+2026-01-24 17:32:30,749 INFO sqlalchemy.engine.Engine [cached since 0.01223s ago] ()
+2026-01-24 17:32:30,749 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:32:30 | INFO     | app.db.migrations:run_migrations:59 - Database migrations completed
+2026-01-24 17:32:30 | INFO     | app.main:lifespan:465 - Database initialized
+2026-01-24 17:32:30,751 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:32:30,782 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.target_audience, niches.content_type, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches
+2026-01-24 17:32:30,782 INFO sqlalchemy.engine.Engine [generated in 0.00043s] ()
+2026-01-24 17:32:30 | INFO     | app.main:seed_default_niches:35 - Found 16 existing niches, skipping seed
+2026-01-24 17:32:30,785 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:32:30 | INFO     | app.main:lifespan:469 - Default niches verified
+2026-01-24 17:32:30 | INFO     | app.main:lifespan:485 - Directory structure verified
+2026-01-24 17:32:30 | INFO     | app.services.niche_sync_service:sync_niches_to_db:58 - Starting niche sync from disk to database...
+2026-01-24 17:32:30,875 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:32:30,879 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-24 17:32:30,879 INFO sqlalchemy.engine.Engine [generated in 0.00036s] ('ai-that-saves-you-money-ca', 1, 0)
+2026-01-24 17:32:30,882 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-24 17:32:30,883 INFO sqlalchemy.engine.Engine [cached since 0.002812s ago] ('asmr-relaxation', 1, 0)
+2026-01-24 17:32:30,887 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-24 17:32:30,887 INFO sqlalchemy.engine.Engine [cached since 0.007487s ago] ('beauty-trends-now', 1, 0)
+2026-01-24 17:32:30,888 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-24 17:32:30,888 INFO sqlalchemy.engine.Engine [cached since 0.008784s ago] ('comedy-sketches', 1, 0)
+2026-01-24 17:32:30,889 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-24 17:32:30,889 INFO sqlalchemy.engine.Engine [cached since 0.009912s ago] ('cooking-hacks-pro', 1, 0)
+2026-01-24 17:32:30,890 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-24 17:32:30,890 INFO sqlalchemy.engine.Engine [cached since 0.01095s ago] ('dance-challenges', 1, 0)
+2026-01-24 17:32:30,891 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-24 17:32:30,891 INFO sqlalchemy.engine.Engine [cached since 0.01203s ago] ('fashion-finds-daily', 1, 0)
+2026-01-24 17:32:30,892 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-24 17:32:30,892 INFO sqlalchemy.engine.Engine [cached since 0.01296s ago] ('health-tips-daily', 1, 0)
+2026-01-24 17:32:30,894 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-24 17:32:30,894 INFO sqlalchemy.engine.Engine [cached since 0.01388s ago] ('home-decor-hacks', 1, 0)
+2026-01-24 17:32:30,894 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-24 17:32:30,895 INFO sqlalchemy.engine.Engine [cached since 0.01481s ago] ('life-hacks-daily', 1, 0)
+2026-01-24 17:32:30,895 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-24 17:32:30,895 INFO sqlalchemy.engine.Engine [cached since 0.01572s ago] ('life-systems-scripts', 1, 0)
+2026-01-24 17:32:30,896 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-24 17:32:30,896 INFO sqlalchemy.engine.Engine [cached since 0.01677s ago] ('magic-tricks', 1, 0)
+2026-01-24 17:32:30,897 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-24 17:32:30,897 INFO sqlalchemy.engine.Engine [cached since 0.01784s ago] ('micro-money-moves-ca', 1, 0)
+2026-01-24 17:32:30,897 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-24 17:32:30,897 INFO sqlalchemy.engine.Engine [cached since 0.01896s ago] ('pet-care-tips', 1, 0)
+2026-01-24 17:32:30,900 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-24 17:32:30,900 INFO sqlalchemy.engine.Engine [cached since 0.02s ago] ('quick-recipes', 1, 0)
+2026-01-24 17:32:30,902 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-24 17:32:30,902 INFO sqlalchemy.engine.Engine [cached since 0.02317s ago] ('tech-news-you-can-use', 1, 0)
+2026-01-24 17:32:30 | INFO     | app.services.niche_sync_service:sync_niches_to_db:135 - Niche sync complete: 0 new, 0 updated
+2026-01-24 17:32:30,903 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:32:30,903 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:32:30,905 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.target_audience, niches.content_type, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches
+2026-01-24 17:32:30,905 INFO sqlalchemy.engine.Engine [cached since 0.1223s ago] ()
+2026-01-24 17:32:30,926 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:32:30 | INFO     | app.workers.job_worker:start:54 - Job worker started
+2026-01-24 17:32:30 | INFO     | app.main:lifespan:500 - Job worker started
+2026-01-24 17:32:30 | INFO     | app.services.scheduler_service:initialize:59 - Content scheduler initialized
+2026-01-24 17:32:30 | INFO     | app.services.scheduler_service:start:69 - Content scheduler started
+2026-01-24 17:32:30,929 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:32:30,931 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.auto_mode = 1
+2026-01-24 17:32:30,931 INFO sqlalchemy.engine.Engine [generated in 0.00029s] ()
+2026-01-24 17:32:30,933 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:32:30 | INFO     | app.services.scheduler_service:_schedule_daily_generation:134 - Scheduled content generation for 0 niches (0 total jobs)
+2026-01-24 17:32:30 | INFO     | app.services.scheduler_service:start:82 - Scheduled RSS scraping every 3 hours
+2026-01-24 17:32:30 | INFO     | app.main:lifespan:506 - Content scheduler started
+2026-01-24 17:32:30 | INFO     | app.main:lifespan:511 - Content Factory ready at http://127.0.0.1:8000
+INFO:     Application startup complete.
+2026-01-24 17:33:30,942 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:33:30,945 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 17:33:30,946 INFO sqlalchemy.engine.Engine [generated in 0.00030s] ('PENDING', 2, 0)
+2026-01-24 17:33:30,946 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:33:30,948 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:33:30,950 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 17:33:30,950 INFO sqlalchemy.engine.Engine [generated in 0.00021s] ('PENDING', '2026-01-24 22:33:30.948490')
+2026-01-24 17:33:30,950 INFO sqlalchemy.engine.Engine COMMIT
+WARNING:  StatReload detected changes in 'app\services\trend_service.py'. Reloading...
+ 2026-01-24 17:34:30,942 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:34:30,943 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-24 17:34:30,943 INFO sqlalchemy.engine.Engine [cached since 59.99s ago] ('PENDING', 2, 0)
+2026-01-24 17:34:30,943 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-24 17:34:30,944 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-24 17:34:30,944 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-24 17:34:30,944 INFO sqlalchemy.engine.Engine [cached since 59.99s ago] ('PENDING', '2026-01-24 22:34:30.943518')
+2026-01-24 17:34:30,944 INFO sqlalchemy.engine.Engine COMMIT

@@ -53,6 +53,47 @@ class TrendService:
         await session.commit()
         return saved_candidates
 
+    async def _analyze_with_llm(self, text: str) -> Dict[str, Any]:
+        """Analyze text using Reasoning model."""
+        from app.core.config import settings
+        import httpx
+        import json
+        
+        prompt = f"""Analyze this viral video content and extract the pattern.
+        
+        Content: "{text}"
+        
+        Return JSON with:
+        - hook_type (e.g. Question, Statement, Visual)
+        - pacing (Fast, Medium, Slow)
+        - structure (e.g. PAS, Listicle, Story)
+        - audience_intent (e.g. Education, Entertainment)
+        - format_features (list of features)
+        
+        JSON:"""
+        
+        try:
+            async with httpx.AsyncClient(timeout=60.0) as client:
+                response = await client.post(
+                    f"{settings.ollama_base_url}/api/generate",
+                    json={
+                        "model": settings.ollama_reasoning_model,
+                        "prompt": prompt,
+                        "stream": False,
+                        "format": "json"
+                    }
+                )
+                if response.status_code != 200:
+                    logger.error(f"LLM error: {response.text}")
+                    return {}
+                    
+                data = response.json()
+                content = data.get("response", "{}")
+                return json.loads(content)
+        except Exception as e:
+            logger.error(f"Analysis failed: {e}")
+            return {}
+
     async def analyze_candidates(
         self,
         session: Session,
@@ -70,15 +111,16 @@ class TrendService:
                 analyses.append(cand.analysis)
                 continue
                 
-            # Perform analysis (Mock for now, or use LLM)
-            # In real implementation, pass caption/transcript to LLM
+            # Perform analysis
+            result = await self._analyze_with_llm(cand.caption or "")
+            
             analysis = PatternAnalysis(
                 candidate_id=cid,
-                hook_type="Question Hook",
-                pacing="Fast",
-                structure="Problem-Agitation-Solution",
-                audience_intent="Entertainment",
-                format_features={"text_overlay": True, "music": "Trending"}
+                hook_type=result.get("hook_type", "Unknown"),
+                pacing=result.get("pacing", "Medium"),
+                structure=result.get("structure", "Unknown"),
+                audience_intent=result.get("audience_intent", "Unknown"),
+                format_features=result.get("format_features", {})
             )
             session.add(analysis)
             analyses.append(analysis)

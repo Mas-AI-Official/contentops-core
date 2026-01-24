@@ -1,0 +1,4 @@
+https://valid-walnut-enforcement-fioricet.trycloudflare.com/
+
+irm http://localhost:8000
+cloudflared tunnel --url http://localhost:3000
