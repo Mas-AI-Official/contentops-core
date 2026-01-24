@@ -1,88 +1,34 @@
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-
-# Virtual environment (any subfolder)
-**/venv/
-**/.venv/
-**/ENV/
-**/env/
-
-# Models folder contents (large files, download locally)
-models/ollama/*
-models/whisper/*
-models/xtts/*
-models/image/*
-models/torch/*
-!models/**/.gitkeep
-
-# Environment variables
-.env
-.env.local
-.env.*.local
-
-# Node
+﻿# Node / Next
 node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+.next/
+out/
+dist/
+*.log
 
-# IDE
-.idea/
-.vscode/
-*.swp
-*.swo
-*~
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Large local assets / models
+models/
+LTX-2/
+comfyui/
+comfyui_ltx/
+data/
+outputs/
+uploads/
+logs/
+tmp/
+cache/
+*.safetensors
+*.ckpt
+*.pt
+*.bin
+*.onnx
 
 # OS
 .DS_Store
 Thumbs.db
-
-# Data folders (keep structure, ignore contents)
-data/outputs/*
-data/uploads/*
-data/logs/*
-data/scripts/*
-!data/outputs/.gitkeep
-!data/uploads/.gitkeep
-!data/logs/.gitkeep
-!data/scripts/.gitkeep
-
-# Database
-*.db
-*.sqlite
-*.sqlite3
-
-# Logs
-*.log
-
-# Test coverage
-.coverage
-htmlcov/
-.pytest_cache/
-
-# Build outputs
-frontend/dist/
-
-# Credentials and secrets
-credentials.json
-token.json
-client_secrets.json

@@ -10,7 +10,7 @@ from sqlmodel import Session, select
 
 from app.db import get_async_session
 from app.models import Niche, Job, JobCreate, JobType, JobStatus
-from app.services import topic_service, script_service
+from app.services import topic_service, script_service, scraper_service, trend_service
 from app.workers import run_job_now
 from app.core.config import settings
 
@@ -21,7 +21,8 @@ class GeneratePreviewRequest(BaseModel):
     niche_id: int
     topic: Optional[str] = None
     custom_script: Optional[str] = None
-    topic_source: Optional[str] = "auto"  # auto, rss, list, llm
+    topic_source: Optional[str] = "auto"  # auto, rss, list, llm, trending
+    video_model: Optional[str] = None
 
 
 class ScriptPreviewRequest(BaseModel):
@@ -40,9 +41,41 @@ async def generate_topic(
     if not niche:
         raise HTTPException(status_code=404, detail="Niche not found")
 
+    if source == "trending":
+        # Get trending topics relevant to niche
+        keywords = [niche.name]
+        if niche.keywords:
+            keywords.extend([k.strip() for k in niche.keywords.split(",") if k.strip()])
+            
+        trends = await trend_service.get_niche_trends(keywords)
+        
+        if trends:
+            # Pick the top trend
+            trend = trends[0]
+            topic = trend.get("topic", "")
+            return {"topic": topic, "source": "trending", "data": trend}
+        else:
+            # Fallback
+            topic = await topic_service.generate_topic_auto(niche.name, niche.description or "")
+            return {"topic": topic, "source": "trending_fallback"}
+
     if source == "rss":
-        topic = await topic_service.generate_topic_auto(niche.name, niche.description or "")
-        return {"topic": topic, "source": "rss"}
+        # Get unused topic from scraper service
+        # Use niche name as slug (or better, store slug in DB, but name usually works for directory lookup)
+        niche_slug = niche.name  
+        topic_data = scraper_service.get_unused_topic(niche_slug)
+        
+        if topic_data:
+            topic = topic_data.get("title", "")
+            # Mark as used immediately for generator preview? 
+            # Maybe better to wait until video is generated, but for now let's just pick it.
+            # We won't mark it used yet so user can regenerate if they don't like it.
+            return {"topic": topic, "source": "rss", "data": topic_data}
+        else:
+            # Fallback to auto if no RSS topics found
+            topic = await topic_service.generate_topic_auto(niche.name, niche.description or "")
+            return {"topic": topic, "source": "rss_fallback"}
+
     if source == "list":
         topic = topic_service.select_from_list(niche.name)
         if not topic:
@@ -104,7 +137,8 @@ async def generate_test_video(
         niche_id=request.niche_id,
         job_type=JobType.GENERATE_ONLY,
         topic=topic,
-        topic_source="generator_preview"
+        topic_source="generator_preview",
+        video_model=request.video_model
     )
     session.add(job)
     await session.commit()

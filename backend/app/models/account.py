@@ -3,8 +3,9 @@ Account model - platform account configurations.
 Secrets are NOT stored in DB - only references to env vars.
 """
 from datetime import datetime
-from typing import Optional
+from typing import Optional, Dict
 from sqlmodel import SQLModel, Field
+from sqlalchemy import JSON, Column
 from enum import Enum
 
 
@@ -39,6 +40,11 @@ class AccountBase(SQLModel):
     # Platform-specific IDs (non-secret)
     platform_user_id: Optional[str] = None
     platform_channel_id: Optional[str] = None
+    
+    # Credentials (encrypted/stored as JSON)
+    credentials_json: Optional[Dict] = Field(default=None, sa_column=Column(JSON))
+
+
 
 
 class Account(AccountBase, table=True):

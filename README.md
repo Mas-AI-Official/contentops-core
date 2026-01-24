@@ -4,12 +4,22 @@ A local-first, end-to-end content generation system for creating short-form vert
 
 ## Features
 
+### Core Features
 - **Multi-Niche Content Generation**: Create content for AI/Tech, Finance, Health, Travel, Comedy, and more
-- **AI-Powered Pipeline**: Script generation (Ollama), TTS (XTTS/ElevenLabs), Subtitles (Whisper)
+- **AI-Powered Pipeline**: Script generation (Ollama/HF Router), TTS (XTTS/ElevenLabs), Subtitles (Whisper)
 - **Multi-Platform Publishing**: YouTube Shorts, Instagram Reels, TikTok
 - **Per-Niche Model Selection**: Configure different AI models per content niche
 - **Local Model Management**: Download and manage Ollama models from the dashboard
 - **Script Library**: Organized script storage by date/niche with search
+
+### Automation Features ✨ NEW
+- **Auto Content Generation**: Scheduled generation (2-3 posts/day per niche)
+- **70/30 Growth Engine**: 70% proven templates, 30% experiments with automatic learning
+- **RSS Topic Discovery**: Automatic topic sourcing from news feeds
+- **Smart Template Selection**: Performance-based template weighting
+- **Auto Publishing**: Scheduled multi-platform publishing
+- **Analytics & Learning**: Automatic performance tracking and optimization
+- **Creator Profile System**: Authenticity-focused content generation
 - **Platform-Specific Export**: Optimized video encoding per platform requirements
 - **Modern Dashboard**: React + Tailwind UI with 10 feature pages
 

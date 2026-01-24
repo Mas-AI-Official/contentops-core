@@ -253,7 +253,8 @@ class JobWorker:
             subtitle_path=subtitle_path,
             burn_subtitles=True,
             logo_path=logo,
-            output_path=video_path
+            output_path=video_path,
+            video_model=job.video_model  # Pass LTX model selection
         )
         
         await render_service.render_video(render_config, script_text=script.full_script)
@@ -316,6 +317,13 @@ class JobWorker:
             self._log(session, job_id, "WARNING", "No platforms selected for publishing")
             return
         
+        # Prepare account IDs
+        account_ids = {
+            "youtube": niche.youtube_account_id or niche.account_id,
+            "instagram": niche.instagram_account_id or niche.account_id,
+            "tiktok": niche.tiktok_account_id or niche.account_id
+        }
+
         # Publish to platforms
         results = await publish_service.publish(
             video_path=video_path,
@@ -323,7 +331,8 @@ class JobWorker:
             description=job.full_script or "",
             tags=niche.hashtags,
             hashtags=[f"#{tag}" for tag in niche.hashtags],
-            platforms=platforms
+            platforms=platforms,
+            account_ids=account_ids
         )
         
         # Store results

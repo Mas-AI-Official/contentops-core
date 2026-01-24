@@ -1,0 +1,899 @@
+INFO:     Will watch for changes in these directories: ['D:\\Ideas\\content_factory\\backend']
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [19848] using StatReload
+D:\Ideas\content_factory\backend\app\api\mcp.py:14: UserWarning: Field name "json" in "MCPForwardRequest" shadows an attribute in parent "BaseModel"
+  class MCPForwardRequest(BaseModel):
+INFO:     Started server process [31060]
+INFO:     Waiting for application startup.
+2026-01-23 19:47:52 | INFO     | app.main:lifespan:458 - Starting Content Factory...
+2026-01-23 19:47:52 | INFO     | app.db.migrations:run_migrations:11 - Checking for pending database migrations...
+2026-01-23 19:47:52,710 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,711 INFO sqlalchemy.engine.Engine PRAGMA table_info(niches)
+2026-01-23 19:47:52,711 INFO sqlalchemy.engine.Engine [generated in 0.00018s] ()
+2026-01-23 19:47:52 | INFO     | app.db.migrations:run_migrations:20 - Migrating: Adding 'auto_mode' column to 'niches' table
+2026-01-23 19:47:52,712 INFO sqlalchemy.engine.Engine ALTER TABLE niches ADD COLUMN auto_mode BOOLEAN DEFAULT 0
+2026-01-23 19:47:52,712 INFO sqlalchemy.engine.Engine [generated in 0.00016s] ()
+2026-01-23 19:47:52 | ERROR    | app.db.migrations:run_migrations:45 - Migration failed for 'niches' table: (sqlite3.OperationalError) no such table: niches
+[SQL: ALTER TABLE niches ADD COLUMN auto_mode BOOLEAN DEFAULT 0]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-01-23 19:47:52,712 INFO sqlalchemy.engine.Engine PRAGMA table_info(accounts)
+2026-01-23 19:47:52,712 INFO sqlalchemy.engine.Engine [generated in 0.00009s] ()
+2026-01-23 19:47:52 | INFO     | app.db.migrations:run_migrations:53 - Migrating: Adding 'credentials_json' column to 'accounts' table
+2026-01-23 19:47:52,713 INFO sqlalchemy.engine.Engine ALTER TABLE accounts ADD COLUMN credentials_json JSON
+2026-01-23 19:47:52,713 INFO sqlalchemy.engine.Engine [generated in 0.00007s] ()
+2026-01-23 19:47:52 | ERROR    | app.db.migrations:run_migrations:57 - Migration failed for 'accounts' table: (sqlite3.OperationalError) no such table: accounts
+[SQL: ALTER TABLE accounts ADD COLUMN credentials_json JSON]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-01-23 19:47:52,713 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:47:52 | INFO     | app.db.migrations:run_migrations:59 - Database migrations completed
+2026-01-23 19:47:52,713 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,713 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("niches")
+2026-01-23 19:47:52,713 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:47:52,713 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("niches")
+2026-01-23 19:47:52,713 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:47:52,713 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("accounts")
+2026-01-23 19:47:52,713 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:47:52,713 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("accounts")
+2026-01-23 19:47:52,713 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:47:52,713 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("jobs")
+2026-01-23 19:47:52,713 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:47:52,713 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("jobs")
+2026-01-23 19:47:52,713 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:47:52,713 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("job_logs")
+2026-01-23 19:47:52,713 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:47:52,713 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("job_logs")
+2026-01-23 19:47:52,713 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:47:52,715 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("videos")
+2026-01-23 19:47:52,715 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:47:52,715 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("videos")
+2026-01-23 19:47:52,715 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:47:52,715 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("video_publishes")
+2026-01-23 19:47:52,715 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:47:52,715 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("video_publishes")
+2026-01-23 19:47:52,715 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:47:52,715 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("video_metrics")
+2026-01-23 19:47:52,715 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:47:52,715 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("video_metrics")
+2026-01-23 19:47:52,715 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:47:52,715 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("daily_niche_stats")
+2026-01-23 19:47:52,715 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:47:52,716 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("daily_niche_stats")
+2026-01-23 19:47:52,716 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:47:52,716 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("video_scores")
+2026-01-23 19:47:52,716 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:47:52,716 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("video_scores")
+2026-01-23 19:47:52,716 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:47:52,716 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("niche_targets")
+2026-01-23 19:47:52,716 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:47:52,716 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("niche_targets")
+2026-01-23 19:47:52,716 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:47:52,717 INFO sqlalchemy.engine.Engine 
+CREATE TABLE accounts (
+	platform VARCHAR(9) NOT NULL, 
+	account_name VARCHAR NOT NULL, 
+	account_handle VARCHAR, 
+	credentials_env_prefix VARCHAR NOT NULL, 
+	is_active BOOLEAN NOT NULL, 
+	last_verified DATETIME, 
+	platform_user_id VARCHAR, 
+	platform_channel_id VARCHAR, 
+	credentials_json JSON, 
+	id INTEGER NOT NULL, 
+	created_at DATETIME NOT NULL, 
+	updated_at DATETIME NOT NULL, 
+	PRIMARY KEY (id)
+)
+
+
+2026-01-23 19:47:52,717 INFO sqlalchemy.engine.Engine [no key 0.00008s] ()
+2026-01-23 19:47:52,719 INFO sqlalchemy.engine.Engine CREATE INDEX ix_accounts_account_name ON accounts (account_name)
+2026-01-23 19:47:52,719 INFO sqlalchemy.engine.Engine [no key 0.00008s] ()
+2026-01-23 19:47:52,723 INFO sqlalchemy.engine.Engine 
+CREATE TABLE niches (
+	name VARCHAR NOT NULL, 
+	slug VARCHAR NOT NULL, 
+	description VARCHAR, 
+	target_audience VARCHAR, 
+	content_type VARCHAR, 
+	style VARCHAR(14) NOT NULL, 
+	post_to_youtube BOOLEAN NOT NULL, 
+	post_to_instagram BOOLEAN NOT NULL, 
+	post_to_tiktok BOOLEAN NOT NULL, 
+	posts_per_day INTEGER NOT NULL, 
+	auto_mode BOOLEAN NOT NULL, 
+	platform VARCHAR NOT NULL, 
+	account_name VARCHAR, 
+	account_id INTEGER, 
+	youtube_account_id INTEGER, 
+	instagram_account_id INTEGER, 
+	tiktok_account_id INTEGER, 
+	posting_schedule JSON, 
+	prompt_hook VARCHAR NOT NULL, 
+	prompt_body VARCHAR NOT NULL, 
+	prompt_cta VARCHAR NOT NULL, 
+	hashtags JSON, 
+	min_duration_seconds INTEGER NOT NULL, 
+	max_duration_seconds INTEGER NOT NULL, 
+	llm_model VARCHAR, 
+	llm_temperature FLOAT NOT NULL, 
+	tts_provider VARCHAR, 
+	voice_id VARCHAR, 
+	voice_name VARCHAR, 
+	whisper_model VARCHAR, 
+	whisper_device VARCHAR, 
+	style_preset VARCHAR, 
+	is_active BOOLEAN NOT NULL, 
+	id INTEGER NOT NULL, 
+	created_at DATETIME NOT NULL, 
+	updated_at DATETIME NOT NULL, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(account_id) REFERENCES accounts (id), 
+	FOREIGN KEY(youtube_account_id) REFERENCES accounts (id), 
+	FOREIGN KEY(instagram_account_id) REFERENCES accounts (id), 
+	FOREIGN KEY(tiktok_account_id) REFERENCES accounts (id)
+)
+
+
+2026-01-23 19:47:52,723 INFO sqlalchemy.engine.Engine [no key 0.00008s] ()
+2026-01-23 19:47:52,724 INFO sqlalchemy.engine.Engine CREATE UNIQUE INDEX ix_niches_slug ON niches (slug)
+2026-01-23 19:47:52,724 INFO sqlalchemy.engine.Engine [no key 0.00007s] ()
+2026-01-23 19:47:52,725 INFO sqlalchemy.engine.Engine CREATE UNIQUE INDEX ix_niches_name ON niches (name)
+2026-01-23 19:47:52,726 INFO sqlalchemy.engine.Engine [no key 0.00010s] ()
+2026-01-23 19:47:52,727 INFO sqlalchemy.engine.Engine 
+CREATE TABLE jobs (
+	niche_id INTEGER NOT NULL, 
+	job_type VARCHAR(20) NOT NULL, 
+	topic VARCHAR NOT NULL, 
+	topic_source VARCHAR NOT NULL, 
+	video_model VARCHAR, 
+	script_hook VARCHAR, 
+	script_body VARCHAR, 
+	script_cta VARCHAR, 
+	full_script VARCHAR, 
+	audio_path VARCHAR, 
+	subtitle_path VARCHAR, 
+	video_path VARCHAR, 
+	thumbnail_path VARCHAR, 
+	status VARCHAR(20) NOT NULL, 
+	progress_percent INTEGER NOT NULL, 
+	error_message VARCHAR, 
+	scheduled_at DATETIME, 
+	publish_youtube BOOLEAN NOT NULL, 
+	publish_instagram BOOLEAN NOT NULL, 
+	publish_tiktok BOOLEAN NOT NULL, 
+	publish_results JSON, 
+	duration_seconds FLOAT, 
+	file_size_bytes INTEGER, 
+	id INTEGER NOT NULL, 
+	created_at DATETIME NOT NULL, 
+	updated_at DATETIME NOT NULL, 
+	started_at DATETIME, 
+	completed_at DATETIME, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(niche_id) REFERENCES niches (id)
+)
+
+
+2026-01-23 19:47:52,727 INFO sqlalchemy.engine.Engine [no key 0.00011s] ()
+2026-01-23 19:47:52,730 INFO sqlalchemy.engine.Engine 
+CREATE TABLE daily_niche_stats (
+	id INTEGER NOT NULL, 
+	niche_id INTEGER NOT NULL, 
+	stats_date DATE NOT NULL, 
+	videos_created INTEGER NOT NULL, 
+	videos_published INTEGER NOT NULL, 
+	videos_failed INTEGER NOT NULL, 
+	total_views INTEGER NOT NULL, 
+	total_likes INTEGER NOT NULL, 
+	total_comments INTEGER NOT NULL, 
+	total_shares INTEGER NOT NULL, 
+	top_video_id INTEGER, 
+	top_video_views INTEGER NOT NULL, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(niche_id) REFERENCES niches (id)
+)
+
+
+2026-01-23 19:47:52,730 INFO sqlalchemy.engine.Engine [no key 0.00009s] ()
+2026-01-23 19:47:52,732 INFO sqlalchemy.engine.Engine CREATE INDEX ix_daily_niche_stats_niche_id ON daily_niche_stats (niche_id)
+2026-01-23 19:47:52,732 INFO sqlalchemy.engine.Engine [no key 0.00008s] ()
+2026-01-23 19:47:52,734 INFO sqlalchemy.engine.Engine CREATE INDEX ix_daily_niche_stats_stats_date ON daily_niche_stats (stats_date)
+2026-01-23 19:47:52,734 INFO sqlalchemy.engine.Engine [no key 0.00007s] ()
+2026-01-23 19:47:52,735 INFO sqlalchemy.engine.Engine 
+CREATE TABLE niche_targets (
+	id INTEGER NOT NULL, 
+	niche_id INTEGER NOT NULL, 
+	account_id INTEGER NOT NULL, 
+	platform VARCHAR NOT NULL, 
+	enabled BOOLEAN NOT NULL, 
+	priority INTEGER NOT NULL, 
+	schedule_override JSON, 
+	created_at DATETIME NOT NULL, 
+	updated_at DATETIME NOT NULL, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(niche_id) REFERENCES niches (id), 
+	FOREIGN KEY(account_id) REFERENCES accounts (id)
+)
+
+
+2026-01-23 19:47:52,735 INFO sqlalchemy.engine.Engine [no key 0.00007s] ()
+2026-01-23 19:47:52,737 INFO sqlalchemy.engine.Engine CREATE INDEX ix_niche_targets_niche_id ON niche_targets (niche_id)
+2026-01-23 19:47:52,737 INFO sqlalchemy.engine.Engine [no key 0.00008s] ()
+2026-01-23 19:47:52,739 INFO sqlalchemy.engine.Engine CREATE INDEX ix_niche_targets_account_id ON niche_targets (account_id)
+2026-01-23 19:47:52,739 INFO sqlalchemy.engine.Engine [no key 0.00009s] ()
+2026-01-23 19:47:52,740 INFO sqlalchemy.engine.Engine CREATE INDEX ix_niche_targets_platform ON niche_targets (platform)
+2026-01-23 19:47:52,740 INFO sqlalchemy.engine.Engine [no key 0.00008s] ()
+2026-01-23 19:47:52,742 INFO sqlalchemy.engine.Engine 
+CREATE TABLE job_logs (
+	id INTEGER NOT NULL, 
+	job_id INTEGER NOT NULL, 
+	timestamp DATETIME NOT NULL, 
+	level VARCHAR NOT NULL, 
+	message VARCHAR NOT NULL, 
+	details VARCHAR, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(job_id) REFERENCES jobs (id)
+)
+
+
+2026-01-23 19:47:52,742 INFO sqlalchemy.engine.Engine [no key 0.00008s] ()
+2026-01-23 19:47:52,744 INFO sqlalchemy.engine.Engine CREATE INDEX ix_job_logs_job_id ON job_logs (job_id)
+2026-01-23 19:47:52,744 INFO sqlalchemy.engine.Engine [no key 0.00007s] ()
+2026-01-23 19:47:52,747 INFO sqlalchemy.engine.Engine 
+CREATE TABLE videos (
+	job_id INTEGER NOT NULL, 
+	niche_id INTEGER NOT NULL, 
+	title VARCHAR NOT NULL, 
+	description VARCHAR, 
+	topic VARCHAR NOT NULL, 
+	file_path VARCHAR NOT NULL, 
+	thumbnail_path VARCHAR, 
+	duration_seconds FLOAT NOT NULL, 
+	file_size_bytes INTEGER NOT NULL, 
+	width INTEGER NOT NULL, 
+	height INTEGER NOT NULL, 
+	fps INTEGER NOT NULL, 
+	tags JSON, 
+	hashtags JSON, 
+	id INTEGER NOT NULL, 
+	created_at DATETIME NOT NULL, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(job_id) REFERENCES jobs (id), 
+	FOREIGN KEY(niche_id) REFERENCES niches (id)
+)
+
+
+2026-01-23 19:47:52,747 INFO sqlalchemy.engine.Engine [no key 0.00008s] ()
+2026-01-23 19:47:52,749 INFO sqlalchemy.engine.Engine CREATE INDEX ix_videos_niche_id ON videos (niche_id)
+2026-01-23 19:47:52,749 INFO sqlalchemy.engine.Engine [no key 0.00014s] ()
+2026-01-23 19:47:52,750 INFO sqlalchemy.engine.Engine CREATE INDEX ix_videos_job_id ON videos (job_id)
+2026-01-23 19:47:52,750 INFO sqlalchemy.engine.Engine [no key 0.00009s] ()
+2026-01-23 19:47:52,753 INFO sqlalchemy.engine.Engine 
+CREATE TABLE video_publishes (
+	id INTEGER NOT NULL, 
+	video_id INTEGER NOT NULL, 
+	platform VARCHAR NOT NULL, 
+	platform_video_id VARCHAR, 
+	platform_url VARCHAR, 
+	status VARCHAR NOT NULL, 
+	error_message VARCHAR, 
+	published_at DATETIME, 
+	created_at DATETIME NOT NULL, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(video_id) REFERENCES videos (id)
+)
+
+
+2026-01-23 19:47:52,753 INFO sqlalchemy.engine.Engine [no key 0.00008s] ()
+2026-01-23 19:47:52,755 INFO sqlalchemy.engine.Engine CREATE INDEX ix_video_publishes_video_id ON video_publishes (video_id)
+2026-01-23 19:47:52,755 INFO sqlalchemy.engine.Engine [no key 0.00007s] ()
+2026-01-23 19:47:52,756 INFO sqlalchemy.engine.Engine 
+CREATE TABLE video_metrics (
+	id INTEGER NOT NULL, 
+	video_id INTEGER NOT NULL, 
+	platform VARCHAR NOT NULL, 
+	metrics_date DATE NOT NULL, 
+	views INTEGER NOT NULL, 
+	likes INTEGER NOT NULL, 
+	comments INTEGER NOT NULL, 
+	shares INTEGER NOT NULL, 
+	watch_time_seconds INTEGER, 
+	average_view_duration FLOAT, 
+	impressions INTEGER, 
+	reach INTEGER, 
+	saves INTEGER, 
+	engagement_rate FLOAT, 
+	fetched_at DATETIME NOT NULL, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(video_id) REFERENCES videos (id)
+)
+
+
+2026-01-23 19:47:52,756 INFO sqlalchemy.engine.Engine [no key 0.00007s] ()
+2026-01-23 19:47:52,757 INFO sqlalchemy.engine.Engine CREATE INDEX ix_video_metrics_video_id ON video_metrics (video_id)
+2026-01-23 19:47:52,757 INFO sqlalchemy.engine.Engine [no key 0.00007s] ()
+2026-01-23 19:47:52,760 INFO sqlalchemy.engine.Engine CREATE INDEX ix_video_metrics_metrics_date ON video_metrics (metrics_date)
+2026-01-23 19:47:52,760 INFO sqlalchemy.engine.Engine [no key 0.00009s] ()
+2026-01-23 19:47:52,762 INFO sqlalchemy.engine.Engine 
+CREATE TABLE video_scores (
+	id INTEGER NOT NULL, 
+	video_id INTEGER NOT NULL, 
+	views_velocity FLOAT NOT NULL, 
+	engagement_score FLOAT NOT NULL, 
+	virality_score FLOAT NOT NULL, 
+	is_winner BOOLEAN NOT NULL, 
+	is_underperformer BOOLEAN NOT NULL, 
+	calculated_at DATETIME NOT NULL, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(video_id) REFERENCES videos (id)
+)
+
+
+2026-01-23 19:47:52,762 INFO sqlalchemy.engine.Engine [no key 0.00009s] ()
+2026-01-23 19:47:52,764 INFO sqlalchemy.engine.Engine CREATE UNIQUE INDEX ix_video_scores_video_id ON video_scores (video_id)
+2026-01-23 19:47:52,764 INFO sqlalchemy.engine.Engine [no key 0.00007s] ()
+2026-01-23 19:47:52,765 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:47:52 | INFO     | app.db.migrations:run_migrations:11 - Checking for pending database migrations...
+2026-01-23 19:47:52,765 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,765 INFO sqlalchemy.engine.Engine PRAGMA table_info(niches)
+2026-01-23 19:47:52,765 INFO sqlalchemy.engine.Engine [cached since 0.05509s ago] ()
+2026-01-23 19:47:52,765 INFO sqlalchemy.engine.Engine PRAGMA table_info(accounts)
+2026-01-23 19:47:52,765 INFO sqlalchemy.engine.Engine [cached since 0.05381s ago] ()
+2026-01-23 19:47:52,765 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:47:52 | INFO     | app.db.migrations:run_migrations:59 - Database migrations completed
+2026-01-23 19:47:52 | INFO     | app.main:lifespan:465 - Database initialized
+2026-01-23 19:47:52,767 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,775 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.target_audience, niches.content_type, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches
+2026-01-23 19:47:52,776 INFO sqlalchemy.engine.Engine [generated in 0.00021s] ()
+2026-01-23 19:47:52 | INFO     | app.main:seed_default_niches:38 - Database empty, seeding default niches...
+2026-01-23 19:47:52,779 INFO sqlalchemy.engine.Engine INSERT INTO niches (name, slug, description, target_audience, content_type, style, post_to_youtube, post_to_instagram, post_to_tiktok, posts_per_day, auto_mode, platform, account_name, account_id, youtube_account_id, instagram_account_id, tiktok_account_id, posting_schedule, prompt_hook, prompt_body, prompt_cta, hashtags, min_duration_seconds, max_duration_seconds, llm_model, llm_temperature, tts_provider, voice_id, voice_name, whisper_model, whisper_device, style_preset, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-01-23 19:47:52,779 INFO sqlalchemy.engine.Engine [generated in 0.00030s] ('AIThatSavesYouMoney_CA', 'ai-that-saves-you-money-ca', 'AI tools and apps that help Canadians save money on everyday expenses', 'Canadians looking to save money with AI', 'educational', 'NARRATOR_BROLL', 1, 1, 1, 2, 0, 'youtube', 'AISavingsCanada', None, None, None, None, '["09:00", "19:00"]', "You are a Canadian financial expert specializing in AI-powered money-saving solutions. Hook viewers with a surprising statistic about AI saving money: 'Did you know AI can save Canadians an average of $500/month on bills?'", 'Explain 5 practical AI tools/apps that help Canadians save money. Focus on: grocery shopping, utility bills, banking fees, insurance, and subscriptions. Use Canadian examples and dollar amounts. Make it conversational and exciting.', "Download one AI app mentioned today and save $50 on your first bill. Comment below which app you're trying first!", '["AISavings", "CanadianMoneyTips", "AIFinancialTools", "SaveMoneyAI", "CanadianFinance"]', 30, 60, None, 0.7, None, None, None, None, None, None, 1, '2026-01-24 00:47:52.777606', '2026-01-24 00:47:52.777606')
+2026-01-23 19:47:52,780 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:47:52,782 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,784 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.target_audience, niches.content_type, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches 
+WHERE niches.id = ?
+2026-01-23 19:47:52,784 INFO sqlalchemy.engine.Engine [generated in 0.00016s] (1,)
+2026-01-23 19:47:52 | ERROR    | app.main:seed_default_niches:406 - Failed to create niche AIThatSavesYouMoney_CA: cannot access local variable '_copy_niche_templates' where it is not associated with a value
+2026-01-23 19:47:52,787 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-23 19:47:52,787 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,787 INFO sqlalchemy.engine.Engine INSERT INTO niches (name, slug, description, target_audience, content_type, style, post_to_youtube, post_to_instagram, post_to_tiktok, posts_per_day, auto_mode, platform, account_name, account_id, youtube_account_id, instagram_account_id, tiktok_account_id, posting_schedule, prompt_hook, prompt_body, prompt_cta, hashtags, min_duration_seconds, max_duration_seconds, llm_model, llm_temperature, tts_provider, voice_id, voice_name, whisper_model, whisper_device, style_preset, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-01-23 19:47:52,787 INFO sqlalchemy.engine.Engine [cached since 0.008285s ago] ('TechNewsYouCanUse', 'tech-news-you-can-use', 'Tech news explained in practical terms with immediate applications', 'Tech enthusiasts who want practical applications', 'news', 'NARRATOR_BROLL', 1, 1, 1, 2, 0, 'youtube', 'TechNewsExplained', None, None, None, None, '["10:00", "18:00"]', "Hook with breaking tech news: 'Google just released an AI feature that could save you 2 hours daily - but here's the catch'", 'Explain recent tech developments in plain language. Focus on 3-4 news items that have immediate practical applications. Include how-to steps and real-world examples.', 'Try one of these tech tips today and comment how it changed your workflow!', '["TechNews", "PracticalTech", "TechTips", "Innovation", "FutureTech"]', 30, 60, None, 0.7, None, None, None, None, None, None, 1, '2026-01-24 00:47:52.787197', '2026-01-24 00:47:52.787197')
+2026-01-23 19:47:52,788 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:47:52,790 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,790 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.target_audience, niches.content_type, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches 
+WHERE niches.id = ?
+2026-01-23 19:47:52,790 INFO sqlalchemy.engine.Engine [cached since 0.005747s ago] (2,)
+2026-01-23 19:47:52 | ERROR    | app.main:seed_default_niches:406 - Failed to create niche TechNewsYouCanUse: cannot access local variable '_copy_niche_templates' where it is not associated with a value
+2026-01-23 19:47:52,791 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-23 19:47:52,791 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,791 INFO sqlalchemy.engine.Engine INSERT INTO niches (name, slug, description, target_audience, content_type, style, post_to_youtube, post_to_instagram, post_to_tiktok, posts_per_day, auto_mode, platform, account_name, account_id, youtube_account_id, instagram_account_id, tiktok_account_id, posting_schedule, prompt_hook, prompt_body, prompt_cta, hashtags, min_duration_seconds, max_duration_seconds, llm_model, llm_temperature, tts_provider, voice_id, voice_name, whisper_model, whisper_device, style_preset, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-01-23 19:47:52,792 INFO sqlalchemy.engine.Engine [cached since 0.01329s ago] ('LifeSystemsScripts', 'life-systems-scripts', 'Scripts for implementing life-changing systems and habits', 'People seeking life improvements', 'motivational', 'NARRATOR_BROLL', 1, 1, 1, 2, 0, 'youtube', 'LifeSystemsMaster', None, None, None, None, '["08:00", "20:00"]', "Hook with transformation promise: 'One simple system changed my entire morning routine - and it can change yours too'", 'Present a complete system implementation script. Break it down into: why it works, step-by-step setup, common obstacles, and success tracking. Make it motivational and actionable.', 'Implement one part of this system today and share your first win in the comments!', '["LifeSystems", "HabitBuilding", "Productivity", "LifeHacks", "PersonalDevelopment"]', 30, 55, None, 0.7, None, None, None, None, None, None, 1, '2026-01-24 00:47:52.791807', '2026-01-24 00:47:52.791807')
+2026-01-23 19:47:52,793 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:47:52,795 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,795 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.target_audience, niches.content_type, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches 
+WHERE niches.id = ?
+2026-01-23 19:47:52,795 INFO sqlalchemy.engine.Engine [cached since 0.01126s ago] (3,)
+2026-01-23 19:47:52 | ERROR    | app.main:seed_default_niches:406 - Failed to create niche LifeSystemsScripts: cannot access local variable '_copy_niche_templates' where it is not associated with a value
+2026-01-23 19:47:52,797 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-23 19:47:52,798 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,798 INFO sqlalchemy.engine.Engine INSERT INTO niches (name, slug, description, target_audience, content_type, style, post_to_youtube, post_to_instagram, post_to_tiktok, posts_per_day, auto_mode, platform, account_name, account_id, youtube_account_id, instagram_account_id, tiktok_account_id, posting_schedule, prompt_hook, prompt_body, prompt_cta, hashtags, min_duration_seconds, max_duration_seconds, llm_model, llm_temperature, tts_provider, voice_id, voice_name, whisper_model, whisper_device, style_preset, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-01-23 19:47:52,798 INFO sqlalchemy.engine.Engine [cached since 0.01857s ago] ('MicroMoneyMoves_CA', 'micro-money-moves-ca', 'Small financial decisions that add up to big savings for Canadians', 'Budget-conscious Canadians', 'how-to', 'NARRATOR_BROLL', 1, 1, 1, 2, 0, 'youtube', 'CanadianMoneyHacks', None, None, None, None, '["11:00", "17:00"]', "Hook with a shocking micro-saving statistic: 'Canadians waste $200/month on tiny expenses - here's how AI fixes it'", 'Break down 6 micro-money moves: rounding up purchases, optimizing subscriptions, finding better rates, avoiding fees, smart shopping, and automated savings. Use Canadian pricing and relatable examples.', 'Pick one micro-move from this video and implement it this week. Tag a friend who needs to see this!', '["MicroSavings", "CanadianFinance", "MoneyTipsCanada", "FinancialFreedom", "SmartMoney"]', 30, 45, None, 0.7, None, None, None, None, None, None, 1, '2026-01-24 00:47:52.797502', '2026-01-24 00:47:52.797502')
+2026-01-23 19:47:52,798 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:47:52,801 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,801 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.target_audience, niches.content_type, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches 
+WHERE niches.id = ?
+2026-01-23 19:47:52,801 INFO sqlalchemy.engine.Engine [cached since 0.01639s ago] (4,)
+2026-01-23 19:47:52 | ERROR    | app.main:seed_default_niches:406 - Failed to create niche MicroMoneyMoves_CA: cannot access local variable '_copy_niche_templates' where it is not associated with a value
+2026-01-23 19:47:52,802 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-23 19:47:52,803 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,804 INFO sqlalchemy.engine.Engine INSERT INTO niches (name, slug, description, target_audience, content_type, style, post_to_youtube, post_to_instagram, post_to_tiktok, posts_per_day, auto_mode, platform, account_name, account_id, youtube_account_id, instagram_account_id, tiktok_account_id, posting_schedule, prompt_hook, prompt_body, prompt_cta, hashtags, min_duration_seconds, max_duration_seconds, llm_model, llm_temperature, tts_provider, voice_id, voice_name, whisper_model, whisper_device, style_preset, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-01-23 19:47:52,804 INFO sqlalchemy.engine.Engine [cached since 0.02507s ago] ('HealthTipsDaily', 'health-tips-daily', "Daily health tips in the 'I'm ginger, if you eat me...' format", 'Health-conscious individuals', 'health_tips', 'NARRATOR_BROLL', 1, 1, 1, 2, 0, 'youtube', 'DailyHealthTips', None, None, None, None, '["07:00", "16:00"]', "I'm ginger. If you eat me every day, this happens to your body.", 'Explain 5-6 surprising health benefits of the featured food/supplement. Include scientific backing, dosage recommendations, and practical ways to incorporate it daily.', 'Try this health tip today and share your experience in the comments!', '["HealthTips", "NaturalHealth", "DailyHealth", "Wellness", "HealthyLiving"]', 30, 45, None, 0.7, None, None, None, None, None, None, 1, '2026-01-24 00:47:52.803602', '2026-01-24 00:47:52.803602')
+2026-01-23 19:47:52,805 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:47:52,806 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,806 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.target_audience, niches.content_type, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches 
+WHERE niches.id = ?
+2026-01-23 19:47:52,806 INFO sqlalchemy.engine.Engine [cached since 0.02269s ago] (5,)
+2026-01-23 19:47:52 | ERROR    | app.main:seed_default_niches:406 - Failed to create niche HealthTipsDaily: cannot access local variable '_copy_niche_templates' where it is not associated with a value
+2026-01-23 19:47:52,809 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-23 19:47:52,809 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,809 INFO sqlalchemy.engine.Engine INSERT INTO niches (name, slug, description, target_audience, content_type, style, post_to_youtube, post_to_instagram, post_to_tiktok, posts_per_day, auto_mode, platform, account_name, account_id, youtube_account_id, instagram_account_id, tiktok_account_id, posting_schedule, prompt_hook, prompt_body, prompt_cta, hashtags, min_duration_seconds, max_duration_seconds, llm_model, llm_temperature, tts_provider, voice_id, voice_name, whisper_model, whisper_device, style_preset, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-01-23 19:47:52,809 INFO sqlalchemy.engine.Engine [cached since 0.03017s ago] ('CookingHacksPro', 'cooking-hacks-pro', 'Professional cooking hacks and techniques', 'Home cooks and food enthusiasts', 'how-to', 'NARRATOR_BROLL', 1, 1, 1, 2, 0, 'youtube', 'CookingHacksPro', None, None, None, None, '["12:00", "21:00"]', 'This kitchen hack will change how you cook forever - chefs hate it!', 'Demonstrate 5-6 cooking hacks with clear before/after examples. Include the science behind why it works and time-saving benefits.', 'Try this hack in your next meal and tag me in your results!', '["CookingHacks", "KitchenTips", "CookingTips", "ChefSecrets", "HomeCooking"]', 30, 60, None, 0.7, None, None, None, None, None, None, 1, '2026-01-24 00:47:52.809177', '2026-01-24 00:47:52.809177')
+2026-01-23 19:47:52,809 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:47:52,811 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,812 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.target_audience, niches.content_type, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches 
+WHERE niches.id = ?
+2026-01-23 19:47:52,812 INFO sqlalchemy.engine.Engine [cached since 0.02796s ago] (6,)
+2026-01-23 19:47:52 | ERROR    | app.main:seed_default_niches:406 - Failed to create niche CookingHacksPro: cannot access local variable '_copy_niche_templates' where it is not associated with a value
+2026-01-23 19:47:52,813 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-23 19:47:52,815 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,815 INFO sqlalchemy.engine.Engine INSERT INTO niches (name, slug, description, target_audience, content_type, style, post_to_youtube, post_to_instagram, post_to_tiktok, posts_per_day, auto_mode, platform, account_name, account_id, youtube_account_id, instagram_account_id, tiktok_account_id, posting_schedule, prompt_hook, prompt_body, prompt_cta, hashtags, min_duration_seconds, max_duration_seconds, llm_model, llm_temperature, tts_provider, voice_id, voice_name, whisper_model, whisper_device, style_preset, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-01-23 19:47:52,815 INFO sqlalchemy.engine.Engine [cached since 0.03612s ago] ('BeautyTrendsNow', 'beauty-trends-now', 'Latest beauty trends and viral makeup tutorials', 'Beauty enthusiasts and trend followers', 'beauty', 'NARRATOR_BROLL', 1, 1, 1, 2, 0, 'instagram', 'BeautyTrendsDaily', None, None, None, None, '["09:00", "18:00"]', 'This beauty hack went viral for a reason - watch till the end!', 'Show 4-5 trending beauty techniques with quick cuts and text overlays. Focus on affordable products and easy-to-follow steps.', 'Try this trend and tag me in your results! 💄✨', '["BeautyTrends", "MakeupTutorial", "BeautyHacks", "ViralBeauty", "Skincare"]', 30, 45, None, 0.7, None, None, None, None, None, None, 1, '2026-01-24 00:47:52.815209', '2026-01-24 00:47:52.815209')
+2026-01-23 19:47:52,816 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:47:52,817 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,817 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.target_audience, niches.content_type, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches 
+WHERE niches.id = ?
+2026-01-23 19:47:52,817 INFO sqlalchemy.engine.Engine [cached since 0.03351s ago] (7,)
+2026-01-23 19:47:52 | ERROR    | app.main:seed_default_niches:406 - Failed to create niche BeautyTrendsNow: cannot access local variable '_copy_niche_templates' where it is not associated with a value
+2026-01-23 19:47:52,819 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-23 19:47:52,819 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,820 INFO sqlalchemy.engine.Engine INSERT INTO niches (name, slug, description, target_audience, content_type, style, post_to_youtube, post_to_instagram, post_to_tiktok, posts_per_day, auto_mode, platform, account_name, account_id, youtube_account_id, instagram_account_id, tiktok_account_id, posting_schedule, prompt_hook, prompt_body, prompt_cta, hashtags, min_duration_seconds, max_duration_seconds, llm_model, llm_temperature, tts_provider, voice_id, voice_name, whisper_model, whisper_device, style_preset, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-01-23 19:47:52,820 INFO sqlalchemy.engine.Engine [cached since 0.04115s ago] ('FashionFindsDaily', 'fashion-finds-daily', 'Daily fashion discoveries and styling tips', 'Fashion lovers on a budget', 'fashion', 'NARRATOR_BROLL', 1, 1, 1, 2, 0, 'instagram', 'FashionFindsDaily', None, None, None, None, '["10:00", "19:00"]', 'This outfit hack costs $5 and looks expensive - you need this!', 'Show 6 styling tips using affordable items. Include outfit transformations and where to shop.', 'Recreate this look and tag me! 👗✨', '["FashionTips", "StyleHacks", "OutfitIdeas", "Thrifting", "FashionFinds"]', 30, 40, None, 0.7, None, None, None, None, None, None, 1, '2026-01-24 00:47:52.819759', '2026-01-24 00:47:52.819759')
+2026-01-23 19:47:52,821 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:47:52,824 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,824 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.target_audience, niches.content_type, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches 
+WHERE niches.id = ?
+2026-01-23 19:47:52,824 INFO sqlalchemy.engine.Engine [cached since 0.03976s ago] (8,)
+2026-01-23 19:47:52 | ERROR    | app.main:seed_default_niches:406 - Failed to create niche FashionFindsDaily: cannot access local variable '_copy_niche_templates' where it is not associated with a value
+2026-01-23 19:47:52,826 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-23 19:47:52,827 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,827 INFO sqlalchemy.engine.Engine INSERT INTO niches (name, slug, description, target_audience, content_type, style, post_to_youtube, post_to_instagram, post_to_tiktok, posts_per_day, auto_mode, platform, account_name, account_id, youtube_account_id, instagram_account_id, tiktok_account_id, posting_schedule, prompt_hook, prompt_body, prompt_cta, hashtags, min_duration_seconds, max_duration_seconds, llm_model, llm_temperature, tts_provider, voice_id, voice_name, whisper_model, whisper_device, style_preset, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-01-23 19:47:52,828 INFO sqlalchemy.engine.Engine [cached since 0.04867s ago] ('HomeDecorHacks', 'home-decor-hacks', 'Creative home decoration ideas on a budget', 'Homeowners and renters', 'diy', 'NARRATOR_BROLL', 1, 1, 1, 2, 0, 'instagram', 'HomeDecorMagic', None, None, None, None, '["11:00", "17:00"]', 'Transform your space with this $10 hack - DIY magic!', 'Show 5 budget-friendly decor transformations with before/after shots and step-by-step instructions.', 'Try this in your home and share the results! 🏠✨', '["HomeDecor", "DIYTutorial", "BudgetDecor", "HomeMakeover", "InteriorDesign"]', 30, 50, None, 0.7, None, None, None, None, None, None, 1, '2026-01-24 00:47:52.827337', '2026-01-24 00:47:52.827337')
+2026-01-23 19:47:52,829 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:47:52,831 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,831 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.target_audience, niches.content_type, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches 
+WHERE niches.id = ?
+2026-01-23 19:47:52,831 INFO sqlalchemy.engine.Engine [cached since 0.04812s ago] (9,)
+2026-01-23 19:47:52 | ERROR    | app.main:seed_default_niches:406 - Failed to create niche HomeDecorHacks: cannot access local variable '_copy_niche_templates' where it is not associated with a value
+2026-01-23 19:47:52,835 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-23 19:47:52,835 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,835 INFO sqlalchemy.engine.Engine INSERT INTO niches (name, slug, description, target_audience, content_type, style, post_to_youtube, post_to_instagram, post_to_tiktok, posts_per_day, auto_mode, platform, account_name, account_id, youtube_account_id, instagram_account_id, tiktok_account_id, posting_schedule, prompt_hook, prompt_body, prompt_cta, hashtags, min_duration_seconds, max_duration_seconds, llm_model, llm_temperature, tts_provider, voice_id, voice_name, whisper_model, whisper_device, style_preset, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-01-23 19:47:52,835 INFO sqlalchemy.engine.Engine [cached since 0.05666s ago] ('PetCareTips', 'pet-care-tips', 'Essential pet care advice and training tips', 'Pet owners and animal lovers', 'pet_care', 'NARRATOR_BROLL', 1, 1, 1, 2, 0, 'instagram', 'PetCareGuru', None, None, None, None, '["08:00", "20:00"]', 'This training trick works on ANY dog - watch your pup transform!', 'Demonstrate 5 pet care tips with cute animal footage. Include health, training, and bonding activities.', 'Try this with your pet and show me the results! 🐾❤️', '["PetCare", "DogTraining", "PetTips", "AnimalCare", "PetLovers"]', 30, 45, None, 0.7, None, None, None, None, None, None, 1, '2026-01-24 00:47:52.835511', '2026-01-24 00:47:52.835511')
+2026-01-23 19:47:52,837 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:47:52,839 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,839 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.target_audience, niches.content_type, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches 
+WHERE niches.id = ?
+2026-01-23 19:47:52,839 INFO sqlalchemy.engine.Engine [cached since 0.05453s ago] (10,)
+2026-01-23 19:47:52 | ERROR    | app.main:seed_default_niches:406 - Failed to create niche PetCareTips: cannot access local variable '_copy_niche_templates' where it is not associated with a value
+2026-01-23 19:47:52,840 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-23 19:47:52,842 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,842 INFO sqlalchemy.engine.Engine INSERT INTO niches (name, slug, description, target_audience, content_type, style, post_to_youtube, post_to_instagram, post_to_tiktok, posts_per_day, auto_mode, platform, account_name, account_id, youtube_account_id, instagram_account_id, tiktok_account_id, posting_schedule, prompt_hook, prompt_body, prompt_cta, hashtags, min_duration_seconds, max_duration_seconds, llm_model, llm_temperature, tts_provider, voice_id, voice_name, whisper_model, whisper_device, style_preset, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-01-23 19:47:52,842 INFO sqlalchemy.engine.Engine [cached since 0.06311s ago] ('QuickRecipes', 'quick-recipes', '5-minute recipes for busy people', 'Busy parents and working professionals', 'recipes', 'NARRATOR_BROLL', 1, 1, 1, 2, 0, 'instagram', 'QuickRecipesNow', None, None, None, None, '["12:00", "18:30"]', 'Restaurant-quality meal in 5 minutes - no one believes this works!', 'Show 3-4 super fast recipes with quick cuts, text overlays, and minimal ingredients.', 'Make this tonight and tag me! 🍝✨', '["QuickRecipes", "5MinMeals", "EasyCooking", "FastFood", "HomeCooking"]', 30, 35, None, 0.7, None, None, None, None, None, None, 1, '2026-01-24 00:47:52.840618', '2026-01-24 00:47:52.840618')
+2026-01-23 19:47:52,842 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:47:52,845 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,845 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.target_audience, niches.content_type, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches 
+WHERE niches.id = ?
+2026-01-23 19:47:52,845 INFO sqlalchemy.engine.Engine [cached since 0.0619s ago] (11,)
+2026-01-23 19:47:52 | ERROR    | app.main:seed_default_niches:406 - Failed to create niche QuickRecipes: cannot access local variable '_copy_niche_templates' where it is not associated with a value
+2026-01-23 19:47:52,847 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-23 19:47:52,849 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,849 INFO sqlalchemy.engine.Engine INSERT INTO niches (name, slug, description, target_audience, content_type, style, post_to_youtube, post_to_instagram, post_to_tiktok, posts_per_day, auto_mode, platform, account_name, account_id, youtube_account_id, instagram_account_id, tiktok_account_id, posting_schedule, prompt_hook, prompt_body, prompt_cta, hashtags, min_duration_seconds, max_duration_seconds, llm_model, llm_temperature, tts_provider, voice_id, voice_name, whisper_model, whisper_device, style_preset, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-01-23 19:47:52,849 INFO sqlalchemy.engine.Engine [cached since 0.07026s ago] ('DanceChallenges', 'dance-challenges', 'Trending dance challenges and tutorials', 'Dance enthusiasts and trend followers', 'dance', 'NARRATOR_BROLL', 1, 1, 1, 2, 0, 'tiktok', 'DanceChallengeKing', None, None, None, None, '["14:00", "21:00"]', 'This dance went viral overnight - learn it in 60 seconds!', 'Break down a trending dance in slow motion with step-by-step instructions and music beats.', 'Learn it, film it, and tag me! 💃🕺', '["DanceChallenge", "ViralDance", "DanceTutorial", "TrendingDance", "DanceTok"]', 30, 60, None, 0.7, None, None, None, None, None, None, 1, '2026-01-24 00:47:52.847852', '2026-01-24 00:47:52.847852')
+2026-01-23 19:47:52,850 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:47:52,852 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,853 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.target_audience, niches.content_type, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches 
+WHERE niches.id = ?
+2026-01-23 19:47:52,853 INFO sqlalchemy.engine.Engine [cached since 0.06845s ago] (12,)
+2026-01-23 19:47:52 | ERROR    | app.main:seed_default_niches:406 - Failed to create niche DanceChallenges: cannot access local variable '_copy_niche_templates' where it is not associated with a value
+2026-01-23 19:47:52,854 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-23 19:47:52,855 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,855 INFO sqlalchemy.engine.Engine INSERT INTO niches (name, slug, description, target_audience, content_type, style, post_to_youtube, post_to_instagram, post_to_tiktok, posts_per_day, auto_mode, platform, account_name, account_id, youtube_account_id, instagram_account_id, tiktok_account_id, posting_schedule, prompt_hook, prompt_body, prompt_cta, hashtags, min_duration_seconds, max_duration_seconds, llm_model, llm_temperature, tts_provider, voice_id, voice_name, whisper_model, whisper_device, style_preset, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-01-23 19:47:52,855 INFO sqlalchemy.engine.Engine [cached since 0.07666s ago] ('ComedySketches', 'comedy-sketches', 'Funny skits and comedy content', 'Comedy fans and entertainment seekers', 'comedy', 'NARRATOR_BROLL', 1, 1, 1, 2, 0, 'tiktok', 'ComedySketchDaily', None, None, None, None, '["13:00", "20:00"]', "You won't believe what happened when I tried this... 🤣", 'Create short comedic skits with relatable situations, punchy dialogue, and quick cuts.', "What's the funniest thing that happened to you this week? 😂", '["Comedy", "FunnyVideos", "SketchComedy", "ViralComedy", "LaughOutLoud"]', 30, 45, None, 0.7, None, None, None, None, None, None, 1, '2026-01-24 00:47:52.854884', '2026-01-24 00:47:52.854884')
+2026-01-23 19:47:52,856 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:47:52,858 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,858 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.target_audience, niches.content_type, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches 
+WHERE niches.id = ?
+2026-01-23 19:47:52,860 INFO sqlalchemy.engine.Engine [cached since 0.07505s ago] (13,)
+2026-01-23 19:47:52 | ERROR    | app.main:seed_default_niches:406 - Failed to create niche ComedySketches: cannot access local variable '_copy_niche_templates' where it is not associated with a value
+2026-01-23 19:47:52,862 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-23 19:47:52,863 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,863 INFO sqlalchemy.engine.Engine INSERT INTO niches (name, slug, description, target_audience, content_type, style, post_to_youtube, post_to_instagram, post_to_tiktok, posts_per_day, auto_mode, platform, account_name, account_id, youtube_account_id, instagram_account_id, tiktok_account_id, posting_schedule, prompt_hook, prompt_body, prompt_cta, hashtags, min_duration_seconds, max_duration_seconds, llm_model, llm_temperature, tts_provider, voice_id, voice_name, whisper_model, whisper_device, style_preset, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-01-23 19:47:52,863 INFO sqlalchemy.engine.Engine [cached since 0.08381s ago] ('LifeHacksDaily', 'life-hacks-daily', 'Daily life hacks and clever solutions', 'Problem solvers and efficiency enthusiasts', 'life_hacks', 'NARRATOR_BROLL', 1, 1, 1, 2, 0, 'tiktok', 'LifeHacksMaster', None, None, None, None, '["15:00", "19:00"]', 'This life hack saves me 30 minutes daily - mind blown! 🤯', 'Demonstrate 3-4 clever life hacks with quick cuts, text overlays, and immediate payoff.', 'Try this hack and tell me how much time you saved! ⏰', '["LifeHacks", "HackTok", "SmartLife", "TimeSaver", "GeniusHacks"]', 30, 40, None, 0.7, None, None, None, None, None, None, 1, '2026-01-24 00:47:52.862072', '2026-01-24 00:47:52.862072')
+2026-01-23 19:47:52,864 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:47:52,866 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,866 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.target_audience, niches.content_type, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches 
+WHERE niches.id = ?
+2026-01-23 19:47:52,866 INFO sqlalchemy.engine.Engine [cached since 0.08185s ago] (14,)
+2026-01-23 19:47:52 | ERROR    | app.main:seed_default_niches:406 - Failed to create niche LifeHacksDaily: cannot access local variable '_copy_niche_templates' where it is not associated with a value
+2026-01-23 19:47:52,867 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-23 19:47:52,869 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,869 INFO sqlalchemy.engine.Engine INSERT INTO niches (name, slug, description, target_audience, content_type, style, post_to_youtube, post_to_instagram, post_to_tiktok, posts_per_day, auto_mode, platform, account_name, account_id, youtube_account_id, instagram_account_id, tiktok_account_id, posting_schedule, prompt_hook, prompt_body, prompt_cta, hashtags, min_duration_seconds, max_duration_seconds, llm_model, llm_temperature, tts_provider, voice_id, voice_name, whisper_model, whisper_device, style_preset, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-01-23 19:47:52,869 INFO sqlalchemy.engine.Engine [cached since 0.09055s ago] ('ASMRRelaxation', 'asmr-relaxation', 'ASMR content for relaxation and sleep', 'People seeking relaxation and better sleep', 'asmr', 'NARRATOR_BROLL', 1, 1, 1, 2, 0, 'tiktok', 'ASMRSleepStories', None, None, None, None, '["22:00", "02:00"]', 'Fall asleep in 3 minutes with this ASMR technique ✨', 'Create calming ASMR content with soft sounds, gentle movements, and relaxing narration.', 'Sweet dreams! Comment if this helped you sleep 💤', '["ASMR", "SleepASMR", "Relaxation", "SleepAid", "CalmingSounds"]', 30, 180, None, 0.7, None, None, None, None, None, None, 1, '2026-01-24 00:47:52.869298', '2026-01-24 00:47:52.869298')
+2026-01-23 19:47:52,871 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:47:52,873 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,874 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.target_audience, niches.content_type, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches 
+WHERE niches.id = ?
+2026-01-23 19:47:52,874 INFO sqlalchemy.engine.Engine [cached since 0.08947s ago] (15,)
+2026-01-23 19:47:52 | ERROR    | app.main:seed_default_niches:406 - Failed to create niche ASMRRelaxation: cannot access local variable '_copy_niche_templates' where it is not associated with a value
+2026-01-23 19:47:52,876 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-23 19:47:52,877 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,877 INFO sqlalchemy.engine.Engine INSERT INTO niches (name, slug, description, target_audience, content_type, style, post_to_youtube, post_to_instagram, post_to_tiktok, posts_per_day, auto_mode, platform, account_name, account_id, youtube_account_id, instagram_account_id, tiktok_account_id, posting_schedule, prompt_hook, prompt_body, prompt_cta, hashtags, min_duration_seconds, max_duration_seconds, llm_model, llm_temperature, tts_provider, voice_id, voice_name, whisper_model, whisper_device, style_preset, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-01-23 19:47:52,877 INFO sqlalchemy.engine.Engine [cached since 0.09851s ago] ('MagicTricks', 'magic-tricks', 'Easy magic tricks you can learn at home', 'Magic enthusiasts and party hosts', 'magic', 'NARRATOR_BROLL', 1, 1, 1, 2, 0, 'tiktok', 'MagicTricksEasy', None, None, None, None, '["16:00", "22:30"]', 'This card trick fools everyone - learn it in 30 seconds! 🎴', 'Teach simple magic tricks with clear instructions, multiple angles, and reveal at the end.', 'Show your friends and tag me! 🎩✨', '["MagicTricks", "CardTricks", "LearnMagic", "EasyMagic", "MagicTutorial"]', 30, 45, None, 0.7, None, None, None, None, None, None, 1, '2026-01-24 00:47:52.876434', '2026-01-24 00:47:52.876434')
+2026-01-23 19:47:52,877 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:47:52,880 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:52,880 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.target_audience, niches.content_type, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches 
+WHERE niches.id = ?
+2026-01-23 19:47:52,880 INFO sqlalchemy.engine.Engine [cached since 0.09676s ago] (16,)
+2026-01-23 19:47:52 | ERROR    | app.main:seed_default_niches:406 - Failed to create niche MagicTricks: cannot access local variable '_copy_niche_templates' where it is not associated with a value
+2026-01-23 19:47:52,882 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-23 19:47:52 | INFO     | app.main:seed_default_niches:409 - Successfully seeded 0 default niches
+2026-01-23 19:47:52 | INFO     | app.main:lifespan:469 - Default niches verified
+2026-01-23 19:47:52 | INFO     | app.main:lifespan:485 - Directory structure verified
+2026-01-23 19:47:52 | INFO     | app.services.niche_sync_service:sync_niches_to_db:58 - Starting niche sync from disk to database...
+2026-01-23 19:47:53,111 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:53,112 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-23 19:47:53,112 INFO sqlalchemy.engine.Engine [generated in 0.00033s] ('ai-that-saves-you-money-ca', 1, 0)
+2026-01-23 19:47:53,113 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-23 19:47:53,113 INFO sqlalchemy.engine.Engine [cached since 0.001831s ago] ('asmr-relaxation', 1, 0)
+2026-01-23 19:47:53,113 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-23 19:47:53,113 INFO sqlalchemy.engine.Engine [cached since 0.002549s ago] ('beauty-trends-now', 1, 0)
+2026-01-23 19:47:53,115 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-23 19:47:53,115 INFO sqlalchemy.engine.Engine [cached since 0.003289s ago] ('comedy-sketches', 1, 0)
+2026-01-23 19:47:53,116 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-23 19:47:53,116 INFO sqlalchemy.engine.Engine [cached since 0.00408s ago] ('cooking-hacks-pro', 1, 0)
+2026-01-23 19:47:53,116 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-23 19:47:53,116 INFO sqlalchemy.engine.Engine [cached since 0.004597s ago] ('dance-challenges', 1, 0)
+2026-01-23 19:47:53,117 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-23 19:47:53,117 INFO sqlalchemy.engine.Engine [cached since 0.005051s ago] ('fashion-finds-daily', 1, 0)
+2026-01-23 19:47:53,117 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-23 19:47:53,117 INFO sqlalchemy.engine.Engine [cached since 0.005512s ago] ('health-tips-daily', 1, 0)
+2026-01-23 19:47:53,117 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-23 19:47:53,117 INFO sqlalchemy.engine.Engine [cached since 0.005991s ago] ('home-decor-hacks', 1, 0)
+2026-01-23 19:47:53,117 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-23 19:47:53,117 INFO sqlalchemy.engine.Engine [cached since 0.006425s ago] ('life-hacks-daily', 1, 0)
+2026-01-23 19:47:53,119 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-23 19:47:53,119 INFO sqlalchemy.engine.Engine [cached since 0.006855s ago] ('life-systems-scripts', 1, 0)
+2026-01-23 19:47:53,119 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-23 19:47:53,119 INFO sqlalchemy.engine.Engine [cached since 0.007284s ago] ('magic-tricks', 1, 0)
+2026-01-23 19:47:53,119 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-23 19:47:53,119 INFO sqlalchemy.engine.Engine [cached since 0.00773s ago] ('micro-money-moves-ca', 1, 0)
+2026-01-23 19:47:53,120 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-23 19:47:53,120 INFO sqlalchemy.engine.Engine [cached since 0.008161s ago] ('pet-care-tips', 1, 0)
+2026-01-23 19:47:53,120 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-23 19:47:53,120 INFO sqlalchemy.engine.Engine [cached since 0.008601s ago] ('quick-recipes', 1, 0)
+2026-01-23 19:47:53,121 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-23 19:47:53,121 INFO sqlalchemy.engine.Engine [cached since 0.009033s ago] ('tech-news-you-can-use', 1, 0)
+2026-01-23 19:47:53 | INFO     | app.services.niche_sync_service:sync_niches_to_db:135 - Niche sync complete: 0 new, 0 updated
+2026-01-23 19:47:53,121 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:47:53,121 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:53,121 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.target_audience, niches.content_type, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches
+2026-01-23 19:47:53,121 INFO sqlalchemy.engine.Engine [cached since 0.3464s ago] ()
+2026-01-23 19:47:53,135 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:47:53 | INFO     | app.workers.job_worker:start:54 - Job worker started
+2026-01-23 19:47:53 | INFO     | app.main:lifespan:500 - Job worker started
+2026-01-23 19:47:53 | INFO     | app.services.scheduler_service:initialize:59 - Content scheduler initialized
+2026-01-23 19:47:53 | INFO     | app.services.scheduler_service:start:69 - Content scheduler started
+2026-01-23 19:47:53,139 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:47:53,140 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.auto_mode = 1
+2026-01-23 19:47:53,140 INFO sqlalchemy.engine.Engine [generated in 0.00014s] ()
+2026-01-23 19:47:53,140 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:47:53 | INFO     | app.services.scheduler_service:_schedule_daily_generation:134 - Scheduled content generation for 0 niches (0 total jobs)
+2026-01-23 19:47:53 | INFO     | app.services.scheduler_service:start:82 - Scheduled RSS scraping every 3 hours
+2026-01-23 19:47:53 | INFO     | app.main:lifespan:506 - Content scheduler started
+2026-01-23 19:47:53 | INFO     | app.main:lifespan:511 - Content Factory ready at http://127.0.0.1:8000
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app\main.py'. Reloading...
+ 2026-01-23 19:48:53,153 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:48:53,156 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NULL ORDER BY jobs.created_at
+ LIMIT ? OFFSET ?
+2026-01-23 19:48:53,156 INFO sqlalchemy.engine.Engine [generated in 0.00026s] ('PENDING', 2, 0)
+2026-01-23 19:48:53,157 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:48:53,158 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:48:53,159 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs 
+WHERE jobs.status = ? AND jobs.scheduled_at IS NOT NULL AND jobs.scheduled_at <= ? ORDER BY jobs.scheduled_at
+2026-01-23 19:48:53,159 INFO sqlalchemy.engine.Engine [generated in 0.00021s] ('PENDING', '2026-01-24 00:48:53.158354')
+2026-01-23 19:48:53,159 INFO sqlalchemy.engine.Engine COMMIT
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+2026-01-23 19:48:58 | INFO     | app.main:lifespan:516 - Shutting down Content Factory...
+2026-01-23 19:48:58 | INFO     | app.workers.job_worker:stop:63 - Job worker stopped
+2026-01-23 19:48:58 | INFO     | app.main:lifespan:519 - Shutdown complete
+INFO:     Application shutdown complete.
+INFO:     Finished server process [31060]
+Process SpawnProcess-2:
+Traceback (most recent call last):
+  File "C:\Python311\Lib\multiprocessing\process.py", line 314, in _bootstrap
+    self.run()
+  File "C:\Python311\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\_subprocess.py", line 80, in subprocess_started
+    target(sockets=sockets)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\server.py", line 67, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\_compat.py", line 30, in asyncio_run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\asyncio\base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\server.py", line 71, in serve
+    await self._serve(sockets)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\server.py", line 78, in _serve
+    config.load()
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\config.py", line 439, in load
+    self.loaded_app = import_from_string(self.app)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\importlib\__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 936, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1074, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1004, in source_to_code
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "D:\Ideas\content_factory\backend\app\main.py", line 413
+    import shutil
+IndentationError: unexpected indent
+WARNING:  StatReload detected changes in 'app\main.py'. Reloading...
+ Process SpawnProcess-3:
+Traceback (most recent call last):
+  File "C:\Python311\Lib\multiprocessing\process.py", line 314, in _bootstrap
+    self.run()
+  File "C:\Python311\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\_subprocess.py", line 80, in subprocess_started
+    target(sockets=sockets)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\server.py", line 67, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\_compat.py", line 30, in asyncio_run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\asyncio\base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\server.py", line 71, in serve
+    await self._serve(sockets)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\server.py", line 78, in _serve
+    config.load()
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\config.py", line 439, in load
+    self.loaded_app = import_from_string(self.app)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\importer.py", line 19, in import_from_string
+    module = importlib.import_module(module_str)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Python311\Lib\importlib\__init__.py", line 126, in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "<frozen importlib._bootstrap>", line 1204, in _gcd_import
+  File "<frozen importlib._bootstrap>", line 1176, in _find_and_load
+  File "<frozen importlib._bootstrap>", line 1147, in _find_and_load_unlocked
+  File "<frozen importlib._bootstrap>", line 690, in _load_unlocked
+  File "<frozen importlib._bootstrap_external>", line 936, in exec_module
+  File "<frozen importlib._bootstrap_external>", line 1074, in get_code
+  File "<frozen importlib._bootstrap_external>", line 1004, in source_to_code
+  File "<frozen importlib._bootstrap>", line 241, in _call_with_frames_removed
+  File "D:\Ideas\content_factory\backend\app\main.py", line 410
+    )
+    ^
+SyntaxError: unmatched ')'
+WARNING:  StatReload detected changes in 'app\main.py'. Reloading...
+ D:\Ideas\content_factory\backend\app\api\mcp.py:14: UserWarning: Field name "json" in "MCPForwardRequest" shadows an attribute in parent "BaseModel"
+  class MCPForwardRequest(BaseModel):
+INFO:     Started server process [38112]
+INFO:     Waiting for application startup.
+2026-01-23 19:49:45 | INFO     | app.main:lifespan:458 - Starting Content Factory...
+2026-01-23 19:49:45 | INFO     | app.db.migrations:run_migrations:11 - Checking for pending database migrations...
+2026-01-23 19:49:45,062 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:49:45,062 INFO sqlalchemy.engine.Engine PRAGMA table_info(niches)
+2026-01-23 19:49:45,062 INFO sqlalchemy.engine.Engine [generated in 0.00021s] ()
+2026-01-23 19:49:45,064 INFO sqlalchemy.engine.Engine PRAGMA table_info(accounts)
+2026-01-23 19:49:45,064 INFO sqlalchemy.engine.Engine [generated in 0.00017s] ()
+2026-01-23 19:49:45,064 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:49:45 | INFO     | app.db.migrations:run_migrations:59 - Database migrations completed
+2026-01-23 19:49:45,064 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:49:45,064 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("niches")
+2026-01-23 19:49:45,064 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:49:45,065 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("accounts")
+2026-01-23 19:49:45,065 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:49:45,065 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("jobs")
+2026-01-23 19:49:45,065 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:49:45,065 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("job_logs")
+2026-01-23 19:49:45,065 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:49:45,065 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("videos")
+2026-01-23 19:49:45,065 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:49:45,066 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("video_publishes")
+2026-01-23 19:49:45,066 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:49:45,066 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("video_metrics")
+2026-01-23 19:49:45,066 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:49:45,066 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("daily_niche_stats")
+2026-01-23 19:49:45,066 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:49:45,066 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("video_scores")
+2026-01-23 19:49:45,066 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:49:45,066 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("niche_targets")
+2026-01-23 19:49:45,066 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:49:45,066 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:49:45 | INFO     | app.db.migrations:run_migrations:11 - Checking for pending database migrations...
+2026-01-23 19:49:45,068 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:49:45,068 INFO sqlalchemy.engine.Engine PRAGMA table_info(niches)
+2026-01-23 19:49:45,068 INFO sqlalchemy.engine.Engine [cached since 0.005998s ago] ()
+2026-01-23 19:49:45,068 INFO sqlalchemy.engine.Engine PRAGMA table_info(accounts)
+2026-01-23 19:49:45,068 INFO sqlalchemy.engine.Engine [cached since 0.005054s ago] ()
+2026-01-23 19:49:45,068 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:49:45 | INFO     | app.db.migrations:run_migrations:59 - Database migrations completed
+2026-01-23 19:49:45 | INFO     | app.main:lifespan:465 - Database initialized
+2026-01-23 19:49:45,069 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:49:45,083 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.target_audience, niches.content_type, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches
+2026-01-23 19:49:45,083 INFO sqlalchemy.engine.Engine [generated in 0.00033s] ()
+2026-01-23 19:49:45 | INFO     | app.main:seed_default_niches:35 - Found 16 existing niches, skipping seed
+2026-01-23 19:49:45,085 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:49:45 | INFO     | app.main:lifespan:469 - Default niches verified
+2026-01-23 19:49:45 | INFO     | app.main:lifespan:485 - Directory structure verified
+2026-01-23 19:49:45 | INFO     | app.services.niche_sync_service:sync_niches_to_db:58 - Starting niche sync from disk to database...
+2026-01-23 19:49:45,092 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:49:45,094 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-23 19:49:45,096 INFO sqlalchemy.engine.Engine [generated in 0.00027s] ('ai-that-saves-you-money-ca', 1, 0)
+2026-01-23 19:49:45,096 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-23 19:49:45,096 INFO sqlalchemy.engine.Engine [cached since 0.001722s ago] ('asmr-relaxation', 1, 0)
+2026-01-23 19:49:45,098 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-23 19:49:45,098 INFO sqlalchemy.engine.Engine [cached since 0.00267s ago] ('beauty-trends-now', 1, 0)
+2026-01-23 19:49:45,098 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-23 19:49:45,098 INFO sqlalchemy.engine.Engine [cached since 0.003331s ago] ('comedy-sketches', 1, 0)
+2026-01-23 19:49:45,099 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-23 19:49:45,099 INFO sqlalchemy.engine.Engine [cached since 0.003955s ago] ('cooking-hacks-pro', 1, 0)
+2026-01-23 19:49:45,100 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-23 19:49:45,100 INFO sqlalchemy.engine.Engine [cached since 0.004547s ago] ('dance-challenges', 1, 0)
+2026-01-23 19:49:45,100 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-23 19:49:45,100 INFO sqlalchemy.engine.Engine [cached since 0.005113s ago] ('fashion-finds-daily', 1, 0)
+2026-01-23 19:49:45,100 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-23 19:49:45,101 INFO sqlalchemy.engine.Engine [cached since 0.005693s ago] ('health-tips-daily', 1, 0)
+2026-01-23 19:49:45,101 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-23 19:49:45,101 INFO sqlalchemy.engine.Engine [cached since 0.006255s ago] ('home-decor-hacks', 1, 0)
+2026-01-23 19:49:45,101 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-23 19:49:45,102 INFO sqlalchemy.engine.Engine [cached since 0.006781s ago] ('life-hacks-daily', 1, 0)
+2026-01-23 19:49:45,102 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-23 19:49:45,102 INFO sqlalchemy.engine.Engine [cached since 0.007288s ago] ('life-systems-scripts', 1, 0)
+2026-01-23 19:49:45,102 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-23 19:49:45,103 INFO sqlalchemy.engine.Engine [cached since 0.007895s ago] ('magic-tricks', 1, 0)
+2026-01-23 19:49:45,103 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-23 19:49:45,103 INFO sqlalchemy.engine.Engine [cached since 0.008455s ago] ('micro-money-moves-ca', 1, 0)
+2026-01-23 19:49:45,104 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-23 19:49:45,104 INFO sqlalchemy.engine.Engine [cached since 0.00902s ago] ('pet-care-tips', 1, 0)
+2026-01-23 19:49:45,105 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-23 19:49:45,105 INFO sqlalchemy.engine.Engine [cached since 0.009588s ago] ('quick-recipes', 1, 0)
+2026-01-23 19:49:45,105 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.slug = ?
+ LIMIT ? OFFSET ?
+2026-01-23 19:49:45,105 INFO sqlalchemy.engine.Engine [cached since 0.01014s ago] ('tech-news-you-can-use', 1, 0)
+2026-01-23 19:49:45 | INFO     | app.services.niche_sync_service:sync_niches_to_db:135 - Niche sync complete: 0 new, 0 updated
+2026-01-23 19:49:45,105 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:49:45,107 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:49:45,107 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.target_audience, niches.content_type, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches
+2026-01-23 19:49:45,107 INFO sqlalchemy.engine.Engine [cached since 0.02367s ago] ()
+2026-01-23 19:49:45,122 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:49:45 | INFO     | app.workers.job_worker:start:54 - Job worker started
+2026-01-23 19:49:45 | INFO     | app.main:lifespan:500 - Job worker started
+2026-01-23 19:49:45 | INFO     | app.services.scheduler_service:initialize:59 - Content scheduler initialized
+2026-01-23 19:49:45 | INFO     | app.services.scheduler_service:start:69 - Content scheduler started
+2026-01-23 19:49:45,124 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:49:45,125 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.target_audience AS niches_target_audience, niches.content_type AS niches_content_type, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.auto_mode = 1
+2026-01-23 19:49:45,125 INFO sqlalchemy.engine.Engine [generated in 0.00014s] ()
+2026-01-23 19:49:45,125 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:49:45 | INFO     | app.services.scheduler_service:_schedule_daily_generation:134 - Scheduled content generation for 0 niches (0 total jobs)
+2026-01-23 19:49:45 | INFO     | app.services.scheduler_service:start:82 - Scheduled RSS scraping every 3 hours
+2026-01-23 19:49:45 | INFO     | app.main:lifespan:506 - Content scheduler started
+2026-01-23 19:49:45 | INFO     | app.main:lifespan:511 - Content Factory ready at http://127.0.0.1:8000
+INFO:     Application startup complete.

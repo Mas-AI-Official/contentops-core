@@ -17,7 +17,9 @@ export default function Queue() {
 
   useEffect(() => {
     loadJobs()
-  }, [])
+    const interval = setInterval(loadJobs, 5000)
+    return () => clearInterval(interval)
+  }, [filter])
 
   const loadJobs = async () => {
     try {
@@ -34,6 +36,7 @@ export default function Queue() {
     }
   }
 
+  // ... handlers ...
   const handleRun = async (jobId) => {
     try {
       await runJob(jobId)
@@ -88,23 +91,48 @@ export default function Queue() {
     }
   }
 
-  const filteredJobs = filter === 'all' 
-    ? jobs 
+  const filteredJobs = filter === 'all'
+    ? jobs
     : jobs.filter(j => j.status === filter)
 
   if (loading) {
     return <div className="flex items-center justify-center h-64">Loading...</div>
   }
 
+  const pendingReviewCount = jobs.filter(j => j.status === 'ready_for_review').length
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-900">Job Queue</h1>
-        <Button variant="secondary" onClick={loadJobs}>
-          <RefreshCw className="h-4 w-4" />
-          Refresh
-        </Button>
+        <div className="flex gap-2">
+          {pendingReviewCount > 0 && (
+            <Button onClick={() => setFilter('ready_for_review')} className="bg-amber-500 hover:bg-amber-600 border-amber-600">
+              <Eye className="h-4 w-4 mr-2" />
+              Review {pendingReviewCount} Items
+            </Button>
+          )}
+          <Button variant="secondary" onClick={loadJobs}>
+            <RefreshCw className="h-4 w-4" />
+            Refresh
+          </Button>
+        </div>
       </div>
+
+      {pendingReviewCount > 0 && filter !== 'ready_for_review' && (
+        <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <AlertCircle className="h-5 w-5 text-amber-600" />
+            <div>
+              <h3 className="font-medium text-amber-900">Governance Action Required</h3>
+              <p className="text-sm text-amber-700">You have {pendingReviewCount} videos waiting for review before publishing.</p>
+            </div>
+          </div>
+          <Button size="sm" onClick={() => setFilter('ready_for_review')} className="bg-amber-600 hover:bg-amber-700 text-white border-transparent">
+            Review Now
+          </Button>
+        </div>
+      )}
 
       {/* Filters */}
       <div className="flex gap-2 flex-wrap">
@@ -112,11 +140,10 @@ export default function Queue() {
           <button
             key={status}
             onClick={() => setFilter(status)}
-            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
-              filter === status
-                ? 'bg-primary-100 text-primary-700'
-                : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-            }`}
+            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${filter === status
+              ? 'bg-primary-100 text-primary-700'
+              : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+              }`}
           >
             {status.replace(/_/g, ' ')}
           </button>
@@ -149,7 +176,7 @@ export default function Queue() {
                       Created: {new Date(job.created_at).toLocaleString()}
                     </p>
                   </div>
-                  
+
                   <div className="flex items-center gap-2">
                     {job.status === 'pending' && (
                       <>
@@ -191,7 +218,7 @@ export default function Queue() {
                 {job.progress_percent > 0 && job.progress_percent < 100 && (
                   <div className="mt-3">
                     <div className="h-1 bg-gray-200 rounded-full overflow-hidden">
-                      <div 
+                      <div
                         className="h-full bg-primary-500 transition-all duration-500"
                         style={{ width: `${job.progress_percent}%` }}
                       />
@@ -239,11 +266,10 @@ export default function Queue() {
                       <h4 className="text-sm font-medium text-gray-700 mb-2">Logs</h4>
                       <div className="bg-gray-900 rounded-lg p-3 max-h-48 overflow-y-auto">
                         {jobLogs[job.id].slice(-10).map((log, i) => (
-                          <div key={i} className={`text-xs font-mono ${
-                            log.level === 'ERROR' ? 'text-red-400' :
+                          <div key={i} className={`text-xs font-mono ${log.level === 'ERROR' ? 'text-red-400' :
                             log.level === 'WARNING' ? 'text-yellow-400' :
-                            'text-gray-300'
-                          }`}>
+                              'text-gray-300'
+                            }`}>
                             <span className="text-gray-500">{new Date(log.timestamp).toLocaleTimeString()}</span>{' '}
                             [{log.level}] {log.message}
                           </div>
@@ -263,9 +289,9 @@ export default function Queue() {
                             <div className="flex items-center gap-2">
                               <StatusBadge status={result.status} />
                               {result.video_url && (
-                                <a 
-                                  href={result.video_url} 
-                                  target="_blank" 
+                                <a
+                                  href={result.video_url}
+                                  target="_blank"
                                   className="text-primary-600 text-sm hover:underline"
                                 >
                                   View

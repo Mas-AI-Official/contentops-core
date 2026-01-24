@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout'
 import Overview from './pages/Overview'
+import Platforms from './pages/Platforms'
 import Niches from './pages/Niches'
 import Accounts from './pages/Accounts'
 import Generator from './pages/Generator'
@@ -16,6 +17,7 @@ function App() {
     <Layout>
       <Routes>
         <Route path="/" element={<Overview />} />
+        <Route path="/platforms" element={<Platforms />} />
         <Route path="/niches" element={<Niches />} />
         <Route path="/accounts" element={<Accounts />} />
         <Route path="/generator" element={<Generator />} />

@@ -4,7 +4,8 @@ Includes per-niche AI model settings for flexible content generation.
 """
 from datetime import datetime
 from typing import Optional, List
-from sqlmodel import SQLModel, Field, JSON, Column
+from sqlmodel import SQLModel, Field, Column
+from sqlalchemy import JSON
 from enum import Enum
 
 
@@ -32,7 +33,10 @@ class WhisperDevice(str, Enum):
 class NicheBase(SQLModel):
     """Base niche model."""
     name: str = Field(index=True, unique=True)
+    slug: str = Field(index=True, unique=True)
     description: Optional[str] = None
+    target_audience: Optional[str] = None
+    content_type: Optional[str] = None
     style: VideoStyle = Field(default=VideoStyle.NARRATOR_BROLL)
     
     # Posting targets - platforms to publish to
@@ -42,6 +46,25 @@ class NicheBase(SQLModel):
     
     # Frequency
     posts_per_day: int = Field(default=1, ge=0, le=10)
+
+    # Automation
+    auto_mode: bool = Field(default=False)  # Enable automated posting
+
+    # Platform & Account
+    platform: str = Field(default="youtube")  # youtube, instagram, tiktok
+    account_name: Optional[str] = None  # Associated account name
+    
+    # Account Links (Foreign Keys)
+    account_id: Optional[int] = Field(default=None, foreign_key="accounts.id")
+    youtube_account_id: Optional[int] = Field(default=None, foreign_key="accounts.id")
+    instagram_account_id: Optional[int] = Field(default=None, foreign_key="accounts.id")
+    tiktok_account_id: Optional[int] = Field(default=None, foreign_key="accounts.id")
+
+    # Scheduling
+    posting_schedule: List[str] = Field(
+        default_factory=lambda: ["09:00", "19:00"],
+        sa_column=Column(JSON)
+    )  # Times to post
     
     # Template prompts stored as JSON
     prompt_hook: str = Field(default="Generate an attention-grabbing hook for a video about {topic}.")
@@ -121,6 +144,7 @@ class NicheUpdate(SQLModel):
     post_to_instagram: Optional[bool] = None
     post_to_tiktok: Optional[bool] = None
     posts_per_day: Optional[int] = None
+    auto_mode: Optional[bool] = None
     prompt_hook: Optional[str] = None
     prompt_body: Optional[str] = None
     prompt_cta: Optional[str] = None
@@ -128,6 +152,12 @@ class NicheUpdate(SQLModel):
     min_duration_seconds: Optional[int] = None
     max_duration_seconds: Optional[int] = None
     is_active: Optional[bool] = None
+    
+    # Account Links
+    account_id: Optional[int] = None
+    youtube_account_id: Optional[int] = None
+    instagram_account_id: Optional[int] = None
+    tiktok_account_id: Optional[int] = None
     
     # Per-niche AI settings
     llm_model: Optional[str] = None
@@ -145,6 +175,17 @@ class NicheRead(NicheBase):
     id: int
     created_at: datetime
     updated_at: datetime
+
+    # Include the new fields explicitly for the API
+    platform: str
+    account_name: Optional[str]
+    posting_schedule: List[str]
+    
+    # Account Links
+    account_id: Optional[int]
+    youtube_account_id: Optional[int]
+    instagram_account_id: Optional[int]
+    tiktok_account_id: Optional[int]
 
 
 class NicheModelConfig(SQLModel):

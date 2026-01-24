@@ -1,0 +1,1675 @@
+INFO:     Will watch for changes in these directories: ['D:\\Ideas\\content_factory\\backend']
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [28236] using StatReload
+D:\Ideas\content_factory\backend\app\api\mcp.py:14: UserWarning: Field name "json" in "MCPForwardRequest" shadows an attribute in parent "BaseModel"
+  class MCPForwardRequest(BaseModel):
+INFO:     Started server process [39972]
+INFO:     Waiting for application startup.
+2026-01-23 19:45:08 | INFO     | app.main:lifespan:458 - Starting Content Factory...
+2026-01-23 19:45:08 | INFO     | app.db.migrations:run_migrations:11 - Checking for pending database migrations...
+2026-01-23 19:45:08,534 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,534 INFO sqlalchemy.engine.Engine PRAGMA table_info(niches)
+2026-01-23 19:45:08,534 INFO sqlalchemy.engine.Engine [generated in 0.00011s] ()
+2026-01-23 19:45:08 | INFO     | app.db.migrations:run_migrations:20 - Migrating: Adding 'auto_mode' column to 'niches' table
+2026-01-23 19:45:08,535 INFO sqlalchemy.engine.Engine ALTER TABLE niches ADD COLUMN auto_mode BOOLEAN DEFAULT 0
+2026-01-23 19:45:08,535 INFO sqlalchemy.engine.Engine [generated in 0.00008s] ()
+2026-01-23 19:45:08 | ERROR    | app.db.migrations:run_migrations:45 - Migration failed for 'niches' table: (sqlite3.OperationalError) no such table: niches
+[SQL: ALTER TABLE niches ADD COLUMN auto_mode BOOLEAN DEFAULT 0]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-01-23 19:45:08,535 INFO sqlalchemy.engine.Engine PRAGMA table_info(accounts)
+2026-01-23 19:45:08,535 INFO sqlalchemy.engine.Engine [generated in 0.00008s] ()
+2026-01-23 19:45:08 | INFO     | app.db.migrations:run_migrations:53 - Migrating: Adding 'credentials_json' column to 'accounts' table
+2026-01-23 19:45:08,535 INFO sqlalchemy.engine.Engine ALTER TABLE accounts ADD COLUMN credentials_json JSON
+2026-01-23 19:45:08,535 INFO sqlalchemy.engine.Engine [generated in 0.00007s] ()
+2026-01-23 19:45:08 | ERROR    | app.db.migrations:run_migrations:57 - Migration failed for 'accounts' table: (sqlite3.OperationalError) no such table: accounts
+[SQL: ALTER TABLE accounts ADD COLUMN credentials_json JSON]
+(Background on this error at: https://sqlalche.me/e/20/e3q8)
+2026-01-23 19:45:08,536 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:45:08 | INFO     | app.db.migrations:run_migrations:59 - Database migrations completed
+2026-01-23 19:45:08,536 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,536 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("niches")
+2026-01-23 19:45:08,536 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:45:08,536 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("niches")
+2026-01-23 19:45:08,536 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:45:08,536 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("accounts")
+2026-01-23 19:45:08,536 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:45:08,536 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("accounts")
+2026-01-23 19:45:08,536 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:45:08,536 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("jobs")
+2026-01-23 19:45:08,536 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:45:08,536 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("jobs")
+2026-01-23 19:45:08,536 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:45:08,537 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("job_logs")
+2026-01-23 19:45:08,537 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:45:08,537 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("job_logs")
+2026-01-23 19:45:08,537 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:45:08,537 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("videos")
+2026-01-23 19:45:08,537 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:45:08,537 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("videos")
+2026-01-23 19:45:08,537 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:45:08,538 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("video_publishes")
+2026-01-23 19:45:08,538 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:45:08,538 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("video_publishes")
+2026-01-23 19:45:08,538 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:45:08,538 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("video_metrics")
+2026-01-23 19:45:08,538 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:45:08,538 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("video_metrics")
+2026-01-23 19:45:08,538 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:45:08,538 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("daily_niche_stats")
+2026-01-23 19:45:08,538 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:45:08,538 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("daily_niche_stats")
+2026-01-23 19:45:08,538 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:45:08,538 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("video_scores")
+2026-01-23 19:45:08,538 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:45:08,538 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("video_scores")
+2026-01-23 19:45:08,538 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:45:08,538 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("niche_targets")
+2026-01-23 19:45:08,538 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:45:08,538 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("niche_targets")
+2026-01-23 19:45:08,538 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:45:08,539 INFO sqlalchemy.engine.Engine 
+CREATE TABLE accounts (
+	platform VARCHAR(9) NOT NULL, 
+	account_name VARCHAR NOT NULL, 
+	account_handle VARCHAR, 
+	credentials_env_prefix VARCHAR NOT NULL, 
+	is_active BOOLEAN NOT NULL, 
+	last_verified DATETIME, 
+	platform_user_id VARCHAR, 
+	platform_channel_id VARCHAR, 
+	credentials_json JSON, 
+	id INTEGER NOT NULL, 
+	created_at DATETIME NOT NULL, 
+	updated_at DATETIME NOT NULL, 
+	PRIMARY KEY (id)
+)
+
+
+2026-01-23 19:45:08,539 INFO sqlalchemy.engine.Engine [no key 0.00007s] ()
+2026-01-23 19:45:08,541 INFO sqlalchemy.engine.Engine CREATE INDEX ix_accounts_account_name ON accounts (account_name)
+2026-01-23 19:45:08,541 INFO sqlalchemy.engine.Engine [no key 0.00008s] ()
+2026-01-23 19:45:08,543 INFO sqlalchemy.engine.Engine 
+CREATE TABLE niches (
+	name VARCHAR NOT NULL, 
+	slug VARCHAR NOT NULL, 
+	description VARCHAR, 
+	style VARCHAR(14) NOT NULL, 
+	post_to_youtube BOOLEAN NOT NULL, 
+	post_to_instagram BOOLEAN NOT NULL, 
+	post_to_tiktok BOOLEAN NOT NULL, 
+	posts_per_day INTEGER NOT NULL, 
+	auto_mode BOOLEAN NOT NULL, 
+	platform VARCHAR NOT NULL, 
+	account_name VARCHAR, 
+	account_id INTEGER, 
+	youtube_account_id INTEGER, 
+	instagram_account_id INTEGER, 
+	tiktok_account_id INTEGER, 
+	posting_schedule JSON, 
+	prompt_hook VARCHAR NOT NULL, 
+	prompt_body VARCHAR NOT NULL, 
+	prompt_cta VARCHAR NOT NULL, 
+	hashtags JSON, 
+	min_duration_seconds INTEGER NOT NULL, 
+	max_duration_seconds INTEGER NOT NULL, 
+	llm_model VARCHAR, 
+	llm_temperature FLOAT NOT NULL, 
+	tts_provider VARCHAR, 
+	voice_id VARCHAR, 
+	voice_name VARCHAR, 
+	whisper_model VARCHAR, 
+	whisper_device VARCHAR, 
+	style_preset VARCHAR, 
+	is_active BOOLEAN NOT NULL, 
+	id INTEGER NOT NULL, 
+	created_at DATETIME NOT NULL, 
+	updated_at DATETIME NOT NULL, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(account_id) REFERENCES accounts (id), 
+	FOREIGN KEY(youtube_account_id) REFERENCES accounts (id), 
+	FOREIGN KEY(instagram_account_id) REFERENCES accounts (id), 
+	FOREIGN KEY(tiktok_account_id) REFERENCES accounts (id)
+)
+
+
+2026-01-23 19:45:08,543 INFO sqlalchemy.engine.Engine [no key 0.00008s] ()
+2026-01-23 19:45:08,545 INFO sqlalchemy.engine.Engine CREATE UNIQUE INDEX ix_niches_name ON niches (name)
+2026-01-23 19:45:08,545 INFO sqlalchemy.engine.Engine [no key 0.00008s] ()
+2026-01-23 19:45:08,548 INFO sqlalchemy.engine.Engine CREATE UNIQUE INDEX ix_niches_slug ON niches (slug)
+2026-01-23 19:45:08,548 INFO sqlalchemy.engine.Engine [no key 0.00023s] ()
+2026-01-23 19:45:08,551 INFO sqlalchemy.engine.Engine 
+CREATE TABLE jobs (
+	niche_id INTEGER NOT NULL, 
+	job_type VARCHAR(20) NOT NULL, 
+	topic VARCHAR NOT NULL, 
+	topic_source VARCHAR NOT NULL, 
+	video_model VARCHAR, 
+	script_hook VARCHAR, 
+	script_body VARCHAR, 
+	script_cta VARCHAR, 
+	full_script VARCHAR, 
+	audio_path VARCHAR, 
+	subtitle_path VARCHAR, 
+	video_path VARCHAR, 
+	thumbnail_path VARCHAR, 
+	status VARCHAR(20) NOT NULL, 
+	progress_percent INTEGER NOT NULL, 
+	error_message VARCHAR, 
+	scheduled_at DATETIME, 
+	publish_youtube BOOLEAN NOT NULL, 
+	publish_instagram BOOLEAN NOT NULL, 
+	publish_tiktok BOOLEAN NOT NULL, 
+	publish_results JSON, 
+	duration_seconds FLOAT, 
+	file_size_bytes INTEGER, 
+	id INTEGER NOT NULL, 
+	created_at DATETIME NOT NULL, 
+	updated_at DATETIME NOT NULL, 
+	started_at DATETIME, 
+	completed_at DATETIME, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(niche_id) REFERENCES niches (id)
+)
+
+
+2026-01-23 19:45:08,551 INFO sqlalchemy.engine.Engine [no key 0.00013s] ()
+2026-01-23 19:45:08,553 INFO sqlalchemy.engine.Engine 
+CREATE TABLE daily_niche_stats (
+	id INTEGER NOT NULL, 
+	niche_id INTEGER NOT NULL, 
+	stats_date DATE NOT NULL, 
+	videos_created INTEGER NOT NULL, 
+	videos_published INTEGER NOT NULL, 
+	videos_failed INTEGER NOT NULL, 
+	total_views INTEGER NOT NULL, 
+	total_likes INTEGER NOT NULL, 
+	total_comments INTEGER NOT NULL, 
+	total_shares INTEGER NOT NULL, 
+	top_video_id INTEGER, 
+	top_video_views INTEGER NOT NULL, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(niche_id) REFERENCES niches (id)
+)
+
+
+2026-01-23 19:45:08,553 INFO sqlalchemy.engine.Engine [no key 0.00008s] ()
+2026-01-23 19:45:08,555 INFO sqlalchemy.engine.Engine CREATE INDEX ix_daily_niche_stats_niche_id ON daily_niche_stats (niche_id)
+2026-01-23 19:45:08,555 INFO sqlalchemy.engine.Engine [no key 0.00008s] ()
+2026-01-23 19:45:08,557 INFO sqlalchemy.engine.Engine CREATE INDEX ix_daily_niche_stats_stats_date ON daily_niche_stats (stats_date)
+2026-01-23 19:45:08,557 INFO sqlalchemy.engine.Engine [no key 0.00007s] ()
+2026-01-23 19:45:08,559 INFO sqlalchemy.engine.Engine 
+CREATE TABLE niche_targets (
+	id INTEGER NOT NULL, 
+	niche_id INTEGER NOT NULL, 
+	account_id INTEGER NOT NULL, 
+	platform VARCHAR NOT NULL, 
+	enabled BOOLEAN NOT NULL, 
+	priority INTEGER NOT NULL, 
+	schedule_override JSON, 
+	created_at DATETIME NOT NULL, 
+	updated_at DATETIME NOT NULL, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(niche_id) REFERENCES niches (id), 
+	FOREIGN KEY(account_id) REFERENCES accounts (id)
+)
+
+
+2026-01-23 19:45:08,559 INFO sqlalchemy.engine.Engine [no key 0.00015s] ()
+2026-01-23 19:45:08,561 INFO sqlalchemy.engine.Engine CREATE INDEX ix_niche_targets_account_id ON niche_targets (account_id)
+2026-01-23 19:45:08,561 INFO sqlalchemy.engine.Engine [no key 0.00008s] ()
+2026-01-23 19:45:08,563 INFO sqlalchemy.engine.Engine CREATE INDEX ix_niche_targets_platform ON niche_targets (platform)
+2026-01-23 19:45:08,563 INFO sqlalchemy.engine.Engine [no key 0.00007s] ()
+2026-01-23 19:45:08,564 INFO sqlalchemy.engine.Engine CREATE INDEX ix_niche_targets_niche_id ON niche_targets (niche_id)
+2026-01-23 19:45:08,564 INFO sqlalchemy.engine.Engine [no key 0.00007s] ()
+2026-01-23 19:45:08,566 INFO sqlalchemy.engine.Engine 
+CREATE TABLE job_logs (
+	id INTEGER NOT NULL, 
+	job_id INTEGER NOT NULL, 
+	timestamp DATETIME NOT NULL, 
+	level VARCHAR NOT NULL, 
+	message VARCHAR NOT NULL, 
+	details VARCHAR, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(job_id) REFERENCES jobs (id)
+)
+
+
+2026-01-23 19:45:08,566 INFO sqlalchemy.engine.Engine [no key 0.00008s] ()
+2026-01-23 19:45:08,569 INFO sqlalchemy.engine.Engine CREATE INDEX ix_job_logs_job_id ON job_logs (job_id)
+2026-01-23 19:45:08,569 INFO sqlalchemy.engine.Engine [no key 0.00008s] ()
+2026-01-23 19:45:08,571 INFO sqlalchemy.engine.Engine 
+CREATE TABLE videos (
+	job_id INTEGER NOT NULL, 
+	niche_id INTEGER NOT NULL, 
+	title VARCHAR NOT NULL, 
+	description VARCHAR, 
+	topic VARCHAR NOT NULL, 
+	file_path VARCHAR NOT NULL, 
+	thumbnail_path VARCHAR, 
+	duration_seconds FLOAT NOT NULL, 
+	file_size_bytes INTEGER NOT NULL, 
+	width INTEGER NOT NULL, 
+	height INTEGER NOT NULL, 
+	fps INTEGER NOT NULL, 
+	tags JSON, 
+	hashtags JSON, 
+	id INTEGER NOT NULL, 
+	created_at DATETIME NOT NULL, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(job_id) REFERENCES jobs (id), 
+	FOREIGN KEY(niche_id) REFERENCES niches (id)
+)
+
+
+2026-01-23 19:45:08,571 INFO sqlalchemy.engine.Engine [no key 0.00010s] ()
+2026-01-23 19:45:08,574 INFO sqlalchemy.engine.Engine CREATE INDEX ix_videos_niche_id ON videos (niche_id)
+2026-01-23 19:45:08,574 INFO sqlalchemy.engine.Engine [no key 0.00007s] ()
+2026-01-23 19:45:08,575 INFO sqlalchemy.engine.Engine CREATE INDEX ix_videos_job_id ON videos (job_id)
+2026-01-23 19:45:08,575 INFO sqlalchemy.engine.Engine [no key 0.00006s] ()
+2026-01-23 19:45:08,577 INFO sqlalchemy.engine.Engine 
+CREATE TABLE video_publishes (
+	id INTEGER NOT NULL, 
+	video_id INTEGER NOT NULL, 
+	platform VARCHAR NOT NULL, 
+	platform_video_id VARCHAR, 
+	platform_url VARCHAR, 
+	status VARCHAR NOT NULL, 
+	error_message VARCHAR, 
+	published_at DATETIME, 
+	created_at DATETIME NOT NULL, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(video_id) REFERENCES videos (id)
+)
+
+
+2026-01-23 19:45:08,577 INFO sqlalchemy.engine.Engine [no key 0.00007s] ()
+2026-01-23 19:45:08,580 INFO sqlalchemy.engine.Engine CREATE INDEX ix_video_publishes_video_id ON video_publishes (video_id)
+2026-01-23 19:45:08,580 INFO sqlalchemy.engine.Engine [no key 0.00012s] ()
+2026-01-23 19:45:08,582 INFO sqlalchemy.engine.Engine 
+CREATE TABLE video_metrics (
+	id INTEGER NOT NULL, 
+	video_id INTEGER NOT NULL, 
+	platform VARCHAR NOT NULL, 
+	metrics_date DATE NOT NULL, 
+	views INTEGER NOT NULL, 
+	likes INTEGER NOT NULL, 
+	comments INTEGER NOT NULL, 
+	shares INTEGER NOT NULL, 
+	watch_time_seconds INTEGER, 
+	average_view_duration FLOAT, 
+	impressions INTEGER, 
+	reach INTEGER, 
+	saves INTEGER, 
+	engagement_rate FLOAT, 
+	fetched_at DATETIME NOT NULL, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(video_id) REFERENCES videos (id)
+)
+
+
+2026-01-23 19:45:08,582 INFO sqlalchemy.engine.Engine [no key 0.00013s] ()
+2026-01-23 19:45:08,583 INFO sqlalchemy.engine.Engine CREATE INDEX ix_video_metrics_video_id ON video_metrics (video_id)
+2026-01-23 19:45:08,584 INFO sqlalchemy.engine.Engine [no key 0.00008s] ()
+2026-01-23 19:45:08,585 INFO sqlalchemy.engine.Engine CREATE INDEX ix_video_metrics_metrics_date ON video_metrics (metrics_date)
+2026-01-23 19:45:08,585 INFO sqlalchemy.engine.Engine [no key 0.00006s] ()
+2026-01-23 19:45:08,587 INFO sqlalchemy.engine.Engine 
+CREATE TABLE video_scores (
+	id INTEGER NOT NULL, 
+	video_id INTEGER NOT NULL, 
+	views_velocity FLOAT NOT NULL, 
+	engagement_score FLOAT NOT NULL, 
+	virality_score FLOAT NOT NULL, 
+	is_winner BOOLEAN NOT NULL, 
+	is_underperformer BOOLEAN NOT NULL, 
+	calculated_at DATETIME NOT NULL, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(video_id) REFERENCES videos (id)
+)
+
+
+2026-01-23 19:45:08,587 INFO sqlalchemy.engine.Engine [no key 0.00011s] ()
+2026-01-23 19:45:08,589 INFO sqlalchemy.engine.Engine CREATE UNIQUE INDEX ix_video_scores_video_id ON video_scores (video_id)
+2026-01-23 19:45:08,591 INFO sqlalchemy.engine.Engine [no key 0.00007s] ()
+2026-01-23 19:45:08,592 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:45:08 | INFO     | app.db.migrations:run_migrations:11 - Checking for pending database migrations...
+2026-01-23 19:45:08,593 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,593 INFO sqlalchemy.engine.Engine PRAGMA table_info(niches)
+2026-01-23 19:45:08,593 INFO sqlalchemy.engine.Engine [cached since 0.05863s ago] ()
+2026-01-23 19:45:08,593 INFO sqlalchemy.engine.Engine PRAGMA table_info(accounts)
+2026-01-23 19:45:08,593 INFO sqlalchemy.engine.Engine [cached since 0.05795s ago] ()
+2026-01-23 19:45:08,593 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:45:08 | INFO     | app.db.migrations:run_migrations:59 - Database migrations completed
+2026-01-23 19:45:08 | INFO     | app.main:lifespan:465 - Database initialized
+2026-01-23 19:45:08,593 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,601 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches
+2026-01-23 19:45:08,601 INFO sqlalchemy.engine.Engine [generated in 0.00015s] ()
+2026-01-23 19:45:08 | INFO     | app.main:seed_default_niches:38 - Database empty, seeding default niches...
+2026-01-23 19:45:08,608 INFO sqlalchemy.engine.Engine INSERT INTO niches (name, slug, description, style, post_to_youtube, post_to_instagram, post_to_tiktok, posts_per_day, auto_mode, platform, account_name, account_id, youtube_account_id, instagram_account_id, tiktok_account_id, posting_schedule, prompt_hook, prompt_body, prompt_cta, hashtags, min_duration_seconds, max_duration_seconds, llm_model, llm_temperature, tts_provider, voice_id, voice_name, whisper_model, whisper_device, style_preset, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-01-23 19:45:08,608 INFO sqlalchemy.engine.Engine [generated in 0.00047s] ('AIThatSavesYouMoney_CA', 'ai-that-saves-you-money-ca', 'AI tools and apps that help Canadians save money on everyday expenses', 'NARRATOR_BROLL', 1, 1, 1, 2, 0, 'youtube', 'AISavingsCanada', None, None, None, None, '["09:00", "19:00"]', "You are a Canadian financial expert specializing in AI-powered money-saving solutions. Hook viewers with a surprising statistic about AI saving money: 'Did you know AI can save Canadians an average of $500/month on bills?'", 'Explain 5 practical AI tools/apps that help Canadians save money. Focus on: grocery shopping, utility bills, banking fees, insurance, and subscriptions. Use Canadian examples and dollar amounts. Make it conversational and exciting.', "Download one AI app mentioned today and save $50 on your first bill. Comment below which app you're trying first!", '["AISavings", "CanadianMoneyTips", "AIFinancialTools", "SaveMoneyAI", "CanadianFinance"]', 30, 60, None, 0.7, None, None, None, None, None, None, 1, '2026-01-24 00:45:08.603000', '2026-01-24 00:45:08.603000')
+2026-01-23 19:45:08,610 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:45:08,613 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,614 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches 
+WHERE niches.id = ?
+2026-01-23 19:45:08,614 INFO sqlalchemy.engine.Engine [generated in 0.00016s] (1,)
+2026-01-23 19:45:08 | ERROR    | app.main:seed_default_niches:406 - Failed to create niche AIThatSavesYouMoney_CA: 'Niche' object has no attribute 'target_audience'
+2026-01-23 19:45:08,615 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-23 19:45:08,616 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,616 INFO sqlalchemy.engine.Engine INSERT INTO niches (name, slug, description, style, post_to_youtube, post_to_instagram, post_to_tiktok, posts_per_day, auto_mode, platform, account_name, account_id, youtube_account_id, instagram_account_id, tiktok_account_id, posting_schedule, prompt_hook, prompt_body, prompt_cta, hashtags, min_duration_seconds, max_duration_seconds, llm_model, llm_temperature, tts_provider, voice_id, voice_name, whisper_model, whisper_device, style_preset, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-01-23 19:45:08,616 INFO sqlalchemy.engine.Engine [cached since 0.008764s ago] ('TechNewsYouCanUse', 'tech-news-you-can-use', 'Tech news explained in practical terms with immediate applications', 'NARRATOR_BROLL', 1, 1, 1, 2, 0, 'youtube', 'TechNewsExplained', None, None, None, None, '["10:00", "18:00"]', "Hook with breaking tech news: 'Google just released an AI feature that could save you 2 hours daily - but here's the catch'", 'Explain recent tech developments in plain language. Focus on 3-4 news items that have immediate practical applications. Include how-to steps and real-world examples.', 'Try one of these tech tips today and comment how it changed your workflow!', '["TechNews", "PracticalTech", "TechTips", "Innovation", "FutureTech"]', 30, 60, None, 0.7, None, None, None, None, None, None, 1, '2026-01-24 00:45:08.616452', '2026-01-24 00:45:08.616452')
+2026-01-23 19:45:08,617 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:45:08,619 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,619 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches 
+WHERE niches.id = ?
+2026-01-23 19:45:08,619 INFO sqlalchemy.engine.Engine [cached since 0.004744s ago] (2,)
+2026-01-23 19:45:08 | ERROR    | app.main:seed_default_niches:406 - Failed to create niche TechNewsYouCanUse: 'Niche' object has no attribute 'target_audience'
+2026-01-23 19:45:08,620 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-23 19:45:08,620 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,620 INFO sqlalchemy.engine.Engine INSERT INTO niches (name, slug, description, style, post_to_youtube, post_to_instagram, post_to_tiktok, posts_per_day, auto_mode, platform, account_name, account_id, youtube_account_id, instagram_account_id, tiktok_account_id, posting_schedule, prompt_hook, prompt_body, prompt_cta, hashtags, min_duration_seconds, max_duration_seconds, llm_model, llm_temperature, tts_provider, voice_id, voice_name, whisper_model, whisper_device, style_preset, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-01-23 19:45:08,620 INFO sqlalchemy.engine.Engine [cached since 0.01274s ago] ('LifeSystemsScripts', 'life-systems-scripts', 'Scripts for implementing life-changing systems and habits', 'NARRATOR_BROLL', 1, 1, 1, 2, 0, 'youtube', 'LifeSystemsMaster', None, None, None, None, '["08:00", "20:00"]', "Hook with transformation promise: 'One simple system changed my entire morning routine - and it can change yours too'", 'Present a complete system implementation script. Break it down into: why it works, step-by-step setup, common obstacles, and success tracking. Make it motivational and actionable.', 'Implement one part of this system today and share your first win in the comments!', '["LifeSystems", "HabitBuilding", "Productivity", "LifeHacks", "PersonalDevelopment"]', 30, 55, None, 0.7, None, None, None, None, None, None, 1, '2026-01-24 00:45:08.620302', '2026-01-24 00:45:08.620302')
+2026-01-23 19:45:08,621 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:45:08,622 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,622 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches 
+WHERE niches.id = ?
+2026-01-23 19:45:08,622 INFO sqlalchemy.engine.Engine [cached since 0.008477s ago] (3,)
+2026-01-23 19:45:08 | ERROR    | app.main:seed_default_niches:406 - Failed to create niche LifeSystemsScripts: 'Niche' object has no attribute 'target_audience'
+2026-01-23 19:45:08,622 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-23 19:45:08,622 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,622 INFO sqlalchemy.engine.Engine INSERT INTO niches (name, slug, description, style, post_to_youtube, post_to_instagram, post_to_tiktok, posts_per_day, auto_mode, platform, account_name, account_id, youtube_account_id, instagram_account_id, tiktok_account_id, posting_schedule, prompt_hook, prompt_body, prompt_cta, hashtags, min_duration_seconds, max_duration_seconds, llm_model, llm_temperature, tts_provider, voice_id, voice_name, whisper_model, whisper_device, style_preset, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-01-23 19:45:08,622 INFO sqlalchemy.engine.Engine [cached since 0.01634s ago] ('MicroMoneyMoves_CA', 'micro-money-moves-ca', 'Small financial decisions that add up to big savings for Canadians', 'NARRATOR_BROLL', 1, 1, 1, 2, 0, 'youtube', 'CanadianMoneyHacks', None, None, None, None, '["11:00", "17:00"]', "Hook with a shocking micro-saving statistic: 'Canadians waste $200/month on tiny expenses - here's how AI fixes it'", 'Break down 6 micro-money moves: rounding up purchases, optimizing subscriptions, finding better rates, avoiding fees, smart shopping, and automated savings. Use Canadian pricing and relatable examples.', 'Pick one micro-move from this video and implement it this week. Tag a friend who needs to see this!', '["MicroSavings", "CanadianFinance", "MoneyTipsCanada", "FinancialFreedom", "SmartMoney"]', 30, 45, None, 0.7, None, None, None, None, None, None, 1, '2026-01-24 00:45:08.622878', '2026-01-24 00:45:08.622878')
+2026-01-23 19:45:08,624 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:45:08,626 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,626 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches 
+WHERE niches.id = ?
+2026-01-23 19:45:08,626 INFO sqlalchemy.engine.Engine [cached since 0.0127s ago] (4,)
+2026-01-23 19:45:08 | ERROR    | app.main:seed_default_niches:406 - Failed to create niche MicroMoneyMoves_CA: 'Niche' object has no attribute 'target_audience'
+2026-01-23 19:45:08,628 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-23 19:45:08,628 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,628 INFO sqlalchemy.engine.Engine INSERT INTO niches (name, slug, description, style, post_to_youtube, post_to_instagram, post_to_tiktok, posts_per_day, auto_mode, platform, account_name, account_id, youtube_account_id, instagram_account_id, tiktok_account_id, posting_schedule, prompt_hook, prompt_body, prompt_cta, hashtags, min_duration_seconds, max_duration_seconds, llm_model, llm_temperature, tts_provider, voice_id, voice_name, whisper_model, whisper_device, style_preset, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-01-23 19:45:08,628 INFO sqlalchemy.engine.Engine [cached since 0.02081s ago] ('HealthTipsDaily', 'health-tips-daily', "Daily health tips in the 'I'm ginger, if you eat me...' format", 'NARRATOR_BROLL', 1, 1, 1, 2, 0, 'youtube', 'DailyHealthTips', None, None, None, None, '["07:00", "16:00"]', "I'm ginger. If you eat me every day, this happens to your body.", 'Explain 5-6 surprising health benefits of the featured food/supplement. Include scientific backing, dosage recommendations, and practical ways to incorporate it daily.', 'Try this health tip today and share your experience in the comments!', '["HealthTips", "NaturalHealth", "DailyHealth", "Wellness", "HealthyLiving"]', 30, 45, None, 0.7, None, None, None, None, None, None, 1, '2026-01-24 00:45:08.628329', '2026-01-24 00:45:08.628329')
+2026-01-23 19:45:08,629 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:45:08,630 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,630 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches 
+WHERE niches.id = ?
+2026-01-23 19:45:08,630 INFO sqlalchemy.engine.Engine [cached since 0.01613s ago] (5,)
+2026-01-23 19:45:08 | ERROR    | app.main:seed_default_niches:406 - Failed to create niche HealthTipsDaily: 'Niche' object has no attribute 'target_audience'
+2026-01-23 19:45:08,631 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-23 19:45:08,631 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,631 INFO sqlalchemy.engine.Engine INSERT INTO niches (name, slug, description, style, post_to_youtube, post_to_instagram, post_to_tiktok, posts_per_day, auto_mode, platform, account_name, account_id, youtube_account_id, instagram_account_id, tiktok_account_id, posting_schedule, prompt_hook, prompt_body, prompt_cta, hashtags, min_duration_seconds, max_duration_seconds, llm_model, llm_temperature, tts_provider, voice_id, voice_name, whisper_model, whisper_device, style_preset, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+2026-01-23 19:45:08,631 INFO sqlalchemy.engine.Engine [cached since 0.02395s ago] ('CookingHacksPro', 'cooking-hacks-pro', 'Professional cooking hacks and techniques', 'NARRATOR_BROLL', 1, 1, 1, 2, 0, 'youtube', 'CookingHacksPro', None, None, None, None, '["12:00", "21:00"]', 'This kitchen hack will change how you cook forever - chefs hate it!', 'Demonstrate 5-6 cooking hacks with clear before/after examples. Include the science behind why it works and time-saving benefits.', 'Try this hack in your next meal and tag me in your results!', '["CookingHacks", "KitchenTips", "CookingTips", "ChefSecrets", "HomeCooking"]', 30, 60, None, 0.7, None, None, None, None, None, None, 1, '2026-01-24 00:45:08.631346', '2026-01-24 00:45:08.631346')
+2026-01-23 19:45:08,632 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:45:08,633 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,633 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches 
+WHERE niches.id = ?
+2026-01-23 19:45:08,633 INFO sqlalchemy.engine.Engine [cached since 0.01926s ago] (6,)
+2026-01-23 19:45:08 | ERROR    | app.main:seed_default_niches:406 - Failed to create niche CookingHacksPro: 'Niche' object has no attribute 'target_audience'
+2026-01-23 19:45:08,634 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-23 19:45:08,634 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,634 INFO sqlalchemy.engine.Engine INSERT INTO niches (name, slug, description, style, post_to_youtube, post_to_instagram, post_to_tiktok, posts_per_day, auto_mode, platform, account_name, account_id, youtube_account_id, instagram_account_id, tiktok_account_id, posting_schedule, prompt_hook, prompt_body, prompt_cta, hashtags, min_duration_seconds, max_duration_seconds, llm_model, llm_temperature, tts_provider, voice_id, voice_name, whisper_model, whisper_device, style_preset, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Python311\Lib\logging\__init__.py", line 1113, in emit
+    stream.write(msg + self.terminator)
+  File "C:\Python311\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 526-527: character maps to <undefined>
+Call stack:
+  File "<string>", line 1, in <module>
+  File "C:\Python311\Lib\multiprocessing\spawn.py", line 122, in spawn_main
+    exitcode = _main(fd, parent_sentinel)
+  File "C:\Python311\Lib\multiprocessing\spawn.py", line 135, in _main
+    return self._bootstrap(parent_sentinel)
+  File "C:\Python311\Lib\multiprocessing\process.py", line 314, in _bootstrap
+    self.run()
+  File "C:\Python311\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\_subprocess.py", line 80, in subprocess_started
+    target(sockets=sockets)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\server.py", line 67, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\_compat.py", line 30, in asyncio_run
+    return runner.run(main)
+  File "C:\Python311\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+  File "C:\Python311\Lib\asyncio\base_events.py", line 641, in run_until_complete
+    self.run_forever()
+  File "C:\Python311\Lib\asyncio\base_events.py", line 608, in run_forever
+    self._run_once()
+  File "C:\Python311\Lib\asyncio\base_events.py", line 1936, in _run_once
+    handle._run()
+  File "C:\Python311\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\lifespan\on.py", line 86, in main
+    await app(scope, self.receive, self.send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 29, in __call__
+    return await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\applications.py", line 1135, in __call__
+    await super().__call__(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\middleware\errors.py", line 151, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\middleware\cors.py", line 77, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 49, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\routing.py", line 725, in app
+    await self.lifespan(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\routing.py", line 694, in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+  File "D:\Ideas\content_factory\backend\app\main.py", line 468, in lifespan
+    await seed_default_niches()
+  File "D:\Ideas\content_factory\backend\app\main.py", line 355, in seed_default_niches
+    session.commit()
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2030, in commit
+    trans.commit(_to_root=True)
+  File "<string>", line 2, in commit
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1311, in commit
+    self._prepare_impl()
+  File "<string>", line 2, in _prepare_impl
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1286, in _prepare_impl
+    self.session.flush()
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4331, in flush
+    self._flush(objects)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4427, in _flush
+    flush_context.execute()
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
+    rec.execute(self)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\persistence.py", line 93, in save_obj
+    _emit_insert_statements(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\persistence.py", line 1233, in _emit_insert_statements
+    result = connection.execute(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1419, in execute
+    return meth(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 527, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1641, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1904, in _exec_single_context
+    self._log_info(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 187, in _log_info
+    self.engine.logger.info(message, *arg, **kw)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\log.py", line 159, in info
+    self.log(logging.INFO, msg, *args, **kwargs)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\log.py", line 210, in log
+    self.logger._log(level, msg, args, **kwargs)
+Message: '[%s] %r'
+Arguments: ('cached since 0.02703s ago', ('BeautyTrendsNow', 'beauty-trends-now', 'Latest beauty trends and viral makeup tutorials', 'NARRATOR_BROLL', 1, 1, 1, 2, 0, 'instagram', 'BeautyTrendsDaily', None, None, None, None, '["09:00", "18:00"]', 'This beauty hack went viral for a reason - watch till the end!', 'Show 4-5 trending beauty techniques with quick cuts and text overlays. Focus on affordable products and easy-to-follow steps.', 'Try this trend and tag me in your results! \U0001f484\u2728', '["BeautyTrends", "MakeupTutorial", "BeautyHacks", "ViralBeauty", "Skincare"]', 30, 45, None, 0.7, None, None, None, None, None, None, 1, '2026-01-24 00:45:08.634701', '2026-01-24 00:45:08.634701'))
+2026-01-23 19:45:08,841 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:45:08,843 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,844 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches 
+WHERE niches.id = ?
+2026-01-23 19:45:08,844 INFO sqlalchemy.engine.Engine [cached since 0.2295s ago] (7,)
+2026-01-23 19:45:08 | ERROR    | app.main:seed_default_niches:406 - Failed to create niche BeautyTrendsNow: 'Niche' object has no attribute 'target_audience'
+2026-01-23 19:45:08,844 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-23 19:45:08,845 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,845 INFO sqlalchemy.engine.Engine INSERT INTO niches (name, slug, description, style, post_to_youtube, post_to_instagram, post_to_tiktok, posts_per_day, auto_mode, platform, account_name, account_id, youtube_account_id, instagram_account_id, tiktok_account_id, posting_schedule, prompt_hook, prompt_body, prompt_cta, hashtags, min_duration_seconds, max_duration_seconds, llm_model, llm_temperature, tts_provider, voice_id, voice_name, whisper_model, whisper_device, style_preset, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Python311\Lib\logging\__init__.py", line 1113, in emit
+    stream.write(msg + self.terminator)
+  File "C:\Python311\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 480-481: character maps to <undefined>
+Call stack:
+  File "<string>", line 1, in <module>
+  File "C:\Python311\Lib\multiprocessing\spawn.py", line 122, in spawn_main
+    exitcode = _main(fd, parent_sentinel)
+  File "C:\Python311\Lib\multiprocessing\spawn.py", line 135, in _main
+    return self._bootstrap(parent_sentinel)
+  File "C:\Python311\Lib\multiprocessing\process.py", line 314, in _bootstrap
+    self.run()
+  File "C:\Python311\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\_subprocess.py", line 80, in subprocess_started
+    target(sockets=sockets)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\server.py", line 67, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\_compat.py", line 30, in asyncio_run
+    return runner.run(main)
+  File "C:\Python311\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+  File "C:\Python311\Lib\asyncio\base_events.py", line 641, in run_until_complete
+    self.run_forever()
+  File "C:\Python311\Lib\asyncio\base_events.py", line 608, in run_forever
+    self._run_once()
+  File "C:\Python311\Lib\asyncio\base_events.py", line 1936, in _run_once
+    handle._run()
+  File "C:\Python311\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\lifespan\on.py", line 86, in main
+    await app(scope, self.receive, self.send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 29, in __call__
+    return await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\applications.py", line 1135, in __call__
+    await super().__call__(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\middleware\errors.py", line 151, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\middleware\cors.py", line 77, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 49, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\routing.py", line 725, in app
+    await self.lifespan(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\routing.py", line 694, in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+  File "D:\Ideas\content_factory\backend\app\main.py", line 468, in lifespan
+    await seed_default_niches()
+  File "D:\Ideas\content_factory\backend\app\main.py", line 355, in seed_default_niches
+    session.commit()
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2030, in commit
+    trans.commit(_to_root=True)
+  File "<string>", line 2, in commit
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1311, in commit
+    self._prepare_impl()
+  File "<string>", line 2, in _prepare_impl
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1286, in _prepare_impl
+    self.session.flush()
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4331, in flush
+    self._flush(objects)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4427, in _flush
+    flush_context.execute()
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
+    rec.execute(self)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\persistence.py", line 93, in save_obj
+    _emit_insert_statements(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\persistence.py", line 1233, in _emit_insert_statements
+    result = connection.execute(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1419, in execute
+    return meth(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 527, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1641, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1904, in _exec_single_context
+    self._log_info(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 187, in _log_info
+    self.engine.logger.info(message, *arg, **kw)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\log.py", line 159, in info
+    self.log(logging.INFO, msg, *args, **kwargs)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\log.py", line 210, in log
+    self.logger._log(level, msg, args, **kwargs)
+Message: '[%s] %r'
+Arguments: ('cached since 0.2376s ago', ('FashionFindsDaily', 'fashion-finds-daily', 'Daily fashion discoveries and styling tips', 'NARRATOR_BROLL', 1, 1, 1, 2, 0, 'instagram', 'FashionFindsDaily', None, None, None, None, '["10:00", "19:00"]', 'This outfit hack costs $5 and looks expensive - you need this!', 'Show 6 styling tips using affordable items. Include outfit transformations and where to shop.', 'Recreate this look and tag me! \U0001f457\u2728', '["FashionTips", "StyleHacks", "OutfitIdeas", "Thrifting", "FashionFinds"]', 30, 40, None, 0.7, None, None, None, None, None, None, 1, '2026-01-24 00:45:08.844896', '2026-01-24 00:45:08.844896'))
+2026-01-23 19:45:08,848 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:45:08,849 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,850 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches 
+WHERE niches.id = ?
+2026-01-23 19:45:08,850 INFO sqlalchemy.engine.Engine [cached since 0.2355s ago] (8,)
+2026-01-23 19:45:08 | ERROR    | app.main:seed_default_niches:406 - Failed to create niche FashionFindsDaily: 'Niche' object has no attribute 'target_audience'
+2026-01-23 19:45:08,850 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-23 19:45:08,850 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,850 INFO sqlalchemy.engine.Engine INSERT INTO niches (name, slug, description, style, post_to_youtube, post_to_instagram, post_to_tiktok, posts_per_day, auto_mode, platform, account_name, account_id, youtube_account_id, instagram_account_id, tiktok_account_id, posting_schedule, prompt_hook, prompt_body, prompt_cta, hashtags, min_duration_seconds, max_duration_seconds, llm_model, llm_temperature, tts_provider, voice_id, voice_name, whisper_model, whisper_device, style_preset, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Python311\Lib\logging\__init__.py", line 1113, in emit
+    stream.write(msg + self.terminator)
+  File "C:\Python311\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 481-482: character maps to <undefined>
+Call stack:
+  File "<string>", line 1, in <module>
+  File "C:\Python311\Lib\multiprocessing\spawn.py", line 122, in spawn_main
+    exitcode = _main(fd, parent_sentinel)
+  File "C:\Python311\Lib\multiprocessing\spawn.py", line 135, in _main
+    return self._bootstrap(parent_sentinel)
+  File "C:\Python311\Lib\multiprocessing\process.py", line 314, in _bootstrap
+    self.run()
+  File "C:\Python311\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\_subprocess.py", line 80, in subprocess_started
+    target(sockets=sockets)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\server.py", line 67, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\_compat.py", line 30, in asyncio_run
+    return runner.run(main)
+  File "C:\Python311\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+  File "C:\Python311\Lib\asyncio\base_events.py", line 641, in run_until_complete
+    self.run_forever()
+  File "C:\Python311\Lib\asyncio\base_events.py", line 608, in run_forever
+    self._run_once()
+  File "C:\Python311\Lib\asyncio\base_events.py", line 1936, in _run_once
+    handle._run()
+  File "C:\Python311\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\lifespan\on.py", line 86, in main
+    await app(scope, self.receive, self.send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 29, in __call__
+    return await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\applications.py", line 1135, in __call__
+    await super().__call__(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\middleware\errors.py", line 151, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\middleware\cors.py", line 77, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 49, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\routing.py", line 725, in app
+    await self.lifespan(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\routing.py", line 694, in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+  File "D:\Ideas\content_factory\backend\app\main.py", line 468, in lifespan
+    await seed_default_niches()
+  File "D:\Ideas\content_factory\backend\app\main.py", line 355, in seed_default_niches
+    session.commit()
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2030, in commit
+    trans.commit(_to_root=True)
+  File "<string>", line 2, in commit
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1311, in commit
+    self._prepare_impl()
+  File "<string>", line 2, in _prepare_impl
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1286, in _prepare_impl
+    self.session.flush()
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4331, in flush
+    self._flush(objects)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4427, in _flush
+    flush_context.execute()
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
+    rec.execute(self)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\persistence.py", line 93, in save_obj
+    _emit_insert_statements(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\persistence.py", line 1233, in _emit_insert_statements
+    result = connection.execute(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1419, in execute
+    return meth(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 527, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1641, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1904, in _exec_single_context
+    self._log_info(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 187, in _log_info
+    self.engine.logger.info(message, *arg, **kw)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\log.py", line 159, in info
+    self.log(logging.INFO, msg, *args, **kwargs)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\log.py", line 210, in log
+    self.logger._log(level, msg, args, **kwargs)
+Message: '[%s] %r'
+Arguments: ('cached since 0.2437s ago', ('HomeDecorHacks', 'home-decor-hacks', 'Creative home decoration ideas on a budget', 'NARRATOR_BROLL', 1, 1, 1, 2, 0, 'instagram', 'HomeDecorMagic', None, None, None, None, '["11:00", "17:00"]', 'Transform your space with this $10 hack - DIY magic!', 'Show 5 budget-friendly decor transformations with before/after shots and step-by-step instructions.', 'Try this in your home and share the results! \U0001f3e0\u2728', '["HomeDecor", "DIYTutorial", "BudgetDecor", "HomeMakeover", "InteriorDesign"]', 30, 50, None, 0.7, None, None, None, None, None, None, 1, '2026-01-24 00:45:08.850348', '2026-01-24 00:45:08.850348'))
+2026-01-23 19:45:08,853 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:45:08,855 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,855 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches 
+WHERE niches.id = ?
+2026-01-23 19:45:08,855 INFO sqlalchemy.engine.Engine [cached since 0.2411s ago] (9,)
+2026-01-23 19:45:08 | ERROR    | app.main:seed_default_niches:406 - Failed to create niche HomeDecorHacks: 'Niche' object has no attribute 'target_audience'
+2026-01-23 19:45:08,855 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-23 19:45:08,855 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,855 INFO sqlalchemy.engine.Engine INSERT INTO niches (name, slug, description, style, post_to_youtube, post_to_instagram, post_to_tiktok, posts_per_day, auto_mode, platform, account_name, account_id, youtube_account_id, instagram_account_id, tiktok_account_id, posting_schedule, prompt_hook, prompt_body, prompt_cta, hashtags, min_duration_seconds, max_duration_seconds, llm_model, llm_temperature, tts_provider, voice_id, voice_name, whisper_model, whisper_device, style_preset, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Python311\Lib\logging\__init__.py", line 1113, in emit
+    stream.write(msg + self.terminator)
+  File "C:\Python311\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 492-494: character maps to <undefined>
+Call stack:
+  File "<string>", line 1, in <module>
+  File "C:\Python311\Lib\multiprocessing\spawn.py", line 122, in spawn_main
+    exitcode = _main(fd, parent_sentinel)
+  File "C:\Python311\Lib\multiprocessing\spawn.py", line 135, in _main
+    return self._bootstrap(parent_sentinel)
+  File "C:\Python311\Lib\multiprocessing\process.py", line 314, in _bootstrap
+    self.run()
+  File "C:\Python311\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\_subprocess.py", line 80, in subprocess_started
+    target(sockets=sockets)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\server.py", line 67, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\_compat.py", line 30, in asyncio_run
+    return runner.run(main)
+  File "C:\Python311\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+  File "C:\Python311\Lib\asyncio\base_events.py", line 641, in run_until_complete
+    self.run_forever()
+  File "C:\Python311\Lib\asyncio\base_events.py", line 608, in run_forever
+    self._run_once()
+  File "C:\Python311\Lib\asyncio\base_events.py", line 1936, in _run_once
+    handle._run()
+  File "C:\Python311\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\lifespan\on.py", line 86, in main
+    await app(scope, self.receive, self.send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 29, in __call__
+    return await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\applications.py", line 1135, in __call__
+    await super().__call__(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\middleware\errors.py", line 151, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\middleware\cors.py", line 77, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 49, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\routing.py", line 725, in app
+    await self.lifespan(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\routing.py", line 694, in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+  File "D:\Ideas\content_factory\backend\app\main.py", line 468, in lifespan
+    await seed_default_niches()
+  File "D:\Ideas\content_factory\backend\app\main.py", line 355, in seed_default_niches
+    session.commit()
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2030, in commit
+    trans.commit(_to_root=True)
+  File "<string>", line 2, in commit
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1311, in commit
+    self._prepare_impl()
+  File "<string>", line 2, in _prepare_impl
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1286, in _prepare_impl
+    self.session.flush()
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4331, in flush
+    self._flush(objects)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4427, in _flush
+    flush_context.execute()
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
+    rec.execute(self)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\persistence.py", line 93, in save_obj
+    _emit_insert_statements(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\persistence.py", line 1233, in _emit_insert_statements
+    result = connection.execute(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1419, in execute
+    return meth(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 527, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1641, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1904, in _exec_single_context
+    self._log_info(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 187, in _log_info
+    self.engine.logger.info(message, *arg, **kw)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\log.py", line 159, in info
+    self.log(logging.INFO, msg, *args, **kwargs)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\log.py", line 210, in log
+    self.logger._log(level, msg, args, **kwargs)
+Message: '[%s] %r'
+Arguments: ('cached since 0.2491s ago', ('PetCareTips', 'pet-care-tips', 'Essential pet care advice and training tips', 'NARRATOR_BROLL', 1, 1, 1, 2, 0, 'instagram', 'PetCareGuru', None, None, None, None, '["08:00", "20:00"]', 'This training trick works on ANY dog - watch your pup transform!', 'Demonstrate 5 pet care tips with cute animal footage. Include health, training, and bonding activities.', 'Try this with your pet and show me the results! \U0001f43e\u2764\ufe0f', '["PetCare", "DogTraining", "PetTips", "AnimalCare", "PetLovers"]', 30, 45, None, 0.7, None, None, None, None, None, None, 1, '2026-01-24 00:45:08.855865', '2026-01-24 00:45:08.855865'))
+2026-01-23 19:45:08,858 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:45:08,860 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,861 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches 
+WHERE niches.id = ?
+2026-01-23 19:45:08,861 INFO sqlalchemy.engine.Engine [cached since 0.2465s ago] (10,)
+2026-01-23 19:45:08 | ERROR    | app.main:seed_default_niches:406 - Failed to create niche PetCareTips: 'Niche' object has no attribute 'target_audience'
+2026-01-23 19:45:08,861 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-23 19:45:08,862 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,862 INFO sqlalchemy.engine.Engine INSERT INTO niches (name, slug, description, style, post_to_youtube, post_to_instagram, post_to_tiktok, posts_per_day, auto_mode, platform, account_name, account_id, youtube_account_id, instagram_account_id, tiktok_account_id, posting_schedule, prompt_hook, prompt_body, prompt_cta, hashtags, min_duration_seconds, max_duration_seconds, llm_model, llm_temperature, tts_provider, voice_id, voice_name, whisper_model, whisper_device, style_preset, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Python311\Lib\logging\__init__.py", line 1113, in emit
+    stream.write(msg + self.terminator)
+  File "C:\Python311\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 451-452: character maps to <undefined>
+Call stack:
+  File "<string>", line 1, in <module>
+  File "C:\Python311\Lib\multiprocessing\spawn.py", line 122, in spawn_main
+    exitcode = _main(fd, parent_sentinel)
+  File "C:\Python311\Lib\multiprocessing\spawn.py", line 135, in _main
+    return self._bootstrap(parent_sentinel)
+  File "C:\Python311\Lib\multiprocessing\process.py", line 314, in _bootstrap
+    self.run()
+  File "C:\Python311\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\_subprocess.py", line 80, in subprocess_started
+    target(sockets=sockets)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\server.py", line 67, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\_compat.py", line 30, in asyncio_run
+    return runner.run(main)
+  File "C:\Python311\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+  File "C:\Python311\Lib\asyncio\base_events.py", line 641, in run_until_complete
+    self.run_forever()
+  File "C:\Python311\Lib\asyncio\base_events.py", line 608, in run_forever
+    self._run_once()
+  File "C:\Python311\Lib\asyncio\base_events.py", line 1936, in _run_once
+    handle._run()
+  File "C:\Python311\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\lifespan\on.py", line 86, in main
+    await app(scope, self.receive, self.send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 29, in __call__
+    return await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\applications.py", line 1135, in __call__
+    await super().__call__(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\middleware\errors.py", line 151, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\middleware\cors.py", line 77, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 49, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\routing.py", line 725, in app
+    await self.lifespan(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\routing.py", line 694, in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+  File "D:\Ideas\content_factory\backend\app\main.py", line 468, in lifespan
+    await seed_default_niches()
+  File "D:\Ideas\content_factory\backend\app\main.py", line 355, in seed_default_niches
+    session.commit()
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2030, in commit
+    trans.commit(_to_root=True)
+  File "<string>", line 2, in commit
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1311, in commit
+    self._prepare_impl()
+  File "<string>", line 2, in _prepare_impl
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1286, in _prepare_impl
+    self.session.flush()
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4331, in flush
+    self._flush(objects)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4427, in _flush
+    flush_context.execute()
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
+    rec.execute(self)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\persistence.py", line 93, in save_obj
+    _emit_insert_statements(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\persistence.py", line 1233, in _emit_insert_statements
+    result = connection.execute(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1419, in execute
+    return meth(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 527, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1641, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1904, in _exec_single_context
+    self._log_info(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 187, in _log_info
+    self.engine.logger.info(message, *arg, **kw)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\log.py", line 159, in info
+    self.log(logging.INFO, msg, *args, **kwargs)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\log.py", line 210, in log
+    self.logger._log(level, msg, args, **kwargs)
+Message: '[%s] %r'
+Arguments: ('cached since 0.2545s ago', ('QuickRecipes', 'quick-recipes', '5-minute recipes for busy people', 'NARRATOR_BROLL', 1, 1, 1, 2, 0, 'instagram', 'QuickRecipesNow', None, None, None, None, '["12:00", "18:30"]', 'Restaurant-quality meal in 5 minutes - no one believes this works!', 'Show 3-4 super fast recipes with quick cuts, text overlays, and minimal ingredients.', 'Make this tonight and tag me! \U0001f35d\u2728', '["QuickRecipes", "5MinMeals", "EasyCooking", "FastFood", "HomeCooking"]', 30, 35, None, 0.7, None, None, None, None, None, None, 1, '2026-01-24 00:45:08.861933', '2026-01-24 00:45:08.861933'))
+2026-01-23 19:45:08,864 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:45:08,865 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,865 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches 
+WHERE niches.id = ?
+2026-01-23 19:45:08,865 INFO sqlalchemy.engine.Engine [cached since 0.2513s ago] (11,)
+2026-01-23 19:45:08 | ERROR    | app.main:seed_default_niches:406 - Failed to create niche QuickRecipes: 'Niche' object has no attribute 'target_audience'
+2026-01-23 19:45:08,865 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-23 19:45:08,866 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,866 INFO sqlalchemy.engine.Engine INSERT INTO niches (name, slug, description, style, post_to_youtube, post_to_instagram, post_to_tiktok, posts_per_day, auto_mode, platform, account_name, account_id, youtube_account_id, instagram_account_id, tiktok_account_id, posting_schedule, prompt_hook, prompt_body, prompt_cta, hashtags, min_duration_seconds, max_duration_seconds, llm_model, llm_temperature, tts_provider, voice_id, voice_name, whisper_model, whisper_device, style_preset, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Python311\Lib\logging\__init__.py", line 1113, in emit
+    stream.write(msg + self.terminator)
+  File "C:\Python311\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode characters in position 462-463: character maps to <undefined>
+Call stack:
+  File "<string>", line 1, in <module>
+  File "C:\Python311\Lib\multiprocessing\spawn.py", line 122, in spawn_main
+    exitcode = _main(fd, parent_sentinel)
+  File "C:\Python311\Lib\multiprocessing\spawn.py", line 135, in _main
+    return self._bootstrap(parent_sentinel)
+  File "C:\Python311\Lib\multiprocessing\process.py", line 314, in _bootstrap
+    self.run()
+  File "C:\Python311\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\_subprocess.py", line 80, in subprocess_started
+    target(sockets=sockets)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\server.py", line 67, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\_compat.py", line 30, in asyncio_run
+    return runner.run(main)
+  File "C:\Python311\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+  File "C:\Python311\Lib\asyncio\base_events.py", line 641, in run_until_complete
+    self.run_forever()
+  File "C:\Python311\Lib\asyncio\base_events.py", line 608, in run_forever
+    self._run_once()
+  File "C:\Python311\Lib\asyncio\base_events.py", line 1936, in _run_once
+    handle._run()
+  File "C:\Python311\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\lifespan\on.py", line 86, in main
+    await app(scope, self.receive, self.send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 29, in __call__
+    return await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\applications.py", line 1135, in __call__
+    await super().__call__(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\middleware\errors.py", line 151, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\middleware\cors.py", line 77, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 49, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\routing.py", line 725, in app
+    await self.lifespan(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\routing.py", line 694, in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+  File "D:\Ideas\content_factory\backend\app\main.py", line 468, in lifespan
+    await seed_default_niches()
+  File "D:\Ideas\content_factory\backend\app\main.py", line 355, in seed_default_niches
+    session.commit()
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2030, in commit
+    trans.commit(_to_root=True)
+  File "<string>", line 2, in commit
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1311, in commit
+    self._prepare_impl()
+  File "<string>", line 2, in _prepare_impl
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1286, in _prepare_impl
+    self.session.flush()
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4331, in flush
+    self._flush(objects)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4427, in _flush
+    flush_context.execute()
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
+    rec.execute(self)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\persistence.py", line 93, in save_obj
+    _emit_insert_statements(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\persistence.py", line 1233, in _emit_insert_statements
+    result = connection.execute(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1419, in execute
+    return meth(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 527, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1641, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1904, in _exec_single_context
+    self._log_info(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 187, in _log_info
+    self.engine.logger.info(message, *arg, **kw)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\log.py", line 159, in info
+    self.log(logging.INFO, msg, *args, **kwargs)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\log.py", line 210, in log
+    self.logger._log(level, msg, args, **kwargs)
+Message: '[%s] %r'
+Arguments: ('cached since 0.2591s ago', ('DanceChallenges', 'dance-challenges', 'Trending dance challenges and tutorials', 'NARRATOR_BROLL', 1, 1, 1, 2, 0, 'tiktok', 'DanceChallengeKing', None, None, None, None, '["14:00", "21:00"]', 'This dance went viral overnight - learn it in 60 seconds!', 'Break down a trending dance in slow motion with step-by-step instructions and music beats.', 'Learn it, film it, and tag me! \U0001f483\U0001f57a', '["DanceChallenge", "ViralDance", "DanceTutorial", "TrendingDance", "DanceTok"]', 30, 60, None, 0.7, None, None, None, None, None, None, 1, '2026-01-24 00:45:08.866993', '2026-01-24 00:45:08.866993'))
+2026-01-23 19:45:08,868 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:45:08,870 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,870 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches 
+WHERE niches.id = ?
+2026-01-23 19:45:08,870 INFO sqlalchemy.engine.Engine [cached since 0.256s ago] (12,)
+2026-01-23 19:45:08 | ERROR    | app.main:seed_default_niches:406 - Failed to create niche DanceChallenges: 'Niche' object has no attribute 'target_audience'
+2026-01-23 19:45:08,871 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-23 19:45:08,872 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,872 INFO sqlalchemy.engine.Engine INSERT INTO niches (name, slug, description, style, post_to_youtube, post_to_instagram, post_to_tiktok, posts_per_day, auto_mode, platform, account_name, account_id, youtube_account_id, instagram_account_id, tiktok_account_id, posting_schedule, prompt_hook, prompt_body, prompt_cta, hashtags, min_duration_seconds, max_duration_seconds, llm_model, llm_temperature, tts_provider, voice_id, voice_name, whisper_model, whisper_device, style_preset, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Python311\Lib\logging\__init__.py", line 1113, in emit
+    stream.write(msg + self.terminator)
+  File "C:\Python311\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f923' in position 317: character maps to <undefined>
+Call stack:
+  File "<string>", line 1, in <module>
+  File "C:\Python311\Lib\multiprocessing\spawn.py", line 122, in spawn_main
+    exitcode = _main(fd, parent_sentinel)
+  File "C:\Python311\Lib\multiprocessing\spawn.py", line 135, in _main
+    return self._bootstrap(parent_sentinel)
+  File "C:\Python311\Lib\multiprocessing\process.py", line 314, in _bootstrap
+    self.run()
+  File "C:\Python311\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\_subprocess.py", line 80, in subprocess_started
+    target(sockets=sockets)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\server.py", line 67, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\_compat.py", line 30, in asyncio_run
+    return runner.run(main)
+  File "C:\Python311\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+  File "C:\Python311\Lib\asyncio\base_events.py", line 641, in run_until_complete
+    self.run_forever()
+  File "C:\Python311\Lib\asyncio\base_events.py", line 608, in run_forever
+    self._run_once()
+  File "C:\Python311\Lib\asyncio\base_events.py", line 1936, in _run_once
+    handle._run()
+  File "C:\Python311\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\lifespan\on.py", line 86, in main
+    await app(scope, self.receive, self.send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 29, in __call__
+    return await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\applications.py", line 1135, in __call__
+    await super().__call__(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\middleware\errors.py", line 151, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\middleware\cors.py", line 77, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 49, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\routing.py", line 725, in app
+    await self.lifespan(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\routing.py", line 694, in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+  File "D:\Ideas\content_factory\backend\app\main.py", line 468, in lifespan
+    await seed_default_niches()
+  File "D:\Ideas\content_factory\backend\app\main.py", line 355, in seed_default_niches
+    session.commit()
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2030, in commit
+    trans.commit(_to_root=True)
+  File "<string>", line 2, in commit
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1311, in commit
+    self._prepare_impl()
+  File "<string>", line 2, in _prepare_impl
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1286, in _prepare_impl
+    self.session.flush()
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4331, in flush
+    self._flush(objects)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4427, in _flush
+    flush_context.execute()
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
+    rec.execute(self)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\persistence.py", line 93, in save_obj
+    _emit_insert_statements(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\persistence.py", line 1233, in _emit_insert_statements
+    result = connection.execute(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1419, in execute
+    return meth(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 527, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1641, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1904, in _exec_single_context
+    self._log_info(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 187, in _log_info
+    self.engine.logger.info(message, *arg, **kw)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\log.py", line 159, in info
+    self.log(logging.INFO, msg, *args, **kwargs)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\log.py", line 210, in log
+    self.logger._log(level, msg, args, **kwargs)
+Message: '[%s] %r'
+Arguments: ('cached since 0.2642s ago', ('ComedySketches', 'comedy-sketches', 'Funny skits and comedy content', 'NARRATOR_BROLL', 1, 1, 1, 2, 0, 'tiktok', 'ComedySketchDaily', None, None, None, None, '["13:00", "20:00"]', "You won't believe what happened when I tried this... \U0001f923", 'Create short comedic skits with relatable situations, punchy dialogue, and quick cuts.', "What's the funniest thing that happened to you this week? \U0001f602", '["Comedy", "FunnyVideos", "SketchComedy", "ViralComedy", "LaughOutLoud"]', 30, 45, None, 0.7, None, None, None, None, None, None, 1, '2026-01-24 00:45:08.871136', '2026-01-24 00:45:08.871136'))
+2026-01-23 19:45:08,874 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:45:08,874 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,874 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches 
+WHERE niches.id = ?
+2026-01-23 19:45:08,874 INFO sqlalchemy.engine.Engine [cached since 0.2609s ago] (13,)
+2026-01-23 19:45:08 | ERROR    | app.main:seed_default_niches:406 - Failed to create niche ComedySketches: 'Niche' object has no attribute 'target_audience'
+2026-01-23 19:45:08,876 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-23 19:45:08,876 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,876 INFO sqlalchemy.engine.Engine INSERT INTO niches (name, slug, description, style, post_to_youtube, post_to_instagram, post_to_tiktok, posts_per_day, auto_mode, platform, account_name, account_id, youtube_account_id, instagram_account_id, tiktok_account_id, posting_schedule, prompt_hook, prompt_body, prompt_cta, hashtags, min_duration_seconds, max_duration_seconds, llm_model, llm_temperature, tts_provider, voice_id, voice_name, whisper_model, whisper_device, style_preset, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Python311\Lib\logging\__init__.py", line 1113, in emit
+    stream.write(msg + self.terminator)
+  File "C:\Python311\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f92f' in position 325: character maps to <undefined>
+Call stack:
+  File "<string>", line 1, in <module>
+  File "C:\Python311\Lib\multiprocessing\spawn.py", line 122, in spawn_main
+    exitcode = _main(fd, parent_sentinel)
+  File "C:\Python311\Lib\multiprocessing\spawn.py", line 135, in _main
+    return self._bootstrap(parent_sentinel)
+  File "C:\Python311\Lib\multiprocessing\process.py", line 314, in _bootstrap
+    self.run()
+  File "C:\Python311\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\_subprocess.py", line 80, in subprocess_started
+    target(sockets=sockets)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\server.py", line 67, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\_compat.py", line 30, in asyncio_run
+    return runner.run(main)
+  File "C:\Python311\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+  File "C:\Python311\Lib\asyncio\base_events.py", line 641, in run_until_complete
+    self.run_forever()
+  File "C:\Python311\Lib\asyncio\base_events.py", line 608, in run_forever
+    self._run_once()
+  File "C:\Python311\Lib\asyncio\base_events.py", line 1936, in _run_once
+    handle._run()
+  File "C:\Python311\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\lifespan\on.py", line 86, in main
+    await app(scope, self.receive, self.send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 29, in __call__
+    return await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\applications.py", line 1135, in __call__
+    await super().__call__(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\middleware\errors.py", line 151, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\middleware\cors.py", line 77, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 49, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\routing.py", line 725, in app
+    await self.lifespan(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\routing.py", line 694, in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+  File "D:\Ideas\content_factory\backend\app\main.py", line 468, in lifespan
+    await seed_default_niches()
+  File "D:\Ideas\content_factory\backend\app\main.py", line 355, in seed_default_niches
+    session.commit()
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2030, in commit
+    trans.commit(_to_root=True)
+  File "<string>", line 2, in commit
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1311, in commit
+    self._prepare_impl()
+  File "<string>", line 2, in _prepare_impl
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1286, in _prepare_impl
+    self.session.flush()
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4331, in flush
+    self._flush(objects)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4427, in _flush
+    flush_context.execute()
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
+    rec.execute(self)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\persistence.py", line 93, in save_obj
+    _emit_insert_statements(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\persistence.py", line 1233, in _emit_insert_statements
+    result = connection.execute(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1419, in execute
+    return meth(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 527, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1641, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1904, in _exec_single_context
+    self._log_info(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 187, in _log_info
+    self.engine.logger.info(message, *arg, **kw)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\log.py", line 159, in info
+    self.log(logging.INFO, msg, *args, **kwargs)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\log.py", line 210, in log
+    self.logger._log(level, msg, args, **kwargs)
+Message: '[%s] %r'
+Arguments: ('cached since 0.2689s ago', ('LifeHacksDaily', 'life-hacks-daily', 'Daily life hacks and clever solutions', 'NARRATOR_BROLL', 1, 1, 1, 2, 0, 'tiktok', 'LifeHacksMaster', None, None, None, None, '["15:00", "19:00"]', 'This life hack saves me 30 minutes daily - mind blown! \U0001f92f', 'Demonstrate 3-4 clever life hacks with quick cuts, text overlays, and immediate payoff.', 'Try this hack and tell me how much time you saved! \u23f0', '["LifeHacks", "HackTok", "SmartLife", "TimeSaver", "GeniusHacks"]', 30, 40, None, 0.7, None, None, None, None, None, None, 1, '2026-01-24 00:45:08.876222', '2026-01-24 00:45:08.876222'))
+2026-01-23 19:45:08,878 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:45:08,881 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,881 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches 
+WHERE niches.id = ?
+2026-01-23 19:45:08,881 INFO sqlalchemy.engine.Engine [cached since 0.2669s ago] (14,)
+2026-01-23 19:45:08 | ERROR    | app.main:seed_default_niches:406 - Failed to create niche LifeHacksDaily: 'Niche' object has no attribute 'target_audience'
+2026-01-23 19:45:08,882 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-23 19:45:08,882 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,882 INFO sqlalchemy.engine.Engine INSERT INTO niches (name, slug, description, style, post_to_youtube, post_to_instagram, post_to_tiktok, posts_per_day, auto_mode, platform, account_name, account_id, youtube_account_id, instagram_account_id, tiktok_account_id, posting_schedule, prompt_hook, prompt_body, prompt_cta, hashtags, min_duration_seconds, max_duration_seconds, llm_model, llm_temperature, tts_provider, voice_id, voice_name, whisper_model, whisper_device, style_preset, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Python311\Lib\logging\__init__.py", line 1113, in emit
+    stream.write(msg + self.terminator)
+  File "C:\Python311\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2728' in position 320: character maps to <undefined>
+Call stack:
+  File "<string>", line 1, in <module>
+  File "C:\Python311\Lib\multiprocessing\spawn.py", line 122, in spawn_main
+    exitcode = _main(fd, parent_sentinel)
+  File "C:\Python311\Lib\multiprocessing\spawn.py", line 135, in _main
+    return self._bootstrap(parent_sentinel)
+  File "C:\Python311\Lib\multiprocessing\process.py", line 314, in _bootstrap
+    self.run()
+  File "C:\Python311\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\_subprocess.py", line 80, in subprocess_started
+    target(sockets=sockets)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\server.py", line 67, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\_compat.py", line 30, in asyncio_run
+    return runner.run(main)
+  File "C:\Python311\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+  File "C:\Python311\Lib\asyncio\base_events.py", line 641, in run_until_complete
+    self.run_forever()
+  File "C:\Python311\Lib\asyncio\base_events.py", line 608, in run_forever
+    self._run_once()
+  File "C:\Python311\Lib\asyncio\base_events.py", line 1936, in _run_once
+    handle._run()
+  File "C:\Python311\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\lifespan\on.py", line 86, in main
+    await app(scope, self.receive, self.send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 29, in __call__
+    return await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\applications.py", line 1135, in __call__
+    await super().__call__(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\middleware\errors.py", line 151, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\middleware\cors.py", line 77, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 49, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\routing.py", line 725, in app
+    await self.lifespan(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\routing.py", line 694, in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+  File "D:\Ideas\content_factory\backend\app\main.py", line 468, in lifespan
+    await seed_default_niches()
+  File "D:\Ideas\content_factory\backend\app\main.py", line 355, in seed_default_niches
+    session.commit()
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2030, in commit
+    trans.commit(_to_root=True)
+  File "<string>", line 2, in commit
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1311, in commit
+    self._prepare_impl()
+  File "<string>", line 2, in _prepare_impl
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1286, in _prepare_impl
+    self.session.flush()
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4331, in flush
+    self._flush(objects)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4427, in _flush
+    flush_context.execute()
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
+    rec.execute(self)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\persistence.py", line 93, in save_obj
+    _emit_insert_statements(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\persistence.py", line 1233, in _emit_insert_statements
+    result = connection.execute(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1419, in execute
+    return meth(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 527, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1641, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1904, in _exec_single_context
+    self._log_info(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 187, in _log_info
+    self.engine.logger.info(message, *arg, **kw)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\log.py", line 159, in info
+    self.log(logging.INFO, msg, *args, **kwargs)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\log.py", line 210, in log
+    self.logger._log(level, msg, args, **kwargs)
+Message: '[%s] %r'
+Arguments: ('cached since 0.2749s ago', ('ASMRRelaxation', 'asmr-relaxation', 'ASMR content for relaxation and sleep', 'NARRATOR_BROLL', 1, 1, 1, 2, 0, 'tiktok', 'ASMRSleepStories', None, None, None, None, '["22:00", "02:00"]', 'Fall asleep in 3 minutes with this ASMR technique \u2728', 'Create calming ASMR content with soft sounds, gentle movements, and relaxing narration.', 'Sweet dreams! Comment if this helped you sleep \U0001f4a4', '["ASMR", "SleepASMR", "Relaxation", "SleepAid", "CalmingSounds"]', 30, 180, None, 0.7, None, None, None, None, None, None, 1, '2026-01-24 00:45:08.882504', '2026-01-24 00:45:08.882504'))
+2026-01-23 19:45:08,885 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:45:08,887 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,887 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches 
+WHERE niches.id = ?
+2026-01-23 19:45:08,887 INFO sqlalchemy.engine.Engine [cached since 0.273s ago] (15,)
+2026-01-23 19:45:08 | ERROR    | app.main:seed_default_niches:406 - Failed to create niche ASMRRelaxation: 'Niche' object has no attribute 'target_audience'
+2026-01-23 19:45:08,888 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-23 19:45:08,889 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,889 INFO sqlalchemy.engine.Engine INSERT INTO niches (name, slug, description, style, post_to_youtube, post_to_instagram, post_to_tiktok, posts_per_day, auto_mode, platform, account_name, account_id, youtube_account_id, instagram_account_id, tiktok_account_id, posting_schedule, prompt_hook, prompt_body, prompt_cta, hashtags, min_duration_seconds, max_duration_seconds, llm_model, llm_temperature, tts_provider, voice_id, voice_name, whisper_model, whisper_device, style_preset, is_active, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Python311\Lib\logging\__init__.py", line 1113, in emit
+    stream.write(msg + self.terminator)
+  File "C:\Python311\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\U0001f3b4' in position 322: character maps to <undefined>
+Call stack:
+  File "<string>", line 1, in <module>
+  File "C:\Python311\Lib\multiprocessing\spawn.py", line 122, in spawn_main
+    exitcode = _main(fd, parent_sentinel)
+  File "C:\Python311\Lib\multiprocessing\spawn.py", line 135, in _main
+    return self._bootstrap(parent_sentinel)
+  File "C:\Python311\Lib\multiprocessing\process.py", line 314, in _bootstrap
+    self.run()
+  File "C:\Python311\Lib\multiprocessing\process.py", line 108, in run
+    self._target(*self._args, **self._kwargs)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\_subprocess.py", line 80, in subprocess_started
+    target(sockets=sockets)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\server.py", line 67, in run
+    return asyncio_run(self.serve(sockets=sockets), loop_factory=self.config.get_loop_factory())
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\_compat.py", line 30, in asyncio_run
+    return runner.run(main)
+  File "C:\Python311\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+  File "C:\Python311\Lib\asyncio\base_events.py", line 641, in run_until_complete
+    self.run_forever()
+  File "C:\Python311\Lib\asyncio\base_events.py", line 608, in run_forever
+    self._run_once()
+  File "C:\Python311\Lib\asyncio\base_events.py", line 1936, in _run_once
+    handle._run()
+  File "C:\Python311\Lib\asyncio\events.py", line 84, in _run
+    self._context.run(self._callback, *self._args)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\lifespan\on.py", line 86, in main
+    await app(scope, self.receive, self.send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\uvicorn\middleware\proxy_headers.py", line 29, in __call__
+    return await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\applications.py", line 1135, in __call__
+    await super().__call__(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\applications.py", line 107, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\middleware\errors.py", line 151, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\middleware\cors.py", line 77, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\middleware\exceptions.py", line 49, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\middleware\asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\routing.py", line 716, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\routing.py", line 725, in app
+    await self.lifespan(scope, receive, send)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\routing.py", line 694, in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+  File "D:\Ideas\content_factory\backend\app\main.py", line 468, in lifespan
+    await seed_default_niches()
+  File "D:\Ideas\content_factory\backend\app\main.py", line 355, in seed_default_niches
+    session.commit()
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 2030, in commit
+    trans.commit(_to_root=True)
+  File "<string>", line 2, in commit
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1311, in commit
+    self._prepare_impl()
+  File "<string>", line 2, in _prepare_impl
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 137, in _go
+    ret_value = fn(self, *arg, **kw)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 1286, in _prepare_impl
+    self.session.flush()
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4331, in flush
+    self._flush(objects)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\session.py", line 4427, in _flush
+    flush_context.execute()
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 466, in execute
+    rec.execute(self)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\unitofwork.py", line 642, in execute
+    util.preloaded.orm_persistence.save_obj(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\persistence.py", line 93, in save_obj
+    _emit_insert_statements(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\orm\persistence.py", line 1233, in _emit_insert_statements
+    result = connection.execute(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1419, in execute
+    return meth(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\sql\elements.py", line 527, in _execute_on_connection
+    return connection._execute_clauseelement(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1641, in _execute_clauseelement
+    ret = self._execute_context(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1846, in _execute_context
+    return self._exec_single_context(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 1904, in _exec_single_context
+    self._log_info(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 187, in _log_info
+    self.engine.logger.info(message, *arg, **kw)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\log.py", line 159, in info
+    self.log(logging.INFO, msg, *args, **kwargs)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\log.py", line 210, in log
+    self.logger._log(level, msg, args, **kwargs)
+Message: '[%s] %r'
+Arguments: ('cached since 0.2811s ago', ('MagicTricks', 'magic-tricks', 'Easy magic tricks you can learn at home', 'NARRATOR_BROLL', 1, 1, 1, 2, 0, 'tiktok', 'MagicTricksEasy', None, None, None, None, '["16:00", "22:30"]', 'This card trick fools everyone - learn it in 30 seconds! \U0001f3b4', 'Teach simple magic tricks with clear instructions, multiple angles, and reveal at the end.', 'Show your friends and tag me! \U0001f3a9\u2728', '["MagicTricks", "CardTricks", "LearnMagic", "EasyMagic", "MagicTutorial"]', 30, 45, None, 0.7, None, None, None, None, None, None, 1, '2026-01-24 00:45:08.888549', '2026-01-24 00:45:08.888549'))
+2026-01-23 19:45:08,890 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:45:08,893 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,893 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches 
+WHERE niches.id = ?
+2026-01-23 19:45:08,893 INFO sqlalchemy.engine.Engine [cached since 0.2788s ago] (16,)
+2026-01-23 19:45:08 | ERROR    | app.main:seed_default_niches:406 - Failed to create niche MagicTricks: 'Niche' object has no attribute 'target_audience'
+2026-01-23 19:45:08,893 INFO sqlalchemy.engine.Engine ROLLBACK
+2026-01-23 19:45:08 | INFO     | app.main:seed_default_niches:409 - Successfully seeded 0 default niches
+2026-01-23 19:45:08 | INFO     | app.main:lifespan:469 - Default niches verified
+2026-01-23 19:45:08 | INFO     | app.main:lifespan:485 - Directory structure verified
+2026-01-23 19:45:08 | INFO     | app.services.niche_sync_service:sync_niches_to_db:58 - Starting niche sync from disk to database...
+2026-01-23 19:45:08 | INFO     | app.services.niche_sync_service:sync_niches_to_db:62 - No niche configs found on disk
+2026-01-23 19:45:08,897 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,897 INFO sqlalchemy.engine.Engine SELECT niches.name, niches.slug, niches.description, niches.style, niches.post_to_youtube, niches.post_to_instagram, niches.post_to_tiktok, niches.posts_per_day, niches.auto_mode, niches.platform, niches.account_name, niches.account_id, niches.youtube_account_id, niches.instagram_account_id, niches.tiktok_account_id, niches.posting_schedule, niches.prompt_hook, niches.prompt_body, niches.prompt_cta, niches.hashtags, niches.min_duration_seconds, niches.max_duration_seconds, niches.llm_model, niches.llm_temperature, niches.tts_provider, niches.voice_id, niches.voice_name, niches.whisper_model, niches.whisper_device, niches.style_preset, niches.is_active, niches.id, niches.created_at, niches.updated_at 
+FROM niches
+2026-01-23 19:45:08,897 INFO sqlalchemy.engine.Engine [cached since 0.2949s ago] ()
+2026-01-23 19:45:08 | ERROR    | app.services.niche_sync_service:sync_niche_to_disk:210 - Failed to sync niche AIThatSavesYouMoney_CA to disk: 'Niche' object has no attribute 'target_audience'
+2026-01-23 19:45:08 | ERROR    | app.services.niche_sync_service:sync_niche_to_disk:210 - Failed to sync niche TechNewsYouCanUse to disk: 'Niche' object has no attribute 'target_audience'
+2026-01-23 19:45:08 | ERROR    | app.services.niche_sync_service:sync_niche_to_disk:210 - Failed to sync niche LifeSystemsScripts to disk: 'Niche' object has no attribute 'target_audience'
+2026-01-23 19:45:08 | ERROR    | app.services.niche_sync_service:sync_niche_to_disk:210 - Failed to sync niche MicroMoneyMoves_CA to disk: 'Niche' object has no attribute 'target_audience'
+2026-01-23 19:45:08 | ERROR    | app.services.niche_sync_service:sync_niche_to_disk:210 - Failed to sync niche HealthTipsDaily to disk: 'Niche' object has no attribute 'target_audience'
+2026-01-23 19:45:08 | ERROR    | app.services.niche_sync_service:sync_niche_to_disk:210 - Failed to sync niche CookingHacksPro to disk: 'Niche' object has no attribute 'target_audience'
+2026-01-23 19:45:08 | ERROR    | app.services.niche_sync_service:sync_niche_to_disk:210 - Failed to sync niche BeautyTrendsNow to disk: 'Niche' object has no attribute 'target_audience'
+2026-01-23 19:45:08 | ERROR    | app.services.niche_sync_service:sync_niche_to_disk:210 - Failed to sync niche FashionFindsDaily to disk: 'Niche' object has no attribute 'target_audience'
+2026-01-23 19:45:08 | ERROR    | app.services.niche_sync_service:sync_niche_to_disk:210 - Failed to sync niche HomeDecorHacks to disk: 'Niche' object has no attribute 'target_audience'
+2026-01-23 19:45:08 | ERROR    | app.services.niche_sync_service:sync_niche_to_disk:210 - Failed to sync niche PetCareTips to disk: 'Niche' object has no attribute 'target_audience'
+2026-01-23 19:45:08 | ERROR    | app.services.niche_sync_service:sync_niche_to_disk:210 - Failed to sync niche QuickRecipes to disk: 'Niche' object has no attribute 'target_audience'
+2026-01-23 19:45:08 | ERROR    | app.services.niche_sync_service:sync_niche_to_disk:210 - Failed to sync niche DanceChallenges to disk: 'Niche' object has no attribute 'target_audience'
+2026-01-23 19:45:08 | ERROR    | app.services.niche_sync_service:sync_niche_to_disk:210 - Failed to sync niche ComedySketches to disk: 'Niche' object has no attribute 'target_audience'
+2026-01-23 19:45:08 | ERROR    | app.services.niche_sync_service:sync_niche_to_disk:210 - Failed to sync niche LifeHacksDaily to disk: 'Niche' object has no attribute 'target_audience'
+2026-01-23 19:45:08 | ERROR    | app.services.niche_sync_service:sync_niche_to_disk:210 - Failed to sync niche ASMRRelaxation to disk: 'Niche' object has no attribute 'target_audience'
+2026-01-23 19:45:08 | ERROR    | app.services.niche_sync_service:sync_niche_to_disk:210 - Failed to sync niche MagicTricks to disk: 'Niche' object has no attribute 'target_audience'
+2026-01-23 19:45:08,900 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:45:08 | INFO     | app.workers.job_worker:start:54 - Job worker started
+2026-01-23 19:45:08 | INFO     | app.main:lifespan:500 - Job worker started
+2026-01-23 19:45:08 | INFO     | app.services.scheduler_service:initialize:59 - Content scheduler initialized
+2026-01-23 19:45:08 | INFO     | app.services.scheduler_service:start:69 - Content scheduler started
+2026-01-23 19:45:08,900 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:45:08,902 INFO sqlalchemy.engine.Engine SELECT niches.name AS niches_name, niches.slug AS niches_slug, niches.description AS niches_description, niches.style AS niches_style, niches.post_to_youtube AS niches_post_to_youtube, niches.post_to_instagram AS niches_post_to_instagram, niches.post_to_tiktok AS niches_post_to_tiktok, niches.posts_per_day AS niches_posts_per_day, niches.auto_mode AS niches_auto_mode, niches.platform AS niches_platform, niches.account_name AS niches_account_name, niches.account_id AS niches_account_id, niches.youtube_account_id AS niches_youtube_account_id, niches.instagram_account_id AS niches_instagram_account_id, niches.tiktok_account_id AS niches_tiktok_account_id, niches.posting_schedule AS niches_posting_schedule, niches.prompt_hook AS niches_prompt_hook, niches.prompt_body AS niches_prompt_body, niches.prompt_cta AS niches_prompt_cta, niches.hashtags AS niches_hashtags, niches.min_duration_seconds AS niches_min_duration_seconds, niches.max_duration_seconds AS niches_max_duration_seconds, niches.llm_model AS niches_llm_model, niches.llm_temperature AS niches_llm_temperature, niches.tts_provider AS niches_tts_provider, niches.voice_id AS niches_voice_id, niches.voice_name AS niches_voice_name, niches.whisper_model AS niches_whisper_model, niches.whisper_device AS niches_whisper_device, niches.style_preset AS niches_style_preset, niches.is_active AS niches_is_active, niches.id AS niches_id, niches.created_at AS niches_created_at, niches.updated_at AS niches_updated_at 
+FROM niches 
+WHERE niches.auto_mode = 1
+2026-01-23 19:45:08,902 INFO sqlalchemy.engine.Engine [generated in 0.00012s] ()
+2026-01-23 19:45:08,903 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:45:08 | INFO     | app.services.scheduler_service:_schedule_daily_generation:134 - Scheduled content generation for 0 niches (0 total jobs)
+2026-01-23 19:45:08 | INFO     | app.services.scheduler_service:start:82 - Scheduled RSS scraping every 3 hours
+2026-01-23 19:45:08 | INFO     | app.main:lifespan:506 - Content scheduler started
+2026-01-23 19:45:08 | INFO     | app.main:lifespan:511 - Content Factory ready at http://127.0.0.1:8000
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'app\models\niche.py'. Reloading...
+ 

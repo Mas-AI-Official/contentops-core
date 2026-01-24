@@ -34,6 +34,10 @@ AsyncSessionLocal = sessionmaker(
 def create_db_and_tables():
     """Create all database tables."""
     SQLModel.metadata.create_all(sync_engine)
+    
+    # Run migrations for existing tables
+    from app.db.migrations import run_migrations
+    run_migrations()
 
 
 @contextmanager

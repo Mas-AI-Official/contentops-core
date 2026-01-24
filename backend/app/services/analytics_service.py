@@ -3,12 +3,14 @@ Analytics service - fetches and processes video performance metrics.
 """
 from datetime import datetime, date, timedelta
 from typing import Optional, List, Dict
+import json
 from loguru import logger
 import httpx
 from sqlmodel import Session, select
 
 from app.core.config import settings
-from app.models import VideoMetrics, DailyNicheStats, VideoScore, Video, VideoPublish
+from app.models import VideoMetrics, DailyNicheStats, VideoScore, Video, VideoPublish, Job, Niche
+from app.services.growth_engine_service import growth_engine
 
 
 class YouTubeAnalytics:
@@ -319,6 +321,25 @@ class AnalyticsService:
                 session.add(score)
             
             updated += 1
+            
+            # FEEDBACK LOOP: Update growth engine with template performance
+            try:
+                job = session.get(Job, video.job_id)
+                if job and job.description:
+                    desc_data = json.loads(job.description)
+                    template = desc_data.get('template')
+                    if template and 'name' in template:
+                        niche = session.get(Niche, video.niche_id)
+                        if niche:
+                            growth_engine.update_template_performance(
+                                niche.slug,
+                                template['name'],
+                                int(total_views),
+                                int(total_likes),
+                                int(total_comments)
+                            )
+            except Exception as e:
+                logger.warning(f"Failed to update growth engine for video {video.id}: {e}")
         
         # Determine winners (top 10%)
         all_scores = session.exec(

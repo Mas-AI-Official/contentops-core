@@ -2,13 +2,54 @@
 title Content Factory - Setup Models
 color 0E
 
-set ROOT=D:\Ideas\content_factory
+setlocal enabledelayedexpansion
+
+REM Set Root to parent directory
+pushd "%~dp0.."
+set ROOT=%CD%
+popd
+
+set VENV_PYTHON=%ROOT%\venv\Scripts\python.exe
+
+REM Check if venv exists
+if not exist "%VENV_PYTHON%" (
+    echo ERROR: Virtual environment not found at %ROOT%\venv
+    echo Please run launch.bat first to create the virtual environment.
+    pause
+    exit /b 1
+)
+
+REM Try to run PowerShell script first
+cd /d %ROOT%
+powershell -ExecutionPolicy Bypass -File "%~dp0setup_models.ps1" %*
+if %errorlevel% equ 0 (
+    echo.
+    echo Model setup completed successfully via PowerShell script.
+    pause
+    exit /b 0
+)
+echo.
+echo PowerShell script failed or returned error, using batch fallback...
+echo.
+
+REM Fallback to batch implementation
+REM Enable delayed expansion for error handling
+
+REM Ensure venv is activated for fallback
+if exist "%VENV_PYTHON%" (
+    call venv\Scripts\activate.bat
+)
+
 set OLLAMA_MODELS=%ROOT%\models\ollama
 set MODELS=llama3.1:8b llama3.2:3b
 
 echo ========================================
-echo   Content Factory - Setup Models
+echo   Content Factory - Setup Models (Batch Fallback)
 echo ========================================
+echo.
+echo Root: %ROOT%
+echo Ollama Models Path: %OLLAMA_MODELS%
+echo Models to download: %MODELS%
 echo.
 
 cd /d %ROOT%
@@ -17,13 +58,23 @@ REM Ensure models directory exists
 if not exist "models\ollama" mkdir "models\ollama"
 
 REM Check Ollama command
+echo Checking for Ollama...
 where ollama >nul 2>&1
 if %errorlevel% neq 0 (
+    echo.
+    echo ========================================
     echo ERROR: Ollama is not installed or not in PATH.
-    echo Download it from: https://ollama.com/download
-    pause
+    echo ========================================
+    echo.
+    echo Please download Ollama from: https://ollama.com/download
+    echo.
+    echo After installing Ollama, run this script again.
+    echo.
+    echo Press any key to exit...
+    pause >nul
     exit /b 1
 )
+echo [OK] Ollama found in PATH.
 
 REM Use project-local Ollama models directory
 REM Set environment variable for this session
@@ -61,11 +112,29 @@ set OLLAMA_MODELS=%ROOT%\models\ollama
 echo.
 
 REM Ensure Ollama is running with new OLLAMA_MODELS
-echo Starting Ollama with OLLAMA_MODELS=%OLLAMA_MODELS%...
+echo Checking if Ollama is running...
 curl -s http://localhost:11434/api/tags >nul 2>&1
-if %errorlevel% neq 0 (
-    echo Starting Ollama service...
-    start /min "" ollama serve
+if %errorlevel% equ 0 (
+    echo [OK] Ollama is already running.
+    echo      Using existing Ollama instance.
+    echo      NOTE: If you need to change OLLAMA_MODELS, stop Ollama first.
+    echo.
+) else (
+    echo Ollama is not running. Starting Ollama service with OLLAMA_MODELS=%OLLAMA_MODELS%...
+    echo.
+    echo IMPORTANT: Ollama will save models to: %OLLAMA_MODELS%
+    echo.
+    
+    REM Create a batch file to start Ollama with the correct environment
+    set OLLAMA_START_BAT=%TEMP%\start_ollama_%RANDOM%.bat
+    echo @echo off > "%OLLAMA_START_BAT%"
+    echo set OLLAMA_MODELS=%OLLAMA_MODELS% >> "%OLLAMA_START_BAT%"
+    echo cd /d %ROOT% >> "%OLLAMA_START_BAT%"
+    echo echo OLLAMA_MODELS is set to: %%OLLAMA_MODELS%% >> "%OLLAMA_START_BAT%"
+    echo ollama serve >> "%OLLAMA_START_BAT%"
+    
+    REM Start Ollama using the batch file
+    start "Ollama Service" cmd /k ""%OLLAMA_START_BAT%""
     timeout /t 8 /nobreak >nul
     
     REM Verify Ollama started
@@ -79,16 +148,18 @@ if %errorlevel% neq 0 (
             timeout /t 2 /nobreak >nul
             goto check_ollama
         ) else (
-            echo [ERROR] Ollama did not start after 10 seconds.
-            echo         Please run manually: ollama serve
-            echo         Make sure OLLAMA_MODELS=%OLLAMA_MODELS% is set.
-            pause
-            exit /b 1
+            echo [WARNING] Ollama did not start automatically.
+            echo          Ollama may already be running in another window.
+            echo          Continuing with downloads - if they fail, start Ollama manually:
+            echo          set OLLAMA_MODELS=%OLLAMA_MODELS%
+            echo          ollama serve
+            echo.
         )
+    ) else (
+        echo [OK] Ollama started successfully.
+        echo.
     )
 )
-echo [OK] Ollama is running.
-echo.
 
 echo Checking installed models...
 ollama list
@@ -103,6 +174,29 @@ echo.
 echo ========================================
 echo   Model setup complete
 echo ========================================
+echo.
+echo Verifying model locations...
+echo.
+
+REM Check if models are in our directory
+set FOUND_IN_CORRECT_LOCATION=0
+for %%M in (%MODELS%) do (
+    REM Check for model files in our directory
+    dir "%OLLAMA_MODELS%\*" /s /b 2>nul | findstr /i "%%M" >nul
+    if %errorlevel% equ 0 (
+        echo [OK] Model files found in: %OLLAMA_MODELS%
+        set /a FOUND_IN_CORRECT_LOCATION+=1
+    ) else (
+        echo [INFO] Model %%M may be in default Ollama location
+        echo        This is OK - Ollama will use it regardless
+    )
+)
+
+echo.
+echo OLLAMA_MODELS is set to: %OLLAMA_MODELS%
+echo Models should be saved here when downloaded.
+echo.
+echo To verify, check: %OLLAMA_MODELS%
 echo.
 pause
 exit /b 0
@@ -151,7 +245,28 @@ echo This may take several minutes depending on your connection and model size..
 echo Model will be saved to: %OLLAMA_MODELS%
 echo.
 
+REM Verify OLLAMA_MODELS is set and directory exists
+if not exist "%OLLAMA_MODELS%" (
+    echo Creating directory: %OLLAMA_MODELS%
+    mkdir "%OLLAMA_MODELS%"
+)
+
+REM Set OLLAMA_MODELS for this command (ensure it's set)
+set "OLLAMA_MODELS=%OLLAMA_MODELS%"
+
+REM Verify Ollama is running
+curl -s http://localhost:11434/api/tags >nul 2>&1
+if %errorlevel% neq 0 (
+    echo [ERROR] Ollama service is not running!
+    echo Please start Ollama manually or restart this script.
+    pause
+    exit /b 1
+)
+
 REM Download with progress
+echo Executing: ollama pull "%MODEL%"
+echo Current OLLAMA_MODELS: %OLLAMA_MODELS%
+echo.
 ollama pull "%MODEL%"
 set PULL_ERROR=%errorlevel%
 

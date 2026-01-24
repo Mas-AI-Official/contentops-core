@@ -1,0 +1,87 @@
+D:\Ideas\content_factory\backend\app\api\mcp.py:14: UserWarning: Field name "json" in "MCPForwardRequest" shadows an attribute in parent "BaseModel"
+  class MCPForwardRequest(BaseModel):
+INFO:     Started server process [37832]
+INFO:     Waiting for application startup.
+2026-01-23 19:36:21 | INFO     | app.main:lifespan:457 - Starting Content Factory...
+2026-01-23 19:36:21 | INFO     | app.db.migrations:run_migrations:11 - Checking for pending database migrations...
+2026-01-23 19:36:21,092 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:36:21,093 INFO sqlalchemy.engine.Engine PRAGMA table_info(niches)
+2026-01-23 19:36:21,093 INFO sqlalchemy.engine.Engine [generated in 0.00013s] ()
+2026-01-23 19:36:21,094 INFO sqlalchemy.engine.Engine PRAGMA table_info(accounts)
+ERROR:    Traceback (most recent call last):
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\starlette\routing.py", line 694, in lifespan
+    async with self.lifespan_context(app) as maybe_state:
+  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\fastapi\routing.py", line 153, in merged_lifespan
+    async with original_context(app) as maybe_original_state:
+  File "C:\Python311\Lib\contextlib.py", line 210, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+2026-01-23 19:36:21,094 INFO sqlalchemy.engine.Engine [generated in 0.00015s] ()
+2026-01-23 19:36:21,094 INFO sqlalchemy.engine.Engine COMMIT
+2026-01-23 19:36:21 | INFO     | app.db.migrations:run_migrations:59 - Database migrations completed
+2026-01-23 19:36:21,094 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-01-23 19:36:21,094 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("niches")
+2026-01-23 19:36:21,094 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:36:21,094 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("accounts")
+2026-01-23 19:36:21,094 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:36:21,094 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("jobs")
+2026-01-23 19:36:21,094 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:36:21,094 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("job_logs")
+2026-01-23 19:36:21,094 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:36:21,095 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("videos")
+2026-01-23 19:36:21,095 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:36:21,095 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("video_publishes")
+2026-01-23 19:36:21,095 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:36:21,095 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("video_metrics")
+2026-01-23 19:36:21,095 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:36:21,095 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("daily_niche_stats")
+2026-01-23 19:36:21,095 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:36:21,096 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("video_scores")
+2026-01-23 19:36:21,096 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:36:21,096 INFO sqlalchemy.engine.Engine PRAGMA main.table_info("niche_targets")
+2026-01-23 19:36:21,096 INFO sqlalchemy.engine.Engine [raw sql] ()
+2026-01-23 19:36:21,096 INFO sqlalchemy.engine.Engine PRAGMA temp.table_info("niche_targets")
+  File "D:\Ideas\content_factory\backend\app\main.py", line 463, in lifespan
+2026-01-23 19:36:21,096 INFO sqlalchemy.engine.Engine [raw sql] ()
+    create_db_and_tables()
+2026-01-23 19:36:21,096 INFO sqlalchemy.engine.Engine ROLLBACK
+  File "D:\Ideas\content_factory\backend\app\db\database.py", line 36, in create_db_and_tables
+    SQLModel.metadata.create_all(sync_engine)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\sql\schema.py", line 5928, in create_all
+    bind._run_ddl_visitor(
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 3260, in _run_ddl_visitor
+    conn._run_ddl_visitor(visitorcallable, element, **kwargs)
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\engine\base.py", line 2467, in _run_ddl_visitor
+    ).traverse_single(element)
+      ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\sql\visitors.py", line 661, in traverse_single
+    return meth(obj, **kw)
+           ^^^^^^^^^^^^^^^
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\sql\ddl.py", line 962, in visit_metadata
+    collection = sort_tables_and_constraints(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\sql\ddl.py", line 1394, in sort_tables_and_constraints
+    dependent_on = fkc.referred_table
+                   ^^^^^^^^^^^^^^^^^^
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\sql\schema.py", line 4799, in referred_table
+    return self.elements[0].column.table
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\util\langhelpers.py", line 1226, in __get__
+    obj.__dict__[self.__name__] = result = self.fget(obj)
+                                           ^^^^^^^^^^^^^^
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\sql\schema.py", line 3199, in column
+    return self._resolve_column()
+           ^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\Ideas\content_factory\venv\Lib\site-packages\sqlalchemy\sql\schema.py", line 3222, in _resolve_column
+    raise exc.NoReferencedTableError(
+sqlalchemy.exc.NoReferencedTableError: Foreign key associated with column 'niche_targets.account_id' could not find table 'publishing_accounts' with which to generate a foreign key to target column 'id'
+
+ERROR:    Application startup failed. Exiting.

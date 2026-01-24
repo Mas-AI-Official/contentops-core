@@ -31,6 +31,7 @@ class LTXService:
         self.enabled = settings.video_gen_provider == "ltx"
         self.use_direct = LTX_DIRECT_AVAILABLE
         self.model_path = Path(settings.ltx_model_path) if settings.ltx_model_path else settings.models_path / "ltx"
+        self.repo_path = Path(settings.ltx_repo_path) if settings.ltx_repo_path else settings.base_path / "LTX-2"
         self.use_fp8 = settings.ltx_use_fp8
     
     async def check_connection(self) -> bool:
@@ -71,7 +72,8 @@ class LTXService:
         width: int = 854,
         height: int = 480,
         duration_seconds: int = 5,
-        fps: int = 24
+        fps: int = 24,
+        model_name: Optional[str] = None  # Specific model to use
     ) -> Path:
         """
         Generate video from text using LTX-2.
@@ -113,25 +115,42 @@ class LTXService:
         
         logger.info("Using LTX-2 direct Python API...")
         
-        # Find model checkpoint (prefer LTX-2, then legacy LTX)
-        # Priority: LTX-2 distilled FP8 > LTX-2 distilled > LTX-2 full > legacy LTX
-        
-        # Check for LTX-2 models first (recommended)
-        ltx2_files = {
-            "distilled_fp8": list(self.model_path.glob("ltx-2*distilled*fp8*.safetensors")),
-            "distilled": list(self.model_path.glob("ltx-2*distilled*.safetensors")),
-            "full": list(self.model_path.glob("ltx-2*.safetensors"))
-        }
-        
+        # Use specified model if provided, otherwise auto-select
         checkpoint_path = None
         model_type = "ltx2"
         
-        for key in ["distilled_fp8", "distilled", "full"]:
-            if ltx2_files[key]:
-                checkpoint_path = ltx2_files[key][0]
-                logger.info(f"Using LTX-2 model: {checkpoint_path.name}")
-                model_type = "ltx2"
-                break
+        if model_name:
+            # Use the specified model
+            specified_path = self.model_path / model_name
+            if specified_path.exists() and specified_path.suffix == ".safetensors":
+                checkpoint_path = specified_path
+                logger.info(f"Using specified LTX-2 model: {checkpoint_path.name}")
+            else:
+                # Try to find by partial name match
+                matching_files = list(self.model_path.glob(f"*{model_name}*.safetensors"))
+                if matching_files:
+                    checkpoint_path = matching_files[0]
+                    logger.info(f"Using matched LTX-2 model: {checkpoint_path.name}")
+                else:
+                    logger.warning(f"Specified model '{model_name}' not found, falling back to auto-select")
+        
+        if not checkpoint_path:
+            # Auto-select: prefer LTX-2, then legacy LTX
+            # Priority: LTX-2 distilled FP8 > LTX-2 distilled > LTX-2 full > legacy LTX
+            
+            # Check for LTX-2 models first (recommended)
+            ltx2_files = {
+                "distilled_fp8": list(self.model_path.glob("ltx-2*distilled*fp8*.safetensors")),
+                "distilled": list(self.model_path.glob("ltx-2*distilled*.safetensors")),
+                "full": list(self.model_path.glob("ltx-2*.safetensors"))
+            }
+            
+            for key in ["distilled_fp8", "distilled", "full"]:
+                if ltx2_files[key]:
+                    checkpoint_path = ltx2_files[key][0]
+                    logger.info(f"Auto-selected LTX-2 model: {checkpoint_path.name}")
+                    model_type = "ltx2"
+                    break
         
         # Fallback to legacy LTX models if LTX-2 not found
         if not checkpoint_path:

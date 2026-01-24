@@ -50,6 +50,9 @@ class RenderConfig:
     output_path: Optional[Path] = None
     quality_preset: str = "medium"  # ultrafast, fast, medium, slow
 
+    # LTX model selection
+    video_model: Optional[str] = None  # LTX model filename
+
 
 class RenderService:
     """Service for rendering final videos."""
@@ -95,7 +98,8 @@ class RenderService:
                     width=854,  # 480p for 8GB VRAM
                     height=480,
                     duration_seconds=ltx_duration,
-                    fps=24
+                    fps=24,
+                    model_name=config.video_model  # Use selected model
                 )
                 
                 # Now composite with FFmpeg: add audio, subtitles, logo, music

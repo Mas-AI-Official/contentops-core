@@ -13,6 +13,14 @@ Run this once and it will:
 launch.bat
 ```
 
+## First Time Setup (Models)
+Before generating content, you need to setup the AI models:
+
+```batch
+setup.bat
+```
+Select option 1 to setup everything (Ollama + LTX).
+
 ## If Venv Creation Fails
 1. Close all Python/command windows
 2. Run `launch.bat` as Administrator

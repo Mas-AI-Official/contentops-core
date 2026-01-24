@@ -1,13 +1,15 @@
 import { Link, useLocation } from 'react-router-dom'
-import { 
-  LayoutDashboard, 
-  Tags, 
-  Users, 
-  Wand2, 
-  ListTodo, 
-  Film, 
+import ActiveJobsBar from './ActiveJobsBar'
+import {
+  LayoutDashboard,
+  Monitor,
+  Tags,
+  Users,
+  Wand2,
+  ListTodo,
+  Film,
   FileText,
-  BarChart3, 
+  BarChart3,
   Settings,
   Factory,
   Box
@@ -15,6 +17,7 @@ import {
 
 const navigation = [
   { name: 'Overview', href: '/', icon: LayoutDashboard },
+  { name: 'Platforms', href: '/platforms', icon: Monitor },
   { name: 'Niches', href: '/niches', icon: Tags },
   { name: 'Accounts', href: '/accounts', icon: Users },
   { name: 'Generator', href: '/generator', icon: Wand2 },
@@ -25,6 +28,8 @@ const navigation = [
   { name: 'Models', href: '/models', icon: Box },
   { name: 'Settings', href: '/settings', icon: Settings },
 ]
+
+
 
 export default function Layout({ children }) {
   const location = useLocation()
@@ -44,11 +49,10 @@ export default function Layout({ children }) {
               <Link
                 key={item.name}
                 to={item.href}
-                className={`flex items-center gap-3 px-3 py-2 rounded-lg mb-1 transition-colors ${
-                  isActive
-                    ? 'bg-primary-600 text-white'
-                    : 'text-gray-400 hover:bg-gray-800 hover:text-white'
-                }`}
+                className={`flex items-center gap-3 px-3 py-2 rounded-lg mb-1 transition-colors ${isActive
+                  ? 'bg-primary-600 text-white'
+                  : 'text-gray-400 hover:bg-gray-800 hover:text-white'
+                  }`}
               >
                 <item.icon className="h-5 w-5" />
                 {item.name}
@@ -60,6 +64,7 @@ export default function Layout({ children }) {
 
       {/* Main content */}
       <div className="pl-64">
+        <ActiveJobsBar />
         <main className="p-8">
           {children}
         </main>

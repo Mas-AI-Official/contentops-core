@@ -29,4 +29,13 @@ api_router.include_router(scripts_router)
 api_router.include_router(export_router)
 api_router.include_router(mcp_router)
 
+# New services
+from .scraper import router as scraper_router
+from .publisher import router as publisher_router
+from .cleanup import router as cleanup_router
+
+api_router.include_router(scraper_router)
+api_router.include_router(publisher_router)
+api_router.include_router(cleanup_router)
+
 __all__ = ["api_router"]

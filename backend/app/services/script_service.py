@@ -168,6 +168,101 @@ Script:"""
             return data["choices"][0]["message"]["content"].strip()
         except Exception:
             return str(data).strip()
+
+    async def _generate_section_via_hf_router(
+        self, 
+        prompt: str, 
+        model: Optional[str] = None, 
+        temperature: float = 0.7
+    ) -> str:
+        """
+        Generate a section using HuggingFace Router (OpenAI-compatible API).
+        
+        Supports models like:
+        - moonshotai/Kimi-K2-Instruct (recommended for reasoning)
+        - deepseek-ai/DeepSeek-R1 (strong reasoning)
+        - Qwen/QwQ-32B (balanced)
+        """
+        import os
+        
+        # Get configuration
+        base_url = settings.hf_router_base_url.rstrip("/")
+        api_key = settings.hf_router_api_key or os.environ.get("HF_TOKEN")
+        
+        if not api_key:
+            raise ValueError(
+                "HF Router requires HF_TOKEN. Set HF_ROUTER_API_KEY or HF_TOKEN environment variable."
+            )
+        
+        # Model selection priority: explicit > niche config > global setting > default
+        effective_model = model or settings.hf_router_model or "moonshotai/Kimi-K2-Instruct"
+        
+        # Build request payload
+        payload = {
+            "model": effective_model,
+            "messages": [
+                {
+                    "role": "system", 
+                    "content": "You are a professional viral video script writer. Write concise, engaging scripts for short-form videos (TikTok, YouTube Shorts, Instagram Reels). Be conversational and punchy."
+                },
+                {
+                    "role": "user", 
+                    "content": prompt
+                }
+            ],
+            "temperature": temperature or settings.hf_router_temperature,
+            "max_tokens": settings.hf_router_max_tokens,
+        }
+        
+        # Add reasoning configuration if supported by model
+        if "R1" in effective_model or "Kimi" in effective_model or "QwQ" in effective_model:
+            # These models support extended thinking/reasoning
+            reasoning_level = settings.hf_router_reasoning_level
+            if reasoning_level == "high":
+                payload["max_tokens"] = min(4096, settings.hf_router_max_tokens * 2)
+            elif reasoning_level == "low":
+                payload["max_tokens"] = min(512, settings.hf_router_max_tokens // 2)
+        
+        headers = {
+            "Authorization": f"Bearer {api_key}",
+            "Content-Type": "application/json"
+        }
+        
+        try:
+            async with httpx.AsyncClient(timeout=settings.hf_router_timeout) as client:
+                response = await client.post(
+                    f"{base_url}/chat/completions",
+                    headers=headers,
+                    json=payload
+                )
+                
+                if response.status_code == 401:
+                    raise ValueError("Invalid HF_TOKEN. Please check your HuggingFace API token.")
+                elif response.status_code == 429:
+                    raise RuntimeError("HF Router rate limited. Please wait and try again.")
+                elif response.status_code >= 400:
+                    error_detail = response.text[:500] if response.text else "Unknown error"
+                    raise RuntimeError(f"HF Router error {response.status_code}: {error_detail}")
+                
+                response.raise_for_status()
+                data = response.json()
+                
+                # Extract the response content
+                content = data.get("choices", [{}])[0].get("message", {}).get("content", "")
+                
+                if not content:
+                    logger.warning(f"Empty response from HF Router. Full response: {data}")
+                    raise RuntimeError("HF Router returned empty response")
+                
+                logger.info(f"HF Router ({effective_model}): Generated {len(content)} chars")
+                return content.strip()
+                
+        except httpx.TimeoutException:
+            logger.error(f"HF Router timeout after {settings.hf_router_timeout}s")
+            raise RuntimeError(f"HF Router request timed out after {settings.hf_router_timeout}s")
+        except httpx.RequestError as e:
+            logger.error(f"HF Router connection error: {e}")
+            raise RuntimeError(f"Failed to connect to HF Router: {e}")
     
     def _clean_script(self, text: str) -> str:
         """Clean up generated script text."""

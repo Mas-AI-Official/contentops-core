@@ -176,6 +176,7 @@ class Settings(BaseSettings):
     video_gen_provider: str = "ffmpeg"
     ltx_api_url: Optional[str] = None  # ComfyUI API URL (fallback)
     ltx_model_path: Optional[str] = None  # Path to LTX-2 model checkpoint
+    ltx_repo_path: Optional[str] = None  # Path to LTX-2 repository (D:\Ideas\content_factory\LTX-2)
     ltx_use_fp8: bool = True  # Use FP8 quantization for 8GB VRAM
     
     # MCP / External connectors (optional)

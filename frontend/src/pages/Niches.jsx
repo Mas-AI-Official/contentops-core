@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
-import { Plus, Edit, Trash2, Lightbulb, Settings2 } from 'lucide-react'
+import { Plus, Edit, Trash2, Lightbulb, Settings2, Clock } from 'lucide-react'
 import Card from '../components/Card'
 import Button from '../components/Button'
 import Modal from '../components/Modal'
-import { getNiches, createNiche, updateNiche, deleteNiche, generateTopics, getModels } from '../api'
+import { getNiches, createNiche, updateNiche, deleteNiche, generateTopics, getModels, automateNiche, smartScheduleNiche, getAccounts } from '../api'
 
 const VIDEO_STYLES = [
   { value: 'narrator_broll', label: 'Narrator + B-Roll' },
@@ -42,16 +42,22 @@ export default function Niches() {
   const [topicSuggestions, setTopicSuggestions] = useState({})
   const [generatingTopics, setGeneratingTopics] = useState(null)
   const [installedModels, setInstalledModels] = useState([])
+  const [accounts, setAccounts] = useState([])
   const [showAdvanced, setShowAdvanced] = useState(false)
-  
+  const [automating, setAutomating] = useState(null)
+
   const [form, setForm] = useState({
     name: '',
     description: '',
     style: 'narrator_broll',
     posts_per_day: 1,
+    auto_mode: false,
     post_to_youtube: true,
     post_to_instagram: true,
     post_to_tiktok: true,
+    youtube_account_id: '',
+    instagram_account_id: '',
+    tiktok_account_id: '',
     prompt_hook: 'Generate an attention-grabbing hook for a video about {topic}.',
     prompt_body: 'Write the main content script for a 60-second video about {topic}.',
     prompt_cta: 'Write a compelling call-to-action for the end of the video.',
@@ -72,6 +78,7 @@ export default function Niches() {
   useEffect(() => {
     loadNiches()
     loadModels()
+    loadAccounts()
   }, [])
 
   const loadNiches = async () => {
@@ -94,6 +101,15 @@ export default function Niches() {
     }
   }
 
+  const loadAccounts = async () => {
+    try {
+      const res = await getAccounts()
+      setAccounts(res.data || [])
+    } catch (error) {
+      console.error('Failed to load accounts:', error)
+    }
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault()
     try {
@@ -108,14 +124,17 @@ export default function Niches() {
         whisper_model: form.whisper_model || null,
         whisper_device: form.whisper_device || null,
         style_preset: form.style_preset || null,
+        youtube_account_id: form.youtube_account_id ? parseInt(form.youtube_account_id) : null,
+        instagram_account_id: form.instagram_account_id ? parseInt(form.instagram_account_id) : null,
+        tiktok_account_id: form.tiktok_account_id ? parseInt(form.tiktok_account_id) : null,
       }
-      
+
       if (editingNiche) {
         await updateNiche(editingNiche.id, data)
       } else {
         await createNiche(data)
       }
-      
+
       setShowModal(false)
       setEditingNiche(null)
       resetForm()
@@ -132,9 +151,13 @@ export default function Niches() {
       description: niche.description || '',
       style: niche.style,
       posts_per_day: niche.posts_per_day,
+      auto_mode: niche.auto_mode || false,
       post_to_youtube: niche.post_to_youtube,
       post_to_instagram: niche.post_to_instagram,
       post_to_tiktok: niche.post_to_tiktok,
+      youtube_account_id: niche.youtube_account_id || '',
+      instagram_account_id: niche.instagram_account_id || '',
+      tiktok_account_id: niche.tiktok_account_id || '',
       prompt_hook: niche.prompt_hook,
       prompt_body: niche.prompt_body,
       prompt_cta: niche.prompt_cta,
@@ -179,15 +202,65 @@ export default function Niches() {
     }
   }
 
+  const handleAutomateNiche = async (nicheId, videoCount = 1) => {
+    setAutomating(nicheId)
+    try {
+      const res = await automateNiche(nicheId, {
+        video_count: videoCount,
+        publish: false // Don't auto-publish for now
+      })
+      alert(`✅ Automation started! Created ${res.data.jobs.length} jobs for "${niches.find(n => n.id === nicheId)?.name}"`)
+      // Refresh data to show new jobs
+      loadData()
+    } catch (error) {
+      console.error('Failed to automate niche:', error)
+      alert('Failed to start automation. Check console for details.')
+    } finally {
+      setAutomating(null)
+    }
+  }
+
+  const handleSmartSchedule = async (nicheId) => {
+    const niche = niches.find(n => n.id === nicheId)
+    if (!niche) return
+
+    // Get platforms enabled for this niche
+    const platforms = []
+    if (niche.post_to_youtube) platforms.push('youtube')
+    if (niche.post_to_instagram) platforms.push('instagram')
+    if (niche.post_to_tiktok) platforms.push('tiktok')
+
+    if (platforms.length === 0) {
+      alert('No platforms enabled for this niche. Enable posting platforms first.')
+      return
+    }
+
+    setAutomating(nicheId)
+    try {
+      const res = await smartScheduleNiche(nicheId, platforms)
+      alert(`✅ Smart scheduling complete! Scheduled ${res.data.jobs_created} posts for "${niche.name}" at optimal times`)
+      loadData()
+    } catch (error) {
+      console.error('Failed to smart schedule:', error)
+      alert('Failed to create smart schedule. Check console for details.')
+    } finally {
+      setAutomating(null)
+    }
+  }
+
   const resetForm = () => {
     setForm({
       name: '',
       description: '',
       style: 'narrator_broll',
       posts_per_day: 1,
+      auto_mode: false,
       post_to_youtube: true,
       post_to_instagram: true,
       post_to_tiktok: true,
+      youtube_account_id: '',
+      instagram_account_id: '',
+      tiktok_account_id: '',
       prompt_hook: 'Generate an attention-grabbing hook for a video about {topic}.',
       prompt_body: 'Write the main content script for a 60-second video about {topic}.',
       prompt_cta: 'Write a compelling call-to-action for the end of the video.',
@@ -208,6 +281,10 @@ export default function Niches() {
 
   if (loading) {
     return <div className="flex items-center justify-center h-64">Loading...</div>
+  }
+
+  const getPlatformAccounts = (platform) => {
+    return accounts.filter(acc => acc.platform === platform)
   }
 
   return (
@@ -232,6 +309,22 @@ export default function Niches() {
                 </div>
                 <div className="flex gap-1">
                   <button
+                    onClick={() => handleAutomateNiche(niche.id, 1)}
+                    disabled={automating === niche.id}
+                    className="p-1.5 rounded hover:bg-gray-100 disabled:opacity-50"
+                    title="Automate content generation"
+                  >
+                    <Lightbulb className={`h-4 w-4 ${niche.auto_mode ? 'text-green-500' : 'text-blue-500'}`} />
+                  </button>
+                  <button
+                    onClick={() => handleSmartSchedule(niche.id)}
+                    disabled={automating === niche.id}
+                    className="p-1.5 rounded hover:bg-gray-100 disabled:opacity-50"
+                    title="Smart schedule at optimal times"
+                  >
+                    <Clock className="h-4 w-4 text-purple-500" />
+                  </button>
+                  <button
                     onClick={() => handleEdit(niche)}
                     className="p-1.5 rounded hover:bg-gray-100"
                   >
@@ -246,7 +339,7 @@ export default function Niches() {
                 </div>
               </div>
             </div>
-            
+
             <div className="p-4 space-y-3 text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-500">Style</span>
@@ -292,7 +385,7 @@ export default function Niches() {
                 <Lightbulb className="h-4 w-4" />
                 Generate Topic Ideas
               </Button>
-              
+
               {topicSuggestions[niche.id] && (
                 <div className="mt-3 space-y-1">
                   {topicSuggestions[niche.id].map((topic, i) => (
@@ -375,6 +468,18 @@ export default function Niches() {
               />
             </div>
             <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Auto Mode</label>
+              <div className="flex items-center mt-2">
+                <input
+                  type="checkbox"
+                  checked={form.auto_mode}
+                  onChange={(e) => setForm(prev => ({ ...prev, auto_mode: e.target.checked }))}
+                  className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                />
+                <span className="ml-2 text-sm text-gray-600">Enable automated posting</span>
+              </div>
+            </div>
+            <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Min Duration (s)</label>
               <input
                 type="number"
@@ -395,35 +500,76 @@ export default function Niches() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Platforms</label>
-            <div className="flex gap-4">
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={form.post_to_youtube}
-                  onChange={(e) => setForm(prev => ({ ...prev, post_to_youtube: e.target.checked }))}
-                  className="rounded"
-                />
-                YouTube
-              </label>
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={form.post_to_instagram}
-                  onChange={(e) => setForm(prev => ({ ...prev, post_to_instagram: e.target.checked }))}
-                  className="rounded"
-                />
-                Instagram
-              </label>
-              <label className="flex items-center gap-2">
-                <input
-                  type="checkbox"
-                  checked={form.post_to_tiktok}
-                  onChange={(e) => setForm(prev => ({ ...prev, post_to_tiktok: e.target.checked }))}
-                  className="rounded"
-                />
-                TikTok
-              </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Platforms & Accounts</label>
+            <div className="space-y-3">
+              <div className="flex items-center gap-4">
+                <label className="flex items-center gap-2 w-32">
+                  <input
+                    type="checkbox"
+                    checked={form.post_to_youtube}
+                    onChange={(e) => setForm(prev => ({ ...prev, post_to_youtube: e.target.checked }))}
+                    className="rounded"
+                  />
+                  YouTube
+                </label>
+                <select
+                  value={form.youtube_account_id}
+                  onChange={(e) => setForm(prev => ({ ...prev, youtube_account_id: e.target.value }))}
+                  disabled={!form.post_to_youtube}
+                  className="flex-1 px-3 py-1.5 border rounded-lg text-sm disabled:bg-gray-100 disabled:text-gray-400"
+                >
+                  <option value="">Default Account</option>
+                  {getPlatformAccounts('youtube').map(acc => (
+                    <option key={acc.id} value={acc.id}>{acc.account_name}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <label className="flex items-center gap-2 w-32">
+                  <input
+                    type="checkbox"
+                    checked={form.post_to_instagram}
+                    onChange={(e) => setForm(prev => ({ ...prev, post_to_instagram: e.target.checked }))}
+                    className="rounded"
+                  />
+                  Instagram
+                </label>
+                <select
+                  value={form.instagram_account_id}
+                  onChange={(e) => setForm(prev => ({ ...prev, instagram_account_id: e.target.value }))}
+                  disabled={!form.post_to_instagram}
+                  className="flex-1 px-3 py-1.5 border rounded-lg text-sm disabled:bg-gray-100 disabled:text-gray-400"
+                >
+                  <option value="">Default Account</option>
+                  {getPlatformAccounts('instagram').map(acc => (
+                    <option key={acc.id} value={acc.id}>{acc.account_name}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <label className="flex items-center gap-2 w-32">
+                  <input
+                    type="checkbox"
+                    checked={form.post_to_tiktok}
+                    onChange={(e) => setForm(prev => ({ ...prev, post_to_tiktok: e.target.checked }))}
+                    className="rounded"
+                  />
+                  TikTok
+                </label>
+                <select
+                  value={form.tiktok_account_id}
+                  onChange={(e) => setForm(prev => ({ ...prev, tiktok_account_id: e.target.value }))}
+                  disabled={!form.post_to_tiktok}
+                  className="flex-1 px-3 py-1.5 border rounded-lg text-sm disabled:bg-gray-100 disabled:text-gray-400"
+                >
+                  <option value="">Default Account</option>
+                  {getPlatformAccounts('tiktok').map(acc => (
+                    <option key={acc.id} value={acc.id}>{acc.account_name}</option>
+                  ))}
+                </select>
+              </div>
             </div>
           </div>
 

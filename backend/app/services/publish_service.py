@@ -12,6 +12,9 @@ from loguru import logger
 import httpx
 
 from app.core.config import settings
+from app.db import get_sync_session
+from app.models import Account
+from sqlmodel import select
 
 
 class PublishStatus(str, Enum):
@@ -42,29 +45,42 @@ class YouTubePublisher:
         self.refresh_token = settings.youtube_refresh_token
         self._access_token = None
     
-    def is_configured(self) -> bool:
+    def is_configured(self, credentials: Optional[Dict] = None) -> bool:
         """Check if YouTube API is configured."""
+        if credentials:
+            return all([credentials.get("client_id"), credentials.get("client_secret"), credentials.get("refresh_token")])
         return all([self.client_id, self.client_secret, self.refresh_token])
     
-    async def _get_access_token(self) -> str:
+    async def _get_access_token(self, credentials: Optional[Dict] = None) -> str:
         """Get or refresh access token."""
-        if self._access_token:
+        # Use provided credentials or defaults
+        client_id = credentials.get("client_id") if credentials else self.client_id
+        client_secret = credentials.get("client_secret") if credentials else self.client_secret
+        refresh_token = credentials.get("refresh_token") if credentials else self.refresh_token
+        
+        # If using defaults and we have a cached token, use it
+        if not credentials and self._access_token:
             return self._access_token
         
         async with httpx.AsyncClient() as client:
             response = await client.post(
                 "https://oauth2.googleapis.com/token",
                 data={
-                    "client_id": self.client_id,
-                    "client_secret": self.client_secret,
-                    "refresh_token": self.refresh_token,
+                    "client_id": client_id,
+                    "client_secret": client_secret,
+                    "refresh_token": refresh_token,
                     "grant_type": "refresh_token"
                 }
             )
             response.raise_for_status()
             data = response.json()
-            self._access_token = data["access_token"]
-            return self._access_token
+            token = data["access_token"]
+            
+            # Cache only if using defaults
+            if not credentials:
+                self._access_token = token
+                
+            return token
     
     async def upload(
         self,
@@ -72,11 +88,12 @@ class YouTubePublisher:
         title: str,
         description: str,
         tags: list,
-        privacy: str = "private"  # private, unlisted, public
+        privacy: str = "private",  # private, unlisted, public
+        credentials: Optional[Dict] = None
     ) -> PublishResult:
         """Upload video to YouTube."""
         
-        if not self.is_configured():
+        if not self.is_configured(credentials):
             return PublishResult(
                 platform="youtube",
                 status=PublishStatus.MANUAL_REQUIRED,
@@ -84,7 +101,7 @@ class YouTubePublisher:
             )
         
         try:
-            access_token = await self._get_access_token()
+            access_token = await self._get_access_token(credentials)
             
             # Prepare metadata
             metadata = {
@@ -158,19 +175,22 @@ class InstagramPublisher:
         self.access_token = settings.instagram_access_token
         self.account_id = settings.instagram_business_account_id
     
-    def is_configured(self) -> bool:
+    def is_configured(self, credentials: Optional[Dict] = None) -> bool:
         """Check if Instagram API is configured."""
+        if credentials:
+            return all([credentials.get("access_token"), credentials.get("account_id")])
         return all([self.access_token, self.account_id])
     
     async def upload(
         self,
         video_path: Path,
         caption: str,
-        hashtags: list
+        hashtags: list,
+        credentials: Optional[Dict] = None
     ) -> PublishResult:
         """Upload video to Instagram Reels."""
         
-        if not self.is_configured():
+        if not self.is_configured(credentials):
             return PublishResult(
                 platform="instagram",
                 status=PublishStatus.MANUAL_REQUIRED,
@@ -178,6 +198,9 @@ class InstagramPublisher:
             )
         
         try:
+            access_token = credentials.get("access_token") if credentials else self.access_token
+            account_id = credentials.get("account_id") if credentials else self.account_id
+            
             full_caption = f"{caption}\n\n{' '.join(hashtags)}"[:2200]
             
             async with httpx.AsyncClient(timeout=600.0) as client:
@@ -187,9 +210,9 @@ class InstagramPublisher:
                 # to upload to a temporary hosting service first
                 
                 container_response = await client.post(
-                    f"https://graph.facebook.com/v18.0/{self.account_id}/media",
+                    f"https://graph.facebook.com/v18.0/{account_id}/media",
                     params={
-                        "access_token": self.access_token,
+                        "access_token": access_token,
                         "media_type": "REELS",
                         "video_url": str(video_path),  # Would need to be a public URL
                         "caption": full_caption
@@ -201,9 +224,9 @@ class InstagramPublisher:
                 
                 # Step 2: Publish container
                 publish_response = await client.post(
-                    f"https://graph.facebook.com/v18.0/{self.account_id}/media_publish",
+                    f"https://graph.facebook.com/v18.0/{account_id}/media_publish",
                     params={
-                        "access_token": self.access_token,
+                        "access_token": access_token,
                         "creation_id": container_id
                     }
                 )
@@ -246,22 +269,25 @@ class TikTokPublisher:
         self.open_id = settings.tiktok_open_id
         self.is_verified = settings.tiktok_verified
     
-    def is_configured(self) -> bool:
+    def is_configured(self, credentials: Optional[Dict] = None) -> bool:
         """Check if TikTok API is configured."""
+        if credentials:
+            return all([credentials.get("client_key"), credentials.get("access_token"), credentials.get("open_id")])
         return all([self.client_key, self.access_token, self.open_id])
     
     async def upload(
         self,
         video_path: Path,
         title: str,
-        hashtags: list
+        hashtags: list,
+        credentials: Optional[Dict] = None
     ) -> PublishResult:
         """Upload video to TikTok.
         
         Note: Unverified apps can only post as private.
         """
         
-        if not self.is_configured():
+        if not self.is_configured(credentials):
             return PublishResult(
                 platform="tiktok",
                 status=PublishStatus.MANUAL_REQUIRED,
@@ -269,6 +295,9 @@ class TikTokPublisher:
             )
         
         try:
+            access_token = credentials.get("access_token") if credentials else self.access_token
+            is_verified = credentials.get("verified", False) if credentials else self.is_verified
+            
             caption = f"{title} {' '.join(hashtags)}"[:150]  # TikTok limit
             
             async with httpx.AsyncClient(timeout=600.0) as client:
@@ -276,13 +305,13 @@ class TikTokPublisher:
                 init_response = await client.post(
                     "https://open.tiktokapis.com/v2/post/publish/video/init/",
                     headers={
-                        "Authorization": f"Bearer {self.access_token}",
+                        "Authorization": f"Bearer {access_token}",
                         "Content-Type": "application/json"
                     },
                     json={
                         "post_info": {
                             "title": caption,
-                            "privacy_level": "SELF_ONLY" if not self.is_verified else "PUBLIC_TO_EVERYONE",
+                            "privacy_level": "SELF_ONLY" if not is_verified else "PUBLIC_TO_EVERYONE",
                             "disable_duet": False,
                             "disable_comment": False,
                             "disable_stitch": False
@@ -316,7 +345,7 @@ class TikTokPublisher:
                 upload_response.raise_for_status()
                 
                 # Determine status based on verification
-                if not self.is_verified:
+                if not is_verified:
                     logger.warning("TikTok app is unverified - video will be posted as PRIVATE")
                     return PublishResult(
                         platform="tiktok",
@@ -383,33 +412,50 @@ class PublishService:
         description: str,
         tags: list,
         hashtags: list,
-        platforms: list
+        platforms: list,
+        account_ids: Optional[Dict[str, int]] = None
     ) -> Dict[str, PublishResult]:
         """Publish video to specified platforms."""
         
         results = {}
         
+        # Fetch accounts if IDs provided
+        accounts = {}
+        if account_ids:
+            with get_sync_session() as session:
+                for platform, acc_id in account_ids.items():
+                    if acc_id:
+                        account = session.get(Account, acc_id)
+                        if account:
+                            accounts[platform] = account
+        
         if "youtube" in platforms:
+            creds = accounts.get("youtube").credentials_json if accounts.get("youtube") else None
             results["youtube"] = await self.youtube.upload(
                 video_path=video_path,
                 title=title,
                 description=description,
                 tags=tags,
-                privacy="private"  # Start private, let user make public
+                privacy="private",  # Start private, let user make public
+                credentials=creds
             )
         
         if "instagram" in platforms:
+            creds = accounts.get("instagram").credentials_json if accounts.get("instagram") else None
             results["instagram"] = await self.instagram.upload(
                 video_path=video_path,
                 caption=description,
-                hashtags=[f"#{tag}" for tag in hashtags]
+                hashtags=[f"#{tag}" for tag in hashtags],
+                credentials=creds
             )
         
         if "tiktok" in platforms:
+            creds = accounts.get("tiktok").credentials_json if accounts.get("tiktok") else None
             results["tiktok"] = await self.tiktok.upload(
                 video_path=video_path,
                 title=title,
-                hashtags=[f"#{tag}" for tag in hashtags]
+                hashtags=[f"#{tag}" for tag in hashtags],
+                credentials=creds
             )
         
         return results

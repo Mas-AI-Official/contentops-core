@@ -9,6 +9,13 @@ from .subtitle_service import subtitle_service
 from .render_service import render_service, RenderConfig
 from .publish_service import publish_service, PublishResult, PublishStatus
 from .analytics_service import analytics_service
+from .niche_sync_service import niche_sync_service
+
+# New services
+from .scraper_service import scraper_service
+from .publisher_service import publisher_service, PublishMode, PublishStatus as HybridPublishStatus
+from .cleanup_service import cleanup_service
+from .trend_service import trend_service
 
 # Optional LTX service
 try:
@@ -29,4 +36,12 @@ __all__ = [
     "PublishResult",
     "PublishStatus",
     "analytics_service",
+    "niche_sync_service",
+    # New services
+    "scraper_service",
+    "publisher_service",
+    "PublishMode",
+    "HybridPublishStatus",
+    "cleanup_service",
+    "trend_service",
 ]

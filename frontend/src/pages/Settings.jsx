@@ -20,14 +20,15 @@ export default function Settings() {
 
   const loadData = async () => {
     try {
-      const [settingsRes, pathsRes, servicesRes, envRes, modelPathsRes] = await Promise.all([
+      const [settingsRes, pathsRes, servicesRes, envRes, modelPathsRes, storageRes] = await Promise.all([
         getSettings(),
         checkPaths(),
         checkServices(),
         getEnvTemplate(),
-        api.get('/settings/model-paths/check')
+        api.get('/settings/model-paths/check'),
+        api.get('/cleanup/stats')
       ])
-      setSettings(settingsRes.data)
+      setSettings({ ...settingsRes.data, storage_stats: storageRes.data })
       setPaths(pathsRes.data)
       setServices(servicesRes.data)
       setEnvTemplate(envRes.data.template)
@@ -144,7 +145,7 @@ export default function Settings() {
       </Card>
 
       {/* Model Cache Paths */}
-      <Card 
+      <Card
         title="Model Cache Directories"
         actions={
           <Button variant="secondary" size="sm" onClick={createModelPaths}>
@@ -396,8 +397,72 @@ export default function Settings() {
         )}
       </Card>
 
+      {/* Storage & Cleanup */}
+      <Card title="Storage & Cleanup">
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="p-4 border rounded-lg bg-gray-50">
+              <span className="text-sm text-gray-500">Total Usage</span>
+              <p className="text-2xl font-bold text-gray-900 mt-1">
+                {settings?.storage_stats?.total_mb ? `${(settings.storage_stats.total_mb / 1024).toFixed(2)} GB` : 'Loading...'}
+              </p>
+            </div>
+            <div className="p-4 border rounded-lg">
+              <span className="text-sm text-gray-500">Outputs</span>
+              <p className="text-lg font-semibold text-gray-900 mt-1">
+                {settings?.storage_stats?.outputs_mb ? `${settings.storage_stats.outputs_mb} MB` : '0 MB'}
+              </p>
+            </div>
+            <div className="p-4 border rounded-lg">
+              <span className="text-sm text-gray-500">Uploads</span>
+              <p className="text-lg font-semibold text-gray-900 mt-1">
+                {settings?.storage_stats?.uploads_mb ? `${settings.storage_stats.uploads_mb} MB` : '0 MB'}
+              </p>
+            </div>
+            <div className="p-4 border rounded-lg">
+              <span className="text-sm text-gray-500">Logs</span>
+              <p className="text-lg font-semibold text-gray-900 mt-1">
+                {settings?.storage_stats?.logs_mb ? `${settings.storage_stats.logs_mb} MB` : '0 MB'}
+              </p>
+            </div>
+          </div>
+
+          <div className="border-t pt-4">
+            <h4 className="font-medium text-gray-900 mb-3">Cleanup Actions</h4>
+            <div className="flex flex-wrap gap-3">
+              <Button
+                variant="secondary"
+                onClick={async () => {
+                  if (confirm('Run cleanup (dry run)? Check logs for details.')) {
+                    await api.post('/cleanup/run?dry_run=true')
+                    alert('Dry run complete. Check logs.')
+                  }
+                }}
+              >
+                Dry Run Cleanup
+              </Button>
+              <Button
+                variant="danger"
+                onClick={async () => {
+                  if (confirm('Are you sure? This will DELETE old files permanently.')) {
+                    await api.post('/cleanup/run?dry_run=false')
+                    loadData()
+                    alert('Cleanup complete!')
+                  }
+                }}
+              >
+                Run Full Cleanup
+              </Button>
+            </div>
+            <p className="text-xs text-gray-500 mt-2">
+              Deletes files older than retention policy (default: Videos 1 day, Temp 12h, Logs 7 days).
+            </p>
+          </div>
+        </div>
+      </Card>
+
       {/* Environment Template */}
-      <Card 
+      <Card
         title=".env Template"
         actions={
           <Button variant="secondary" size="sm" onClick={copyEnvTemplate}>

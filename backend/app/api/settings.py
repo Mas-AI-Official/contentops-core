@@ -32,6 +32,12 @@ class SettingsResponse(BaseModel):
     mcp_llm_connector: Optional[str]
     mcp_llm_model: Optional[str]
     mcp_llm_path: Optional[str]
+
+    # Hugging Face Router
+    hf_router_base_url: Optional[str]
+    hf_router_model: Optional[str]
+    hf_router_reasoning_level: Optional[str]
+    hf_router_configured: bool
     
     # TTS
     tts_provider: str
@@ -52,6 +58,7 @@ class SettingsResponse(BaseModel):
     video_gen_provider: str
     ltx_api_url: Optional[str]
     ltx_model_path: Optional[str]
+    ltx_repo_path: Optional[str]
     ltx_use_fp8: bool
     
     # Worker
@@ -124,6 +131,7 @@ async def get_settings():
         video_gen_provider=settings.video_gen_provider,
         ltx_api_url=settings.ltx_api_url,
         ltx_model_path=str(settings.ltx_model_path) if settings.ltx_model_path else None,
+        ltx_repo_path=str(settings.ltx_repo_path) if settings.ltx_repo_path else None,
         ltx_use_fp8=settings.ltx_use_fp8,
         worker_enabled=settings.worker_enabled,
         worker_interval_seconds=settings.worker_interval_seconds,
@@ -468,6 +476,15 @@ OLLAMA_MODEL=llama3.1:8b
 OLLAMA_FAST_MODEL=llama3.2:3b
 
 # ============================================
+# Hugging Face Router (OpenAI-compatible)
+# ============================================
+# LLM_PROVIDER=hf_router
+# HF_ROUTER_BASE_URL=https://router.huggingface.co/v1
+# HF_TOKEN=your_hf_token
+# HF_ROUTER_MODEL=moonshotai/Kimi-K2-Instruct
+# HF_ROUTER_REASONING_LEVEL=medium
+
+# ============================================
 # TTS Settings
 # ============================================
 TTS_PROVIDER=xtts
@@ -548,6 +565,8 @@ DEFAULT_BG_MUSIC_VOLUME=0.1
 # Video Generator Provider (optional)
 # VIDEO_GEN_PROVIDER=ffmpeg
 # LTX_API_URL=http://127.0.0.1:8188
+# LTX_MODEL_PATH=D:\Ideas\content_factory\models\ltx
+# LTX_REPO_PATH=D:\Ideas\content_factory\LTX-2
 """
     }
 

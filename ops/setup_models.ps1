@@ -1,212 +1,401 @@
-# Content Factory - Model Setup Script
-# Run as: .\setup_models.ps1
+# Content Factory - Setup Models
+# Downloads and configures AI models
+
+param(
+    [switch]$SkipOllama,
+    [switch]$SkipLtx,
+    [string[]]$Models = @("llama3.1:8b", "llama3.2:3b"),
+    [int]$RetryCount = 3
+)
 
 $ErrorActionPreference = "Stop"
 
+# Configuration
+# PSScriptRoot is ops\ directory, so go up one level to get project root
+$ProjectRoot = Split-Path -Parent $PSScriptRoot
+# Ensure absolute path
+$ProjectRoot = [System.IO.Path]::GetFullPath($ProjectRoot)
+$VenvPath = Join-Path $ProjectRoot "venv"
+$VenvPython = Join-Path $VenvPath "Scripts\python.exe"
+$VenvPip = Join-Path $VenvPath "Scripts\pip.exe"
+$ModelsDir = Join-Path $ProjectRoot "models"
+$OllamaModelsDir = Join-Path $ModelsDir "ollama"
+$LtxDir = Join-Path $ModelsDir "ltx"
+
+# Ensure all paths are absolute
+$ModelsDir = [System.IO.Path]::GetFullPath($ModelsDir)
+$OllamaModelsDir = [System.IO.Path]::GetFullPath($OllamaModelsDir)
+$LtxDir = [System.IO.Path]::GetFullPath($LtxDir)
+
 Write-Host "========================================" -ForegroundColor Cyan
-Write-Host "  Content Factory - Model Setup" -ForegroundColor Cyan
+Write-Host "  Content Factory - Setup Models" -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
+Write-Host "Models Directory: $ModelsDir"
+Write-Host "Ollama Models: $OllamaModelsDir"
+Write-Host "LTX Models: $LtxDir"
+Write-Host ""
 
-$BASE_PATH = "D:\Ideas\content_factory"
+function Write-Step {
+    param([string]$Message)
+    Write-Host "[STEP] $Message" -ForegroundColor Yellow
+}
 
-# ============================================
-# 1. Check Ollama is running
-# ============================================
-Write-Host "[1/3] Checking Ollama service..." -ForegroundColor Yellow
+function Write-Success {
+    param([string]$Message)
+    Write-Host "[OK] $Message" -ForegroundColor Green
+}
 
-try {
-    $response = Invoke-WebRequest -Uri "http://localhost:11434/api/tags" -Method GET -TimeoutSec 5 -ErrorAction Stop
-    Write-Host "Ollama is running" -ForegroundColor Green
-} catch {
-    Write-Host "Ollama is not running. Starting Ollama..." -ForegroundColor Yellow
-    Start-Process ollama -ArgumentList "serve" -WindowStyle Hidden
-    Start-Sleep -Seconds 5
-    
+function Write-Error {
+    param([string]$Message)
+    Write-Host "[ERROR] $Message" -ForegroundColor Red
+}
+
+function Exit-WithError {
+    param([string]$Message)
+    Write-Error $Message
+    exit 1
+}
+
+# Check and activate venv
+if (-not (Test-Path $VenvPython)) {
+    Exit-WithError "Virtual environment not found at $VenvPath. Please run launch.bat or bootstrap_windows.ps1 first."
+}
+
+Write-Step "Activating virtual environment..."
+$activateScript = Join-Path $VenvPath "Scripts\Activate.ps1"
+if (Test-Path $activateScript) {
     try {
-        $response = Invoke-WebRequest -Uri "http://localhost:11434/api/tags" -Method GET -TimeoutSec 5 -ErrorAction Stop
-        Write-Host "Ollama started successfully" -ForegroundColor Green
-    } catch {
-        Write-Host "Failed to start Ollama. Please start it manually: ollama serve" -ForegroundColor Red
-        exit 1
+        & $activateScript
+        Write-Success "Virtual environment activated"
+    }
+    catch {
+        Write-Warning "Could not activate venv via script, using venv Python directly"
     }
 }
-
-# ============================================
-# 2. Pull LLM Models
-# ============================================
-Write-Host ""
-Write-Host "[2/3] Pulling LLM models..." -ForegroundColor Yellow
-
-# Main model - high quality
-Write-Host "Pulling llama3.1:8b (main model)..." -ForegroundColor Yellow
-ollama pull llama3.1:8b
-Write-Host "Main model ready" -ForegroundColor Green
-
-# Fast model - for quick tasks like topic generation
-Write-Host "Pulling llama3.2:3b (fast model)..." -ForegroundColor Yellow
-ollama pull llama3.2:3b
-Write-Host "Fast model ready" -ForegroundColor Green
-
-# ============================================
-# 3. Create Default Niche Templates
-# ============================================
-Write-Host ""
-Write-Host "[3/3] Creating niche templates..." -ForegroundColor Yellow
-
-$nichesPath = "$BASE_PATH\data\niches"
-
-# Create niche directories and templates
-$niches = @{
-    "ai_tech" = @{
-        description = "AI, tech news, and futuristic content"
-        style = "narrator_broll"
-        hashtags = @("ai", "tech", "future", "technology", "innovation", "chatgpt", "artificialintelligence")
-        topics = @(
-            "5 AI tools that will change how you work in 2024",
-            "The truth about AI taking your job",
-            "How to use ChatGPT like a pro",
-            "AI features your phone has that you don't know about",
-            "Why AI art is controversial",
-            "The dark side of facial recognition",
-            "How AI is revolutionizing healthcare",
-            "Self-driving cars: Are we there yet?",
-            "The AI tool that writes better than most humans",
-            "Why tech companies are betting billions on AI"
-        )
-        prompt_hook = "Create a shocking or surprising hook about {topic} that makes viewers stop scrolling. Use a bold claim or counterintuitive statement. Keep it under 15 words."
-        prompt_body = "Write an informative and engaging script about {topic}. Include 3-4 key points. Use simple language that anyone can understand. Make it conversational, not robotic. Target length: 45 seconds of speech."
-        prompt_cta = "Write a call-to-action asking viewers to follow for more AI/tech content. Make it natural, not salesy. Under 10 words."
-    }
-    "finance_tax" = @{
-        description = "Personal finance, tax tips, and money advice"
-        style = "narrator_broll"
-        hashtags = @("money", "finance", "taxes", "investing", "savings", "wealth", "financialfreedom", "moneytips")
-        topics = @(
-            "Tax deductions most people forget",
-            "The 50/30/20 budget rule explained",
-            "How to build an emergency fund fast",
-            "Credit score myths that are costing you money",
-            "Why rich people don't save money in banks",
-            "The best time to file your taxes",
-            "How to negotiate your salary",
-            "Side hustles that actually pay well",
-            "Investment mistakes beginners make",
-            "How to retire early with FIRE"
-        )
-        prompt_hook = "Create an attention-grabbing hook about {topic} that appeals to people's desire to save or make money. Use urgency or reveal a secret. Under 15 words."
-        prompt_body = "Write a clear, actionable script about {topic}. Include specific tips or steps people can take today. Avoid jargon - explain concepts simply. Target: 50 seconds of speech."
-        prompt_cta = "Write a CTA encouraging viewers to follow for more money tips. Mention the value they'll get. Under 10 words."
-    }
-    "health" = @{
-        description = "Health tips, wellness, and fitness motivation"
-        style = "narrator_broll"
-        hashtags = @("health", "wellness", "fitness", "healthy", "workout", "nutrition", "selfcare", "healthylifestyle")
-        topics = @(
-            "Morning habits that changed my life",
-            "Foods you think are healthy but aren't",
-            "The science of better sleep",
-            "Why walking is the best exercise",
-            "How to stay motivated to work out",
-            "Water intake myths debunked",
-            "Stretches you should do every day",
-            "Mental health tips that actually work",
-            "How to fix your posture",
-            "The truth about protein supplements"
-        )
-        prompt_hook = "Create a hook about {topic} that makes health advice feel exciting and achievable. Challenge a common belief or promise a transformation. Under 15 words."
-        prompt_body = "Write an encouraging, science-backed script about {topic}. Include practical tips anyone can start today. Be motivating without being preachy. Target: 50 seconds."
-        prompt_cta = "Write a supportive CTA encouraging viewers to follow their health journey with you. Warm and encouraging. Under 10 words."
-    }
-    "travel" = @{
-        description = "Travel tips, destinations, and adventure content"
-        style = "slideshow"
-        hashtags = @("travel", "wanderlust", "adventure", "explore", "vacation", "traveltips", "bucketlist", "travelgram")
-        topics = @(
-            "Hidden gems in Europe most tourists miss",
-            "How to travel on a tight budget",
-            "Airport hacks that save hours",
-            "The best time to book flights",
-            "Solo travel tips for beginners",
-            "Countries where your dollar goes furthest",
-            "Packing mistakes everyone makes",
-            "How to get free hotel upgrades",
-            "Safest countries for travelers",
-            "Destinations that look like another planet"
-        )
-        prompt_hook = "Create a wanderlust-inducing hook about {topic} that makes viewers dream of traveling. Use vivid imagery or surprising facts. Under 15 words."
-        prompt_body = "Write an exciting, practical script about {topic}. Include insider tips that feel like secrets. Make viewers feel like they're getting valuable travel intel. Target: 50 seconds."
-        prompt_cta = "Write a CTA inviting viewers to follow for more travel inspiration and tips. Create FOMO. Under 10 words."
-    }
-    "comedy_stick_caption" = @{
-        description = "Funny observations and relatable humor with stick figures"
-        style = "stick_caption"
-        hashtags = @("funny", "comedy", "relatable", "humor", "lol", "memes", "jokes", "viral")
-        topics = @(
-            "When you realize it's only Tuesday",
-            "Introverts at parties be like",
-            "The five stages of waking up early",
-            "When your food arrives at a restaurant",
-            "Adulting expectations vs reality",
-            "That feeling when Friday finally hits",
-            "Me pretending to understand directions",
-            "When someone says 'we need to talk'",
-            "Online shopping vs what arrives",
-            "Monday morning vibes"
-        )
-        prompt_hook = "Write a relatable or funny opening line for a video about {topic}. Make it feel like an inside joke everyone gets. Conversational tone. Under 15 words."
-        prompt_body = "Write a funny script about {topic} with comedic timing. Include 2-3 relatable scenarios or observations. Use pauses and punchlines effectively. Keep it clean and universally funny. Target: 30 seconds."
-        prompt_cta = "Write a casual CTA that fits the comedy vibe. Something like asking to follow for more laughs. Under 10 words."
-    }
+else {
+    Write-Warning "Could not activate venv, using venv Python directly"
 }
 
-foreach ($niche in $niches.Keys) {
-    $nichePath = "$nichesPath\$niche"
-    
-    # Create directory
-    if (-not (Test-Path $nichePath)) {
-        New-Item -ItemType Directory -Path $nichePath -Force | Out-Null
+# Create directories
+Write-Step "Creating model directories..."
+$dirsToCreate = @($OllamaModelsDir, $LtxDir)
+foreach ($dir in $dirsToCreate) {
+    if (-not (Test-Path $dir)) {
+        New-Item -ItemType Directory -Path $dir -Force | Out-Null
     }
-    
-    # Write config.json
-    $config = @{
-        name = $niche
-        description = $niches[$niche].description
-        style = $niches[$niche].style
-        hashtags = $niches[$niche].hashtags
-        prompts = @{
-            hook = $niches[$niche].prompt_hook
-            body = $niches[$niche].prompt_body
-            cta = $niches[$niche].prompt_cta
+}
+Write-Success "Model directories created"
+
+# Setup Ollama models
+if (-not $SkipOllama) {
+    Write-Step "Setting up Ollama models..."
+
+    # Check if Ollama is available
+    try {
+        $ollamaVersion = & ollama --version 2>&1
+        Write-Success "Ollama found: $ollamaVersion"
+    }
+    catch {
+        Write-Error "Ollama not found in PATH. Please install from https://ollama.com/download"
+        Write-Host "You can download models manually or run this script after installing Ollama." -ForegroundColor Yellow
+        $SkipOllama = $true
+    }
+
+    if (-not $SkipOllama) {
+        # Set Ollama models directory (ensure it's absolute path)
+        $OllamaModelsDir = [System.IO.Path]::GetFullPath($OllamaModelsDir)
+        $env:OLLAMA_MODELS = $OllamaModelsDir
+        
+        # Set system-wide environment variable
+        Write-Host "Setting OLLAMA_MODELS to: $OllamaModelsDir" -ForegroundColor Yellow
+        try {
+            [Environment]::SetEnvironmentVariable("OLLAMA_MODELS", $OllamaModelsDir, "User")
+            Write-Success "OLLAMA_MODELS set system-wide"
+        }
+        catch {
+            Write-Warning "Could not set OLLAMA_MODELS system-wide. It will only be set for this session."
+        }
+
+        # Check if Ollama is running and restart if needed
+        Write-Host "Checking Ollama service..." -ForegroundColor Yellow
+        $ollamaRunning = $false
+        try {
+            $response = Invoke-WebRequest -Uri "http://localhost:11434/api/tags" -TimeoutSec 5 -ErrorAction Stop
+            Write-Success "Ollama is running"
+            $ollamaRunning = $true
+        }
+        catch {
+            Write-Host "Ollama not running, starting..." -ForegroundColor Yellow
+        }
+        
+        # If Ollama is already running, skip starting it
+        # NOTE: If you need to change OLLAMA_MODELS, stop Ollama first manually
+        if ($ollamaRunning) {
+            Write-Host "Ollama is already running. Using existing instance." -ForegroundColor Green
+            Write-Host "Downloads will work with the current Ollama setup." -ForegroundColor Gray
+            Write-Host "NOTE: If you need to change OLLAMA_MODELS, stop Ollama first." -ForegroundColor Yellow
+        }
+        
+        # Start Ollama with OLLAMA_MODELS environment variable only if not running
+        if (-not $ollamaRunning) {
+            Write-Host "Starting Ollama with OLLAMA_MODELS=$OllamaModelsDir..." -ForegroundColor Yellow
+            Write-Host "IMPORTANT: Models will be saved to: $OllamaModelsDir" -ForegroundColor Cyan
+            
+            # Ensure directory exists
+            if (-not (Test-Path $OllamaModelsDir)) {
+                New-Item -ItemType Directory -Path $OllamaModelsDir -Force | Out-Null
+                Write-Host "Created directory: $OllamaModelsDir" -ForegroundColor Green
+            }
+            
+            # Set OLLAMA_MODELS in current session
+            $env:OLLAMA_MODELS = $OllamaModelsDir
+            
+            # Create a batch file to start Ollama with environment variable
+            $ollamaStartBat = Join-Path $env:TEMP "start_ollama_$(Get-Random).bat"
+            @"
+@echo off
+set OLLAMA_MODELS=$OllamaModelsDir
+cd /d "$ProjectRoot"
+ollama serve
+"@ | Out-File -FilePath $ollamaStartBat -Encoding ASCII
+            
+            # Start Ollama using the batch file
+            Write-Host "Starting Ollama process..." -ForegroundColor Gray
+            Start-Process -FilePath "cmd.exe" -ArgumentList "/c", "start", "`"Ollama Service`"", "cmd", "/k", "`"$ollamaStartBat`"" -WindowStyle Hidden
+            
+            Start-Sleep -Seconds 8
+            
+            # Verify Ollama started
+            $retries = 0
+            $ollamaStarted = $false
+            while ($retries -lt 10) {
+                try {
+                    $response = Invoke-WebRequest -Uri "http://localhost:11434/api/tags" -TimeoutSec 3 -ErrorAction Stop
+                    Write-Success "Ollama started successfully"
+                    $ollamaStarted = $true
+                    break
+                }
+                catch {
+                    $retries++
+                    if ($retries -lt 10) {
+                        Write-Host "Waiting for Ollama to start... ($retries/10)" -ForegroundColor Yellow
+                        Start-Sleep -Seconds 2
+                    }
+                }
+            }
+            
+            if (-not $ollamaStarted) {
+                Write-Warning "Ollama did not start automatically. Please start it manually:"
+                Write-Host "  set OLLAMA_MODELS=$OllamaModelsDir" -ForegroundColor Yellow
+                Write-Host "  ollama serve" -ForegroundColor Yellow
+                Write-Host ""
+                Write-Host "Or try running this script again after starting Ollama." -ForegroundColor Yellow
+            }
+        }
+
+        # Verify Ollama is running before downloading
+        Write-Host "Verifying Ollama is accessible..." -ForegroundColor Yellow
+        $ollamaAccessible = $false
+        try {
+            $testResponse = Invoke-WebRequest -Uri "http://localhost:11434/api/tags" -TimeoutSec 5 -ErrorAction Stop
+            Write-Success "Ollama is running and accessible"
+            $ollamaAccessible = $true
+        }
+        catch {
+            Write-Warning "Ollama is not running or not accessible."
+            Write-Host "If Ollama is already running, downloads will still work." -ForegroundColor Yellow
+            Write-Host "If not, please start Ollama manually:" -ForegroundColor Yellow
+            Write-Host "  set OLLAMA_MODELS=$OllamaModelsDir" -ForegroundColor Cyan
+            Write-Host "  ollama serve" -ForegroundColor Cyan
+        }
+        
+        # Download models (even if Ollama check failed, try anyway)
+        Write-Host ""
+        Write-Host "Starting model downloads..." -ForegroundColor Yellow
+        Write-Host "Models will be saved to: $OllamaModelsDir" -ForegroundColor Cyan
+        Write-Host ""
+        
+        foreach ($model in $Models) {
+            Write-Host "========================================" -ForegroundColor Yellow
+            Write-Host "Downloading $model..." -ForegroundColor Yellow
+            Write-Host "========================================" -ForegroundColor Yellow
+            Write-Host "This may take several minutes depending on your connection..." -ForegroundColor Gray
+            Write-Host ""
+
+            $success = $false
+            for ($i = 1; $i -le $RetryCount; $i++) {
+                try {
+                    # Set OLLAMA_MODELS for the pull command
+                    $env:OLLAMA_MODELS = $OllamaModelsDir
+                    
+                    Write-Host "Attempt $i of $RetryCount..." -ForegroundColor Gray
+                    
+                    # Run ollama pull - let it show progress in console
+                    $process = Start-Process -FilePath "ollama" -ArgumentList "pull", $model -NoNewWindow -Wait -PassThru
+                    
+                    if ($process.ExitCode -eq 0) {
+                        Write-Success "$model downloaded successfully"
+                        $success = $true
+                        break
+                    }
+                    else {
+                        Write-Warning "Attempt $i failed for $model (exit code: $($process.ExitCode))"
+                        if ($i -lt $RetryCount) {
+                            Write-Host "This might be a network issue. Retrying in 5 seconds..." -ForegroundColor Yellow
+                        }
+                    }
+                }
+                catch {
+                    Write-Warning "Attempt $i failed for $model`: $($_.Exception.Message)"
+                }
+
+                if ($i -lt $RetryCount) {
+                    Start-Sleep -Seconds 5
+                }
+            }
+
+            if (-not $success) {
+                Write-Error "Failed to download $model after $RetryCount attempts"
+                Write-Host "You can try manually:" -ForegroundColor Yellow
+                Write-Host "  set OLLAMA_MODELS=$OllamaModelsDir" -ForegroundColor Cyan
+                Write-Host "  ollama pull $model" -ForegroundColor Cyan
+            }
+            Write-Host ""
+        }
+
+        # Verify models
+        Write-Host "Verifying installed models..." -ForegroundColor Yellow
+        try {
+            $modelsList = & ollama list
+            Write-Host "Installed models:" -ForegroundColor Gray
+            Write-Host $modelsList -ForegroundColor Gray
+        }
+        catch {
+            Write-Warning "Could not verify installed models"
+        }
+        
+        # Verify model files location
+        Write-Host ""
+        Write-Host "Verifying model file locations..." -ForegroundColor Yellow
+        Write-Host "OLLAMA_MODELS is set to: $OllamaModelsDir" -ForegroundColor Cyan
+        
+        if (Test-Path $OllamaModelsDir) {
+            $modelFiles = Get-ChildItem -Path $OllamaModelsDir -Recurse -ErrorAction SilentlyContinue
+            if ($modelFiles) {
+                Write-Success "Found $($modelFiles.Count) file(s) in: $OllamaModelsDir"
+                $totalSize = ($modelFiles | Measure-Object -Property Length -Sum).Sum / 1GB
+                Write-Host "Total size: $([math]::Round($totalSize, 2)) GB" -ForegroundColor Gray
+            }
+            else {
+                Write-Host "No model files found yet in: $OllamaModelsDir" -ForegroundColor Yellow
+                Write-Host "Models may be in default Ollama location, which is OK." -ForegroundColor Gray
+            }
+        }
+        else {
+            Write-Warning "Models directory does not exist: $OllamaModelsDir"
         }
     }
-    $config | ConvertTo-Json -Depth 10 | Set-Content "$nichePath\config.json"
-    
-    # Write topics.json
-    $topicsData = @{
-        topics = $niches[$niche].topics
-        used = @()
-    }
-    $topicsData | ConvertTo-Json | Set-Content "$nichePath\topics.json"
-    
-    Write-Host "Created template for: $niche" -ForegroundColor Green
 }
 
-# ============================================
-# Summary
-# ============================================
-Write-Host ""
-Write-Host "========================================" -ForegroundColor Cyan
-Write-Host "  Model Setup Complete!" -ForegroundColor Cyan
-Write-Host "========================================" -ForegroundColor Cyan
-Write-Host ""
-Write-Host "Models installed:" -ForegroundColor Yellow
-Write-Host "  - llama3.1:8b (main model for scripts)" -ForegroundColor White
-Write-Host "  - llama3.2:3b (fast model for topics)" -ForegroundColor White
-Write-Host ""
-Write-Host "Niche templates created:" -ForegroundColor Yellow
-foreach ($niche in $niches.Keys) {
-    Write-Host "  - $niche" -ForegroundColor White
+# Setup LTX models
+if (-not $SkipLtx) {
+    Write-Step "Setting up LTX models..."
+
+    # Check if huggingface_hub is available (use venv Python)
+    Write-Host "Checking for huggingface_hub..." -ForegroundColor Yellow
+    $hfAvailable = $false
+    try {
+        $importTest = & $VenvPython -c "import huggingface_hub; print('OK')" 2>&1
+        if ($LASTEXITCODE -eq 0 -and $importTest -match "OK") {
+            Write-Success "huggingface_hub is available"
+            $hfAvailable = $true
+        }
+        else {
+            Write-Host "huggingface_hub not found. Installing..." -ForegroundColor Yellow
+            & $VenvPip install huggingface-hub --upgrade 2>&1 | Out-Null
+            if ($LASTEXITCODE -eq 0) {
+                Write-Success "huggingface_hub installed"
+                $hfAvailable = $true
+            }
+            else {
+                throw "Failed to install huggingface_hub"
+            }
+        }
+    }
+    catch {
+        Write-Error "Failed to setup huggingface_hub: $($_.Exception.Message)"
+        $SkipLtx = $true
+    }
+
+    if (-not $SkipLtx) {
+        Write-Host "LTX-2 models for RTX 4060 (8GB VRAM):" -ForegroundColor Cyan
+        Write-Host "- Main model: ltx-2-19b-distilled-fp8.safetensors" -ForegroundColor White
+        Write-Host "- Upscaler: ltx-2-spatial-upscaler-x2-1.0.safetensors" -ForegroundColor White
+        Write-Host "- LoRA: ltx-2-19b-distilled-lora-384.safetensors" -ForegroundColor White
+        Write-Host ""
+
+        $modelsToDownload = @(
+            "Lightricks/ltx-2:ltx-2-19b-distilled-fp8.safetensors",
+            "Lightricks/ltx-2:ltx-2-spatial-upscaler-x2-1.0.safetensors",
+            "Lightricks/ltx-2:ltx-2-19b-distilled-lora-384.safetensors"
+        )
+
+        $downloadScript = Join-Path $PSScriptRoot "download_hf_model.py"
+
+        foreach ($modelSpec in $modelsToDownload) {
+            $repo, $filename = $modelSpec -split ":"
+            Write-Host "Downloading $filename from $repo..." -ForegroundColor Yellow
+
+            try {
+                $process = Start-Process -FilePath $VenvPython -ArgumentList $downloadScript, $repo, $filename, $LtxDir -NoNewWindow -Wait -PassThru
+                if ($process.ExitCode -eq 0) {
+                    Write-Success "$filename downloaded"
+                }
+                else {
+                    Write-Error "Failed to download $filename (exit code: $($process.ExitCode))"
+                }
+            }
+            catch {
+                Write-Error "Error downloading $filename`: $($_.Exception.Message)"
+            }
+        }
+
+    }
+
+    # Verify LTX models
+    $ltxFiles = Get-ChildItem -Path $LtxDir -Filter "*.safetensors" -ErrorAction SilentlyContinue
+    if ($ltxFiles) {
+        Write-Success "LTX models downloaded: $($ltxFiles.Count) files"
+        foreach ($file in $ltxFiles) {
+            Write-Host "  - $($file.Name) ($([math]::Round($file.Length / 1GB, 2)) GB)" -ForegroundColor Gray
+        }
+    }
+    else {
+        Write-Warning "No LTX model files found. Download may have failed."
+    }
 }
+
+
 Write-Host ""
-Write-Host "You can now run: .\run_all.ps1" -ForegroundColor Cyan
+Write-Host "========================================" -ForegroundColor Green
+Write-Host "  Model Setup Complete!" -ForegroundColor Green
+Write-Host "========================================" -ForegroundColor Green
+Write-Host ""
+
+if (-not $SkipOllama) {
+    Write-Host "Ollama models: $OllamaModelsDir" -ForegroundColor White
+}
+
+if (-not $SkipLtx) {
+    Write-Host "LTX models: $LtxDir" -ForegroundColor White
+}
+
+Write-Host ""
+Write-Host "Next steps:" -ForegroundColor Cyan
+Write-Host "- Run the application: .\ops\run_all.ps1" -ForegroundColor White
+Write-Host "- Configure niches in the web interface" -ForegroundColor White
+Write-Host ""
+
+Write-Host "Press any key to exit..." -ForegroundColor Gray
+$null = $Host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")

@@ -39,7 +39,7 @@
                               │
                               ▼
         ┌─────────────────────────────────────┐
-        │  LLM Provider (Ollama or MCP)        │
+        │  LLM Provider (Ollama / HF Router)   │
         │  → Generate Hook (15 words)          │
         │  → Generate Body (45-50s speech)     │
         │  → Generate CTA (10 words)           │
@@ -227,6 +227,9 @@
 - **Ollama** (default, local)
   - Models: `llama3.1:8b`, `llama3.2:3b`
   - Per-niche model selection
+- **HF Router** (cloud, OpenAI-compatible)
+  - Models: `moonshotai/Kimi-K2-Instruct` (writer), `DeepSeek-R1` (reasoner)
+  - Requires `HF_TOKEN`
 - **MCP** (external APIs)
   - OpenAI, Anthropic, etc.
   - Configured via `MCP_CONNECTORS_JSON`

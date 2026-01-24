@@ -14,6 +14,11 @@ export const createNiche = (data) => api.post('/niches/', data)
 export const updateNiche = (id, data) => api.patch(`/niches/${id}`, data)
 export const deleteNiche = (id) => api.delete(`/niches/${id}`)
 export const generateTopics = (nicheId, count = 5) => api.post(`/niches/${nicheId}/generate-topics?count=${count}`)
+export const triggerGeneration = (nicheIds = null) => api.post('/niches/trigger-generation', nicheIds ? { niche_ids: nicheIds } : {})
+export const automateNiche = (nicheId, options = {}) => api.post(`/niches/automate/${nicheId}`, options)
+export const bulkAutomateNiches = (nicheIds, options = {}) => api.post('/niches/bulk-automate', { niche_ids: nicheIds, ...options })
+export const smartScheduleNiche = (nicheId, platforms, scheduledDate = null) => api.post(`/niches/smart-schedule/${nicheId}`, { platforms, scheduled_date: scheduledDate })
+export const getPlatformStats = () => api.get('/niches/platforms/stats')
 
 // Accounts
 export const getAccounts = () => api.get('/accounts/')
@@ -25,7 +30,7 @@ export const verifyAccount = (id) => api.post(`/accounts/${id}/verify`)
 export const getJobs = (params) => api.get('/jobs/', { params })
 export const getTodaysJobs = () => api.get('/jobs/today')
 export const getJob = (id) => api.get(`/jobs/${id}`)
-export const createJob = (data, runImmediately = false) => 
+export const createJob = (data, runImmediately = false) =>
   api.post(`/jobs/?run_immediately=${runImmediately}`, data)
 export const runJob = (id) => api.post(`/jobs/${id}/run`)
 export const retryJob = (id) => api.post(`/jobs/${id}/retry`)
@@ -38,22 +43,25 @@ export const getVideos = (params) => api.get('/videos/', { params })
 export const getVideo = (id) => api.get(`/videos/${id}`)
 export const getVideoPublishes = (id) => api.get(`/videos/${id}/publishes`)
 export const getVideoMetadata = (id) => api.get(`/videos/${id}/metadata`)
-export const deleteVideo = (id, deleteFiles = false) => 
+export const deleteVideo = (id, deleteFiles = false) =>
   api.delete(`/videos/${id}?delete_files=${deleteFiles}`)
 
 // Generator
-export const generateTopic = (nicheId) => api.post(`/generator/topic?niche_id=${nicheId}`)
+export const generateTopic = (nicheId, source = 'auto') => api.post(`/generator/topic?niche_id=${nicheId}&source=${source}`)
 export const generateScript = (data) => api.post('/generator/script', data)
 export const generateVideo = (data) => api.post('/generator/video', data)
 export const getGenerationStatus = (jobId) => api.get(`/generator/status/${jobId}`)
-export const approveAndPublish = (jobId, platforms) => 
+
+// Models
+export const getLTXModels = () => api.get('/models/ltx')
+export const approveAndPublish = (jobId, platforms) =>
   api.post(`/generator/approve/${jobId}`, { platforms })
 export const getNicheAssets = (nicheId) => api.get(`/generator/assets/${nicheId}`)
 
 // Analytics
-export const getAnalyticsSummary = (nicheId = null) => 
+export const getAnalyticsSummary = (nicheId = null) =>
   api.get('/analytics/summary', { params: { niche_id: nicheId } })
-export const getAnalyticsTrends = (days = 30, nicheId = null) => 
+export const getAnalyticsTrends = (days = 30, nicheId = null) =>
   api.get('/analytics/trends', { params: { days, niche_id: nicheId } })
 export const getTopVideos = (limit = 10) => api.get(`/analytics/top-videos?limit=${limit}`)
 export const getUnderperformers = (limit = 10) => api.get(`/analytics/underperformers?limit=${limit}`)
@@ -82,9 +90,9 @@ export const testModel = (modelName) => api.post(`/models/test/${encodeURICompon
 export const getScripts = (params) => api.get('/scripts/', { params })
 export const getScriptsStats = () => api.get('/scripts/stats')
 export const getScriptByPath = (path) => api.get('/scripts/by-path', { params: { path } })
-export const downloadScript = (jobId, format) => api.get(`/scripts/download/${jobId}`, { 
-  params: { format }, 
-  responseType: 'blob' 
+export const downloadScript = (jobId, format) => api.get(`/scripts/download/${jobId}`, {
+  params: { format },
+  responseType: 'blob'
 })
 export const getScriptDates = () => api.get('/scripts/dates')
 export const getScriptNiches = () => api.get('/scripts/niches')
@@ -96,5 +104,32 @@ export const optimizeForPlatform = (videoId, platform) => api.post(`/export/opti
   params: { platform }
 })
 export const getExportDownloads = (videoId) => api.get(`/export/downloads/${videoId}`)
+
+// Scraper
+export const scrapeTopics = (data) => api.post('/scraper/scrape', data)
+export const scrapeNiche = (slug, force = false) => api.post(`/scraper/scrape/${slug}?force=${force}`)
+export const getNicheTopics = (slug, unusedOnly = false) => api.get(`/scraper/topics/${slug}?unused_only=${unusedOnly}`)
+export const getNicheFeeds = (slug) => api.get(`/scraper/feeds/${slug}`)
+export const updateNicheFeeds = (slug, feeds) => api.put(`/scraper/feeds/${slug}`, { feeds })
+export const seedNicheFeeds = (slug) => api.post(`/scraper/seed-feeds/${slug}`)
+export const pickUnusedTopic = (slug) => api.post(`/scraper/pick-topic/${slug}`)
+
+// Publisher
+export const getPublishingAccounts = (platform) => api.get('/publishing/accounts', { params: { platform } })
+export const addPublishingAccount = (data) => api.post('/publishing/accounts', data)
+export const updatePublishingAccount = (id, data) => api.patch(`/publishing/accounts/${id}`, data)
+export const deletePublishingAccount = (id) => api.delete(`/publishing/accounts/${id}`)
+export const openBrowserLogin = (id) => api.post(`/publishing/accounts/${id}/open-login`)
+export const verifyBrowserLogin = (id) => api.post(`/publishing/accounts/${id}/verify-login`)
+export const publishContent = (data) => api.post('/publishing/publish', data)
+export const confirmPublish = (jobId) => api.post(`/publishing/jobs/${jobId}/confirm`)
+export const cancelPublishJob = (jobId) => api.post(`/publishing/jobs/${jobId}/cancel`)
+export const getPublishJobs = (limit) => api.get('/publishing/jobs', { params: { limit } })
+
+// Cleanup
+export const getStorageStats = () => api.get('/cleanup/stats')
+export const runCleanup = (dryRun = true) => api.post(`/cleanup/run?dry_run=${dryRun}`)
+export const getRetentionConfig = () => api.get('/cleanup/config')
+export const updateRetentionConfig = (data) => api.put('/cleanup/config', data)
 
 export default api

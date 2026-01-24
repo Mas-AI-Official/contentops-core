@@ -241,6 +241,86 @@ async def delete_model(model_name: str):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@router.get("/ltx")
+async def list_ltx_models():
+    """List all available LTX-2 models."""
+    from pathlib import Path
+    from app.services.ltx_service import ltx_service
+    
+    if not ltx_service.enabled:
+        return {"models": [], "message": "LTX provider is not enabled"}
+    
+    model_path = ltx_service.model_path
+    if not model_path.exists():
+        return {"models": [], "message": f"Model directory not found: {model_path}"}
+    
+    models = []
+    model_files = list(model_path.glob("*.safetensors"))
+    
+    for model_file in model_files:
+        size_bytes = model_file.stat().st_size
+        size_gb = size_bytes / (1024 ** 3)
+        
+        # Categorize models
+        category = "other"
+        recommended = False
+        description = ""
+        
+        name_lower = model_file.name.lower()
+        
+        if "distilled-fp8" in name_lower:
+            category = "main"
+            recommended = True
+            description = "Distilled FP8 - Recommended for RTX 4060 8GB (fastest, lowest VRAM)"
+        elif "distilled" in name_lower and "fp8" not in name_lower:
+            category = "main"
+            description = "Distilled - Good balance of quality and speed"
+        elif "dev-fp8" in name_lower:
+            category = "main"
+            description = "Development FP8 - High quality with FP8 quantization"
+        elif "dev" in name_lower:
+            category = "main"
+            description = "Development - Highest quality (requires more VRAM)"
+        elif "upscaler" in name_lower:
+            category = "upscaler"
+            description = "Spatial upscaler - 2x resolution enhancement"
+        elif "temporal" in name_lower:
+            category = "upscaler"
+            description = "Temporal upscaler - Frame rate enhancement"
+        elif "lora" in name_lower or "LoRA" in model_file.name:
+            category = "lora"
+            if "ic-lora" in name_lower or "IC-LoRA" in model_file.name:
+                description = "Image Control LoRA - Control generation with images"
+            elif "camera" in name_lower:
+                description = "Camera Control LoRA - Control camera movements"
+            else:
+                description = "LoRA adapter - Fine-tuned model variant"
+        
+        models.append({
+            "name": model_file.name,
+            "path": str(model_file),
+            "size_gb": round(size_gb, 2),
+            "size": f"{size_gb:.2f} GB",
+            "category": category,
+            "recommended": recommended,
+            "description": description
+        })
+    
+    # Sort: recommended first, then by category, then by name
+    models.sort(key=lambda x: (
+        not x["recommended"],
+        {"main": 0, "upscaler": 1, "lora": 2, "other": 3}.get(x["category"], 4),
+        x["name"]
+    ))
+    
+    return {
+        "models": models,
+        "total": len(models),
+        "total_size_gb": round(sum(m["size_gb"] for m in models), 2),
+        "model_path": str(model_path)
+    }
+
+
 @router.get("/current")
 async def get_current_models():
     """Get currently configured models."""
@@ -281,4 +361,84 @@ async def test_model(model_name: str):
             "model": model_name,
             "status": "failed",
             "error": str(e)
+        }
+
+
+@router.post("/ltx/install")
+async def install_ltx_models(background_tasks: BackgroundTasks):
+    """Trigger LTX model installation."""
+    if "ltx_install" in _pull_progress and _pull_progress["ltx_install"].get("status") == "pulling":
+        return {"message": "LTX installation already in progress", "status": "in_progress"}
+    
+    _pull_progress["ltx_install"] = {
+        "status": "starting",
+        "progress": 0,
+        "message": "Initializing LTX download..."
+    }
+    
+    background_tasks.add_task(install_ltx_task)
+    return {"message": "Started LTX installation", "status": "started"}
+
+
+async def install_ltx_task():
+    """Background task to run LTX downloader script."""
+    import subprocess
+    import sys
+    from pathlib import Path
+    
+    try:
+        _pull_progress["ltx_install"] = {
+            "status": "pulling",
+            "progress": 0,
+            "message": "Starting download script..."
+        }
+        
+        script_path = settings.base_path / "download_ltx_simple.py"
+        if not script_path.exists():
+            raise FileNotFoundError(f"Download script not found at {script_path}")
+            
+        # Run the script and capture output
+        process = subprocess.Popen(
+            [sys.executable, str(script_path)],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            bufsize=1,
+            universal_newlines=True
+        )
+        
+        # Monitor output for progress
+        while True:
+            line = process.stdout.readline()
+            if not line and process.poll() is not None:
+                break
+            
+            if line:
+                line = line.strip()
+                if line:
+                    logger.info(f"LTX Install: {line}")
+                    
+                    # Update status based on output
+                    if "[DOWNLOAD]" in line:
+                        _pull_progress["ltx_install"]["message"] = f"Downloading: {line.split(']')[-1].strip()}"
+                    elif "[SUCCESS]" in line:
+                         _pull_progress["ltx_install"]["message"] = line
+                    elif "[ERROR]" in line:
+                         _pull_progress["ltx_install"]["message"] = f"Error: {line}"
+        
+        if process.returncode == 0:
+            _pull_progress["ltx_install"] = {
+                "status": "completed",
+                "progress": 100,
+                "message": "LTX models installed successfully!"
+            }
+        else:
+            raise RuntimeError(f"Installer exited with code {process.returncode}")
+            
+    except Exception as e:
+        logger.error(f"LTX installation failed: {e}")
+        _pull_progress["ltx_install"] = {
+            "status": "failed",
+            "progress": 0,
+            "message": str(e)
         }

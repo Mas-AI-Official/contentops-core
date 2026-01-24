@@ -18,6 +18,7 @@ from .video import (
 from .analytics import (
     VideoMetrics, DailyNicheStats, VideoScore, AnalyticsSummary
 )
+from .niche_target import NicheTarget
 
 __all__ = [
     # Niche
@@ -32,4 +33,6 @@ __all__ = [
     "Video", "VideoCreate", "VideoRead", "VideoPublish",
     # Analytics
     "VideoMetrics", "DailyNicheStats", "VideoScore", "AnalyticsSummary",
+    # NicheTarget
+    "NicheTarget",
 ]

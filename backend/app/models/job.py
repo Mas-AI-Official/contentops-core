@@ -3,7 +3,8 @@ Job model - content generation and publishing jobs.
 """
 from datetime import datetime
 from typing import Optional, List, Dict, Any
-from sqlmodel import SQLModel, Field, JSON, Column
+from sqlmodel import SQLModel, Field, Column
+from sqlalchemy import JSON
 from enum import Enum
 
 
@@ -34,10 +35,13 @@ class JobBase(SQLModel):
     """Base job model."""
     niche_id: int = Field(foreign_key="niches.id")
     job_type: JobType = Field(default=JobType.GENERATE_ONLY)
-    
+
     # Topic
     topic: str
     topic_source: str = Field(default="manual")  # "manual", "generated", "list"
+
+    # Model selection
+    video_model: Optional[str] = None  # LTX model filename for video generation
     
     # Generated content
     script_hook: Optional[str] = None
@@ -93,6 +97,7 @@ class JobCreate(SQLModel):
     publish_youtube: bool = False
     publish_instagram: bool = False
     publish_tiktok: bool = False
+    video_model: Optional[str] = None  # LTX model filename
 
 
 class JobUpdate(SQLModel):

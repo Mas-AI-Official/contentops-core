@@ -94,7 +94,7 @@ echo.
 
 REM ==== Start Backend ====
 echo Starting Backend API...
-start "Content Factory - Backend" cmd /k "cd /d %ROOT% && set OLLAMA_MODELS=%OLLAMA_MODELS% && set HF_HOME=%HF_HOME% && set TORCH_HOME=%TORCH_HOME% && set XDG_CACHE_HOME=%XDG_CACHE_HOME% && cd backend && %VENV_PYTHON% -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload"
+start "Content Factory - Backend" cmd /k "cd /d %ROOT% && call venv\Scripts\activate.bat && set OLLAMA_MODELS=%OLLAMA_MODELS% && set HF_HOME=%HF_HOME% && set TORCH_HOME=%TORCH_HOME% && set XDG_CACHE_HOME=%XDG_CACHE_HOME% && cd backend && python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload"
 
 REM ==== Start Frontend ====
 echo Starting Frontend...

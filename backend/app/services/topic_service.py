@@ -13,12 +13,43 @@ from loguru import logger
 from app.core.config import settings
 
 
+from app.services.scraper_service import scraper_service
+
 class TopicService:
     """Service for topic generation and selection."""
     
     def __init__(self):
         self.ollama_url = f"{settings.ollama_base_url}/api/generate"
     
+    async def generate_topic_from_rss(self, niche_slug: str) -> Optional[str]:
+        """Get an unused topic from the niche's scraped pool."""
+        topic_data = scraper_service.get_unused_topic(niche_slug)
+        if topic_data:
+            topic_id = topic_data.get("id")
+            title = topic_data.get("title")
+            
+            # Mark as used immediately to avoid duplicates
+            if topic_id:
+                scraper_service.mark_topic_used(niche_slug, topic_id)
+                
+            logger.info(f"Selected RSS topic for {niche_slug}: {title}")
+            return title
+            
+        # If no topics, try to scrape fresh ones
+        logger.info(f"No unused topics for {niche_slug}, triggering scrape...")
+        await scraper_service.scrape_niche(niche_slug)
+        
+        # Try again
+        topic_data = scraper_service.get_unused_topic(niche_slug)
+        if topic_data:
+            topic_id = topic_data.get("id")
+            title = topic_data.get("title")
+            if topic_id:
+                scraper_service.mark_topic_used(niche_slug, topic_id)
+            return title
+            
+        return None
+
     async def generate_topic(self, niche_name: str, niche_description: str) -> str:
         """Generate a new topic using LLM."""
         prompt = f"""You are a content strategist for viral short-form videos.
@@ -61,116 +92,6 @@ Return ONLY the topic title, nothing else. No quotes, no explanation.
             logger.error(f"Failed to generate topic: {e}")
             raise
 
-    def _feeds_file(self, niche_name: str) -> Path:
-        return settings.niches_path / niche_name / "feeds.json"
-
-    def _load_feeds(self, niche_name: str) -> List[str]:
-        feeds_file = self._feeds_file(niche_name)
-        if not feeds_file.exists():
-            return []
-        try:
-            with open(feeds_file, "r", encoding="utf-8") as f:
-                data = json.load(f)
-            return data.get("feeds", [])
-        except Exception as e:
-            logger.warning(f"Failed to load feeds for {niche_name}: {e}")
-            return []
-
-    async def _fetch_feed(self, url: str) -> List[Dict[str, str]]:
-        """Fetch and parse RSS/Atom feed items."""
-        try:
-            async with httpx.AsyncClient(timeout=20.0) as client:
-                response = await client.get(url)
-                response.raise_for_status()
-                content = response.text
-        except Exception as e:
-            logger.warning(f"Failed to fetch feed {url}: {e}")
-            return []
-
-        items = []
-        try:
-            root = ET.fromstring(content)
-            # RSS
-            for item in root.findall(".//item"):
-                title = item.findtext("title", default="").strip()
-                link = item.findtext("link", default="").strip()
-                if title:
-                    items.append({"title": title, "link": link})
-            # Atom
-            for entry in root.findall(".//{http://www.w3.org/2005/Atom}entry"):
-                title = entry.findtext("{http://www.w3.org/2005/Atom}title", default="").strip()
-                link_el = entry.find("{http://www.w3.org/2005/Atom}link")
-                link = link_el.attrib.get("href", "") if link_el is not None else ""
-                if title:
-                    items.append({"title": title, "link": link})
-        except Exception as e:
-            logger.warning(f"Failed to parse feed {url}: {e}")
-            return []
-
-        return items
-
-    async def get_news_topics(self, niche_name: str, max_items: int = 20) -> List[Dict[str, str]]:
-        """Get news topics from RSS/Atom feeds for a niche."""
-        feeds = self._load_feeds(niche_name)
-        if not feeds:
-            return []
-
-        results: List[Dict[str, str]] = []
-        for url in feeds:
-            results.extend(await self._fetch_feed(url))
-            if len(results) >= max_items:
-                break
-
-        # Deduplicate by title
-        seen = set()
-        unique = []
-        for item in results:
-            title = item.get("title", "")
-            if title and title not in seen:
-                seen.add(title)
-                unique.append(item)
-        return unique[:max_items]
-
-    async def pick_best_topic_from_news(
-        self,
-        niche_name: str,
-        niche_description: str,
-        news_items: List[Dict[str, str]]
-    ) -> Optional[str]:
-        """Use LLM to pick best topic from news headlines."""
-        if not news_items:
-            return None
-
-        headlines = [f"- {i['title']}" for i in news_items[:20]]
-        prompt = f"""You are a viral content strategist.
-
-Niche: {niche_name}
-Description: {niche_description}
-
-Pick ONE headline that would perform best as a short video.
-Return ONLY the headline text exactly as written.
-
-Headlines:
-{chr(10).join(headlines)}
-"""
-        try:
-            async with httpx.AsyncClient(timeout=60.0) as client:
-                response = await client.post(
-                    self.ollama_url,
-                    json={
-                        "model": settings.ollama_fast_model,
-                        "prompt": prompt,
-                        "stream": False
-                    }
-                )
-                response.raise_for_status()
-                data = response.json()
-                choice = data.get("response", "").strip().strip('"\'')
-                return choice if choice else None
-        except Exception as e:
-            logger.warning(f"Failed to rank news headlines: {e}")
-            return None
-    
     def select_from_list(self, niche_name: str) -> Optional[str]:
         """Select a topic from a pre-defined list for the niche."""
         topics_file = settings.niches_path / niche_name / "topics.json"
@@ -253,16 +174,17 @@ Example: ["Topic 1", "Topic 2", "Topic 3"]
 
     async def generate_topic_auto(self, niche_name: str, niche_description: str) -> str:
         """Auto-pick topic: RSS news > saved list > LLM."""
-        news = await self.get_news_topics(niche_name)
-        if news:
-            choice = await self.pick_best_topic_from_news(niche_name, niche_description, news)
-            if choice:
-                return choice
+        # 1. Try RSS/Scraped topics first
+        rss_topic = await self.generate_topic_from_rss(niche_name)
+        if rss_topic:
+            return rss_topic
 
+        # 2. Try manual list
         list_topic = self.select_from_list(niche_name)
         if list_topic:
             return list_topic
 
+        # 3. Fallback to LLM generation
         return await self.generate_topic(niche_name, niche_description)
 
 

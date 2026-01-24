@@ -3,7 +3,8 @@ Video model - output video library and metadata.
 """
 from datetime import datetime
 from typing import Optional, List, Dict, Any
-from sqlmodel import SQLModel, Field, JSON, Column
+from sqlmodel import SQLModel, Field, Column
+from sqlalchemy import JSON
 
 
 class VideoBase(SQLModel):
