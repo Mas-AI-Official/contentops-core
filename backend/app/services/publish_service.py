@@ -103,11 +103,15 @@ class YouTubePublisher:
         try:
             access_token = await self._get_access_token(credentials)
             
+            # Append hashtags to description
+            hashtags_str = " ".join([f"#{tag}" for tag in tags])
+            full_description = f"{description}\n\n{hashtags_str}"[:5000]
+
             # Prepare metadata
             metadata = {
                 "snippet": {
                     "title": title[:100],  # YouTube limit
-                    "description": description[:5000],
+                    "description": full_description,
                     "tags": tags[:500],
                     "categoryId": "22"  # People & Blogs
                 },

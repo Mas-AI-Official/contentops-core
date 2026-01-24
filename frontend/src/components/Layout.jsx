@@ -12,7 +12,10 @@ import {
   BarChart3,
   Settings,
   Factory,
-  Box
+  Box,
+  TrendingUp,
+  FlaskConical,
+  Brain
 } from 'lucide-react'
 
 const navigation = [
@@ -20,6 +23,9 @@ const navigation = [
   { name: 'Platforms', href: '/platforms', icon: Monitor },
   { name: 'Niches', href: '/niches', icon: Tags },
   { name: 'Accounts', href: '/accounts', icon: Users },
+  { name: 'Trends', href: '/trends', icon: TrendingUp },
+  { name: 'Prompt Lab', href: '/promptlab', icon: FlaskConical },
+  { name: 'Memory', href: '/memory', icon: Brain },
   { name: 'Generator', href: '/generator', icon: Wand2 },
   { name: 'Queue', href: '/queue', icon: ListTodo },
   { name: 'Library', href: '/library', icon: Film },

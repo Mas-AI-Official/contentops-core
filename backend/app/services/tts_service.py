@@ -124,7 +124,12 @@ class TTSService:
             ] + speaker_arg
             
             logger.info(f"Running XTTS CLI: {' '.join(cmd[:5])}...")
-            result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
+            
+            # Add environment variable to agree to TOS
+            env = os.environ.copy()
+            env["COQUI_TOS_AGREED"] = "1"
+            
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=300, env=env)
             
             if result.returncode != 0:
                 raise Exception(f"TTS CLI failed: {result.stderr}")

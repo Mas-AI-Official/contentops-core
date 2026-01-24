@@ -19,6 +19,10 @@ from .analytics import (
     VideoMetrics, DailyNicheStats, VideoScore, AnalyticsSummary
 )
 from .niche_target import NicheTarget
+from .trends import (
+    TrendCandidate, PatternAnalysis, PromptPack, Artifact, ComplianceEvent
+)
+from .memory import MemoryIndex
 
 __all__ = [
     # Niche
@@ -35,4 +39,8 @@ __all__ = [
     "VideoMetrics", "DailyNicheStats", "VideoScore", "AnalyticsSummary",
     # NicheTarget
     "NicheTarget",
+    # Trends
+    "TrendCandidate", "PatternAnalysis", "PromptPack", "Artifact", "ComplianceEvent",
+    # Memory
+    "MemoryIndex",
 ]

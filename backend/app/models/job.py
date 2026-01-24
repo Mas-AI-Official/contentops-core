@@ -29,6 +29,9 @@ class JobType(str, Enum):
     GENERATE_ONLY = "generate_only"
     GENERATE_AND_PUBLISH = "generate_and_publish"
     PUBLISH_EXISTING = "publish_existing"
+    TREND_SCAN = "trend_scan"
+    TREND_ANALYZE = "trend_analyze"
+    PROMPT_GENERATE = "prompt_generate"
 
 
 class JobBase(SQLModel):

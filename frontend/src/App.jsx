@@ -11,6 +11,9 @@ import Analytics from './pages/Analytics'
 import Settings from './pages/Settings'
 import Models from './pages/Models'
 import Scripts from './pages/Scripts'
+import Trends from './pages/Trends'
+import PromptLab from './pages/PromptLab'
+import Memory from './pages/Memory'
 
 function App() {
   return (
@@ -27,6 +30,9 @@ function App() {
         <Route path="/analytics" element={<Analytics />} />
         <Route path="/models" element={<Models />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/trends" element={<Trends />} />
+        <Route path="/promptlab" element={<PromptLab />} />
+        <Route path="/memory" element={<Memory />} />
       </Routes>
     </Layout>
   )
