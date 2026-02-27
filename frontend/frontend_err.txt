@@ -1,0 +1,13 @@
+12:00:31 AM [vite] http proxy error: /api/jobs/?limit=20
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1134:18)
+    at afterConnectMultiple (node:net:1715:7)
+12:00:34 AM [vite] http proxy error: /api/jobs/?limit=20
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1134:18)
+    at afterConnectMultiple (node:net:1715:7)
+12:00:37 AM [vite] http proxy error: /api/jobs/?limit=20
+AggregateError [ECONNREFUSED]: 
+    at internalConnectMultiple (node:net:1134:18)
+    at afterConnectMultiple (node:net:1715:7)
+^C

@@ -1,0 +1,29 @@
+{
+    "name": "Success Business Model",
+    "description": "Breakdown of successful business models",
+    "structure": {
+        "hook": "Hook (1 line): What they sell + How they make money + The unfair advantage.",
+        "body": "The turning point (one decision). One takeaway (viewer value).",
+        "cta": "Brand mention at start or end depending on hook type."
+    },
+    "platforms": {
+        "youtube_shorts": {
+            "duration": 60
+        },
+        "instagram_reels": {
+            "duration": 60
+        },
+        "tiktok": {
+            "duration": 60
+        },
+        "x": {
+            "format": "thread"
+        },
+        "linkedin": {
+            "format": "long_form"
+        },
+        "truth_social": {
+            "format": "short_text"
+        }
+    }
+}

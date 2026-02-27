@@ -1,0 +1,20 @@
+2026-02-26 17:51:11,071 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2026-02-26 17:51:11,088 INFO sqlalchemy.engine.Engine SELECT jobs.niche_id, jobs.job_type, jobs.topic, jobs.topic_source, jobs.video_model, jobs.voice_id, jobs.voice_name, jobs.script_hook, jobs.script_body, jobs.script_cta, jobs.full_script, jobs.visual_cues, jobs.audio_path, jobs.subtitle_path, jobs.video_path, jobs.thumbnail_path, jobs.status, jobs.progress_percent, jobs.error_message, jobs.scheduled_at, jobs.publish_youtube, jobs.publish_instagram, jobs.publish_tiktok, jobs.publish_results, jobs.duration_seconds, jobs.file_size_bytes, jobs.id, jobs.created_at, jobs.updated_at, jobs.started_at, jobs.completed_at 
+FROM jobs ORDER BY jobs.id DESC
+ LIMIT ? OFFSET ?
+2026-02-26 17:51:11,088 INFO sqlalchemy.engine.Engine [generated in 0.00029s] (1, 0)
+Job ID: 3, Status: JobStatus.FAILED, Progress: 0%
+Error: module 'app.services.studio_service' has no attribute 'generate_audio'
+Logs:
+2026-02-26 17:51:11,091 INFO sqlalchemy.engine.Engine SELECT job_logs.id, job_logs.job_id, job_logs.timestamp, job_logs.level, job_logs.message, job_logs.details 
+FROM job_logs 
+WHERE job_logs.job_id = ? ORDER BY job_logs.id
+2026-02-26 17:51:11,092 INFO sqlalchemy.engine.Engine [generated in 0.00020s] (3,)
+ [INFO] Job processing started
+ [INFO] Generating script...
+ [INFO] Target duration set to 60s based on platform constraints
+ [INFO] Job processing started
+ [INFO] Using existing script, skipping generation
+ [INFO] Entering Studio: Audio Generation (XTTS)...
+ [ERROR] Job failed: module 'app.services.studio_service' has no attribute 'generate_audio'
+2026-02-26 17:51:11,092 INFO sqlalchemy.engine.Engine ROLLBACK

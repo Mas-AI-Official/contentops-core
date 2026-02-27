@@ -1,0 +1,29 @@
+{
+    "name": "Founder Journey",
+    "description": "Story of a founder's struggle and success",
+    "structure": {
+        "hook": "Hook about the struggle or weird start.",
+        "body": "2-3 timeline beats. The 'one skill' that changed everything.",
+        "cta": "End with a lesson + CTA."
+    },
+    "platforms": {
+        "youtube_shorts": {
+            "duration": 60
+        },
+        "instagram_reels": {
+            "duration": 60
+        },
+        "tiktok": {
+            "duration": 60
+        },
+        "x": {
+            "format": "thread"
+        },
+        "linkedin": {
+            "format": "long_form"
+        },
+        "truth_social": {
+            "format": "short_text"
+        }
+    }
+}

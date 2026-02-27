@@ -1,0 +1,34 @@
+
+#19
+queued
+70%
+Daena GAO
+Created: 2/27/2026, 4:49:26 AM
+
+
+
+Type: generate_only
+Source: generator_preview
+Visual Cues
+Scene 1: Cinematic 8k close-up of a stressed financial executive in a dark modern office, neon red warning screens reflecting on their glasses.,
+Scene 2: Fast-cut montage of glowing red digital alarms and a close-up of a hand hovering nervously over a computer mouse.,
+Scene 3: Extreme close-up of a clean Web3 crypto wallet UI suddenly glitching and peeling back like a sticker.,
+Scene 4: Glowing malicious red hexadecimal code hiding underneath the UI, dissolving into digital dust.,
+Scene 5: The red glitch shatters into glass, revealing a sleek deep space blue dashboard with neon cyber-green accents.,
+Scene 6: A futuristic workflow timeline instantly renders on the screen, bringing order to the chaos.,
+Scene 7: A 3D glowing geometric honeycomb pattern forms, transitioning into a Fibonacci sunflower spiral.,
+Scene 8: Three bright AI nodes connect via laser data streams, rapidly analyzing a floating block of code.,
+Scene 9: A sleek 'Debate Panel' UI where AI nodes surround a red risk warning, neutralizing it into a green checkmark.,
+Scene 10: The data compiles into a crisp, glowing digital PDF audit report sliding onto the screen.,
+Scene 11: Close up of a human hand confidently pressing a physical 'Approve' button on a sleek hardware wallet.,
+Scene 12: Solid light cream background. A golden geometric wireframe hexagon containing a subtle Fibonacci star spiral forms. Below it, the text 'Daena GAO' in sleek dark grey typography, with the subtext 'GOVERNED AGENT OPERATIONS' and 'by Mas-AI'.
+Logs
+4:49:26 AM [INFO] Job processing started
+4:49:26 AM [INFO] Using existing script, skipping generation
+4:49:26 AM [INFO] Entering Studio: Audio Generation (XTTS)...
+4:52:56 AM [INFO] Audio generated: 68.0s
+4:52:56 AM [INFO] Generating subtitles...
+4:53:02 AM [INFO] Subtitles generated
+4:53:02 AM [INFO] Entering Studio: LTX Video Asset Generation...
+4:53:09 AM [ERROR] Failed to generate any video assets.
+4:53:09 AM [ERROR] Job failed: Video asset generation failed

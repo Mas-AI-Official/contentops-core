@@ -1,4 +1,4 @@
-﻿# Node / Next
+# Node / Next
 node_modules/
 .next/
 out/
@@ -28,6 +28,19 @@ cache/
 *.pt
 *.bin
 *.onnx
+
+# Env / secrets
+.env
+*.env
+!*.env.example
+
+# Embedded / generated
+backend/LTX-Video/
+backend/remotion/public/runtime/
+backend/*_err.txt
+backend/*_out.txt
+frontend/*_err.txt
+frontend/*_out.txt
 
 # OS
 .DS_Store

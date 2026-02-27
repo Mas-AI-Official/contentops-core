@@ -1,0 +1,15 @@
+{
+    "name": "contentops-core-autonomous",
+    "version": "1.0.0",
+    "description": "Continuous content generation loop for Content OPS",
+    "main": "auto_loop.js",
+    "type": "module",
+    "scripts": {
+        "start:autonomous": "node auto_loop.js"
+    },
+    "dependencies": {
+        "axios": "^1.6.5",
+        "dotenv": "^16.3.1",
+        "node-cron": "^3.0.3"
+    }
+}
