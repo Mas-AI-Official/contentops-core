@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
-import { RefreshCw, Play, RotateCcw, XCircle, Eye, ChevronDown, ChevronUp } from 'lucide-react'
+import { RefreshCw, Play, RotateCcw, XCircle, Eye, ChevronDown, ChevronUp, Trash2, Check, AlertCircle } from 'lucide-react'
 import Card from '../components/Card'
 import Button from '../components/Button'
 import StatusBadge from '../components/StatusBadge'
 import Modal from '../components/Modal'
-import { getJobs, runJob, retryJob, cancelJob, getJobLogs } from '../api'
+import VideoPlayer from '../components/VideoPlayer'
+import { getJobs, runJob, retryJob, cancelJob, approveJob, deleteJob, getJobLogs } from '../api'
 
 export default function Queue() {
   const [jobs, setJobs] = useState([])
@@ -14,6 +15,9 @@ export default function Queue() {
   const [jobLogs, setJobLogs] = useState({})
   const [showLogsModal, setShowLogsModal] = useState(false)
   const [selectedJobLogs, setSelectedJobLogs] = useState([])
+  const [selectedIds, setSelectedIds] = useState(new Set())
+  const [previewJobId, setPreviewJobId] = useState(null)
+  const [approving, setApproving] = useState(null)
 
   useEffect(() => {
     loadJobs()
@@ -75,6 +79,56 @@ export default function Queue() {
     }
   }
 
+  const handleDelete = async (jobId) => {
+    if (!confirm('Delete this job? This cannot be undone.')) return
+    try {
+      await deleteJob(jobId)
+      setSelectedIds(prev => { const s = new Set(prev); s.delete(jobId); return s })
+      loadJobs()
+    } catch (error) {
+      console.error('Failed to delete job:', error)
+    }
+  }
+
+  const handleDeleteSelected = async () => {
+    if (selectedIds.size === 0) return
+    if (!confirm(`Delete ${selectedIds.size} selected job(s)? This cannot be undone.`)) return
+    try {
+      await Promise.all([...selectedIds].map(id => deleteJob(id)))
+      setSelectedIds(new Set())
+      loadJobs()
+    } catch (error) {
+      console.error('Failed to delete jobs:', error)
+    }
+  }
+
+  const toggleSelect = (jobId) => {
+    setSelectedIds(prev => {
+      const next = new Set(prev)
+      if (next.has(jobId)) next.delete(jobId)
+      else next.add(jobId)
+      return next
+    })
+  }
+
+  const toggleSelectAll = () => {
+    if (selectedIds.size === filteredJobs.length) setSelectedIds(new Set())
+    else setSelectedIds(new Set(filteredJobs.map(j => j.id)))
+  }
+
+  const handleApprove = async (jobId, publish) => {
+    setApproving(jobId)
+    try {
+      await approveJob(jobId, publish)
+      setPreviewJobId(null)
+      loadJobs()
+    } catch (error) {
+      console.error('Failed to approve:', error)
+    } finally {
+      setApproving(null)
+    }
+  }
+
   const toggleExpand = async (jobId) => {
     if (expandedJob === jobId) {
       setExpandedJob(null)
@@ -103,9 +157,26 @@ export default function Queue() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-4">
         <h1 className="text-2xl font-bold text-gray-900">Job Queue</h1>
-        <div className="flex gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
+          {filteredJobs.length > 0 && (
+            <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={selectedIds.size === filteredJobs.length && filteredJobs.length > 0}
+                onChange={toggleSelectAll}
+                className="rounded border-gray-300"
+              />
+              Select all
+            </label>
+          )}
+          {selectedIds.size > 0 && (
+            <Button variant="danger" size="sm" onClick={handleDeleteSelected}>
+              <Trash2 className="h-4 w-4 mr-1" />
+              Delete selected ({selectedIds.size})
+            </Button>
+          )}
           {pendingReviewCount > 0 && (
             <Button onClick={() => setFilter('ready_for_review')} className="bg-amber-500 hover:bg-amber-600 border-amber-600">
               <Eye className="h-4 w-4 mr-2" />
@@ -162,8 +233,17 @@ export default function Queue() {
           filteredJobs.map(job => (
             <Card key={job.id} className="!p-0">
               <div className="p-4">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="flex items-start gap-3 flex-1 min-w-0">
+                    <label className="flex items-center pt-0.5 cursor-pointer shrink-0">
+                      <input
+                        type="checkbox"
+                        checked={selectedIds.has(job.id)}
+                        onChange={() => toggleSelect(job.id)}
+                        className="rounded border-gray-300"
+                      />
+                    </label>
+                    <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-3 mb-2">
                       <span className="text-sm font-medium text-gray-500">#{job.id}</span>
                       <StatusBadge status={job.status} />
@@ -172,12 +252,16 @@ export default function Queue() {
                       )}
                     </div>
                     <h3 className="font-medium text-gray-900">{job.topic}</h3>
+                    {job.caption && (
+                      <p className="text-sm text-gray-600 mt-1 line-clamp-2">{job.caption}</p>
+                    )}
                     <p className="text-sm text-gray-500 mt-1">
                       Created: {new Date(job.created_at).toLocaleString()}
                     </p>
+                    </div>
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 shrink-0">
                     {job.status === 'pending' && (
                       <>
                         <Button size="sm" onClick={() => handleRun(job.id)}>
@@ -196,11 +280,23 @@ export default function Queue() {
                       </Button>
                     )}
                     {job.status === 'ready_for_review' && (
-                      <Button size="sm" onClick={() => window.location.href = `/library?video=${job.id}`}>
-                        <Eye className="h-4 w-4" />
-                        Preview
-                      </Button>
+                      <>
+                        <Button size="sm" variant="secondary" onClick={() => setPreviewJobId(job.id)}>
+                          <Eye className="h-4 w-4" />
+                          View
+                        </Button>
+                        <Button size="sm" onClick={() => handleApprove(job.id, true)} loading={approving === job.id}>
+                          <Check className="h-4 w-4" />
+                          Publish
+                        </Button>
+                        <Button size="sm" variant="secondary" onClick={() => handleApprove(job.id, false)} loading={approving === job.id}>
+                          Approve only
+                        </Button>
+                      </>
                     )}
+                    <Button size="sm" variant="secondary" onClick={() => handleDelete(job.id)} title="Delete job">
+                      <Trash2 className="h-4 w-4 text-red-600" />
+                    </Button>
                     <button
                       onClick={() => toggleExpand(job.id)}
                       className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
@@ -309,6 +405,34 @@ export default function Queue() {
           ))
         )}
       </div>
+
+      {/* Preview modal: view video and approve / approve only */}
+      <Modal
+        isOpen={!!previewJobId}
+        onClose={() => setPreviewJobId(null)}
+        title="Review video"
+        size="lg"
+      >
+        {previewJobId && (
+          <div className="space-y-4">
+            <p className="text-sm text-gray-600">Job #{previewJobId} – watch then approve to publish or approve only.</p>
+            <VideoPlayer
+              src={`/api/generator/preview/${previewJobId}`}
+              className="w-full max-w-md mx-auto rounded-lg overflow-hidden bg-black"
+            />
+            <div className="flex flex-wrap gap-2 justify-end">
+              <Button variant="secondary" onClick={() => setPreviewJobId(null)}>Close</Button>
+              <Button variant="secondary" onClick={() => handleApprove(previewJobId, false)} loading={approving === previewJobId}>
+                Approve only (don’t publish)
+              </Button>
+              <Button onClick={() => handleApprove(previewJobId, true)} loading={approving === previewJobId}>
+                <Check className="h-4 w-4 mr-1" />
+                Approve & Publish
+              </Button>
+            </div>
+          </div>
+        )}
+      </Modal>
     </div>
   )
 }

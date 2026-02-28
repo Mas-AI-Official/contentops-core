@@ -23,6 +23,13 @@ from .trends import (
     TrendCandidate, PatternAnalysis, PromptPack, Artifact, ComplianceEvent
 )
 from .memory import MemoryIndex
+from .voice import (
+    VoiceProfile, VoiceProfileBase,
+    NicheVoiceRule, NicheVoiceRuleBase,
+    AccountVoiceRule, AccountVoiceRuleBase,
+    SceneSpeakerMap, SceneSpeakerMapBase,
+    VoiceStyle,
+)
 
 __all__ = [
     # Niche
@@ -43,4 +50,10 @@ __all__ = [
     "TrendCandidate", "PatternAnalysis", "PromptPack", "Artifact", "ComplianceEvent",
     # Memory
     "MemoryIndex",
+    # Voice
+    "VoiceProfile", "VoiceProfileBase",
+    "NicheVoiceRule", "NicheVoiceRuleBase",
+    "AccountVoiceRule", "AccountVoiceRuleBase",
+    "SceneSpeakerMap", "SceneSpeakerMapBase",
+    "VoiceStyle",
 ]

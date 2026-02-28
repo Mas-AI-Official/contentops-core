@@ -480,6 +480,8 @@ async def lifespan(app: FastAPI):
         settings.assets_path / "logos",
         settings.assets_path / "fonts",
         settings.assets_path / "stock",
+        settings.models_path / "xtts" / "voices",
+        settings.assets_path / "voices",
     ]:
         path.mkdir(parents=True, exist_ok=True)
     logger.info("Directory structure verified")

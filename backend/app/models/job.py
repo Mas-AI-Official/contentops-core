@@ -45,13 +45,20 @@ class JobBase(SQLModel):
 
     # Model selection
     video_model: Optional[str] = None  # LTX model filename for video generation
-    
+
+    # Platform format for LTX (aspect ratio → dimensions)
+    platform_format: Optional[str] = None  # "9:16" | "16:9" | "1:1"
+    character_description: Optional[str] = None  # e.g. "Daena, futuristic AI agent..."
+    start_frame_path: Optional[str] = None  # relative path to job dir
+    end_frame_path: Optional[str] = None
+
     # Generated content
     script_hook: Optional[str] = None
     script_body: Optional[str] = None
     script_cta: Optional[str] = None
     full_script: Optional[str] = None
-    
+    visual_cues: Optional[str] = None  # JSON array of scene prompts for LTX
+
     # File paths (relative to data folder)
     audio_path: Optional[str] = None
     subtitle_path: Optional[str] = None
@@ -77,6 +84,15 @@ class JobBase(SQLModel):
     # Metadata
     duration_seconds: Optional[float] = None
     file_size_bytes: Optional[int] = None
+
+    # Voice override (XTTS speaker wav path or ElevenLabs voice id); when set, used for TTS instead of niche default
+    voice_id: Optional[str] = None
+    voice_name: Optional[str] = None
+
+    # Target duration in seconds (overrides niche max when set); e.g. 20, 60, 90
+    target_duration_seconds: Optional[int] = None
+    # Short caption (bullet-style) for library/social; generated from content
+    caption: Optional[str] = None
 
 
 class Job(JobBase, table=True):

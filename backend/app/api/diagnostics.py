@@ -18,7 +18,7 @@ router = APIRouter(prefix="/diagnostics", tags=["diagnostics"])
 class PipelineIssue(BaseModel):
     name: str
     status: str  # "ok", "warning", "fail"
-    severity: str  # "blocking", "warning", "info"
+    severity: str  # "blocking", "warning", "optional", "info"
     message: str
     fix_steps: str
     links: List[str] = []
@@ -197,17 +197,17 @@ async def check_pipeline_health(refresh: bool = False):
         "last_checked": datetime.now().isoformat()
     })
 
-    # 5. XTTS Server (Required for TTS if using local)
-    # Only blocking if TTS provider is set to XTTS globally or in any niche
-    # For now, we treat it as blocking if configured
+    # 5. XTTS Server — blocking only when TTS provider is XTTS
+    xtts_active = (settings.tts_provider or "xtts").lower() == "xtts"
     xtts_status = "warning"
     xtts_msg = "Not configured/available"
-    xtts_severity = "blocking"
-    
-    if settings.xtts_server_url:
+    xtts_severity = "blocking" if xtts_active else "optional"
+    if not xtts_active:
+        xtts_msg = "Inactive optional (TTS provider is not XTTS)"
+        xtts_status = "ok"
+    elif settings.xtts_server_url:
         try:
             async with httpx.AsyncClient(timeout=2.0) as client:
-                # XTTS server root returns 200 OK
                 resp = await client.get(f"{settings.xtts_server_url}/")
                 if resp.status_code == 200:
                     xtts_status = "ok"
@@ -218,13 +218,16 @@ async def check_pipeline_health(refresh: bool = False):
         except Exception:
             xtts_status = "fail"
             xtts_msg = "Could not reach XTTS Server"
+    elif getattr(settings, "xtts_default_speaker_wav", None):
+        xtts_status = "ok"
+        xtts_msg = "CLI fallback available (speaker wav configured)"
     
     checks.append({
         "name": "xtts_server",
         "status": xtts_status,
         "severity": xtts_severity,
         "message": xtts_msg,
-        "fix_steps": "Run XTTS server separately or use ElevenLabs.",
+        "fix_steps": "Run XTTS server or set XTTS_SPEAKER_WAV / daena.wav; or use ElevenLabs.",
         "last_checked": datetime.now().isoformat()
     })
 
@@ -241,45 +244,116 @@ async def check_pipeline_health(refresh: bool = False):
         "last_checked": datetime.now().isoformat()
     })
 
-    # 7. ElevenLabs (Optional)
-    el_status = "ok" if settings.elevenlabs_api_key else "warning"
+    # 7. ElevenLabs — optional fallback when TTS is XTTS
+    tts_active = (settings.tts_provider or "xtts").lower()
+    el_configured = bool(settings.elevenlabs_api_key)
+    el_active = tts_active == "elevenlabs"
+    el_severity = "blocking" if el_active else "optional"
+    el_status = "ok" if el_configured else ("warning" if el_active else "ok")
+    el_msg = "API Key configured" if el_configured else "API Key missing"
+    if not el_active and el_configured:
+        el_msg = "Configured optional fallback (XTTS is primary)"
+    elif not el_active:
+        el_msg = "Optional fallback only (XTTS is primary)"
     checks.append({
         "name": "elevenlabs",
         "status": el_status,
-        "severity": "warning",
-        "message": "API Key configured" if el_status == "ok" else "API Key missing",
-        "fix_steps": "Add ELEVENLABS_API_KEY to .env if you want to use cloud TTS.",
+        "severity": el_severity,
+        "message": el_msg,
+        "fix_steps": "Add ELEVENLABS_API_KEY to .env if you want cloud TTS fallback.",
         "last_checked": datetime.now().isoformat()
     })
 
-    # 8. HF Router (Optional)
-    hf_status = "warning"
+    # 8. HF Router — optional when LLM is Ollama
+    llm_active = (settings.llm_provider or "ollama").lower()
+    hf_configured = bool(settings.hf_router_api_key or (settings.get_env_value("HF_TOKEN") if hasattr(settings, "get_env_value") else None))
+    hf_active = llm_active == "hf_router"
+    hf_severity = "blocking" if hf_active else "optional"
+    hf_status = "ok" if hf_configured else ("warning" if hf_active else "ok")
+    hf_msg = "Not configured"
+    if hf_active and hf_configured:
+        hf_msg = "Active (LLM provider)"
+    elif hf_configured:
+        hf_msg = "Configured optional fallback (Ollama is active)"
+    elif not hf_active:
+        hf_msg = "Inactive optional (LLM provider is Ollama)"
+    try:
+        if hf_active and settings.hf_router_base_url:
+            async with httpx.AsyncClient(timeout=5.0) as client:
+                r = await client.get(f"{settings.hf_router_base_url.rstrip('/')}/models")
+                if r.status_code == 200:
+                    hf_status = "ok"
+                    hf_msg = "Active (LLM provider)"
+    except Exception:
+        if hf_active:
+            hf_status = "fail"
+            hf_msg = "Could not reach HF Router"
     checks.append({
         "name": "hf_router",
-        "status": "warning", # Assuming not configured by default
-        "severity": "warning",
-        "message": "Not configured",
-        "fix_steps": "Configure HF Router if you need API routing.",
+        "status": hf_status,
+        "severity": hf_severity,
+        "message": hf_msg,
+        "fix_steps": "Set LLM_PROVIDER=hf_router and HF_ROUTER_* in .env if you need API routing.",
         "last_checked": datetime.now().isoformat()
     })
 
-    # 9. LTX Video (Optional)
+    # 9. LTX Video — optional when VIDEO_GEN_PROVIDER is not ltx; when active verify model/API
+    video_provider = (getattr(settings, "video_gen_provider", None) or "ffmpeg").lower()
+    ltx_active = video_provider == "ltx"
+    ltx_severity = "blocking" if ltx_active else "optional"
     ltx_status = "warning"
+    ltx_msg = "Not configured"
+    ltx_fix = "Set VIDEO_GEN_PROVIDER=ltx, LTX_MODEL_PATH (or MODELS_ROOT/ltx); optionally LTX_UPSCALER_PATH, LTX_LORA_PATH, LTX_API_URL."
+    if not ltx_active:
+        ltx_status = "ok"
+        ltx_msg = "Installed but inactive (VIDEO_GEN_PROVIDER is not ltx)"
+    else:
+        ltx_model_path = getattr(settings, "ltx_model_path", None) or os.environ.get("LTX_MODEL_PATH")
+        ltx_api_url = getattr(settings, "ltx_api_url", None) or os.environ.get("LTX_API_URL")
+        model_ok = ltx_model_path and Path(ltx_model_path).exists()
+        upscaler_path = getattr(settings, "ltx_upscaler_path", None) or os.environ.get("LTX_UPSCALER_PATH")
+        lora_path = getattr(settings, "ltx_lora_path", None) or os.environ.get("LTX_LORA_PATH")
+        upscaler_ok = not upscaler_path or Path(upscaler_path).exists()
+        lora_ok = not lora_path or Path(lora_path).exists()
+        api_ok = True
+        if ltx_api_url:
+            try:
+                async with httpx.AsyncClient(timeout=5.0) as client:
+                    r = await client.get(ltx_api_url.rstrip("/") + "/")
+                    api_ok = r.status_code == 200
+            except Exception:
+                api_ok = False
+        if model_ok and upscaler_ok and lora_ok and api_ok:
+            ltx_status = "ok"
+            parts = ["LTX model path OK"]
+            if upscaler_path: parts.append("upscaler OK")
+            if lora_path: parts.append("LoRA OK")
+            if ltx_api_url: parts.append("API reachable")
+            ltx_msg = "; ".join(parts)
+        else:
+            missing = []
+            if not model_ok: missing.append("LTX_MODEL_PATH")
+            if not upscaler_ok: missing.append("LTX_UPSCALER_PATH")
+            if not lora_ok: missing.append("LTX_LORA_PATH")
+            if ltx_api_url and not api_ok: missing.append("LTX_API_URL")
+            ltx_msg = "Missing or invalid: " + ", ".join(missing)
     checks.append({
         "name": "ltx_video",
-        "status": "warning",
-        "severity": "warning",
-        "message": "Not configured",
-        "fix_steps": "Configure LTX if you want AI video generation.",
+        "status": ltx_status,
+        "severity": ltx_severity,
+        "message": ltx_msg,
+        "fix_steps": ltx_fix,
         "last_checked": datetime.now().isoformat()
     })
 
-    # 10. MCP (Optional)
+    # 10. MCP — optional, disabled by design
+    mcp_status = "ok" if not settings.mcp_enabled else "warning"
+    mcp_msg = "Disabled by design" if not settings.mcp_enabled else "Enabled"
     checks.append({
         "name": "mcp",
-        "status": "warning",
-        "severity": "warning",
-        "message": "Disabled",
+        "status": mcp_status,
+        "severity": "optional",
+        "message": mcp_msg,
         "fix_steps": "Enable MCP in settings if needed.",
         "last_checked": datetime.now().isoformat()
     })
@@ -318,9 +392,9 @@ async def check_pipeline_health(refresh: bool = False):
         "last_checked": datetime.now().isoformat()
     })
 
-    # Calculate stats
+    # Calculate stats (optional severity does not affect score)
     blocking_fails = [c for c in checks if c["severity"] == "blocking" and c["status"] == "fail"]
-    warning_fails = [c for c in checks if c["severity"] == "warning" and c["status"] != "ok"]
+    warning_fails = [c for c in checks if c["severity"] == "warning" and c["status"] not in ("ok",)]
     
     health_score = 100
     if blocking_fails:

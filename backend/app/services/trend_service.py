@@ -10,46 +10,43 @@ from app.models.niche import Niche
 
 class TrendService:
     async def scan_trends(
-        self, 
+        self,
         session: Session,
-        niche_id: int, 
-        platforms: List[str], 
-        region: str = "US", 
+        niche_id: int,
+        platforms: List[str],
+        region: str = "US",
         limit: int = 20
     ) -> List[TrendCandidate]:
         """Scan for trends and save to DB."""
-        niche = session.get(Niche, niche_id)
+        niche = await session.get(Niche, niche_id)
         if not niche:
             raise ValueError("Niche not found")
-            
-        # Call scraper service
+
         candidates = await trend_scraper_service.scan_niche(
-            niche=niche.slug, # Use slug or keywords
+            niche=niche.slug,
             platforms=platforms,
             region=region,
             limit=limit
         )
-        
+
         saved_candidates = []
         for cand in candidates:
             cand.niche_id = niche_id
-            # Check for duplicates (by url or source_id)
-            existing = session.exec(
+            r = await session.execute(
                 select(TrendCandidate).where(
-                    (TrendCandidate.source_id == cand.source_id) & 
+                    (TrendCandidate.source_id == cand.source_id) &
                     (TrendCandidate.platform == cand.platform)
                 )
-            ).first()
-            
+            )
+            existing = r.scalars().first()
             if not existing:
                 session.add(cand)
                 saved_candidates.append(cand)
             else:
-                # Update metrics?
                 existing.metrics = cand.metrics
                 session.add(existing)
                 saved_candidates.append(existing)
-        
+
         await session.commit()
         return saved_candidates
 
@@ -102,18 +99,15 @@ class TrendService:
         """Analyze candidates using LLM."""
         analyses = []
         for cid in candidate_ids:
-            cand = session.get(TrendCandidate, cid)
+            cand = await session.get(TrendCandidate, cid)
             if not cand:
                 continue
-                
-            # Check if already analyzed
-            if cand.analysis:
-                analyses.append(cand.analysis)
+            r = await session.execute(select(PatternAnalysis).where(PatternAnalysis.candidate_id == cid))
+            existing_analysis = r.scalars().first()
+            if existing_analysis:
+                analyses.append(existing_analysis)
                 continue
-                
-            # Perform analysis
             result = await self._analyze_with_llm(cand.caption or "")
-            
             analysis = PatternAnalysis(
                 candidate_id=cid,
                 hook_type=result.get("hook_type", "Unknown"),
@@ -124,7 +118,6 @@ class TrendService:
             )
             session.add(analysis)
             analyses.append(analysis)
-            
         await session.commit()
         return analyses
 

@@ -1,96 +1,247 @@
-import React, { useState, useEffect } from 'react'
-import { api } from '../api'
+import { useState, useEffect } from 'react'
+import { useSearchParams, useNavigate } from 'react-router-dom'
+import { FlaskConical, Copy, Check, ArrowRight, Sparkles } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import Card from '../components/Card'
+import Button from '../components/Button'
+import { getNiches, getAccounts, getTrendCandidates, generatePromptPack } from '../api'
 
 export default function PromptLab() {
-    const [niches, setNiches] = useState([])
-    const [accounts, setAccounts] = useState([])
-    const [selectedNiche, setSelectedNiche] = useState('')
-    const [selectedAccount, setSelectedAccount] = useState('')
-    const [promptPack, setPromptPack] = useState(null)
-    const [loading, setLoading] = useState(false)
+  const [searchParams] = useSearchParams()
+  const nicheIdFromUrl = searchParams.get('niche_id')
+  const candidateIdFromUrl = searchParams.get('candidate_id')
 
-    useEffect(() => {
-        api.get('/niches').then(res => setNiches(res.data))
-        api.get('/accounts').then(res => setAccounts(res.data))
-    }, [])
+  const [niches, setNiches] = useState([])
+  const [accounts, setAccounts] = useState([])
+  const [candidates, setCandidates] = useState([])
+  const [selectedNicheId, setSelectedNicheId] = useState('')
+  const [selectedAccountId, setSelectedAccountId] = useState('')
+  const [selectedCandidateId, setSelectedCandidateId] = useState('')
+  const [promptPack, setPromptPack] = useState(null)
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(null)
+  const [copiedVariant, setCopiedVariant] = useState(null)
 
-    const handleGenerate = async () => {
-        if (!selectedNiche || !selectedAccount) return
-        setLoading(true)
-        try {
-            const res = await api.post('/promptpack/generate', {
-                niche_id: selectedNiche,
-                account_id: selectedAccount
-            })
-            setPromptPack(res.data)
-        } catch (err) {
-            console.error(err)
-        }
-        setLoading(false)
+  useEffect(() => {
+    loadNiches()
+    loadAccounts()
+  }, [])
+
+  useEffect(() => {
+    if (nicheIdFromUrl && niches.length > 0) {
+      setSelectedNicheId(nicheIdFromUrl)
+    } else if (niches.length > 0 && !selectedNicheId) {
+      setSelectedNicheId(String(niches[0].id))
     }
+  }, [nicheIdFromUrl, niches])
 
-    return (
-        <div className="p-6">
-            <h1 className="text-2xl font-bold mb-6">Prompt Lab</h1>
+  useEffect(() => {
+    if (candidateIdFromUrl) setSelectedCandidateId(candidateIdFromUrl)
+  }, [candidateIdFromUrl])
 
-            <div className="flex gap-4 mb-8">
-                <select
-                    className="bg-gray-800 p-2 rounded text-white border border-gray-700"
-                    value={selectedNiche}
-                    onChange={e => setSelectedNiche(e.target.value)}
-                >
-                    <option value="">Select Niche</option>
-                    {niches.map(n => (
-                        <option key={n.id} value={n.id}>{n.name}</option>
-                    ))}
-                </select>
+  useEffect(() => {
+    if (selectedNicheId) loadCandidates()
+    else setCandidates([])
+  }, [selectedNicheId])
 
-                <select
-                    className="bg-gray-800 p-2 rounded text-white border border-gray-700"
-                    value={selectedAccount}
-                    onChange={e => setSelectedAccount(e.target.value)}
-                >
-                    <option value="">Select Account</option>
-                    {accounts.map(a => (
-                        <option key={a.id} value={a.id}>{a.platform} - {a.username}</option>
-                    ))}
-                </select>
+  const loadNiches = async () => {
+    try {
+      const res = await getNiches()
+      setNiches(res.data || [])
+    } catch (err) {
+      console.error(err)
+      setError('Failed to load niches')
+    }
+  }
 
-                <button
-                    className="bg-purple-600 px-4 py-2 rounded text-white hover:bg-purple-700 disabled:opacity-50"
-                    onClick={handleGenerate}
-                    disabled={loading || !selectedNiche || !selectedAccount}
-                >
-                    {loading ? 'Generating...' : 'Generate Prompt Pack'}
-                </button>
-            </div>
+  const loadAccounts = async () => {
+    try {
+      const res = await getAccounts()
+      setAccounts(res.data || [])
+    } catch (err) {
+      console.error(err)
+    }
+  }
 
-            {promptPack && (
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    {['A', 'B', 'C'].map(variant => (
-                        <div key={variant} className="bg-gray-800 p-6 rounded-lg border border-gray-700">
-                            <h3 className="text-xl font-bold mb-4 text-purple-400">Variant {variant}</h3>
-                            <div className="space-y-4">
-                                <div>
-                                    <label className="text-xs text-gray-500 uppercase">Hook</label>
-                                    <p className="text-white">{promptPack.variants[variant].hook}</p>
-                                </div>
-                                <div>
-                                    <label className="text-xs text-gray-500 uppercase">Script</label>
-                                    <p className="text-gray-300 text-sm whitespace-pre-wrap">{promptPack.variants[variant].script}</p>
-                                </div>
-                                <div>
-                                    <label className="text-xs text-gray-500 uppercase">Reasoning</label>
-                                    <p className="text-gray-400 text-xs italic">{promptPack.variants[variant].reasoning}</p>
-                                </div>
-                                <button className="w-full bg-gray-700 hover:bg-gray-600 py-2 rounded text-sm mt-4">
-                                    Use This Variant
-                                </button>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            )}
+  const loadCandidates = async () => {
+    if (!selectedNicheId) return
+    try {
+      const res = await getTrendCandidates(parseInt(selectedNicheId, 10))
+      setCandidates(Array.isArray(res.data) ? res.data : [])
+    } catch (err) {
+      setCandidates([])
+    }
+  }
+
+  const handleGenerate = async () => {
+    if (!selectedNicheId || !selectedAccountId) return
+    setLoading(true)
+    setError(null)
+    setPromptPack(null)
+    try {
+      const res = await generatePromptPack({
+        niche_id: parseInt(selectedNicheId, 10),
+        account_id: parseInt(selectedAccountId, 10),
+        candidate_id: selectedCandidateId ? parseInt(selectedCandidateId, 10) : null
+      })
+      setPromptPack(res.data)
+    } catch (err) {
+      console.error(err)
+      setError(err.response?.data?.detail || 'Generate failed')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const handleCopy = (variant, field, text) => {
+    if (typeof navigator?.clipboard?.writeText === 'function') {
+      navigator.clipboard.writeText(text)
+      setCopiedVariant(`${variant}-${field}`)
+      setTimeout(() => setCopiedVariant(null), 2000)
+    }
+  }
+
+  const navigate = useNavigate()
+  const handleUseInGenerator = (variant) => {
+    if (!promptPack?.variants?.[variant]) return
+    const script = promptPack.variants[variant].script
+    const hook = promptPack.variants[variant].hook
+    const text = (hook ? `${hook}\n\n` : '') + (script || '')
+    localStorage.setItem('promptlab_script', text)
+    navigate('/generator')
+  }
+
+  const selectedNiche = niches.find(n => String(n.id) === selectedNicheId)
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between flex-wrap gap-4">
+        <h1 className="text-2xl font-bold text-gray-900">Prompt Lab</h1>
+      </div>
+
+      <Card title="1. Select Niche & Account">
+        <p className="text-sm text-gray-500 mb-4">
+          Pick a niche and account, optionally choose a trend candidate from Trend Discovery, then generate A/B/C prompt variants.
+        </p>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Niche</label>
+            <select
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white text-gray-900"
+              value={selectedNicheId}
+              onChange={e => setSelectedNicheId(e.target.value)}
+            >
+              <option value="">Select Niche</option>
+              {niches.map(n => (
+                <option key={n.id} value={n.id}>{n.name}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Account</label>
+            <select
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white text-gray-900"
+              value={selectedAccountId}
+              onChange={e => setSelectedAccountId(e.target.value)}
+            >
+              <option value="">Select Account</option>
+              {accounts.map(a => (
+                <option key={a.id} value={a.id}>{a.platform} – {a.username || a.name || a.id}</option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Trend candidate (optional)</label>
+            <select
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white text-gray-900"
+              value={selectedCandidateId}
+              onChange={e => setSelectedCandidateId(e.target.value)}
+            >
+              <option value="">None</option>
+              {candidates.slice(0, 30).map(c => (
+                <option key={c.id} value={c.id}>
+                  {c.platform} – {(c.caption || '').slice(0, 40)}…
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
-    )
+        <Button
+          onClick={handleGenerate}
+          loading={loading}
+          disabled={!selectedNicheId || !selectedAccountId || loading}
+        >
+          <Sparkles className="h-4 w-4 mr-2" />
+          {loading ? 'Generating...' : 'Generate Prompt Pack'}
+        </Button>
+        {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
+      </Card>
+
+      {promptPack && promptPack.variants && (
+        <Card title="2. Variants (A / B / C)">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {['A', 'B', 'C'].map(variant => {
+              const v = promptPack.variants[variant]
+              if (!v) return null
+              return (
+                <div
+                  key={variant}
+                  className="rounded-xl border border-gray-200 bg-gray-50/50 p-5 space-y-4"
+                >
+                  <h3 className="font-semibold text-gray-900 flex items-center gap-2">
+                    <span className="w-8 h-8 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center text-sm">
+                      {variant}
+                    </span>
+                    Variant {variant}
+                  </h3>
+                  <div>
+                    <label className="text-xs text-gray-500 uppercase">Hook</label>
+                    <p className="text-gray-900 text-sm mt-0.5">{v.hook}</p>
+                    <button
+                      type="button"
+                      onClick={() => handleCopy(variant, 'hook', v.hook)}
+                      className="mt-1 text-xs text-primary-600 hover:underline flex items-center gap-1"
+                    >
+                      {copiedVariant === `${variant}-hook` ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
+                      Copy
+                    </button>
+                  </div>
+                  <div>
+                    <label className="text-xs text-gray-500 uppercase">Script</label>
+                    <p className="text-gray-700 text-sm mt-0.5 whitespace-pre-wrap line-clamp-6">{v.script}</p>
+                    <button
+                      type="button"
+                      onClick={() => handleCopy(variant, 'script', v.script)}
+                      className="mt-1 text-xs text-primary-600 hover:underline flex items-center gap-1"
+                    >
+                      {copiedVariant === `${variant}-script` ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3" />}
+                      Copy
+                    </button>
+                  </div>
+                  {v.reasoning && (
+                    <div>
+                      <label className="text-xs text-gray-500 uppercase">Reasoning</label>
+                      <p className="text-gray-500 text-xs italic mt-0.5">{v.reasoning}</p>
+                    </div>
+                  )}
+                  <Button variant="secondary" size="sm" className="w-full" onClick={() => handleUseInGenerator(variant)}>
+                    <ArrowRight className="h-4 w-4 mr-1" />
+                    Use in Generator
+                  </Button>
+                </div>
+              )
+            })}
+          </div>
+        </Card>
+      )}
+
+      {!promptPack && !loading && (selectedNicheId && selectedAccountId) && (
+        <Card>
+          <p className="text-gray-500 text-center py-6">
+            Click &quot;Generate Prompt Pack&quot; to create three variants. You can optionally pick a trend candidate from Trend Discovery first.
+          </p>
+        </Card>
+      )}
+    </div>
+  )
 }

@@ -258,6 +258,27 @@ export default function Models() {
                 </div>
               </div>
 
+              {/* Hybrid / MoE (MiniMax M2.5, GLM-5 Qwen 3.5, etc.) */}
+              {availableModels.hybrid?.length > 0 && (
+                <div>
+                  <h4 className="font-medium text-gray-900 mb-3">Hybrid / MoE Models</h4>
+                  <p className="text-sm text-gray-500 mb-3">
+                    Use as <code className="px-1 py-0.5 bg-gray-100 rounded">OLLAMA_MODEL</code> or <code className="px-1 py-0.5 bg-gray-100 rounded">OLLAMA_FAST_MODEL</code> in backend/.env for script and topic generation.
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {availableModels.hybrid.map((model) => (
+                      <ModelCard
+                        key={model.name}
+                        model={model}
+                        installed={isModelInstalled(model.name)}
+                        pulling={pulling[model.name]}
+                        onPull={() => handlePull(model.name)}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Large Models */}
               <div>
                 <h4 className="font-medium text-gray-900 mb-3">Large Models (Requires High VRAM)</h4>

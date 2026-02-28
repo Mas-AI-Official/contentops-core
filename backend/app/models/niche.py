@@ -117,6 +117,9 @@ class NicheBase(SQLModel):
         description="Visual style preset name for rendering templates."
     )
     
+    # Generation mode: review_first (draft then approve) or auto_publish (when threshold passes)
+    generation_mode: Optional[str] = Field(default=None, description="review_first | auto_publish; null = use global")
+
     # Active flag
     is_active: bool = Field(default=True)
 
@@ -168,6 +171,7 @@ class NicheUpdate(SQLModel):
     whisper_model: Optional[str] = None
     whisper_device: Optional[str] = None
     style_preset: Optional[str] = None
+    generation_mode: Optional[str] = None
 
 
 class NicheRead(NicheBase):
@@ -206,7 +210,7 @@ class NicheModelConfig(SQLModel):
             tts_provider=niche.tts_provider or settings.tts_provider,
             voice_id=niche.voice_id or (
                 settings.elevenlabs_voice_id if (niche.tts_provider or settings.tts_provider) == "elevenlabs"
-                else settings.xtts_speaker_wav
+                else settings.xtts_default_speaker_wav
             ),
             whisper_model=niche.whisper_model or settings.whisper_model,
             whisper_device=niche.whisper_device or settings.whisper_device,

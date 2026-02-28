@@ -1,8 +1,11 @@
 @echo off
+setlocal
 title Content OPS AI - Setup Environment
 color 0B
 
-set ENV_FILE=backend\.env
+set ROOT=D:\Ideas\contentops-core
+set ENV_FILE=%ROOT%\backend\.env
+cd /d %ROOT%
 
 echo ========================================
 echo   Content OPS AI - Environment Setup

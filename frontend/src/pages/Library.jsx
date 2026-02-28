@@ -14,6 +14,8 @@ export default function Library() {
   const [publishes, setPublishes] = useState([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState({ niche: 'all' })
+  const [selectedIds, setSelectedIds] = useState(new Set())
+  const [deleting, setDeleting] = useState(false)
 
   useEffect(() => {
     loadData()
@@ -59,8 +61,40 @@ export default function Library() {
       await deleteVideo(videoId, true)
       setVideos(prev => prev.filter(v => v.id !== videoId))
       setSelectedVideo(null)
+      setSelectedIds(prev => { const s = new Set(prev); s.delete(videoId); return s })
     } catch (error) {
       console.error('Failed to delete video:', error)
+    }
+  }
+
+  const toggleSelect = (videoId, e) => {
+    if (e) e.stopPropagation()
+    setSelectedIds(prev => {
+      const next = new Set(prev)
+      if (next.has(videoId)) next.delete(videoId)
+      else next.add(videoId)
+      return next
+    })
+  }
+
+  const toggleSelectAll = () => {
+    if (selectedIds.size === filteredVideos.length) setSelectedIds(new Set())
+    else setSelectedIds(new Set(filteredVideos.map(v => v.id)))
+  }
+
+  const handleDeleteSelected = async () => {
+    if (selectedIds.size === 0) return
+    if (!confirm(`Delete ${selectedIds.size} selected video(s)? This will also delete the files.`)) return
+    setDeleting(true)
+    try {
+      await Promise.all([...selectedIds].map(id => deleteVideo(id, true)))
+      setVideos(prev => prev.filter(v => !selectedIds.has(v.id)))
+      setSelectedVideo(null)
+      setSelectedIds(new Set())
+    } catch (error) {
+      console.error('Failed to delete videos:', error)
+    } finally {
+      setDeleting(false)
     }
   }
 
@@ -85,9 +119,26 @@ export default function Library() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-4">
         <h1 className="text-2xl font-bold text-gray-900">Video Library</h1>
-        <div className="flex gap-3">
+        <div className="flex items-center gap-3 flex-wrap">
+          {filteredVideos.length > 0 && (
+            <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={selectedIds.size === filteredVideos.length && filteredVideos.length > 0}
+                onChange={toggleSelectAll}
+                className="rounded border-gray-300"
+              />
+              Select all
+            </label>
+          )}
+          {selectedIds.size > 0 && (
+            <Button variant="danger" size="sm" onClick={handleDeleteSelected} disabled={deleting}>
+              <Trash2 className="h-4 w-4 mr-1" />
+              Delete selected ({selectedIds.size})
+            </Button>
+          )}
           <select
             value={filter.niche}
             onChange={(e) => setFilter(prev => ({ ...prev, niche: e.target.value }))}
@@ -113,9 +164,22 @@ export default function Library() {
           {filteredVideos.map(video => (
             <div
               key={video.id}
-              className="group relative bg-white rounded-xl overflow-hidden shadow-sm border hover:shadow-md transition-shadow cursor-pointer"
+              className={`group relative bg-white rounded-xl overflow-hidden shadow-sm border hover:shadow-md transition-shadow cursor-pointer ${selectedIds.has(video.id) ? 'ring-2 ring-indigo-500' : ''}`}
               onClick={() => handleViewVideo(video)}
             >
+              {/* Bulk select checkbox */}
+              <div
+                className="absolute top-2 left-2 z-10"
+                onClick={(e) => toggleSelect(video.id, e)}
+              >
+                <input
+                  type="checkbox"
+                  checked={selectedIds.has(video.id)}
+                  onChange={() => {}}
+                  onClick={(e) => e.stopPropagation()}
+                  className="rounded border-gray-300 h-5 w-5 bg-white/90 shadow"
+                />
+              </div>
               {/* Thumbnail */}
               <div className="aspect-[9/16] bg-gray-100 relative">
                 {video.thumbnail_path ? (
@@ -144,6 +208,9 @@ export default function Library() {
               {/* Info */}
               <div className="p-3">
                 <h3 className="font-medium text-gray-900 text-sm line-clamp-2">{video.title}</h3>
+                {(video.description || video.caption) && (
+                  <p className="text-xs text-gray-600 mt-1 line-clamp-2">{video.description || video.caption}</p>
+                )}
                 <p className="text-xs text-gray-500 mt-1">{getNicheName(video.niche_id)}</p>
                 <p className="text-xs text-gray-400 mt-0.5">
                   {new Date(video.created_at).toLocaleDateString()}

@@ -1,6 +1,8 @@
 """
 API routes for Ollama model management.
 """
+import os
+from pathlib import Path
 from typing import List, Optional
 from fastapi import APIRouter, HTTPException, BackgroundTasks
 from pydantic import BaseModel
@@ -64,8 +66,7 @@ async def list_models():
 
 @router.get("/available")
 async def list_available_models():
-    """List popular models available for download."""
-    # Curated list of recommended models for content generation
+    """List popular models available for download (including hybrid / MoE)."""
     return {
         "recommended": [
             {
@@ -103,6 +104,32 @@ async def list_available_models():
                 "description": "Alibaba Qwen2 7B - Multilingual",
                 "size": "~4.4 GB",
                 "use_case": "Multi-language content"
+            },
+        ],
+        "hybrid": [
+            {
+                "name": "minimaxm2.5:latest",
+                "description": "MiniMax M2.5 hybrid - Strong quality/speed balance",
+                "size": "~8–12 GB",
+                "use_case": "Script & topic (set OLLAMA_MODEL or OLLAMA_FAST_MODEL)"
+            },
+            {
+                "name": "glm-5qwen3.5:latest",
+                "description": "GLM-5 Qwen 3.5 hybrid - Multimodal / reasoning",
+                "size": "varies",
+                "use_case": "Script generation, reasoning (OLLAMA_MODEL / OLLAMA_REASONING_MODEL)"
+            },
+            {
+                "name": "qwen2.5:14b-instruct",
+                "description": "Qwen 2.5 14B - Default main model",
+                "size": "~9 GB",
+                "use_case": "Main script generation"
+            },
+            {
+                "name": "qwen2.5:7b-instruct",
+                "description": "Qwen 2.5 7B - Fast model",
+                "size": "~4.7 GB",
+                "use_case": "Topic generation, fast edits"
             },
         ],
         "large": [
@@ -241,18 +268,46 @@ async def delete_model(model_name: str):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.get("/ltx")
-async def list_ltx_models():
-    """List all available LTX-2 models."""
-    from pathlib import Path
+def _resolve_ltx_model_path():
+    """Resolve LTX model directory: explicit path, then MODELS_ROOT/ltx, then config paths."""
     from app.services.ltx_service import ltx_service
     
-    if not ltx_service.enabled:
-        return {"models": [], "message": "LTX provider is not enabled"}
+    candidates = []
+    if ltx_service.model_path:
+        candidates.append(Path(ltx_service.model_path))
+    models_root = os.environ.get("MODELS_ROOT")
+    if models_root:
+        candidates.append(Path(models_root) / "ltx")
+    candidates.append(settings.models_path / "ltx")
+    candidates.append(Path(settings.base_path) / "models" / "ltx")
+    # Content OPS / repo-relative
+    try:
+        repo = Path(__file__).resolve().parents[2]
+        candidates.append(repo / "models" / "ltx")
+        candidates.append(Path("D:/Ideas/MODELS_ROOT") / "ltx")
+    except Exception:
+        pass
     
-    model_path = ltx_service.model_path
+    for path in candidates:
+        if path and path.exists():
+            return path
+    return Path(ltx_service.model_path) if ltx_service.model_path else (settings.models_path / "ltx")
+
+
+@router.get("/ltx")
+async def list_ltx_models():
+    """List all available LTX-2 models (tries multiple path fallbacks)."""
+    from app.services.ltx_service import ltx_service
+    
+    model_path = _resolve_ltx_model_path()
     if not model_path.exists():
-        return {"models": [], "message": f"Model directory not found: {model_path}"}
+        return {
+            "models": [],
+            "total": 0,
+            "total_size_gb": 0,
+            "model_path": str(model_path),
+            "message": f"LTX model directory not found. Set LTX_MODEL_PATH or MODELS_ROOT in .env (e.g. MODELS_ROOT=D:\\Ideas\\MODELS_ROOT). VIDEO_GEN_PROVIDER=ltx to use LTX."
+        }
     
     models = []
     model_files = list(model_path.glob("*.safetensors"))
@@ -317,7 +372,8 @@ async def list_ltx_models():
         "models": models,
         "total": len(models),
         "total_size_gb": round(sum(m["size_gb"] for m in models), 2),
-        "model_path": str(model_path)
+        "model_path": str(model_path),
+        "message": None if models else f"No .safetensors files in {model_path}. Add LTX-2 checkpoints (e.g. ltx-2-19b-distilled-fp8.safetensors)."
     }
 
 

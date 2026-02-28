@@ -11,13 +11,13 @@ from app.core.config import settings
 
 # Sync engine for simple operations
 sync_engine = create_engine(
-    settings.database_url,
+    settings.get_database_url(),
     echo=settings.debug,
     connect_args={"check_same_thread": False}
 )
 
 # Async engine for FastAPI
-async_database_url = settings.database_url.replace("sqlite:///", "sqlite+aiosqlite:///")
+async_database_url = settings.get_database_url().replace("sqlite:///", "sqlite+aiosqlite:///")
 async_engine = create_async_engine(
     async_database_url,
     echo=settings.debug

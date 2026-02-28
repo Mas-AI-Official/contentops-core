@@ -41,5 +41,5 @@ async def get_history(
         query = query.where(MemoryIndex.niche_id == niche_id)
         
     query = query.order_by(MemoryIndex.created_at.desc()).limit(50)
-    result = session.exec(query)
-    return result.all()
+    result = await session.execute(query)
+    return list(result.scalars().all())

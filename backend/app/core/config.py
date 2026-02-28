@@ -5,6 +5,7 @@ Loads from environment variables and .env file.
 import os
 from pathlib import Path
 from typing import Optional
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -22,12 +23,23 @@ class Settings(BaseSettings):
     app_name: str = "Content Factory"
     debug: bool = True
     api_host: str = "127.0.0.1"
-    api_port: int = 8000
+    api_port: int = 8100
     
-    # Paths - Project root
-    base_path: Path = Path("D:/Ideas/content_factory")
-    data_path: Path = Path("D:/Ideas/content_factory/data")
-    models_path: Path = Path("D:/Ideas/content_factory/models")
+    # Paths - Project root (env PROJECT_ROOT) and shared models (env MODELS_ROOT)
+    base_path: Path = Field(
+        default=Path("D:/Ideas/contentops-core"),
+        description="Project root",
+        validation_alias="PROJECT_ROOT"
+    )
+    models_path: Path = Field(
+        default=Path("D:/Ideas/MODELS_ROOT"),
+        description="Shared models root",
+        validation_alias="MODELS_ROOT"
+    )
+    
+    @property
+    def data_path(self) -> Path:
+        return self.base_path / "data"
     
     @property
     def assets_path(self) -> Path:
@@ -96,8 +108,13 @@ class Settings(BaseSettings):
         else:
             os.environ["XDG_CACHE_HOME"] = str(self.models_path / "cache")
     
-    # Database
-    database_url: str = "sqlite:///D:/Ideas/content_factory/data/content_factory.db"
+    # Database (default: sqlite under base_path/data; override with DATABASE_URL)
+    database_url: Optional[str] = None
+
+    def get_database_url(self) -> str:
+        if self.database_url:
+            return self.database_url
+        return f"sqlite:///{self.base_path}/data/content_factory.db"
     
     # LLM - Provider (ollama | mcp | hf_router)
     llm_provider: str = "ollama"
@@ -131,7 +148,43 @@ class Settings(BaseSettings):
     xtts_server_url: str = "http://localhost:8020"
     xtts_model_path: Optional[str] = None
     xtts_speaker_wav: Optional[str] = None
+    xtts_daena_voice_wav: Optional[str] = None  # Path to Daena reference .wav for voice cloning
     xtts_language: str = "en"
+
+    @property
+    def xtts_default_speaker_wav(self) -> Optional[str]:
+        """Resolved XTTS speaker: XTTS_SPEAKER_WAV if set, else Daena voice path if found."""
+        if self.xtts_speaker_wav and Path(self.xtts_speaker_wav).exists():
+            return self.xtts_speaker_wav
+        daena = self._resolve_daena_voice_wav()
+        return str(daena) if daena else None
+
+    def _resolve_daena_voice_wav(self) -> Optional[Path]:
+        """Resolve path to daena.wav from config or well-known locations."""
+        if getattr(self, "xtts_daena_voice_wav", None) and Path(self.xtts_daena_voice_wav).exists():
+            return Path(self.xtts_daena_voice_wav).resolve()
+        backend_dir = Path(__file__).resolve().parents[2]
+        models_root = os.environ.get("MODELS_ROOT")
+        candidates = [
+            self.models_path / "xtts" / "voices" / "daena.wav",
+            self.data_path / "assets" / "voices" / "daena.wav",
+            backend_dir / "data" / "assets" / "voices" / "daena.wav",
+            backend_dir.parent / "models" / "xtts" / "voices" / "daena.wav",
+            backend_dir.parent / "data" / "assets" / "voices" / "daena.wav",
+        ]
+        if models_root:
+            candidates.insert(0, Path(models_root) / "xtts" / "voices" / "daena.wav")
+        for candidate in candidates:
+            if candidate.exists():
+                return candidate.resolve()
+        # If MODELS_ROOT/xtts/voices has any .wav, use the first one (e.g. daena_voice.wav)
+        if models_root:
+            voices_dir = Path(models_root) / "xtts" / "voices"
+            if voices_dir.exists():
+                first_wav = next(voices_dir.glob("*.wav"), None)
+                if first_wav:
+                    return first_wav.resolve()
+        return None
     
     # ElevenLabs fallback
     elevenlabs_api_key: Optional[str] = None
@@ -163,6 +216,9 @@ class Settings(BaseSettings):
     tiktok_open_id: Optional[str] = None
     tiktok_verified: bool = False  # Unverified apps can only post as private
     
+    # Generation mode: review_first (default) = draft then manual approve; auto_publish = publish when threshold passes
+    generation_mode: str = "review_first"  # "review_first" | "auto_publish"
+
     # Worker settings
     worker_enabled: bool = True
     worker_interval_seconds: int = 60
@@ -178,7 +234,9 @@ class Settings(BaseSettings):
     video_gen_provider: str = "ffmpeg"
     ltx_api_url: Optional[str] = None  # ComfyUI API URL (fallback)
     ltx_model_path: Optional[str] = None  # Path to LTX-2 model checkpoint
-    ltx_repo_path: Optional[str] = None  # Path to LTX-2 repository (D:\Ideas\content_factory\LTX-2)
+    ltx_upscaler_path: Optional[str] = None  # LTX spatial upscaler .safetensors
+    ltx_lora_path: Optional[str] = None  # LTX LoRA .safetensors (optional)
+    ltx_repo_path: Optional[str] = None  # Path to LTX-2 repository
     ltx_use_fp8: bool = True  # Use FP8 quantization for 8GB VRAM
     
     # MCP / External connectors (optional)

@@ -51,7 +51,8 @@ class MemoryService:
             MemoryIndex.niche_id == niche_id
         ).order_by(MemoryIndex.created_at.desc()).limit(100)
         
-        memories = session.exec(statement).all()
+        result = await session.execute(statement)
+        memories = list(result.scalars().all())
         
         vec_a = np.array(embedding)
         norm_a = np.linalg.norm(vec_a)

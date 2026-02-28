@@ -5,11 +5,13 @@ import asyncio
 import signal
 import sys
 from loguru import logger
+from app.db import create_db_and_tables
 from app.workers.job_worker import job_worker
 from app.workers.trend_hunter_worker import main as run_trend_hunter
 
 async def start_autonomous_engine():
     logger.info("Initializing Autonomous Content Engine...")
+    create_db_and_tables()
     
     # Start the Job Worker (Process Queue)
     logger.info("Starting Job Worker...")

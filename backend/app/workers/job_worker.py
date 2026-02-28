@@ -147,49 +147,86 @@ class JobWorker:
         outputs_dir = settings.outputs_path / str(job_id)
         outputs_dir.mkdir(parents=True, exist_ok=True)
         
-        # Step 1: Generate script
+        # Step 1: Generate script (or use existing full_script from manual prompt)
         job.status = JobStatus.GENERATING_SCRIPT
         job.progress_percent = 10
         session.commit()
-        self._log(session, job_id, "INFO", "Generating script...")
         
-        script = await script_service.generate_with_niche_config(
-            topic=job.topic,
-            niche=niche,
-            target_duration=niche.max_duration_seconds
-        )
-        
-        job.script_hook = script.hook
-        job.script_body = script.body
-        job.script_cta = script.cta
-        job.full_script = script.full_script
-        session.commit()
-        
-        # Save script to file storage
-        script_storage.save_script(
-            job_id=job_id,
-            niche_name=niche.name,
-            topic=job.topic,
-            script_data={
-                "hook": script.hook,
-                "body": script.body,
-                "cta": script.cta,
-                "full_script": script.full_script,
-                "estimated_duration": script.estimated_duration
-            },
-            metadata={
-                "niche_id": niche.id,
-                "style": niche.style.value,
-                "prompts": {
-                    "hook": niche.prompt_hook,
-                    "body": niche.prompt_body,
-                    "cta": niche.prompt_cta
+        if job.full_script and job.full_script.strip():
+            self._log(session, job_id, "INFO", "Using manual script (no LLM expansion)")
+            script_hook = ""
+            script_body = job.full_script.strip()
+            script_cta = ""
+            script_full = job.full_script.strip()
+            word_count = len(script_full.split())
+            estimated_duration = max(30, int((word_count / 150) * 60))
+            script_storage.save_script(
+                job_id=job_id,
+                niche_name=niche.name,
+                topic=job.topic,
+                script_data={
+                    "hook": script_hook,
+                    "body": script_body,
+                    "cta": script_cta,
+                    "full_script": script_full,
+                    "estimated_duration": estimated_duration
+                },
+                metadata={"niche_id": niche.id, "manual_script": True}
+            )
+            job.script_hook = script_hook
+            job.script_body = script_body
+            job.script_cta = script_cta
+            session.commit()
+        else:
+            self._log(session, job_id, "INFO", "Generating script...")
+            target_sec = getattr(job, "target_duration_seconds", None) or niche.max_duration_seconds
+            script = await script_service.generate_with_niche_config(
+                topic=job.topic,
+                niche=niche,
+                target_duration=target_sec,
+                character_description=getattr(job, "character_description", None),
+            )
+            job.script_hook = script.hook
+            job.script_body = script.body
+            job.script_cta = script.cta
+            job.full_script = script.full_script
+            if getattr(script, "visual_cues", None):
+                job.visual_cues = script.visual_cues
+            session.commit()
+            script_storage.save_script(
+                job_id=job_id,
+                niche_name=niche.name,
+                topic=job.topic,
+                script_data={
+                    "hook": script.hook,
+                    "body": script.body,
+                    "cta": script.cta,
+                    "full_script": script.full_script,
+                    "estimated_duration": script.estimated_duration
+                },
+                metadata={
+                    "niche_id": niche.id,
+                    "style": niche.style.value,
+                    "prompts": {
+                        "hook": niche.prompt_hook,
+                        "body": niche.prompt_body,
+                        "cta": niche.prompt_cta
+                    }
                 }
-            }
-        )
+            )
+            script_full = script.full_script
+            self._log(session, job_id, "INFO", f"Script generated and saved: {len(script.full_script)} chars")
         
-        self._log(session, job_id, "INFO", f"Script generated and saved: {len(script.full_script)} chars")
-        
+        # Optional: set short bullet-style caption from script (for library/social)
+        if job.full_script and not getattr(job, "caption", None):
+            import re
+            sentences = re.split(r"[.!?]+", job.full_script.strip())
+            sentences = [s.strip() for s in sentences if s.strip()][:3]
+            if sentences:
+                job.caption = " • ".join(sentences)[:400]
+                session.add(job)
+                session.commit()
+
         # Step 2: Generate audio
         job.status = JobStatus.GENERATING_AUDIO
         job.progress_percent = 30
@@ -198,10 +235,11 @@ class JobWorker:
         
         audio_path = outputs_dir / "narration.wav"
         await tts_service.generate_with_niche_config(
-            text=script.full_script,
+            text=job.full_script,
             output_path=audio_path,
             niche=niche,
-            language=settings.xtts_language
+            language=settings.xtts_language,
+            override_voice_id=getattr(job, "voice_id", None),
         )
         
         job.audio_path = str(audio_path.relative_to(settings.data_path))
@@ -238,7 +276,8 @@ class JobWorker:
         bg_videos = visual_service.get_stock_videos(niche.name, count=1)
         bg_video = bg_videos[0] if bg_videos else None
         bg_music = visual_service.get_background_music(niche.name)
-        logo = visual_service.get_logo(niche.name)
+        # Logo disabled for now (user can re-enable later via config)
+        logo = None  # visual_service.get_logo(niche.name)
         
         video_path = outputs_dir / f"{job_id}_final.mp4"
         
@@ -257,7 +296,7 @@ class JobWorker:
             video_model=job.video_model  # Pass LTX model selection
         )
         
-        await render_service.render_video(render_config, script_text=script.full_script)
+        await render_service.render_video(render_config, script_text=job.full_script)
         
         job.video_path = str(video_path.relative_to(settings.data_path))
         job.duration_seconds = render_service.get_video_duration(video_path)
@@ -272,12 +311,13 @@ class JobWorker:
         
         self._log(session, job_id, "INFO", f"Video rendered: {job.duration_seconds:.1f}s, {job.file_size_bytes / 1024 / 1024:.2f} MB")
         
-        # Create video record
+        # Create video record (use caption if set, else script snippet)
+        desc = (getattr(job, "caption", None) or job.full_script or "")[:500]
         video = Video(
             job_id=job_id,
             niche_id=niche.id,
             title=job.topic[:100],
-            description=script.full_script[:500],
+            description=desc,
             topic=job.topic,
             file_path=job.video_path,
             thumbnail_path=job.thumbnail_path,

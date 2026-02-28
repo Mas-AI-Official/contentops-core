@@ -19,6 +19,7 @@ class VideoScript:
     cta: str
     full_script: str
     estimated_duration: int  # seconds
+    visual_cues: Optional[str] = None  # JSON array of scene prompts (Phase 4: one continuous shot)
 
 
 class ScriptService:
@@ -76,7 +77,8 @@ class ScriptService:
             body=body,
             cta=cta,
             full_script=full_script,
-            estimated_duration=estimated_duration
+            estimated_duration=estimated_duration,
+            visual_cues=None,
         )
     
     async def _generate_section(
@@ -342,27 +344,77 @@ Improved script:"""
             logger.error(f"Failed to improve script with {llm_model}: {e}")
             raise
     
+    CINEMATOGRAPHER_SYSTEM = (
+        "You are a cinematographer. Write the visual prompt as one single, continuous, unbroken camera shot. "
+        "Never include cuts, scene transitions, or changes in perspective. Focus heavily on smooth motion and lighting."
+    )
+
+    async def generate_visual_cues(
+        self,
+        script_text: str,
+        character_description: Optional[str] = None,
+        model: Optional[str] = None,
+    ) -> list:
+        """
+        Generate one continuous visual prompt from script (Phase 4: anti-slideshow).
+        Injects character as focal point when provided.
+        """
+        character_instruction = ""
+        if character_description and character_description.strip():
+            character_instruction = f" The central focal point of the shot must be: {character_description.strip()}. Describe the scene so this character remains the focus."
+        prompt = f"""Based on this narration script, write ONE single visual description for a 5-second video clip.
+The description must be one continuous camera shot: no cuts, no scene changes, no perspective shifts. Smooth motion and consistent lighting only.
+
+Script:
+{script_text[:2000]}
+{character_instruction}
+
+Return ONLY the single visual description (one paragraph), nothing else. No bullet points, no "Scene 1", no numbering."""
+
+        try:
+            if settings.llm_provider == "hf_router":
+                text = await self._generate_section_via_hf_router(prompt, model or settings.hf_router_model, 0.5)
+            elif settings.llm_provider == "mcp" and settings.mcp_enabled and settings.mcp_llm_connector:
+                text = await self._generate_section_via_mcp(prompt, model or settings.mcp_llm_model, 0.5)
+            else:
+                async with httpx.AsyncClient(timeout=90.0) as client:
+                    response = await client.post(
+                        self.ollama_url,
+                        json={
+                            "model": model or settings.ollama_model,
+                            "prompt": f"{self.CINEMATOGRAPHER_SYSTEM}\n\n{prompt}",
+                            "stream": False,
+                            "options": {"temperature": 0.5},
+                        },
+                    )
+                    response.raise_for_status()
+                    data = response.json()
+                    text = data.get("response", "").strip()
+            text = self._clean_script(text)
+            if not text:
+                return [script_text[:500]]
+            return [text]
+        except Exception as e:
+            logger.warning(f"Visual cues generation failed: {e}, using script excerpt")
+            return [script_text[:500]]
+
     async def generate_with_niche_config(
         self,
         topic: str,
         niche,
-        target_duration: Optional[int] = None
+        target_duration: Optional[int] = None,
+        character_description: Optional[str] = None,
     ) -> VideoScript:
         """
         Generate a script using niche-specific configuration.
-        
-        Args:
-            topic: The topic to generate content about
-            niche: Niche object with configuration
-            target_duration: Override for target duration
+        Phase 4: Also generates visual_cues with cinematographer constraint and optional character focus.
         """
         from app.models.niche import NicheModelConfig
-        
+
         config = NicheModelConfig.from_niche(niche, settings)
-        
         duration = target_duration or niche.max_duration_seconds
-        
-        return await self.generate_script(
+
+        script = await self.generate_script(
             topic=topic,
             prompt_hook=niche.prompt_hook,
             prompt_body=niche.prompt_body,
@@ -370,8 +422,16 @@ Improved script:"""
             target_duration=duration,
             style=niche.style,
             model=config.llm_model,
-            temperature=config.llm_temperature
+            temperature=config.llm_temperature,
         )
+        cues = await self.generate_visual_cues(
+            script.full_script,
+            character_description=character_description,
+            model=config.llm_model,
+        )
+        import json
+        script.visual_cues = json.dumps(cues) if cues else None
+        return script
 
 
 script_service = ScriptService()

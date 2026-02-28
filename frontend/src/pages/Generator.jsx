@@ -5,7 +5,7 @@ import Card from '../components/Card'
 import Button from '../components/Button'
 import VideoPlayer from '../components/VideoPlayer'
 import StatusBadge from '../components/StatusBadge'
-import { getNiches, generateTopic, generateScript, generateVideo, getGenerationStatus, approveAndPublish, getLTXModels, automateNiche, getJobs } from '../api'
+import { getNiches, generateTopic, generateScript, generateVideo, getGenerationStatus, approveAndPublish, getLTXModels, getVoices, automateNiche, getJobs } from '../api'
 
 export default function Generator() {
   const [niches, setNiches] = useState([])
@@ -19,6 +19,23 @@ export default function Generator() {
   const [selectedVideoModel, setSelectedVideoModel] = useState('')
   const [mode, setMode] = useState('manual') // 'manual' or 'autopilot'
   const [error, setError] = useState(null)
+  // Platform format (aspect ratio) for LTX
+  const [platformFormat, setPlatformFormat] = useState('9:16') // '9:16' | '16:9' | '1:1'
+  // Character reference for consistent face/scene
+  const [characterDescription, setCharacterDescription] = useState('')
+  const [startFrameFile, setStartFrameFile] = useState(null)   // File for Start Frame / Character Reference
+  const [endFrameFile, setEndFrameFile] = useState(null)      // File for End Frame
+  // Manual prompt: use as topic (LLM expands to script) or as full script (no LLM)
+  const [manualPrompt, setManualPrompt] = useState('')
+  const [usePromptAsFullScript, setUsePromptAsFullScript] = useState(false)
+  const [videoName, setVideoName] = useState('')  // Display name/title for the video (manual mode)
+  const [scenesInput, setScenesInput] = useState('')  // One scene per line; blank = auto from script/LLM
+  const [voices, setVoices] = useState([])  // { voice_id, name, provider }; empty selection = niche default
+  const [selectedVoiceId, setSelectedVoiceId] = useState('')  // '' = use niche/account default
+  const [batchCount, setBatchCount] = useState(1)  // 1, 2, or 3 videos per Generate click
+  const [lastQueuedCount, setLastQueuedCount] = useState(0)  // Show "N queued" after generate; 0 = hide
+  const [targetDuration, setTargetDuration] = useState(60)  // 20, 30, 60, 90, 120 sec or custom
+  const [customDuration, setCustomDuration] = useState('')  // custom seconds when targetDuration === 'custom'
 
   useEffect(() => {
     loadNiches()
@@ -26,6 +43,28 @@ export default function Generator() {
       if (pollInterval) clearInterval(pollInterval)
     }
   }, [])
+
+  // Prefill from Prompt Lab or Scrape (localStorage)
+  useEffect(() => {
+    const fromPromptLab = localStorage.getItem('promptlab_script')
+    if (fromPromptLab) {
+      setManualPrompt(fromPromptLab)
+      setUsePromptAsFullScript(true)
+      localStorage.removeItem('promptlab_script')
+    }
+    const pickedTopic = localStorage.getItem('picked_topic')
+    if (pickedTopic) {
+      try {
+        const { title, niche_id } = JSON.parse(pickedTopic)
+        if (title) setTopic(title)
+        if (niche_id && niches.length) {
+          const niche = niches.find(n => n.id === niche_id)
+          if (niche) setSelectedNiche(niche)
+        }
+        localStorage.removeItem('picked_topic')
+      } catch (_) {}
+    }
+  }, [niches.length])
 
   useEffect(() => {
     if (selectedNiche) {
@@ -59,12 +98,14 @@ export default function Generator() {
   const loadNiches = async () => {
     try {
       setError(null)
-      const [nichesRes, modelsRes] = await Promise.all([
+      const [nichesRes, modelsRes, voicesRes] = await Promise.all([
         getNiches(),
-        getLTXModels().catch(() => ({ data: { models: [] } }))
+        getLTXModels().catch(() => ({ data: { models: [] } })),
+        getVoices().catch(() => ({ data: [] }))
       ])
       setNiches(nichesRes.data)
       setLtxModels(modelsRes.data?.models || [])
+      setVoices(Array.isArray(voicesRes.data) ? voicesRes.data : [])
 
       if (nichesRes.data.length > 0) {
         setSelectedNiche(nichesRes.data[0])
@@ -76,7 +117,7 @@ export default function Generator() {
       }
     } catch (error) {
       console.error('Failed to load niches:', error)
-      setError('Backend connection failed. Please ensure the backend is running.')
+      setError('Backend connection failed. Start the backend (e.g. run launch.bat or: cd backend && python -m app.main). It runs on port 8100 by default.')
     } finally {
       setLoading(prev => ({ ...prev, niches: false }))
     }
@@ -84,7 +125,8 @@ export default function Generator() {
 
   const [topicData, setTopicData] = useState(null)
 
-  // ...
+  // When manual prompt is set and not "use as full script", it becomes the topic for LLM script generation
+  const effectiveTopic = (manualPrompt && manualPrompt.trim()) ? manualPrompt.trim() : topic
 
   const handleGenerateTopic = async (source = 'auto') => {
     if (!selectedNiche) return
@@ -105,11 +147,27 @@ export default function Generator() {
   }
 
   const handleGenerateScript = async () => {
-    if (!selectedNiche || !topic) return
+    if (!selectedNiche || !effectiveTopic) return
     setLoading(prev => ({ ...prev, script: true }))
     try {
-      const res = await generateScript({ niche_id: selectedNiche.id, topic })
+      const res = await generateScript({
+        niche_id: selectedNiche.id,
+        topic: effectiveTopic,
+        character_description: characterDescription || undefined,
+      })
       setScript(res.data)
+      if (res.data.visual_cues) {
+        if (Array.isArray(res.data.visual_cues)) {
+          setScenesInput(res.data.visual_cues.join('\n'))
+        } else if (typeof res.data.visual_cues === 'string') {
+          try {
+            const arr = JSON.parse(res.data.visual_cues)
+            setScenesInput(Array.isArray(arr) ? arr.join('\n') : '')
+          } catch {
+            setScenesInput('')
+          }
+        }
+      }
     } catch (error) {
       console.error('Failed to generate script:', error)
     } finally {
@@ -118,27 +176,67 @@ export default function Generator() {
   }
 
   const handleGenerateVideo = async () => {
-    if (!selectedNiche || !topic) return
+    const canUseTopic = selectedNiche && effectiveTopic
+    const canUseFullScript = selectedNiche && usePromptAsFullScript && manualPrompt && manualPrompt.trim()
+    if (!canUseTopic && !canUseFullScript) return
     setLoading(prev => ({ ...prev, video: true }))
     try {
-      const res = await generateVideo({
+      const sceneLines = scenesInput.trim() ? scenesInput.trim().split(/\n/).map(s => s.trim()).filter(Boolean) : []
+      const voice = selectedVoiceId ? voices.find(v => v.voice_id === selectedVoiceId) : null
+      // Use exact script: preview if user generated one, else whatever they typed in "Your idea or script"
+      const effectiveScript = script?.full_script || (manualPrompt?.trim() || null)
+      const payload = {
         niche_id: selectedNiche.id,
-        topic,
-        video_model: selectedVideoModel || null
-      })
-      setActiveJob({ id: res.data.job_id, status: 'pending', progress: 0 })
-      startPolling(res.data.job_id)
+        topic: effectiveTopic || 'Manual script',
+        video_model: selectedVideoModel || null,
+        platform_format: platformFormat,
+        character_description: characterDescription || null,
+        ...(videoName && videoName.trim() && { video_name: videoName.trim() }),
+        ...(effectiveScript && { custom_script: effectiveScript }),
+        ...(sceneLines.length > 0 && { scenes: sceneLines }),
+        ...(selectedVoiceId && { voice_id: selectedVoiceId, ...(voice?.name && { voice_name: voice.name }) }),
+        count: batchCount,
+        target_duration_seconds: targetDuration === 'custom' ? (parseInt(customDuration, 10) || 60) : (typeof targetDuration === 'number' ? targetDuration : 60),
+      }
+      if (startFrameFile) {
+        const base64 = await fileToBase64(startFrameFile)
+        payload.start_frame_base64 = base64
+        payload.start_frame_filename = startFrameFile.name
+      }
+      if (endFrameFile) {
+        const base64 = await fileToBase64(endFrameFile)
+        payload.end_frame_base64 = base64
+        payload.end_frame_filename = endFrameFile.name
+      }
+      const res = await generateVideo(payload)
+      const jobIds = res.data.job_ids || [res.data.job_id]
+      const count = jobIds.length
+      setLastQueuedCount(count)
+      setLoading(prev => ({ ...prev, video: false }))
+      // Do not set activeJob – job goes to Queue; form stays so user can generate another
     } catch (error) {
       console.error('Failed to start video generation:', error)
       setLoading(prev => ({ ...prev, video: false }))
     }
   }
 
+  const fileToBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = () => {
+        const dataUrl = reader.result
+        const base64 = dataUrl.indexOf(',') >= 0 ? dataUrl.split(',')[1] : dataUrl
+        resolve(base64)
+      }
+      reader.onerror = reject
+    })
+
   const startPolling = (jobId) => {
     const interval = setInterval(async () => {
       try {
         const res = await getGenerationStatus(jobId)
-        setActiveJob(res.data)
+        setActiveJob(prev => ({ ...res.data, count: prev?.count ?? res.data?.count }))
 
         if (['ready_for_review', 'failed', 'published'].includes(res.data.status)) {
           clearInterval(interval)
@@ -186,6 +284,13 @@ export default function Generator() {
     setTopic('')
     setScript(null)
     setActiveJob(null)
+    setStartFrameFile(null)
+    setEndFrameFile(null)
+    setManualPrompt('')
+    setUsePromptAsFullScript(false)
+    setVideoName('')
+    setScenesInput('')
+    setSelectedVoiceId('')
     if (pollInterval) {
       clearInterval(pollInterval)
       setPollInterval(null)
@@ -241,7 +346,7 @@ export default function Generator() {
               Autopilot Mode
             </button>
           </div>
-          {activeJob && mode === 'manual' && (
+          {mode === 'manual' && (
             <Button variant="secondary" onClick={resetGenerator}>
               <RefreshCw className="h-4 w-4" />
               Start Over
@@ -312,10 +417,97 @@ export default function Generator() {
           </div>
         </Card>
       ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Left: Controls */}
-          <div className="space-y-6">
-            {/* Niche Selection */}
+        <div className="max-w-6xl mx-auto space-y-6">
+            {/* Top row: Format + Video Model + Voice + Duration – full width */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+              <Card title="Platform Format">
+                <p className="text-sm text-gray-500 mb-2">Aspect ratio (LTX uses 32 multiples).</p>
+                <select
+                  value={platformFormat}
+                  onChange={(e) => setPlatformFormat(e.target.value)}
+                  className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  disabled={activeJob}
+                >
+                  <option value="9:16">TikTok / Shorts (9:16)</option>
+                  <option value="16:9">YouTube (16:9)</option>
+                  <option value="1:1">Instagram (1:1)</option>
+                </select>
+              </Card>
+              <Card title="Video Model">
+                <p className="text-sm text-gray-500 mb-2">Auto or choose LTX model.</p>
+                <select
+                  value={selectedVideoModel}
+                  onChange={(e) => setSelectedVideoModel(e.target.value)}
+                  className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  disabled={activeJob}
+                >
+                  <option value="">Auto (recommended)</option>
+                  {ltxModels.map(model => (
+                    <option key={model.name} value={model.name}>
+                      {model.name}{model.recommended ? ' ⭐' : ''}
+                    </option>
+                  ))}
+                </select>
+              </Card>
+              <Card title="Voice">
+                <p className="text-sm text-gray-500 mb-2">TTS voice (niche default or choose).</p>
+                <select
+                  value={selectedVoiceId}
+                  onChange={(e) => setSelectedVoiceId(e.target.value)}
+                  className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                  disabled={activeJob}
+                >
+                  <option value="">Niche / account default</option>
+                  {voices.map(v => (
+                    <option key={v.voice_id} value={v.voice_id}>
+                      {v.name} ({v.provider})
+                    </option>
+                  ))}
+                </select>
+                {selectedNiche?.voice_name && (
+                  <p className="text-xs text-gray-500 mt-1">Niche default: {selectedNiche.voice_name || 'global'}</p>
+                )}
+              </Card>
+              <Card title="Video length">
+                <p className="text-sm text-gray-500 mb-2">Target duration (seconds).</p>
+                <div className="flex flex-wrap gap-2 mb-2">
+                  {[20, 30, 60, 90, 120].map((sec) => (
+                    <button
+                      key={sec}
+                      type="button"
+                      onClick={() => setTargetDuration(sec)}
+                      className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${targetDuration === sec ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                    >
+                      {sec}s
+                    </button>
+                  ))}
+                  <button
+                    type="button"
+                    onClick={() => setTargetDuration('custom')}
+                    className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${targetDuration === 'custom' ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                  >
+                    Custom
+                  </button>
+                </div>
+                {targetDuration === 'custom' && (
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="number"
+                      min={15}
+                      max={600}
+                      value={customDuration}
+                      onChange={(e) => setCustomDuration(e.target.value)}
+                      placeholder="e.g. 45"
+                      className="w-24 px-2 py-1.5 border rounded-lg text-sm"
+                    />
+                    <span className="text-xs text-gray-500">seconds</span>
+                  </div>
+                )}
+              </Card>
+            </div>
+
+            {/* Cards in 2 columns on xl to use space better */}
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
             <Card title="1. Select Niche">
               <select
                 value={selectedNiche?.id || ''}
@@ -357,8 +549,9 @@ export default function Generator() {
                 <div className="flex items-center min-w-max gap-2">
                   {[
                     { label: 'Scrape', icon: '🔍', status: 'ready' },
-                    { label: 'Topic', icon: '💡', status: topic ? 'done' : 'waiting' },
+                    { label: 'Topic', icon: '💡', status: effectiveTopic ? 'done' : 'waiting' },
                     { label: 'Script', icon: '📝', status: script ? 'done' : 'waiting' },
+                    { label: 'Scenes', icon: '🎞️', status: script || scenesInput.trim() ? 'done' : 'waiting' },
                     { label: 'TTS', icon: '🗣️', status: script ? 'ready' : 'waiting' },
                     { label: 'Video', icon: '🎬', status: activeJob ? 'processing' : 'waiting' },
                     { label: 'Publish', icon: '🚀', status: 'waiting' }
@@ -382,15 +575,71 @@ export default function Generator() {
               </div>
             )}
 
-            {/* Topic */}
-            <Card title="2. Topic">
+            {/* Manual prompt: name + idea → script → video */}
+            <Card title="2. Manual – Name & prompt">
+              <div className="space-y-3">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Video name</label>
+                  <input
+                    type="text"
+                    value={videoName}
+                    onChange={(e) => setVideoName(e.target.value)}
+                    placeholder="e.g. 5 AI tools that save you money"
+                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+                    disabled={activeJob}
+                  />
+                  <p className="text-xs text-gray-500 mt-1">Title for the video (job and library).</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Your idea or script</label>
+                  <textarea
+                    value={manualPrompt}
+                    onChange={(e) => setManualPrompt(e.target.value)}
+                    placeholder="Describe your video idea (LLM will turn it into a script). Or check below to use this text as the full narration."
+                    rows={4}
+                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 resize-y"
+                    disabled={activeJob}
+                  />
+                </div>
+                <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={usePromptAsFullScript}
+                    onChange={(e) => setUsePromptAsFullScript(e.target.checked)}
+                    disabled={activeJob}
+                    className="rounded border-gray-300"
+                  />
+                  Use as full script (no LLM expansion — this text goes straight to TTS and video)
+                </label>
+              </div>
+            </Card>
+
+            {/* Scenes: optional order; leave blank for auto from script/LLM */}
+            <Card title="4. Scenes (order or leave blank for auto)">
+              <div className="space-y-2">
+                <textarea
+                  value={scenesInput}
+                  onChange={(e) => setScenesInput(e.target.value)}
+                  placeholder={'One scene per line, in order. E.g.\nOpening shot of host at desk\nCut to screen showing the first tip\nLeave blank to auto-generate from script.'}
+                  rows={4}
+                  className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 resize-y text-sm"
+                  disabled={activeJob}
+                />
+                <p className="text-xs text-gray-500">
+                  Give the scene order here, or leave empty and scenes will be created automatically from the script.
+                </p>
+              </div>
+            </Card>
+
+            {/* Topic: one-line or from buttons; optional if manual prompt is set */}
+            <Card title="3. Topic (or use manual prompt above)">
               <div className="space-y-3">
                 <div className="flex gap-2">
                   <input
                     type="text"
                     value={topic}
                     onChange={(e) => setTopic(e.target.value)}
-                    placeholder="Enter a topic or generate one..."
+                    placeholder="One-line topic, or leave blank when using manual prompt..."
                     className="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                     disabled={activeJob}
                   />
@@ -438,11 +687,62 @@ export default function Generator() {
                   </div>
                 )}
 
-                {!script && topic && (
+                {!script && effectiveTopic && (
                   <Button onClick={handleGenerateScript} loading={loading.script} disabled={activeJob}>
                     Generate Script Preview
                   </Button>
                 )}
+              </div>
+            </Card>
+
+            {/* Manual Script Mode: Character reference and start/end frames */}
+            <Card title="Manual Script Mode – Character & Frames">
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Character Name / Description</label>
+                  <input
+                    type="text"
+                    value={characterDescription}
+                    onChange={(e) => setCharacterDescription(e.target.value)}
+                    placeholder="e.g. Daena, a futuristic AI agent with silver hair and a glowing green eDNA jacket"
+                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 text-sm"
+                    disabled={activeJob}
+                  />
+                  <p className="text-xs text-gray-500 mt-1">Anchors the character in the scene so LTX keeps them as the focal point.</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Start Frame / Character Reference</label>
+                  <div className="border-2 border-dashed border-gray-200 rounded-lg p-4 text-center">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => setStartFrameFile(e.target.files?.[0] || null)}
+                      className="hidden"
+                      id="start-frame-upload"
+                      disabled={activeJob}
+                    />
+                    <label htmlFor="start-frame-upload" className="cursor-pointer text-sm text-gray-600 hover:text-primary-600">
+                      {startFrameFile ? startFrameFile.name : 'Upload image (first frame / character reference)'}
+                    </label>
+                  </div>
+                  <p className="text-xs text-gray-500 mt-1">Use a high-quality image of your character; LTX will use it as the first frame and animate from it.</p>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">End Frame</label>
+                  <div className="border-2 border-dashed border-gray-200 rounded-lg p-4 text-center">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => setEndFrameFile(e.target.files?.[0] || null)}
+                      className="hidden"
+                      id="end-frame-upload"
+                      disabled={activeJob}
+                    />
+                    <label htmlFor="end-frame-upload" className="cursor-pointer text-sm text-gray-600 hover:text-primary-600">
+                      {endFrameFile ? endFrameFile.name : 'Upload image (optional end frame)'}
+                    </label>
+                  </div>
+                </div>
               </div>
             </Card>
 
@@ -479,105 +779,41 @@ export default function Generator() {
               </Card>
             )}
 
-            {/* Video Model Selection */}
-            {script && !activeJob && ltxModels.length > 0 && (
-              <Card title="4. Video Model (Optional)">
-                <div className="space-y-3">
-                  <select
-                    value={selectedVideoModel}
-                    onChange={(e) => setSelectedVideoModel(e.target.value)}
-                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-                  >
-                    <option value="">Use Default (Recommended)</option>
-                    {ltxModels.map(model => (
-                      <option key={model.name} value={model.name}>
-                        {model.name} - {model.description} ({model.size})
-                        {model.recommended && ' ⭐'}
-                      </option>
-                    ))}
-                  </select>
-                  <p className="text-xs text-gray-500">
-                    Select an LTX-2 model for video generation. Leave blank to use the recommended model.
-                  </p>
+            {/* Generate Video: always visible in manual mode; button disabled until niche + topic or prompt */}
+            <Card title="Generate video">
+              <div className="space-y-3">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-sm text-gray-600">Generate:</span>
+                  {[1, 2, 3].map((n) => (
+                    <button
+                      key={n}
+                      type="button"
+                      onClick={() => setBatchCount(n)}
+                      className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${batchCount === n ? 'bg-indigo-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                    >
+                      {n}
+                    </button>
+                  ))}
+                  <span className="text-sm text-gray-500">{batchCount === 1 ? 'video' : 'videos'}</span>
                 </div>
-              </Card>
-            )}
-
-            {/* Generate Video */}
-            {script && !activeJob && (
-              <Button onClick={handleGenerateVideo} loading={loading.video} className="w-full">
-                <Play className="h-4 w-4" />
-                Generate Full Video
-              </Button>
-            )}
-          </div>
-
-          {/* Right: Preview & Status */}
-          <div className="space-y-6">
-            {activeJob && (
-              <Card title="Generation Status">
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-gray-600">Status</span>
-                    <StatusBadge status={activeJob.status} />
-                  </div>
-
-                  {activeJob.progress !== undefined && activeJob.status !== 'ready_for_review' && (
-                    <div>
-                      <div className="flex justify-between text-sm text-gray-600 mb-1">
-                        <span>Progress</span>
-                        <span>{activeJob.progress}%</span>
-                      </div>
-                      <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-primary-500 transition-all duration-500"
-                          style={{ width: `${activeJob.progress}%` }}
-                        />
-                      </div>
-                    </div>
-                  )}
-
-                  {activeJob.error && (
-                    <div className="p-3 bg-red-50 rounded-lg">
-                      <p className="text-sm text-red-700">{activeJob.error}</p>
-                    </div>
-                  )}
-                </div>
-              </Card>
-            )}
-
-            {/* Video Preview */}
-            {activeJob?.status === 'ready_for_review' && activeJob.preview_url && (
-              <Card title="Video Preview">
-                <VideoPlayer
-                  src={activeJob.preview_url}
-                  className="w-full max-w-xs mx-auto"
-                />
-
-                <div className="mt-4 space-y-2">
-                  <Button onClick={() => handleApprove(true)} className="w-full">
+                <Button
+                  onClick={handleGenerateVideo}
+                  loading={loading.video}
+                  disabled={!selectedNiche || (!effectiveTopic && !(manualPrompt && manualPrompt.trim()))}
+                  className="w-full"
+                >
+                  <Play className="h-4 w-4" />
+                  {batchCount > 1 ? `Generate ${batchCount} Videos` : (usePromptAsFullScript && manualPrompt?.trim() ? 'Generate Video from Manual Script' : 'Generate Video')}
+                </Button>
+                {lastQueuedCount > 0 && (
+                  <p className="text-sm text-green-600 flex items-center gap-2">
                     <Check className="h-4 w-4" />
-                    Approve & Publish
-                  </Button>
-                  <Button variant="secondary" onClick={() => handleApprove(false)} className="w-full">
-                    <Eye className="h-4 w-4" />
-                    Approve Only (No Publish)
-                  </Button>
-                </div>
-              </Card>
-            )}
-
-            {!activeJob && (
-              <Card>
-                <div className="text-center py-12">
-                  <Wand2 className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-                  <p className="text-gray-500">
-                    Select a niche and topic, then generate a video preview.
+                    {lastQueuedCount} video{lastQueuedCount !== 1 ? 's' : ''} queued. <Link to="/queue" className="underline font-medium">View Queue</Link> to preview and approve.
                   </p>
-                </div>
-              </Card>
-            )}
-          </div>
+                )}
+              </div>
+            </Card>
+            </div>
         </div>
       )}
     </div>

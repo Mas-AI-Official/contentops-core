@@ -18,16 +18,13 @@ class PromptService:
     ) -> PromptPack:
         """Generate a prompt pack (A/B/C variants)."""
         
-        niche = session.get(Niche, niche_id)
+        niche = await session.get(Niche, niche_id)
         if not niche:
             raise ValueError("Niche not found")
-            
+
         candidate = None
-        analysis = None
         if candidate_id:
-            candidate = session.get(TrendCandidate, candidate_id)
-            if candidate and candidate.analysis:
-                analysis = candidate.analysis
+            candidate = await session.get(TrendCandidate, candidate_id)
         
         # Generate 3 variants
         variants = {}

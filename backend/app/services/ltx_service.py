@@ -1,15 +1,33 @@
 """
 LTX Video Generation Service - generates video using LTX-2 (Lightricks) model.
 Supports direct Python API (preferred) and ComfyUI API (fallback).
+
+Phase 2: Mathematical constraints to reduce glitches:
+- Dimensions are multiples of 32 (9:16 → 704x1216, 16:9 → 1216x704, 1:1 → 768x768).
+- Frame count fixed to 129 (8n+1, ~5s at 25fps).
+- steps=25, cfg_scale=3.5 (or 3.0 when using start frame), sampler=euler.
 """
 import json
+import os
 import httpx
 import asyncio
 from pathlib import Path
-from typing import Optional, Dict, Any
+from typing import Optional, Dict, Any, Tuple
 from loguru import logger
 
 from app.core.config import settings
+
+# Phase 2: LTX mathematical boundaries (multiples of 32)
+PLATFORM_DIMENSIONS: Dict[str, Tuple[int, int]] = {
+    "9:16": (704, 1216),   # TikTok / Shorts
+    "16:9": (1216, 704),   # YouTube
+    "1:1": (768, 768),     # Instagram
+}
+LTX_NUM_FRAMES = 129  # 8n+1 for ~5s; MUST be 8n+1
+LTX_STEPS = 25
+LTX_CFG_SCALE = 3.5
+LTX_CFG_SCALE_WITH_START_FRAME = 3.0  # Lower to preserve character consistency
+LTX_SAMPLER = "euler"
 
 # Try to import LTX-2 Python package
 try:
@@ -30,15 +48,19 @@ class LTXService:
         self.api_url = settings.ltx_api_url or "http://127.0.0.1:8188"
         self.enabled = settings.video_gen_provider == "ltx"
         self.use_direct = LTX_DIRECT_AVAILABLE
-        self.model_path = Path(settings.ltx_model_path) if settings.ltx_model_path else settings.models_path / "ltx"
+        # Resolve model path: LTX_MODEL_PATH > MODELS_ROOT/ltx > settings.models_path/ltx
+        if settings.ltx_model_path:
+            self.model_path = Path(settings.ltx_model_path)
+        elif os.environ.get("MODELS_ROOT"):
+            self.model_path = Path(os.environ["MODELS_ROOT"]) / "ltx"
+        else:
+            self.model_path = settings.models_path / "ltx"
         self.repo_path = Path(settings.ltx_repo_path) if settings.ltx_repo_path else settings.base_path / "LTX-2"
         self.use_fp8 = settings.ltx_use_fp8
     
     async def check_connection(self) -> bool:
         """Check if LTX is available (direct Python or ComfyUI API)."""
-        if not self.enabled:
-            return False
-        
+        # When enabled=False (provider=ffmpeg), we still check so UI-selected model can use LTX
         # Check direct Python package first
         if self.use_direct:
             try:
@@ -64,6 +86,20 @@ class LTXService:
         
         return False
     
+    def _resolve_dimensions_and_cfg(
+        self,
+        platform_format: Optional[str],
+        width: int,
+        height: int,
+        start_frame_path: Optional[Path],
+    ) -> Tuple[int, int, float]:
+        """Resolve (width, height) to LTX-safe multiples of 32 and cfg_scale."""
+        if platform_format and platform_format in PLATFORM_DIMENSIONS:
+            w, h = PLATFORM_DIMENSIONS[platform_format]
+            width, height = w, h
+        cfg = LTX_CFG_SCALE_WITH_START_FRAME if (start_frame_path and start_frame_path.exists()) else LTX_CFG_SCALE
+        return width, height, cfg
+
     async def generate_video_from_text(
         self,
         text: str,
@@ -73,32 +109,40 @@ class LTXService:
         height: int = 480,
         duration_seconds: int = 5,
         fps: int = 24,
-        model_name: Optional[str] = None  # Specific model to use
+        model_name: Optional[str] = None,
+        platform_format: Optional[str] = None,
+        start_frame_path: Optional[Path] = None,
+        end_frame_path: Optional[Path] = None,
     ) -> Path:
         """
-        Generate video from text using LTX-2.
-        
-        Args:
-            text: Script text to visualize
-            prompt: Optional visual prompt (if None, uses text)
-            output_path: Where to save the video
-            width: Video width (480p recommended for 8GB VRAM)
-            height: Video height
-            duration_seconds: Clip duration (3-5s recommended for 8GB VRAM)
-            fps: Frames per second
+        Generate video from text (or image-to-video when start_frame_path is set).
+        Phase 2: Enforces LTX dimensions (multiples of 32), num_frames=129, steps=25, cfg_scale, sampler.
         """
-        if not self.enabled:
-            raise ValueError("LTX provider is not enabled")
-        
+        # Allow when provider=ltx OR user selected a model in Generator (so script+model makes real video)
+        if not self.enabled and not model_name:
+            raise ValueError(
+                "LTX provider is not enabled. Set VIDEO_GEN_PROVIDER=ltx in .env, or select a Video Model in Generator."
+            )
         if not await self.check_connection():
-            raise ConnectionError("LTX is not available (check models or ComfyUI)")
-        
-        # Use direct Python API if available (faster, no HTTP overhead)
+            raise ConnectionError(
+                "LTX is not available. Ensure model files exist in LTX_MODEL_PATH or MODELS_ROOT/ltx, or ComfyUI is running."
+            )
+
+        width, height, cfg_scale = self._resolve_dimensions_and_cfg(platform_format, width, height, start_frame_path)
+        num_frames = LTX_NUM_FRAMES
+        steps = LTX_STEPS
+        sampler = LTX_SAMPLER
+
         if self.use_direct and LTX_DIRECT_AVAILABLE:
-            return await self._generate_direct(text, prompt, output_path, width, height, duration_seconds, fps)
-        
-        # Fallback to ComfyUI API
-        return await self._generate_via_comfyui(text, prompt, output_path, width, height, duration_seconds, fps)
+            return await self._generate_direct(
+                text, prompt, output_path, width, height, duration_seconds, fps,
+                model_name=model_name, start_frame_path=start_frame_path, end_frame_path=end_frame_path,
+                num_frames=num_frames, steps=steps, cfg_scale=cfg_scale, sampler=sampler,
+            )
+        return await self._generate_via_comfyui(
+            text, prompt, output_path, width, height, duration_seconds, fps,
+            num_frames=num_frames, steps=steps, cfg_scale=cfg_scale, sampler=sampler,
+        )
     
     async def _generate_direct(
         self,
@@ -108,17 +152,22 @@ class LTXService:
         width: int,
         height: int,
         duration_seconds: int,
-        fps: int
+        fps: int,
+        model_name: Optional[str] = None,
+        start_frame_path: Optional[Path] = None,
+        end_frame_path: Optional[Path] = None,
+        num_frames: int = LTX_NUM_FRAMES,
+        steps: int = LTX_STEPS,
+        cfg_scale: float = LTX_CFG_SCALE,
+        sampler: str = LTX_SAMPLER,
     ) -> Path:
-        """Generate video using LTX-2 Python package directly."""
+        """Generate video using LTX-2 Python package directly. Phase 2: fixed num_frames, steps, cfg, sampler."""
         import torch
-        
+
         logger.info("Using LTX-2 direct Python API...")
-        
-        # Use specified model if provided, otherwise auto-select
         checkpoint_path = None
         model_type = "ltx2"
-        
+
         if model_name:
             # Use the specified model
             specified_path = self.model_path / model_name
@@ -179,7 +228,6 @@ class LTXService:
         use_distilled = "distilled" in checkpoint_path.name.lower()
         is_ltx2 = model_type == "ltx2"
         
-        # Run in thread pool to avoid blocking
         loop = asyncio.get_event_loop()
         result = await loop.run_in_executor(
             None,
@@ -189,14 +237,17 @@ class LTXService:
             output_path,
             width,
             height,
-            duration_seconds,
+            num_frames,
             fps,
             use_distilled,
-            is_ltx2
+            is_ltx2,
+            start_frame_path,
+            steps,
+            cfg_scale,
+            sampler,
         )
-        
         return result
-    
+
     def _run_ltx_inference(
         self,
         checkpoint_path: Path,
@@ -204,18 +255,20 @@ class LTXService:
         output_path: Path,
         width: int,
         height: int,
-        duration_seconds: int,
+        num_frames: int,
         fps: int,
         use_distilled: bool,
-        is_ltx2: bool = True
+        is_ltx2: bool = True,
+        start_frame_path: Optional[Path] = None,
+        steps: int = LTX_STEPS,
+        cfg_scale: float = LTX_CFG_SCALE,
+        sampler: str = LTX_SAMPLER,
     ) -> Path:
-        """Run LTX inference synchronously (called in executor)."""
+        """Run LTX inference synchronously. Phase 2: num_frames=129, steps=25, cfg_scale, sampler."""
         import torch
-        
+
         try:
-            # Load model
             device = "cuda" if torch.cuda.is_available() else "cpu"
-            
             if is_ltx2:
                 logger.info(f"Loading LTX-2 model on {device}...")
                 
@@ -258,18 +311,24 @@ class LTXService:
                 else:
                     raise ValueError("LTX-2 package not installed. Legacy models require ComfyUI API.")
             
-            # Generate video
-            num_frames = duration_seconds * fps
-            logger.info(f"Generating {num_frames} frames ({duration_seconds}s @ {fps}fps)...")
-            
-            output = pipeline(
-                prompt=prompt,
-                width=width,
-                height=height,
-                num_frames=num_frames,
-                fps=fps,
-                enable_fp8=True
-            )
+            logger.info(f"Generating {num_frames} frames (steps={steps}, cfg_scale={cfg_scale}, sampler={sampler})...")
+            call_kw: Dict[str, Any] = {
+                "prompt": prompt,
+                "width": width,
+                "height": height,
+                "num_frames": num_frames,
+                "fps": fps,
+                "enable_fp8": True,
+            }
+            try:
+                for key, val in [("steps", steps), ("cfg_scale", cfg_scale), ("sampler", sampler)]:
+                    call_kw[key] = val
+                output = pipeline(**call_kw)
+            except TypeError:
+                call_kw.pop("steps", None)
+                call_kw.pop("cfg_scale", None)
+                call_kw.pop("sampler", None)
+                output = pipeline(**call_kw)
             
             # Save video
             output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -324,17 +383,23 @@ class LTXService:
         width: int,
         height: int,
         duration_seconds: int,
-        fps: int
+        fps: int,
+        num_frames: int = LTX_NUM_FRAMES,
+        steps: int = LTX_STEPS,
+        cfg_scale: float = LTX_CFG_SCALE,
+        sampler: str = LTX_SAMPLER,
     ) -> Path:
-        """Generate video via ComfyUI API (fallback)."""
+        """Generate video via ComfyUI API (fallback). Phase 2: use num_frames=129."""
         logger.info("Using LTX ComfyUI API mode...")
-        
         workflow = self._create_ltx_workflow(
             prompt=prompt or text,
             width=width,
             height=height,
-            duration_frames=duration_seconds * fps,
-            fps=fps
+            duration_frames=num_frames,
+            fps=fps,
+            steps=steps,
+            cfg_scale=cfg_scale,
+            sampler=sampler,
         )
         
         prompt_id = await self._queue_prompt(workflow)
@@ -348,21 +413,28 @@ class LTXService:
         width: int,
         height: int,
         duration_frames: int,
-        fps: int
+        fps: int,
+        steps: int = LTX_STEPS,
+        cfg_scale: float = LTX_CFG_SCALE,
+        sampler: str = LTX_SAMPLER,
     ) -> Dict[str, Any]:
-        """Create a ComfyUI workflow JSON for LTX text-to-video."""
-        
-        # Basic LTX workflow structure
-        # This is a simplified version - actual ComfyUI-LTXVideo nodes may vary
+        """Create a ComfyUI workflow JSON for LTX text-to-video. Phase 2: steps=25, cfg_scale, sampler=euler."""
+        inputs: Dict[str, Any] = {
+            "text": prompt,
+            "width": width,
+            "height": height,
+            "num_frames": duration_frames,
+            "fps": fps,
+        }
+        if steps is not None:
+            inputs["steps"] = steps
+        if cfg_scale is not None:
+            inputs["cfg_scale"] = cfg_scale
+        if sampler:
+            inputs["sampler"] = sampler
         workflow = {
             "1": {
-                "inputs": {
-                    "text": prompt,
-                    "width": width,
-                    "height": height,
-                    "num_frames": duration_frames,
-                    "fps": fps
-                },
+                "inputs": inputs,
                 "class_type": "LTXTextToVideo",
                 "_meta": {"title": "LTX Text to Video"}
             },

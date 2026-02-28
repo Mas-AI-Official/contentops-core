@@ -75,29 +75,31 @@ class TTSService:
     ) -> Path:
         """Generate audio using local XTTS."""
         
-        # Try XTTS server first (common setup)
-        xtts_server_url = f"{settings.xtts_server_url}/tts_to_audio/"
+        # Try XTTS server first (common setup). Server must expose POST /tts_to_audio/ or /tts_to_audio
+        base = settings.xtts_server_url.rstrip("/")
+        urls_to_try = [f"{base}/tts_to_audio/", f"{base}/tts_to_audio"]
         
         try:
             async with httpx.AsyncClient(timeout=300.0) as client:
-                # Check if server is available
                 try:
-                    await client.get(settings.xtts_server_url, timeout=5.0)
+                    await client.get(base, timeout=5.0)
                     server_available = True
-                except:
+                except Exception:
                     server_available = False
                 
                 if server_available:
-                    # Use XTTS server
-                    speaker = speaker_wav or settings.xtts_speaker_wav
-                    response = await client.post(
-                        xtts_server_url,
-                        json={
-                            "text": text,
-                            "speaker_wav": speaker,
-                            "language": language
-                        }
-                    )
+                    speaker = speaker_wav or settings.xtts_default_speaker_wav
+                    payload = {"text": text, "speaker_wav": speaker, "language": language}
+                    response = None
+                    for url in urls_to_try:
+                        response = await client.post(url, json=payload)
+                        if response.status_code != 404:
+                            break
+                    if response and response.status_code == 404:
+                        raise Exception(
+                            "XTTS server returned 404 for TTS. The server must expose POST /tts_to_audio/ "
+                            "accepting JSON: { text, speaker_wav, language } and returning audio bytes."
+                        )
                     response.raise_for_status()
                     
                     with open(output_path, "wb") as f:
@@ -111,10 +113,15 @@ class TTSService:
         
         # Fallback: Use XTTS CLI (TTS command from coqui-ai TTS)
         try:
-            speaker_arg = []
-            if speaker_wav or settings.xtts_speaker_wav:
-                speaker_arg = ["--speaker_wav", speaker_wav or settings.xtts_speaker_wav]
-            
+            speaker_path = speaker_wav or settings.xtts_default_speaker_wav
+            if not speaker_path:
+                raise ValueError(
+                    "XTTS is a multi-speaker model and needs a reference voice. "
+                    "Set XTTS_SPEAKER_WAV in backend/.env to a path to a .wav file (10–30 sec of clear speech), "
+                    "or add daena.wav to models/xtts/voices/ or data/assets/voices/, "
+                    "or run the XTTS server (start_xtts.bat) which can use a default speaker."
+                )
+            speaker_arg = ["--speaker_wav", str(speaker_path)]
             cmd = [
                 "tts",
                 "--model_name", "tts_models/multilingual/multi-dataset/xtts_v2",
@@ -188,27 +195,24 @@ class TTSService:
         text: str,
         output_path: Path,
         niche,
-        language: str = "en"
+        language: str = "en",
+        override_voice_id: Optional[str] = None,
     ) -> Path:
         """
         Generate audio using niche-specific configuration.
-        
-        Args:
-            text: Text to convert to speech
-            output_path: Where to save the audio
-            niche: Niche object with TTS configuration
-            language: Language code
+        When override_voice_id is set (e.g. from job), use it instead of niche default.
         """
         from app.models.niche import NicheModelConfig
-        
+
         config = NicheModelConfig.from_niche(niche, settings)
-        
+        voice_id = override_voice_id if override_voice_id else config.voice_id
         return await self.generate_audio(
             text=text,
             output_path=output_path,
             provider=config.tts_provider,
-            voice_id=config.voice_id,
-            language=language
+            voice_id=voice_id,
+            speaker_wav=override_voice_id if override_voice_id else None,
+            language=language,
         )
     
     def get_audio_duration(self, audio_path: Path) -> float:

@@ -2,7 +2,7 @@ import sqlite3
 from app.core.config import settings
 
 def fix_schema():
-    db_path = settings.database_url.replace("sqlite:///", "")
+    db_path = settings.get_database_url().replace("sqlite:///", "")
     print(f"Fixing schema for DB at: {db_path}")
     
     conn = sqlite3.connect(db_path)

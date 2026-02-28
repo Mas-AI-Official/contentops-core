@@ -139,6 +139,11 @@ export default function Settings() {
               {info.note && (
                 <p className="text-xs text-gray-500 mt-1">{info.note}</p>
               )}
+              {info.fix && (
+                <p className="text-xs text-blue-700 mt-2 p-2 bg-blue-50 rounded border border-blue-100" title={info.fix}>
+                  How to configure: {info.fix}
+                </p>
+              )}
             </div>
           ))}
         </div>

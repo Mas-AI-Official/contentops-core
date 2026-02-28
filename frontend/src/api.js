@@ -6,6 +6,7 @@ const api = axios.create({
     'Content-Type': 'application/json',
   },
 })
+export { api }
 
 // Niches
 export const getNiches = () => api.get('/niches/')
@@ -36,6 +37,7 @@ export const runJob = (id) => api.post(`/jobs/${id}/run`)
 export const retryJob = (id) => api.post(`/jobs/${id}/retry`)
 export const cancelJob = (id) => api.post(`/jobs/${id}/cancel`)
 export const approveJob = (id, publish = true) => api.post(`/jobs/${id}/approve?publish=${publish}`)
+export const deleteJob = (id) => api.delete(`/jobs/${id}`)
 export const getJobLogs = (id) => api.get(`/jobs/${id}/logs`)
 
 // Videos
@@ -45,6 +47,9 @@ export const getVideoPublishes = (id) => api.get(`/videos/${id}/publishes`)
 export const getVideoMetadata = (id) => api.get(`/videos/${id}/metadata`)
 export const deleteVideo = (id, deleteFiles = false) =>
   api.delete(`/videos/${id}?delete_files=${deleteFiles}`)
+
+// Voice (XTTS / ElevenLabs)
+export const getVoices = () => api.get('/voice/voices')
 
 // Generator
 export const generateTopic = (nicheId, source = 'auto') => api.post(`/generator/topic?niche_id=${nicheId}&source=${source}`)
@@ -105,6 +110,18 @@ export const optimizeForPlatform = (videoId, platform) => api.post(`/export/opti
 })
 export const getExportDownloads = (videoId) => api.get(`/export/downloads/${videoId}`)
 
+// Trends (Trend Lab)
+export const scanTrends = (data) => api.post('/trends/scan', data)
+export const getTrendCandidates = (nicheId = null) =>
+  api.get('/trends/candidates', { params: nicheId != null ? { niche_id: nicheId } : {} })
+export const analyzeTrendCandidates = (candidateIds) =>
+  api.post('/trends/analyze', { candidate_ids: candidateIds })
+
+// Prompt Pack (Prompt Lab)
+export const generatePromptPack = (data) => api.post('/promptpack/generate', data)
+export const getPromptPacks = (params = {}) => api.get('/promptpack/', { params })
+export const getPromptPack = (id) => api.get(`/promptpack/${id}`)
+
 // Scraper
 export const scrapeTopics = (data) => api.post('/scraper/scrape', data)
 export const scrapeNiche = (slug, force = false) => api.post(`/scraper/scrape/${slug}?force=${force}`)
@@ -113,6 +130,8 @@ export const getNicheFeeds = (slug) => api.get(`/scraper/feeds/${slug}`)
 export const updateNicheFeeds = (slug, feeds) => api.put(`/scraper/feeds/${slug}`, { feeds })
 export const seedNicheFeeds = (slug) => api.post(`/scraper/seed-feeds/${slug}`)
 export const pickUnusedTopic = (slug) => api.post(`/scraper/pick-topic/${slug}`)
+export const markTopicUsed = (slug, topicId) =>
+  api.post(`/scraper/topics/${slug}/mark-used`, { topic_id: String(topicId) })
 
 // Publisher
 export const getPublishingAccounts = (platform) => api.get('/publishing/accounts', { params: { platform } })

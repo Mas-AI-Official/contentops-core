@@ -9,7 +9,7 @@ set VENV_PYTHON=%VENV_PATH%\Scripts\python.exe
 set TTS_HOME=D:\Ideas\MODELS_ROOT\xtts
 if "%XTTS_PORT%"=="" set XTTS_PORT=8020
 
-for /f %%P in ('powershell -NoProfile -Command "$p=%XTTS_PORT%; while(Get-NetTCPConnection -LocalPort $p -State Listen -ErrorAction SilentlyContinue){$p++}; $p"') do set XTTS_PORT=%%P
+for /f %%P in ('powershell -NoProfile -Command "$p=%XTTS_PORT%; while(Get-NetTCPConnection -LocalPort $p -State Listen -ErrorAction SilentlyContinue){$p++}; Write-Output $p"') do set XTTS_PORT=%%P
 
 echo ========================================
 echo   Content OPS AI - XTTS Server

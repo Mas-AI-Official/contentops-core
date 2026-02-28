@@ -41,10 +41,9 @@ async def list_promptpacks(
         query = query.where(PromptPack.niche_id == niche_id)
     if account_id:
         query = query.where(PromptPack.account_id == account_id)
-        
     query = query.order_by(PromptPack.created_at.desc()).limit(50)
-    result = session.exec(query)
-    return result.all()
+    result = await session.execute(query)
+    return list(result.scalars().all())
 
 @router.get("/{id}", response_model=PromptPack)
 async def get_promptpack(
@@ -52,7 +51,7 @@ async def get_promptpack(
     session: Session = Depends(get_async_session)
 ):
     """Get a prompt pack."""
-    pack = session.get(PromptPack, id)
+    pack = await session.get(PromptPack, id)
     if not pack:
         raise HTTPException(status_code=404, detail="PromptPack not found")
     return pack

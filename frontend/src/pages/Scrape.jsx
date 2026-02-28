@@ -3,7 +3,7 @@ import { Search, Plus, RefreshCw, Link, Database, Activity, Dna, Sparkles, Copy,
 import Card from '../components/Card'
 import Button from '../components/Button'
 import StatusBadge from '../components/StatusBadge'
-import api, { getNiches, scrapeNiche, getNicheTopics, pickUnusedTopic } from '../api'
+import api, { getNiches, scrapeNiche, getNicheTopics, markTopicUsed } from '../api'
 import { useNavigate } from 'react-router-dom'
 
 export default function ScraperDashboard() {
@@ -133,10 +133,10 @@ function TopicsTab({ niche }) {
     }
 
     const handleUseTopic = async (topic) => {
-        // We can pass topic to generator via state or localStorage
-        // Let's use localStorage for simplicity across pages
+        const slug = niche.slug || niche.id
+        const topicId = topic.id ?? topic.title
         try {
-            await pickUnusedTopic(niche.slug || niche.id, topic.id, true)
+            await markTopicUsed(slug, topicId)
         } catch (error) {
             console.warn('Could not mark topic as used:', error)
         }

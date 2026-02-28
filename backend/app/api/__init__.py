@@ -41,9 +41,11 @@ api_router.include_router(cleanup_router)
 from .trends import router as trends_router
 from .promptpack import router as promptpack_router
 from .memory import router as memory_router
+from .voice import router as voice_router
 
 api_router.include_router(trends_router)
 api_router.include_router(promptpack_router)
 api_router.include_router(memory_router)
+api_router.include_router(voice_router)
 
 __all__ = ["api_router"]

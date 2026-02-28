@@ -1,7 +1,9 @@
 """
 API routes for the video generator (test/preview functionality).
 """
-from typing import Optional
+import base64
+import json
+from typing import Optional, List
 from pathlib import Path
 from fastapi import APIRouter, Depends, HTTPException, BackgroundTasks
 from fastapi.responses import FileResponse
@@ -21,13 +23,26 @@ class GeneratePreviewRequest(BaseModel):
     niche_id: int
     topic: Optional[str] = None
     custom_script: Optional[str] = None
+    video_name: Optional[str] = None  # Display name / title for the video (manual mode)
     topic_source: Optional[str] = "auto"  # auto, rss, list, llm, trending
     video_model: Optional[str] = None
+    platform_format: Optional[str] = "9:16"  # 9:16 | 16:9 | 1:1
+    character_description: Optional[str] = None
+    start_frame_base64: Optional[str] = None
+    start_frame_filename: Optional[str] = None
+    end_frame_base64: Optional[str] = None
+    end_frame_filename: Optional[str] = None
+    scenes: Optional[List[str]] = None  # Optional scene order/prompts; if omitted, auto from script/LLM
+    voice_id: Optional[str] = None  # XTTS speaker wav path or ElevenLabs voice id; overrides niche default
+    voice_name: Optional[str] = None  # Display name (e.g. Daena)
+    count: int = 1  # Number of videos to generate (1, 2, or 3) in one go
+    target_duration_seconds: Optional[int] = None  # 20, 30, 60, 90, 120 etc.; overrides niche max
 
 
 class ScriptPreviewRequest(BaseModel):
     niche_id: int
     topic: str
+    character_description: Optional[str] = None
 
 
 @router.post("/topic")
@@ -103,17 +118,45 @@ async def generate_script_preview(
     script = await script_service.generate_with_niche_config(
         topic=request.topic,
         niche=niche,
-        target_duration=niche.max_duration_seconds
+        target_duration=niche.max_duration_seconds,
+        character_description=request.character_description,
     )
-    
     return {
         "topic": request.topic,
         "hook": script.hook,
         "body": script.body,
         "cta": script.cta,
         "full_script": script.full_script,
-        "estimated_duration": script.estimated_duration
+        "estimated_duration": script.estimated_duration,
+        "visual_cues": script.visual_cues,
     }
+
+
+def _create_one_job(session, request: GeneratePreviewRequest, niche: Niche, topic: str, index: int, total: int):
+    """Create a single job from request; topic may be suffixed for batch (e.g. 'Title (2/3)')."""
+    job_topic = topic if total <= 1 else f"{topic} ({index + 1}/{total})"
+    job = Job(
+        niche_id=request.niche_id,
+        job_type=JobType.GENERATE_ONLY,
+        topic=job_topic,
+        topic_source="generator_preview",
+        video_model=request.video_model,
+        platform_format=request.platform_format or "9:16",
+        character_description=request.character_description,
+    )
+    if request.custom_script and request.custom_script.strip():
+        job.full_script = request.custom_script.strip()
+    if request.scenes and len(request.scenes) > 0:
+        job.visual_cues = json.dumps([s.strip() for s in request.scenes if s and s.strip()])
+    if request.voice_id and request.voice_id.strip():
+        job.voice_id = request.voice_id.strip()
+    if request.voice_name and request.voice_name.strip():
+        job.voice_name = request.voice_name.strip()
+    if getattr(request, "target_duration_seconds", None) is not None and request.target_duration_seconds > 0:
+        job.target_duration_seconds = min(600, max(15, request.target_duration_seconds))
+    session.add(job)
+    session.flush()
+    return job
 
 
 @router.post("/video")
@@ -122,35 +165,64 @@ async def generate_test_video(
     background_tasks: BackgroundTasks,
     session: Session = Depends(get_async_session)
 ):
-    """Generate a test video (creates a job and runs it)."""
+    """Generate one or more test videos (creates job(s) and runs them). Use count=2 or 3 for batch."""
     niche = await session.get(Niche, request.niche_id)
     if not niche:
         raise HTTPException(status_code=404, detail="Niche not found")
     
-    # Generate topic if not provided
-    topic = request.topic
+    count = max(1, min(5, getattr(request, "count", 1)))
+    
+    # Topic (used as job/video title): video_name for manual, then topic, then fallback
+    topic = request.video_name and request.video_name.strip() or request.topic
+    if not topic and request.custom_script:
+        topic = "Manual script"
     if not topic:
         topic = await topic_service.generate_topic_auto(niche.name, niche.description or "")
     
-    # Create job
-    job = Job(
-        niche_id=request.niche_id,
-        job_type=JobType.GENERATE_ONLY,
-        topic=topic,
-        topic_source="generator_preview",
-        video_model=request.video_model
-    )
-    session.add(job)
-    await session.commit()
-    await session.refresh(job)
-    
-    # Run the job
-    background_tasks.add_task(run_job_now, job.id)
+    job_ids = []
+    for i in range(count):
+        job = _create_one_job(session, request, niche, topic, i, count)
+        await session.commit()
+        await session.refresh(job)
+        job_ids.append(job.id)
+
+        data_path = Path(settings.data_path)
+        jobs_dir = data_path / "jobs"
+        job_dir = jobs_dir / str(job.id)
+        job_dir.mkdir(parents=True, exist_ok=True)
+        assets_dir = job_dir / "assets"
+        assets_dir.mkdir(parents=True, exist_ok=True)
+        if request.start_frame_base64 and request.start_frame_filename:
+            try:
+                raw = base64.b64decode(request.start_frame_base64)
+                ext = Path(request.start_frame_filename).suffix or ".png"
+                start_path = assets_dir / f"start_frame{ext}"
+                start_path.write_bytes(raw)
+                job.start_frame_path = str(start_path.relative_to(data_path))
+                session.add(job)
+                await session.commit()
+            except Exception:
+                pass
+        if request.end_frame_base64 and request.end_frame_filename:
+            try:
+                raw = base64.b64decode(request.end_frame_base64)
+                ext = Path(request.end_frame_filename).suffix or ".png"
+                end_path = assets_dir / f"end_frame{ext}"
+                end_path.write_bytes(raw)
+                job.end_frame_path = str(end_path.relative_to(data_path))
+                session.add(job)
+                await session.commit()
+            except Exception:
+                pass
+
+        background_tasks.add_task(run_job_now, job.id)
     
     return {
-        "job_id": job.id,
+        "job_id": job_ids[0],
+        "job_ids": job_ids,
         "topic": topic,
-        "message": "Video generation started. Check job status for progress."
+        "count": len(job_ids),
+        "message": f"{len(job_ids)} video(s) queued. Check Queue for progress." if len(job_ids) > 1 else "Video generation started. Check job status for progress."
     }
 
 

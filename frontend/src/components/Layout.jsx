@@ -15,7 +15,8 @@ import {
   Box,
   TrendingUp,
   FlaskConical,
-  Brain
+  Brain,
+  Search
 } from 'lucide-react'
 
 const navigation = [
@@ -25,6 +26,7 @@ const navigation = [
   { name: 'Accounts', href: '/accounts', icon: Users },
   { name: 'Trends', href: '/trends', icon: TrendingUp },
   { name: 'Prompt Lab', href: '/promptlab', icon: FlaskConical },
+  { name: 'Research & Scrape', href: '/scrape', icon: Search },
   { name: 'Memory', href: '/memory', icon: Brain },
   { name: 'Generator', href: '/generator', icon: Wand2 },
   { name: 'Queue', href: '/queue', icon: ListTodo },

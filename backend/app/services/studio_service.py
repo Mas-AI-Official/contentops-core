@@ -78,7 +78,7 @@ class StudioService:
                     text=job.full_script or job.topic,
                     output_path=audio_file,
                     provider="xtts",
-                    speaker_wav=job.voice_id or settings.xtts_speaker_wav,
+                    speaker_wav=job.voice_id or settings.xtts_default_speaker_wav,
                 )
                 if not audio_file.exists() or audio_file.stat().st_size < 1000:
                     raise RuntimeError("Audio file missing or too small")
@@ -193,22 +193,33 @@ class StudioService:
                     generated = False
                     if settings.video_gen_provider == "ltx" and ltx_available:
                         max_retries = 2
+                        platform_format = getattr(job, "platform_format", None) or "9:16"
+                        start_path = None
+                        if getattr(job, "start_frame_path", None):
+                            start_path = (Path(settings.data_path) / job.start_frame_path).resolve()
+                            if not start_path.exists():
+                                start_path = None
+                        end_path = None
+                        if getattr(job, "end_frame_path", None):
+                            end_path = (Path(settings.data_path) / job.end_frame_path).resolve()
+                            if not end_path.exists():
+                                end_path = None
                         for attempt in range(max_retries + 1):
                             try:
-                                width = 854 if attempt == 0 else 640
-                                height = 480 if attempt == 0 else 360
-                                duration = 5 if attempt == 0 else 3
                                 logger.info(
                                     f"LTX scene {i + 1}/{scene_count} attempt {attempt + 1}: {(prompt_str or '')[:80]}"
                                 )
                                 await ltx_service.generate_video_from_text(
                                     text=prompt_str,
                                     output_path=clip_path,
-                                    width=width,
-                                    height=height,
-                                    duration_seconds=duration,
-                                    fps=24,
+                                    width=704,
+                                    height=1216,
+                                    duration_seconds=5,
+                                    fps=25,
                                     model_name=getattr(job, "video_model", None),
+                                    platform_format=platform_format,
+                                    start_frame_path=start_path if attempt == 0 else None,
+                                    end_frame_path=end_path if attempt == 0 else None,
                                 )
                                 if clip_path.exists() and clip_path.stat().st_size > 1000:
                                     generated = True

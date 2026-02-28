@@ -160,6 +160,19 @@ async def seed_niche_feeds(niche_slug: str, niche_name: Optional[str] = None):
         raise HTTPException(status_code=500, detail="Failed to seed feeds")
 
 
+class MarkTopicUsedBody(BaseModel):
+    topic_id: str
+
+
+@router.post("/topics/{niche_slug}/mark-used")
+async def mark_topic_used(niche_slug: str, body: MarkTopicUsedBody):
+    """Mark a specific topic as used."""
+    ok = scraper_service.mark_topic_used(niche_slug, body.topic_id)
+    if not ok:
+        raise HTTPException(status_code=500, detail="Failed to mark topic as used")
+    return {"marked_used": True, "topic_id": body.topic_id}
+
+
 @router.post("/pick-topic/{niche_slug}")
 async def pick_unused_topic(niche_slug: str):
     """Pick an unused topic from a niche and mark it as used."""

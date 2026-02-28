@@ -5,11 +5,13 @@ Runs every 4 hours to identified trends and queue new jobs.
 import asyncio
 import time
 from loguru import logger
+from app.db import create_db_and_tables
 from app.services.trend_hunter_service import trend_hunter_service
 from app.core.config import settings
 
 async def main():
     logger.info("Trend Hunter Worker starting...")
+    create_db_and_tables()
     
     interval = 4 * 3600 # 4 hours
     

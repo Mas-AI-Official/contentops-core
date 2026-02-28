@@ -35,7 +35,7 @@ class RenderConfig:
     
     # Visuals
     background_video: Optional[Path] = None
-    background_color: str = "#000000"
+    background_color: str = "#1a1a2e"  # Dark blue-gray when no LTX/stock video (avoids pure black)
     
     # Subtitles
     subtitle_path: Optional[Path] = None
@@ -75,11 +75,16 @@ class RenderService:
         output_path = Path(config.output_path)
         output_path.parent.mkdir(parents=True, exist_ok=True)
         
-        # Use LTX if enabled and script provided
-        if (settings.video_gen_provider == "ltx" and script_text and 
-            LTX_AVAILABLE and ltx_service):
+        # Use LTX when: provider is ltx OR user selected a model in Generator (script + model = real video)
+        use_ltx = (
+            script_text
+            and (settings.video_gen_provider == "ltx" or config.video_model)
+            and LTX_AVAILABLE
+            and ltx_service
+        )
+        if use_ltx:
             try:
-                logger.info("Using LTX for video generation...")
+                logger.info("Using LTX for video generation (script + model)...")
                 # Generate base video with LTX
                 ltx_output = output_path.parent / f"{output_path.stem}_ltx.mp4"
                 
@@ -177,7 +182,11 @@ class RenderService:
                 f"crop={config.width}:{config.height},setsar=1[bg]"
             )
         else:
-            # Create solid color background
+            # No LTX or stock video: use solid color (audio + subtitles will still show)
+            logger.warning(
+                "No background video (LTX failed or disabled, no stock videos). "
+                "Using color canvas. Set VIDEO_GEN_PROVIDER=ltx and ensure LTX model exists, or add videos to data/assets/stock/."
+            )
             cmd.extend([
                 "-f", "lavfi",
                 "-i", f"color=c={config.background_color}:s={config.width}x{config.height}:r={config.fps}"
@@ -222,18 +231,19 @@ class RenderService:
             filter_complex.append(f"{current_video}[logo_scaled]overlay={pos}[with_logo]")
             current_video = "[with_logo]"
         
-        # Add subtitles
+        # Add subtitles (small font at bottom so they don't cover the picture)
         if config.burn_subtitles and config.subtitle_path and Path(config.subtitle_path).exists():
-            subtitle_path = str(config.subtitle_path).replace("\\", "/").replace(":", "\\:")
-            
-            # Check if ASS or SRT
-            if str(config.subtitle_path).endswith(".ass"):
-                filter_complex.append(f"{current_video}ass='{subtitle_path}'[with_subs]")
+            sub_path = Path(config.subtitle_path)
+            # FFmpeg on Windows: use forward slashes and escape backslashes/colons in filter
+            subtitle_path_esc = str(sub_path.resolve()).replace("\\", "/").replace(":", "\\:")
+            if str(sub_path).endswith(".ass"):
+                filter_complex.append(f"{current_video}ass='{subtitle_path_esc}'[with_subs]")
             else:
+                # Force small text: FontSize=12, bottom center, margin from edge
                 filter_complex.append(
-                    f"{current_video}subtitles='{subtitle_path}':force_style="
-                    f"'FontSize=24,PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,Outline=2,"
-                    f"Alignment=2,MarginV=80'[with_subs]"
+                    f"{current_video}subtitles='{subtitle_path_esc}':force_style="
+                    f"'FontSize=12,PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,Outline=2,"
+                    f"Alignment=2,MarginV=40'[with_subs]"
                 )
             current_video = "[with_subs]"
         

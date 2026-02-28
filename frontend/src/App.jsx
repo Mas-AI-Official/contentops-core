@@ -13,6 +13,7 @@ import Models from './pages/Models'
 import Scripts from './pages/Scripts'
 import Trends from './pages/Trends'
 import PromptLab from './pages/PromptLab'
+import Scrape from './pages/Scrape'
 import Memory from './pages/Memory'
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
         <Route path="/settings" element={<Settings />} />
         <Route path="/trends" element={<Trends />} />
         <Route path="/promptlab" element={<PromptLab />} />
+        <Route path="/scrape" element={<Scrape />} />
         <Route path="/memory" element={<Memory />} />
       </Routes>
     </Layout>

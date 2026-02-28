@@ -53,5 +53,5 @@ async def list_candidates(
     if niche_id:
         query = query.where(TrendCandidate.niche_id == niche_id)
     query = query.order_by(TrendCandidate.discovered_at.desc()).limit(100)
-    result = session.exec(query)
-    return result.all()
+    result = await session.execute(query)
+    return list(result.scalars().all())

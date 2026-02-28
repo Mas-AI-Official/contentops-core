@@ -61,6 +61,9 @@ class SettingsResponse(BaseModel):
     ltx_repo_path: Optional[str]
     ltx_use_fp8: bool
     
+    # Generation mode
+    generation_mode: str  # review_first | auto_publish
+
     # Worker
     worker_enabled: bool
     worker_interval_seconds: int
@@ -133,6 +136,7 @@ async def get_settings():
         ltx_model_path=str(settings.ltx_model_path) if settings.ltx_model_path else None,
         ltx_repo_path=str(settings.ltx_repo_path) if settings.ltx_repo_path else None,
         ltx_use_fp8=settings.ltx_use_fp8,
+        generation_mode=getattr(settings, "generation_mode", "review_first"),
         worker_enabled=settings.worker_enabled,
         worker_interval_seconds=settings.worker_interval_seconds,
         max_concurrent_jobs=settings.max_concurrent_jobs,
@@ -352,7 +356,11 @@ async def check_services():
         except Exception as e:
             results["hf_router"] = {"status": "error", "error": str(e)}
     else:
-        results["hf_router"] = {"status": "not_configured", "note": "HF Router is not the active LLM provider"}
+        results["hf_router"] = {
+            "status": "not_configured",
+            "note": "HF Router is not the active LLM provider",
+            "fix": "In backend/.env set LLM_PROVIDER=hf_router, HF_ROUTER_BASE_URL, and HF_ROUTER_API_KEY (or HF_TOKEN)."
+        }
     
     # Check FFmpeg
     try:
@@ -396,11 +404,14 @@ async def check_services():
                         "note": "XTTS server not running, CLI fallback available"
                     }
                 else:
-                    results["xtts_server"] = {"status": "not_available"}
+                    results["xtts_server"] = {"status": "not_available", "fix": "Run start_xtts.bat for server, or install TTS (pip install TTS) and set XTTS_SPEAKER_WAV for CLI."}
             except:
-                results["xtts_server"] = {"status": "not_available", "note": "Neither server nor CLI found"}
+                results["xtts_server"] = {"status": "not_available", "note": "Neither server nor CLI found", "fix": "Run start_xtts.bat or set XTTS_SPEAKER_WAV and install TTS."}
     else:
-        results["xtts_server"] = {"status": "disabled"}
+        results["xtts_server"] = {
+            "status": "disabled",
+            "fix": "In backend/.env set XTTS_ENABLED=true and either XTTS_SERVER_URL (e.g. http://localhost:8020) or XTTS_SPEAKER_WAV path to a .wav for CLI."
+        }
     
     # Check ElevenLabs
     if settings.elevenlabs_api_key:
@@ -418,7 +429,10 @@ async def check_services():
         except Exception as e:
             results["elevenlabs"] = {"status": "error", "error": str(e)}
     else:
-        results["elevenlabs"] = {"status": "not_configured"}
+        results["elevenlabs"] = {
+            "status": "not_configured",
+            "fix": "Optional: set ELEVENLABS_API_KEY in backend/.env for cloud TTS fallback."
+        }
 
     # MCP status
     connector_count = 0
@@ -435,15 +449,23 @@ async def check_services():
     }
 
     # LTX video status (optional)
-    if settings.video_gen_provider == "ltx" and settings.ltx_api_url:
-        try:
-            async with httpx.AsyncClient(timeout=5.0) as client:
-                response = await client.get(settings.ltx_api_url)
-                results["ltx_video"] = {"status": "running" if response.status_code < 400 else "error", "url": settings.ltx_api_url}
-        except Exception as e:
-            results["ltx_video"] = {"status": "not_running", "error": str(e)}
+    if settings.video_gen_provider == "ltx":
+        if settings.ltx_api_url:
+            try:
+                async with httpx.AsyncClient(timeout=5.0) as client:
+                    response = await client.get(settings.ltx_api_url)
+                    results["ltx_video"] = {"status": "running" if response.status_code < 400 else "error", "url": settings.ltx_api_url}
+            except Exception as e:
+                results["ltx_video"] = {"status": "not_running", "error": str(e)}
+        else:
+            # Direct Python mode (no ComfyUI)
+            results["ltx_video"] = {"status": "configured", "note": "LTX direct mode (set LTX_MODEL_PATH or MODELS_ROOT for model dir)"}
     else:
-        results["ltx_video"] = {"status": "not_configured"}
+        results["ltx_video"] = {
+            "status": "not_configured",
+            "note": "LTX is not the active video provider.",
+            "fix": "In backend/.env set VIDEO_GEN_PROVIDER=ltx. Optionally set LTX_MODEL_PATH or MODELS_ROOT so LTX finds .safetensors; or LTX_API_URL for ComfyUI."
+        }
     
     return results
 
@@ -491,6 +513,7 @@ TTS_PROVIDER=xtts
 XTTS_ENABLED=true
 XTTS_SERVER_URL=http://localhost:8020
 # XTTS_SPEAKER_WAV=path/to/speaker.wav
+# XTTS_DAENA_VOICE_WAV=path/to/daena.wav  (optional; or place daena.wav in models/xtts/voices/)
 XTTS_LANGUAGE=en
 
 # ElevenLabs (optional fallback)
