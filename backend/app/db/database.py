@@ -32,9 +32,10 @@ AsyncSessionLocal = sessionmaker(
 
 
 def create_db_and_tables():
-    """Create all database tables."""
+    """Create all database tables. Import all models first so FK dependencies are registered in order."""
+    # Ensure all models are loaded (Account/accounts before NicheTarget/niche_targets, etc.)
+    import app.models  # noqa: F401
     SQLModel.metadata.create_all(sync_engine)
-    
     # Run migrations for existing tables
     from app.db.migrations import run_migrations
     run_migrations()

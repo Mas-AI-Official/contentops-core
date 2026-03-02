@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react'
 import { CheckCircle, XCircle, AlertCircle, Copy, RefreshCw, FolderOpen, HardDrive } from 'lucide-react'
 import Card from '../components/Card'
 import Button from '../components/Button'
-import { getSettings, checkPaths, checkServices, getEnvTemplate } from '../api'
-import api from '../api'
+import { getSettings, checkPaths, checkServices, getEnvTemplate, patchSubtitles } from '../api'
+import { api } from '../api'
 
 export default function Settings() {
   const [settings, setSettings] = useState(null)
@@ -13,6 +13,8 @@ export default function Settings() {
   const [envTemplate, setEnvTemplate] = useState('')
   const [loading, setLoading] = useState(true)
   const [copied, setCopied] = useState(false)
+  const [subtitleDraft, setSubtitleDraft] = useState({ enabled: false, fontSize: 12, fontName: 'Arial' })
+  const [subtitleSaving, setSubtitleSaving] = useState(false)
 
   useEffect(() => {
     loadData()
@@ -29,6 +31,14 @@ export default function Settings() {
         api.get('/cleanup/stats')
       ])
       setSettings({ ...settingsRes.data, storage_stats: storageRes.data })
+      const s = settingsRes.data
+      if (s) {
+        setSubtitleDraft({
+          enabled: !!s.subtitle_enabled,
+          fontSize: s.subtitle_font_size ?? 12,
+          fontName: s.subtitle_font_name || 'Arial',
+        })
+      }
       setPaths(pathsRes.data)
       setServices(servicesRes.data)
       setEnvTemplate(envRes.data.template)
@@ -308,6 +318,66 @@ export default function Settings() {
                   <span className="text-gray-500">Compute Type</span>
                   <span className="text-gray-900">{settings.whisper_compute_type}</span>
                 </div>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="font-medium text-gray-900 mb-3">Subtitles (burned into video)</h4>
+              <div className="space-y-3 text-sm">
+                <div className="flex items-center justify-between gap-4">
+                  <span className="text-gray-500">Enabled</span>
+                  <label className="relative inline-flex items-center cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={subtitleDraft.enabled}
+                      onChange={(e) => setSubtitleDraft(d => ({ ...d, enabled: e.target.checked }))}
+                      className="sr-only peer"
+                    />
+                    <div className="w-11 h-6 bg-gray-200 peer-focus:ring-2 peer-focus:ring-primary-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600" />
+                    <span className="ms-2 text-gray-600">{subtitleDraft.enabled ? 'On' : 'Off'}</span>
+                  </label>
+                </div>
+                <div className="flex items-center justify-between gap-4">
+                  <span className="text-gray-500">Font size</span>
+                  <input
+                    type="number"
+                    min={8}
+                    max={72}
+                    value={subtitleDraft.fontSize}
+                    onChange={(e) => setSubtitleDraft(d => ({ ...d, fontSize: parseInt(e.target.value, 10) || 12 }))}
+                    className="w-20 px-2 py-1 border rounded-lg"
+                  />
+                </div>
+                <div className="flex items-center justify-between gap-4">
+                  <span className="text-gray-500">Font</span>
+                  <input
+                    type="text"
+                    value={subtitleDraft.fontName}
+                    onChange={(e) => setSubtitleDraft(d => ({ ...d, fontName: e.target.value || 'Arial' }))}
+                    placeholder="Arial"
+                    className="max-w-[140px] px-2 py-1 border rounded-lg"
+                  />
+                </div>
+                <Button
+                  size="sm"
+                  loading={subtitleSaving}
+                  onClick={async () => {
+                    setSubtitleSaving(true)
+                    try {
+                      const res = await patchSubtitles({
+                        subtitle_enabled: subtitleDraft.enabled,
+                        subtitle_font_size: subtitleDraft.fontSize,
+                        subtitle_font_name: subtitleDraft.fontName,
+                      })
+                      setSettings(prev => prev ? { ...prev, ...res.data } : res.data)
+                    } finally {
+                      setSubtitleSaving(false)
+                    }
+                  }}
+                >
+                  Save subtitle settings
+                </Button>
+                <p className="text-xs text-gray-500">Saved to data/user_settings.json. Applies to all videos. No restart needed.</p>
               </div>
             </div>
 

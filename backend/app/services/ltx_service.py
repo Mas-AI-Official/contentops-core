@@ -29,16 +29,26 @@ LTX_CFG_SCALE = 3.5
 LTX_CFG_SCALE_WITH_START_FRAME = 3.0  # Lower to preserve character consistency
 LTX_SAMPLER = "euler"
 
-# Try to import LTX-2 Python package
+# Try to import LTX-2 Python package (preferred), then fallback to diffusers
 try:
     from ltx_pipelines import DistilledPipeline, TI2VidOneStagePipeline
     from ltx_core import LTXModel
     LTX_DIRECT_AVAILABLE = True
+    LTX_DIFFUSERS_MODE = False
 except ImportError:
-    LTX_DIRECT_AVAILABLE = False
     DistilledPipeline = None
     TI2VidOneStagePipeline = None
     LTXModel = None
+    # Fallback: use diffusers LTXPipeline (available in diffusers >= 0.32)
+    try:
+        from diffusers import LTXPipeline as _DiffusersLTXPipeline
+        LTX_DIRECT_AVAILABLE = True
+        LTX_DIFFUSERS_MODE = True
+        logger.info("Using diffusers LTXPipeline for video generation (ltx_pipelines not installed)")
+    except ImportError:
+        LTX_DIRECT_AVAILABLE = False
+        LTX_DIFFUSERS_MODE = False
+        _DiffusersLTXPipeline = None
 
 
 class LTXService:
@@ -93,10 +103,14 @@ class LTXService:
         height: int,
         start_frame_path: Optional[Path],
     ) -> Tuple[int, int, float]:
-        """Resolve (width, height) to LTX-safe multiples of 32 and cfg_scale."""
+        """Resolve (width, height) to LTX-safe multiples of 32 (required or latent collapses to black)."""
         if platform_format and platform_format in PLATFORM_DIMENSIONS:
             w, h = PLATFORM_DIMENSIONS[platform_format]
             width, height = w, h
+        else:
+            # Clamp to multiples of 32 so LTX never gets invalid math
+            width = max(32, (width // 32) * 32)
+            height = max(32, (height // 32) * 32)
         cfg = LTX_CFG_SCALE_WITH_START_FRAME if (start_frame_path and start_frame_path.exists()) else LTX_CFG_SCALE
         return width, height, cfg
 
@@ -229,23 +243,33 @@ class LTXService:
         is_ltx2 = model_type == "ltx2"
         
         loop = asyncio.get_event_loop()
-        result = await loop.run_in_executor(
-            None,
-            self._run_ltx_inference,
-            checkpoint_path,
-            prompt or text,
-            output_path,
-            width,
-            height,
-            num_frames,
-            fps,
-            use_distilled,
-            is_ltx2,
-            start_frame_path,
-            steps,
-            cfg_scale,
-            sampler,
-        )
+        try:
+            result = await asyncio.wait_for(
+                loop.run_in_executor(
+                    None,
+                    self._run_ltx_inference,
+                    checkpoint_path,
+                    prompt or text,
+                    output_path,
+                    width,
+                    height,
+                    num_frames,
+                    fps,
+                    use_distilled,
+                    is_ltx2,
+                    start_frame_path,
+                    steps,
+                    cfg_scale,
+                    sampler,
+                ),
+                timeout=float(settings.ltx_clip_timeout),
+            )
+        except asyncio.TimeoutError:
+            logger.error(f"LTX direct inference timed out after {settings.ltx_clip_timeout}s")
+            raise RuntimeError(
+                f"LTX video generation timed out after {settings.ltx_clip_timeout}s. "
+                "Consider increasing LTX_CLIP_TIMEOUT in .env or using ComfyUI mode."
+            )
         return result
 
     def _run_ltx_inference(
@@ -269,7 +293,27 @@ class LTXService:
 
         try:
             device = "cuda" if torch.cuda.is_available() else "cpu"
-            if is_ltx2:
+            if LTX_DIFFUSERS_MODE:
+                # Use diffusers LTXPipeline (fallback when ltx_pipelines not installed)
+                logger.info(f"Loading LTX-2 via diffusers on {device}...")
+                from diffusers import LTXPipeline as _DiffPipeline
+                import torch as _torch
+                dtype = _torch.float16 if device == "cuda" else _torch.float32
+                try:
+                    # Try loading from single file (safetensors checkpoint)
+                    pipeline = _DiffPipeline.from_single_file(
+                        str(checkpoint_path),
+                        torch_dtype=dtype,
+                    )
+                except Exception:
+                    # Try loading from directory (pretrained format)
+                    pipeline = _DiffPipeline.from_pretrained(
+                        str(checkpoint_path.parent),
+                        torch_dtype=dtype,
+                    )
+                pipeline = pipeline.to(device)
+                logger.info("LTX-2 loaded via diffusers pipeline")
+            elif is_ltx2:
                 logger.info(f"Loading LTX-2 model on {device}...")
                 
                 # Use DistilledPipeline for speed (8GB VRAM) - LTX-2 only
@@ -293,8 +337,6 @@ class LTXService:
                 logger.warning(f"Loading legacy LTX model on {device}...")
                 logger.warning("Legacy LTX has limited features. Consider upgrading to LTX-2.")
                 
-                # Legacy models may need ComfyUI API instead
-                # For now, try to use one-stage pipeline if available
                 if TI2VidOneStagePipeline:
                     try:
                         pipeline = TI2VidOneStagePipeline.from_pretrained(
@@ -312,33 +354,70 @@ class LTXService:
                     raise ValueError("LTX-2 package not installed. Legacy models require ComfyUI API.")
             
             logger.info(f"Generating {num_frames} frames (steps={steps}, cfg_scale={cfg_scale}, sampler={sampler})...")
-            call_kw: Dict[str, Any] = {
-                "prompt": prompt,
-                "width": width,
-                "height": height,
-                "num_frames": num_frames,
-                "fps": fps,
-                "enable_fp8": True,
-            }
-            try:
+            
+            # Build call parameters — diffusers uses different parameter names
+            if LTX_DIFFUSERS_MODE:
+                call_kw: Dict[str, Any] = {
+                    "prompt": prompt,
+                    "width": width,
+                    "height": height,
+                    "num_frames": num_frames,
+                    "num_inference_steps": steps,
+                    "guidance_scale": cfg_scale,
+                }
+            else:
+                call_kw: Dict[str, Any] = {
+                    "prompt": prompt,
+                    "width": width,
+                    "height": height,
+                    "num_frames": num_frames,
+                    "fps": fps,
+                    "enable_fp8": True,
+                }
                 for key, val in [("steps", steps), ("cfg_scale", cfg_scale), ("sampler", sampler)]:
                     call_kw[key] = val
+            
+            try:
                 output = pipeline(**call_kw)
-            except TypeError:
-                call_kw.pop("steps", None)
-                call_kw.pop("cfg_scale", None)
-                call_kw.pop("sampler", None)
+            except TypeError as te:
+                # Remove unsupported kwargs and retry
+                logger.warning(f"Pipeline call failed with kwargs, retrying with fewer: {te}")
+                for key in ["steps", "cfg_scale", "sampler", "enable_fp8", "fps"]:
+                    call_kw.pop(key, None)
                 output = pipeline(**call_kw)
             
             # Save video
             output_path.parent.mkdir(parents=True, exist_ok=True)
             
-            # LTX-2 pipeline outputs vary by pipeline type
-            # DistilledPipeline and TI2VidOneStagePipeline typically return video tensors
-            # Convert to video file
             try:
-                # Try pipeline's built-in save method
-                if hasattr(output, 'save'):
+                # Diffusers LTXPipeline returns output.frames (list of lists of PIL images)
+                if hasattr(output, 'frames') and output.frames is not None:
+                    import numpy as np
+                    import imageio
+                    frames_data = output.frames
+                    # frames can be list of lists of PIL images, or numpy array
+                    if isinstance(frames_data, list) and len(frames_data) > 0:
+                        if isinstance(frames_data[0], list):
+                            frames_data = frames_data[0]  # Unwrap batch dim
+                        # Convert PIL images to numpy
+                        from PIL import Image
+                        np_frames = []
+                        for f in frames_data:
+                            if hasattr(f, 'convert'):  # PIL Image
+                                np_frames.append(np.array(f))
+                            elif isinstance(f, np.ndarray):
+                                np_frames.append(f)
+                        if np_frames:
+                            imageio.mimwrite(str(output_path), np_frames, fps=fps, codec='libx264')
+                            logger.info(f"Saved {len(np_frames)} frames via diffusers output")
+                    elif isinstance(frames_data, np.ndarray):
+                        if frames_data.ndim == 5:
+                            frames_data = frames_data[0]  # Remove batch dim
+                        if frames_data.dtype != np.uint8:
+                            frames_data = (frames_data * 255).astype(np.uint8)
+                        imageio.mimwrite(str(output_path), frames_data, fps=fps, codec='libx264')
+                # ltx_pipelines: try built-in save methods
+                elif hasattr(output, 'save'):
                     output.save(str(output_path))
                 elif hasattr(pipeline, 'save_video'):
                     pipeline.save_video(output, str(output_path), fps=fps)
@@ -346,10 +425,8 @@ class LTXService:
                     # Manual conversion: tensor/array to video
                     import torch
                     import numpy as np
-                    from PIL import Image
                     import imageio
                     
-                    # Convert tensor to numpy if needed
                     if isinstance(output, torch.Tensor):
                         frames = output.cpu().numpy()
                     elif isinstance(output, np.ndarray):
@@ -357,11 +434,9 @@ class LTXService:
                     else:
                         frames = [output] if not isinstance(output, list) else output
                     
-                    # Normalize to 0-255 uint8
-                    if frames.dtype != np.uint8:
+                    if hasattr(frames, 'dtype') and frames.dtype != np.uint8:
                         frames = (frames * 255).astype(np.uint8)
                     
-                    # Save as video
                     imageio.mimwrite(str(output_path), frames, fps=fps, codec='libx264')
                     
             except Exception as save_error:

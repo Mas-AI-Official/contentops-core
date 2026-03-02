@@ -153,7 +153,7 @@ class JobWorker:
         session.commit()
         
         if job.full_script and job.full_script.strip():
-            self._log(session, job_id, "INFO", "Using manual script (no LLM expansion)")
+            self._log(session, job_id, "INFO", "Using your script (no LLM expansion)")
             script_hook = ""
             script_body = job.full_script.strip()
             script_cta = ""
@@ -233,6 +233,9 @@ class JobWorker:
         session.commit()
         self._log(session, job_id, "INFO", "Generating audio...")
         
+        # Unload Ollama from VRAM before TTS (XTTS needs GPU memory)
+        await self._ollama_unload_vram()
+        
         audio_path = outputs_dir / "narration.wav"
         await tts_service.generate_with_niche_config(
             text=job.full_script,
@@ -266,6 +269,9 @@ class JobWorker:
         
         self._log(session, job_id, "INFO", "Subtitles generated")
         
+        # Flush Ollama from VRAM before LTX (avoids silent crash when LTX needs ~25GB)
+        await self._ollama_unload_vram()
+        
         # Step 4: Render video
         job.status = JobStatus.RENDERING
         job.progress_percent = 70
@@ -281,6 +287,20 @@ class JobWorker:
         
         video_path = outputs_dir / f"{job_id}_final.mp4"
         
+        from app.core.user_overrides import get_subtitle_overrides
+        sub_overrides = get_subtitle_overrides(settings.data_path)
+        subtitle_enabled = sub_overrides.get("subtitle_enabled", getattr(settings, "subtitle_enabled", False))
+        start_frame_path = None
+        end_frame_path = None
+        data_path = Path(settings.data_path)
+        if getattr(job, "start_frame_path", None):
+            p = (data_path / job.start_frame_path).resolve()
+            if p.exists():
+                start_frame_path = p
+        if getattr(job, "end_frame_path", None):
+            p = (data_path / job.end_frame_path).resolve()
+            if p.exists():
+                end_frame_path = p
         render_config = RenderConfig(
             width=settings.default_video_width,
             height=settings.default_video_height,
@@ -290,10 +310,15 @@ class JobWorker:
             bg_music_volume=settings.default_bg_music_volume,
             background_video=bg_video,
             subtitle_path=subtitle_path,
-            burn_subtitles=True,
+            burn_subtitles=subtitle_enabled,
+            subtitle_font_size=sub_overrides.get("subtitle_font_size", getattr(settings, "subtitle_font_size", 12)),
+            subtitle_font_name=sub_overrides.get("subtitle_font_name", getattr(settings, "subtitle_font_name", "Arial") or "Arial"),
             logo_path=logo,
             output_path=video_path,
-            video_model=job.video_model  # Pass LTX model selection
+            video_model=job.video_model,
+            platform_format=getattr(job, "platform_format", None) or "9:16",
+            start_frame_path=start_frame_path,
+            end_frame_path=end_frame_path,
         )
         
         await render_service.render_video(render_config, script_text=job.full_script)
@@ -409,6 +434,29 @@ class JobWorker:
         
         for platform, result in results.items():
             self._log(session, job_id, "INFO", f"{platform}: {result.status.value} - {result.message}")
+    
+    async def _ollama_unload_vram(self):
+        """Unload Ollama models from GPU (keep_alive=0) so LTX has VRAM. Prevents silent crash when LTX needs ~25GB."""
+        if (getattr(settings, "llm_provider", None) or "ollama").lower() != "ollama":
+            return
+        base = getattr(settings, "ollama_base_url", None) or "http://localhost:11434"
+        models_to_unload = [
+            getattr(settings, "ollama_model", "qwen2.5:14b-instruct"),
+            getattr(settings, "ollama_fast_model", "qwen2.5:7b-instruct"),
+        ]
+        try:
+            import httpx
+            async with httpx.AsyncClient(timeout=10.0) as client:
+                for model in models_to_unload:
+                    try:
+                        await client.post(
+                            f"{base.rstrip('/')}/api/generate",
+                            json={"model": model, "keep_alive": 0},
+                        )
+                    except Exception as e:
+                        logger.debug(f"Ollama unload {model}: {e}")
+        except Exception as e:
+            logger.warning(f"Ollama VRAM flush skipped: {e}")
     
     def _fail_job(self, session: Session, job: Job, error: str):
         """Mark a job as failed."""

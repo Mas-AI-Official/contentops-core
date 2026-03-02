@@ -58,13 +58,17 @@ echo.
 
 REM Set environment variables for TTS
 set TTS_HOME=D:\Ideas\MODELS_ROOT\xtts
+set XTTS_VOICES_ROOT=%TTS_HOME%\voices
 set COQUI_TOS_AGREED=1
 set TORCHAUDIO_BACKEND=soundfile
-"%VENV_PYTHON%" -m TTS.server.server --model_path D:\Ideas\MODELS_ROOT\xtts --config_path D:\Ideas\MODELS_ROOT\xtts\config.json --port %XTTS_PORT% --use_cuda false
+REM Content Factory server exposes POST /tts_to_audio (backend expects this). Coqui TTS.server.server only has /api/tts and no speaker_wav.
+cd /d "%ROOT%"
+REM Using CUDA to vastly dramatically speed up generation times now that PyTorch + CUDA is installed
+"%VENV_PYTHON%" xtts_server.py --model_path "%TTS_HOME%" --config_path "%TTS_HOME%\config.json" --port %XTTS_PORT% --use_cuda
 
 if %errorlevel% neq 0 (
     echo.
     echo Server stopped with error.
-    echo If CUDA is unavailable, keep '--use_cuda false' (already set by default).
+    echo To use GPU, add --use_cuda to the xtts_server.py command in this bat.
     pause
 )

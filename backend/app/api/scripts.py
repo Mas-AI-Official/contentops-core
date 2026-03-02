@@ -83,3 +83,14 @@ async def get_script_niches():
     """Get list of niches that have scripts."""
     stats = script_storage.get_scripts_stats()
     return {"niches": list(stats.get("by_niche", {}).keys())}
+
+
+@router.delete("/")
+async def delete_script(path: str = Query(..., description="Script folder path (as returned in list)")):
+    """Delete a stored script by its path."""
+    if not path or not path.strip():
+        raise HTTPException(status_code=400, detail="path is required")
+    deleted = script_storage.delete_script(path.strip())
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Script not found or could not be deleted")
+    return {"ok": True, "path": path}

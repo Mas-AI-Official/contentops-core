@@ -37,9 +37,11 @@ class RenderConfig:
     background_video: Optional[Path] = None
     background_color: str = "#1a1a2e"  # Dark blue-gray when no LTX/stock video (avoids pure black)
     
-    # Subtitles
+    # Subtitles (when burn_subtitles=True, use font_size and font_name)
     subtitle_path: Optional[Path] = None
-    burn_subtitles: bool = True
+    burn_subtitles: bool = False
+    subtitle_font_size: int = 12
+    subtitle_font_name: str = "Arial"
     
     # Watermark
     logo_path: Optional[Path] = None
@@ -50,8 +52,11 @@ class RenderConfig:
     output_path: Optional[Path] = None
     quality_preset: str = "medium"  # ultrafast, fast, medium, slow
 
-    # LTX model selection
-    video_model: Optional[str] = None  # LTX model filename
+    # LTX: model and aspect (9:16, 16:9, 1:1) for 32-multiple resolution
+    video_model: Optional[str] = None
+    platform_format: Optional[str] = None  # "9:16" | "16:9" | "1:1"
+    start_frame_path: Optional[Path] = None  # for LTX character consistency
+    end_frame_path: Optional[Path] = None
 
 
 class RenderService:
@@ -76,35 +81,46 @@ class RenderService:
         output_path.parent.mkdir(parents=True, exist_ok=True)
         
         # Use LTX when: provider is ltx OR user selected a model in Generator (script + model = real video)
+        video_model = (config.video_model or "").strip() or None  # treat empty string as None for auto-select
         use_ltx = (
             script_text
-            and (settings.video_gen_provider == "ltx" or config.video_model)
+            and (settings.video_gen_provider == "ltx" or video_model)
             and LTX_AVAILABLE
             and ltx_service
         )
+        if not use_ltx and script_text:
+            if not LTX_AVAILABLE or not ltx_service:
+                logger.info("LTX skipped: LTX not available (install ltx_pipelines or set VIDEO_GEN_PROVIDER=ltx and add model to MODELS_ROOT/ltx)")
+            elif settings.video_gen_provider != "ltx" and not video_model:
+                logger.info("LTX skipped: set VIDEO_GEN_PROVIDER=ltx in .env or select a Video Model in Generator to use LTX")
         if use_ltx:
             try:
                 logger.info("Using LTX for video generation (script + model)...")
-                # Generate base video with LTX
                 ltx_output = output_path.parent / f"{output_path.stem}_ltx.mp4"
-                
-                # Get audio duration for LTX clip length
-                audio_duration = 5  # default
+                audio_duration = 5
                 if config.audio_path and Path(config.audio_path).exists():
                     audio_duration = self.get_audio_duration(config.audio_path)
-                
-                # Limit to 5 seconds for 8GB VRAM
                 ltx_duration = min(int(audio_duration), 5)
-                
+                # LTX math: resolution must be multiple of 32; frame count 8n+1 (129). Pass platform so we get 704x1216.
+                platform_format = getattr(config, "platform_format", None) or "9:16"
+                start_f = Path(config.start_frame_path) if getattr(config, "start_frame_path", None) else None
+                end_f = Path(config.end_frame_path) if getattr(config, "end_frame_path", None) else None
+                if start_f and not start_f.exists():
+                    start_f = None
+                if end_f and not end_f.exists():
+                    end_f = None
                 await ltx_service.generate_video_from_text(
                     text=script_text,
                     output_path=ltx_output,
-                    prompt=None,  # Use text as prompt
-                    width=854,  # 480p for 8GB VRAM
-                    height=480,
+                    prompt=None,
+                    width=704,
+                    height=1216,
                     duration_seconds=ltx_duration,
                     fps=24,
-                    model_name=config.video_model  # Use selected model
+                    model_name=video_model,
+                    platform_format=platform_format,
+                    start_frame_path=start_f,
+                    end_frame_path=end_f,
                 )
                 
                 # Now composite with FFmpeg: add audio, subtitles, logo, music
@@ -231,18 +247,18 @@ class RenderService:
             filter_complex.append(f"{current_video}[logo_scaled]overlay={pos}[with_logo]")
             current_video = "[with_logo]"
         
-        # Add subtitles (small font at bottom so they don't cover the picture)
+        # Add subtitles (only if enabled; use configured size and font)
         if config.burn_subtitles and config.subtitle_path and Path(config.subtitle_path).exists():
             sub_path = Path(config.subtitle_path)
-            # FFmpeg on Windows: use forward slashes and escape backslashes/colons in filter
             subtitle_path_esc = str(sub_path.resolve()).replace("\\", "/").replace(":", "\\:")
+            font_size = max(8, min(72, getattr(config, "subtitle_font_size", 12)))
+            font_name = getattr(config, "subtitle_font_name", "Arial") or "Arial"
             if str(sub_path).endswith(".ass"):
                 filter_complex.append(f"{current_video}ass='{subtitle_path_esc}'[with_subs]")
             else:
-                # Force small text: FontSize=12, bottom center, margin from edge
                 filter_complex.append(
                     f"{current_video}subtitles='{subtitle_path_esc}':force_style="
-                    f"'FontSize=12,PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,Outline=2,"
+                    f"'FontSize={font_size},FontName={font_name},PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,Outline=2,"
                     f"Alignment=2,MarginV=40'[with_subs]"
                 )
             current_video = "[with_subs]"

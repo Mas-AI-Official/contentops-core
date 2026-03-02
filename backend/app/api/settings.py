@@ -11,8 +11,17 @@ import json
 from pathlib import Path
 
 from app.core.config import settings
+from app.core.user_overrides import get_subtitle_overrides, set_subtitle_overrides
 
 router = APIRouter(prefix="/settings", tags=["settings"])
+
+
+def _merged_subtitle(key: str, default: any) -> any:
+    """Merge user overrides with env defaults for subtitle settings."""
+    overrides = get_subtitle_overrides(settings.data_path)
+    if key in overrides:
+        return overrides[key]
+    return default
 
 
 class SettingsResponse(BaseModel):
@@ -49,6 +58,11 @@ class SettingsResponse(BaseModel):
     whisper_model: str
     whisper_device: str
     whisper_compute_type: str
+
+    # Subtitles (burned into video; default OFF)
+    subtitle_enabled: bool
+    subtitle_font_size: int
+    subtitle_font_name: str
     
     # Video defaults
     default_video_width: int
@@ -92,6 +106,29 @@ class ModelPathsResponse(BaseModel):
     torch_home: Optional[str]
 
 
+class SubtitleSettingsUpdate(BaseModel):
+    """Update subtitle burn-in settings (saved to data/user_settings.json, no restart)."""
+    subtitle_enabled: Optional[bool] = None
+    subtitle_font_size: Optional[int] = None
+    subtitle_font_name: Optional[str] = None
+
+
+@router.patch("/subtitles")
+async def update_subtitles(body: SubtitleSettingsUpdate):
+    """Update subtitle settings. Stored in data/user_settings.json; applies to all videos, no restart."""
+    overrides = set_subtitle_overrides(
+        settings.data_path,
+        subtitle_enabled=body.subtitle_enabled,
+        subtitle_font_size=body.subtitle_font_size,
+        subtitle_font_name=body.subtitle_font_name,
+    )
+    return {
+        "subtitle_enabled": overrides.get("subtitle_enabled", getattr(settings, "subtitle_enabled", False)),
+        "subtitle_font_size": overrides.get("subtitle_font_size", getattr(settings, "subtitle_font_size", 12)),
+        "subtitle_font_name": overrides.get("subtitle_font_name", getattr(settings, "subtitle_font_name", "Arial") or "Arial"),
+    }
+
+
 @router.get("/", response_model=SettingsResponse)
 async def get_settings():
     """Get current settings (excludes secrets)."""
@@ -127,6 +164,9 @@ async def get_settings():
         whisper_model=settings.whisper_model,
         whisper_device=settings.whisper_device,
         whisper_compute_type=settings.whisper_compute_type,
+        subtitle_enabled=_merged_subtitle("subtitle_enabled", getattr(settings, "subtitle_enabled", False)),
+        subtitle_font_size=_merged_subtitle("subtitle_font_size", getattr(settings, "subtitle_font_size", 12)),
+        subtitle_font_name=_merged_subtitle("subtitle_font_name", getattr(settings, "subtitle_font_name", "Arial") or "Arial"),
         default_video_width=settings.default_video_width,
         default_video_height=settings.default_video_height,
         default_video_fps=settings.default_video_fps,
@@ -527,6 +567,13 @@ XTTS_LANGUAGE=en
 WHISPER_MODEL=base
 WHISPER_DEVICE=cuda
 WHISPER_COMPUTE_TYPE=float16
+
+# ============================================
+# Subtitle burn-in (default OFF)
+# ============================================
+# SUBTITLE_ENABLED=false
+# SUBTITLE_FONT_SIZE=12
+# SUBTITLE_FONT_NAME=Arial
 
 # ============================================
 # FFmpeg Settings

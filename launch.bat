@@ -65,6 +65,8 @@ REM ==== Install Python Dependencies ====
 echo [3/6] Installing Python dependencies...
 "%VENV_PYTHON%" -m pip install --upgrade pip --quiet
 "%VENV_PIP%" install -r backend\requirements.txt
+echo Installing PyTorch with CUDA support (required for LTX video)...
+"%VENV_PIP%" install torch==2.4.0 torchvision torchaudio diffusers --index-url https://download.pytorch.org/whl/cu121 --upgrade
 if %errorlevel% neq 0 (
     echo WARNING: Some Python packages failed to install.
     echo Check the output above for details.
@@ -130,7 +132,7 @@ start "Content OPS AI - Backend" cmd /k "cd /d %ROOT% && call venv\Scripts\activ
 
 REM ==== Start Frontend ====
 echo Starting Frontend...
-start "Content OPS AI - Frontend" cmd /k "cd /d %ROOT%\frontend && set VITE_API_PROXY_TARGET=http://localhost:!BACKEND_PORT! && npm run dev -- --port !FRONTEND_PORT!"
+start "Content OPS AI - Frontend" cmd /k "cd /d %ROOT%\frontend && set VITE_API_PROXY_TARGET=http://127.0.0.1:!BACKEND_PORT! && npm run dev -- --port !FRONTEND_PORT!"
 
 REM ==== Start XTTS Server ====
 echo Starting XTTS Server...

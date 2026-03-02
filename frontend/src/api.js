@@ -77,6 +77,7 @@ export const getVideoAnalytics = (videoId) => api.get(`/analytics/video/${videoI
 
 // Settings
 export const getSettings = () => api.get('/settings/')
+export const patchSubtitles = (data) => api.patch('/settings/subtitles', data)
 export const getPaths = () => api.get('/settings/paths')
 export const checkPaths = () => api.get('/settings/paths/check')
 export const checkServices = () => api.get('/settings/services/status')
@@ -101,6 +102,7 @@ export const downloadScript = (jobId, format) => api.get(`/scripts/download/${jo
 })
 export const getScriptDates = () => api.get('/scripts/dates')
 export const getScriptNiches = () => api.get('/scripts/niches')
+export const deleteScript = (path) => api.delete('/scripts/', { params: { path } })
 
 // Export
 export const getPlatformConfigs = () => api.get('/export/platforms')

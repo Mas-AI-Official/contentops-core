@@ -2,6 +2,10 @@
 
 If you run an external XTTS server (e.g. Flask on port 8020), Content Factory calls it for speech synthesis.
 
+## Using the bundled server (recommended)
+
+**start_xtts.bat** now runs the repo’s **xtts_server.py** (in the project root), which exposes `POST /tts_to_audio` with JSON `{ text, speaker_wav, language }`. The Coqui `TTS.server.server` only exposes `/api/tts` and does not support `speaker_wav`, so the backend would get 404 if you used the stock Coqui server. After pulling this change, restart the XTTS server (run **start_xtts.bat** again) so it uses `xtts_server.py` and the 404s go away.
+
 ## Required endpoint
 
 The server **must** expose:

@@ -198,5 +198,21 @@ class ScriptStorageService:
         
         return stats
 
+    def delete_script(self, script_path: str) -> bool:
+        """Delete a script folder by path (relative to base_path or absolute). Returns True if deleted."""
+        path = Path(script_path)
+        if not path.is_absolute():
+            path = self.base_path / script_path
+        if not path.exists() or not path.is_dir():
+            return False
+        try:
+            path.resolve().relative_to(self.base_path.resolve())
+        except ValueError:
+            return False
+        import shutil
+        shutil.rmtree(path, ignore_errors=True)
+        logger.info(f"Script deleted: {path}")
+        return True
+
 
 script_storage = ScriptStorageService()

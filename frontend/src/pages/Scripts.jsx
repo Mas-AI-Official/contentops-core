@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
-import { FileText, Download, Calendar, Search, FolderOpen } from 'lucide-react'
+import { FileText, Download, Calendar, FolderOpen, Trash2 } from 'lucide-react'
 import Card from '../components/Card'
 import Button from '../components/Button'
 import Modal from '../components/Modal'
-import api from '../api'
+import { api, deleteScript as deleteScriptApi } from '../api'
 
 export default function Scripts() {
   const [scripts, setScripts] = useState([])
@@ -69,6 +69,20 @@ export default function Scripts() {
       link.remove()
     } catch (error) {
       console.error('Failed to download script:', error)
+    }
+  }
+
+  const handleDelete = async (script, e) => {
+    e?.stopPropagation()
+    if (!window.confirm(`Delete script "${script.topic}" (Job #${script.job_id})? This cannot be undone.`)) return
+    try {
+      await deleteScriptApi(script.path)
+      setSelectedScript(null)
+      setScriptContent(null)
+      loadData()
+    } catch (error) {
+      console.error('Failed to delete script:', error)
+      alert('Failed to delete script.')
     }
   }
 
@@ -230,6 +244,15 @@ export default function Scripts() {
                   >
                     JSON
                   </Button>
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    onClick={(e) => handleDelete(script, e)}
+                    className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                    title="Delete script"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
                 </div>
               </div>
             ))}
@@ -293,6 +316,22 @@ export default function Scripts() {
                   onClick={() => handleDownload(scriptContent.job_id, 'json')}
                 >
                   Download JSON
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={() => {
+                    if (window.confirm(`Delete this script (Job #${scriptContent.job_id})? This cannot be undone.`)) {
+                      deleteScriptApi(selectedScript.path).then(() => {
+                        setSelectedScript(null)
+                        setScriptContent(null)
+                        loadData()
+                      }).catch(() => alert('Failed to delete script.'))
+                    }
+                  }}
+                  className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                >
+                  <Trash2 className="h-4 w-4" />
+                  Delete
                 </Button>
               </div>
             </div>

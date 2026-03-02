@@ -22,7 +22,7 @@ class Settings(BaseSettings):
     # Application
     app_name: str = "Content Factory"
     debug: bool = True
-    api_host: str = "127.0.0.1"
+    api_host: str = "0.0.0.0"
     api_port: int = 8100
     
     # Paths - Project root (env PROJECT_ROOT) and shared models (env MODELS_ROOT)
@@ -230,15 +230,24 @@ class Settings(BaseSettings):
     default_video_fps: int = 30
     default_bg_music_volume: float = 0.1
 
-    # Video generation provider (ffmpeg | ltx)
-    video_gen_provider: str = "ffmpeg"
+    # Subtitles (burned into video): default OFF
+    subtitle_enabled: bool = False
+    subtitle_font_size: int = 12
+    subtitle_font_name: str = "Arial"
+
+    # Video generation provider (ffmpeg | ltx) — ltx generates AI video scenes; ffmpeg = blank canvas fallback
+    video_gen_provider: str = "ltx"
     ltx_api_url: Optional[str] = None  # ComfyUI API URL (fallback)
-    ltx_model_path: Optional[str] = None  # Path to LTX-2 model checkpoint
+    ltx_model_path: Optional[str] = None  # Path to LTX-2 model checkpoint; auto-detected from MODELS_ROOT/ltx
     ltx_upscaler_path: Optional[str] = None  # LTX spatial upscaler .safetensors
     ltx_lora_path: Optional[str] = None  # LTX LoRA .safetensors (optional)
     ltx_repo_path: Optional[str] = None  # Path to LTX-2 repository
     ltx_use_fp8: bool = True  # Use FP8 quantization for 8GB VRAM
-    
+    ltx_clip_timeout: float = 600  # Max seconds per LTX clip generation
+
+    # Remotion render timeout (seconds); prevents permanent stall on Remotion subprocess
+    remotion_render_timeout_seconds: int = 900  # 15 minutes
+
     # MCP / External connectors (optional)
     mcp_enabled: bool = False
     mcp_connectors_json: Optional[str] = None

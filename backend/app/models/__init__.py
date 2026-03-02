@@ -1,11 +1,12 @@
 """
 Database models and schemas.
+Import order matters for SQLAlchemy: referenced tables (e.g. accounts) must be imported before tables that FK to them (e.g. NicheTarget).
 """
 from .niche import (
     Niche, NicheCreate, NicheUpdate, NicheRead, VideoStyle
 )
 from .account import (
-    Account, AccountCreate, AccountUpdate, AccountRead, 
+    Account, AccountCreate, AccountUpdate, AccountRead,
     AccountStatus, AccountStatusCheck, Platform
 )
 from .job import (
@@ -18,6 +19,7 @@ from .video import (
 from .analytics import (
     VideoMetrics, DailyNicheStats, VideoScore, AnalyticsSummary
 )
+# NicheTarget references accounts.id — import after Account
 from .niche_target import NicheTarget
 from .trends import (
     TrendCandidate, PatternAnalysis, PromptPack, Artifact, ComplianceEvent

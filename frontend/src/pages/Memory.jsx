@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { api } from '../api'
+import Card from '../components/Card'
 
 export default function Memory() {
     const [history, setHistory] = useState([])
@@ -9,8 +10,17 @@ export default function Memory() {
     }, [])
 
     return (
-        <div className="p-6">
-            <h1 className="text-2xl font-bold mb-6">Memory Index</h1>
+        <div className="p-6 space-y-6">
+            <h1 className="text-2xl font-bold text-gray-900">Memory Index</h1>
+
+            <Card title="What is Memory?">
+                <p className="text-gray-700 text-sm mb-2">
+                    <strong>Memory</strong> helps avoid posting the same or very similar content twice. When you generate prompt packs (e.g. in Prompt Lab), the system stores an <em>embedding</em> of the script per account and niche. Before publishing, it can check new content against this index: if something is too similar to what you already used, it’s treated as a duplicate.
+                </p>
+                <p className="text-gray-600 text-sm">
+                    The table below lists recent memory entries (niche, fingerprint, date). Duplicate checks use these embeddings so you don’t accidentally repeat the same idea across videos.
+                </p>
+            </Card>
 
             <div className="bg-gray-800 rounded-lg overflow-hidden border border-gray-700">
                 <table className="w-full text-left">

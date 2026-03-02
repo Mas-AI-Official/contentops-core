@@ -5,7 +5,7 @@ import Card from '../components/Card'
 import Button from '../components/Button'
 import VideoPlayer from '../components/VideoPlayer'
 import StatusBadge from '../components/StatusBadge'
-import { getNiches, generateTopic, generateScript, generateVideo, getGenerationStatus, approveAndPublish, getLTXModels, getVoices, automateNiche, getJobs } from '../api'
+import { getNiches, generateTopic, generateScript, generateVideo, getGenerationStatus, approveAndPublish, getLTXModels, getVoices, automateNiche, getJobs, getSettings, patchSubtitles } from '../api'
 
 export default function Generator() {
   const [niches, setNiches] = useState([])
@@ -36,6 +36,9 @@ export default function Generator() {
   const [lastQueuedCount, setLastQueuedCount] = useState(0)  // Show "N queued" after generate; 0 = hide
   const [targetDuration, setTargetDuration] = useState(60)  // 20, 30, 60, 90, 120 sec or custom
   const [customDuration, setCustomDuration] = useState('')  // custom seconds when targetDuration === 'custom'
+  const [subtitleSettings, setSubtitleSettings] = useState(null)  // global subtitle settings (from Settings API)
+  const [subtitleDraft, setSubtitleDraft] = useState({ enabled: false, fontSize: 12, fontName: 'Arial' })
+  const [subtitleSaving, setSubtitleSaving] = useState(false)
 
   useEffect(() => {
     loadNiches()
@@ -115,6 +118,16 @@ export default function Generator() {
       if (recommendedModel) {
         setSelectedVideoModel(recommendedModel.name)
       }
+      getSettings().then(r => {
+        setSubtitleSettings(r.data)
+        if (r.data) {
+          setSubtitleDraft({
+            enabled: !!r.data.subtitle_enabled,
+            fontSize: r.data.subtitle_font_size ?? 12,
+            fontName: r.data.subtitle_font_name || 'Arial',
+          })
+        }
+      }).catch(() => {})
     } catch (error) {
       console.error('Failed to load niches:', error)
       setError('Backend connection failed. Start the backend (e.g. run launch.bat or: cd backend && python -m app.main). It runs on port 8100 by default.')
@@ -127,6 +140,11 @@ export default function Generator() {
 
   // When manual prompt is set and not "use as full script", it becomes the topic for LLM script generation
   const effectiveTopic = (manualPrompt && manualPrompt.trim()) ? manualPrompt.trim() : topic
+
+  // Clear script preview when user changes prompt/topic so we never accidentally send an old script
+  useEffect(() => {
+    setScript(null)
+  }, [manualPrompt, topic])
 
   const handleGenerateTopic = async (source = 'auto') => {
     if (!selectedNiche) return
@@ -183,8 +201,9 @@ export default function Generator() {
     try {
       const sceneLines = scenesInput.trim() ? scenesInput.trim().split(/\n/).map(s => s.trim()).filter(Boolean) : []
       const voice = selectedVoiceId ? voices.find(v => v.voice_id === selectedVoiceId) : null
-      // Use exact script: preview if user generated one, else whatever they typed in "Your idea or script"
-      const effectiveScript = script?.full_script || (manualPrompt?.trim() || null)
+      // Only send custom_script when user explicitly chose "Use as full script" with their typed text.
+      // Otherwise backend uses topic (your prompt or picked topic) and generates script via LLM.
+      const effectiveScript = (usePromptAsFullScript && manualPrompt?.trim()) ? manualPrompt.trim() : null
       const payload = {
         niche_id: selectedNiche.id,
         topic: effectiveTopic || 'Manual script',
@@ -213,6 +232,12 @@ export default function Generator() {
       const count = jobIds.length
       setLastQueuedCount(count)
       setLoading(prev => ({ ...prev, video: false }))
+      // Confirm what was used so user knows their prompt/script wasn't replaced
+      if (effectiveScript) {
+        console.info('Generate Video: using your script (no LLM),', effectiveScript.length, 'chars')
+      } else {
+        console.info('Generate Video: using topic for LLM script:', (payload.topic || '').slice(0, 60) + (payload.topic?.length > 60 ? '…' : ''))
+      }
       // Do not set activeJob – job goes to Queue; form stays so user can generate another
     } catch (error) {
       console.error('Failed to start video generation:', error)
@@ -433,15 +458,17 @@ export default function Generator() {
                   <option value="1:1">Instagram (1:1)</option>
                 </select>
               </Card>
-              <Card title="Video Model">
-                <p className="text-sm text-gray-500 mb-2">Auto or choose LTX model.</p>
+              <Card title="Video Model (LTX)">
+                <p className="text-sm text-gray-500 mb-2">
+                  Your script and prompt go to LTX to create the video. Select a model or use Auto (needs <code className="text-xs bg-gray-100 px-1 rounded">VIDEO_GEN_PROVIDER=ltx</code> in .env).
+                </p>
                 <select
                   value={selectedVideoModel}
                   onChange={(e) => setSelectedVideoModel(e.target.value)}
                   className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
                   disabled={activeJob}
                 >
-                  <option value="">Auto (recommended)</option>
+                  <option value="">Auto (use .env provider)</option>
                   {ltxModels.map(model => (
                     <option key={model.name} value={model.name}>
                       {model.name}{model.recommended ? ' ⭐' : ''}
@@ -631,6 +658,72 @@ export default function Generator() {
               </div>
             </Card>
 
+            {/* Subtitles (global – applies to all videos); editable here */}
+            <Card title="5. Subtitles (global)">
+              <div className="space-y-3 text-sm">
+                {subtitleSettings ? (
+                  <>
+                    <div className="flex items-center justify-between gap-4">
+                      <span className="text-gray-700">Burned-in subtitles</span>
+                      <label className="relative inline-flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={subtitleDraft.enabled}
+                          onChange={(e) => setSubtitleDraft(d => ({ ...d, enabled: e.target.checked }))}
+                          className="sr-only peer"
+                        />
+                        <div className="w-11 h-6 bg-gray-200 peer-focus:ring-2 peer-focus:ring-primary-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-600" />
+                        <span className="ms-2 text-gray-600">{subtitleDraft.enabled ? 'On' : 'Off'}</span>
+                      </label>
+                    </div>
+                    <div className="flex items-center justify-between gap-4">
+                      <label className="text-gray-700">Font size</label>
+                      <input
+                        type="number"
+                        min={8}
+                        max={72}
+                        value={subtitleDraft.fontSize}
+                        onChange={(e) => setSubtitleDraft(d => ({ ...d, fontSize: parseInt(e.target.value, 10) || 12 }))}
+                        className="w-20 px-2 py-1 border rounded-lg text-sm"
+                      />
+                    </div>
+                    <div className="flex items-center justify-between gap-4">
+                      <label className="text-gray-700">Font</label>
+                      <input
+                        type="text"
+                        value={subtitleDraft.fontName}
+                        onChange={(e) => setSubtitleDraft(d => ({ ...d, fontName: e.target.value || 'Arial' }))}
+                        placeholder="Arial"
+                        className="flex-1 max-w-[140px] px-2 py-1 border rounded-lg text-sm"
+                      />
+                    </div>
+                    <Button
+                      size="sm"
+                      loading={subtitleSaving}
+                      onClick={async () => {
+                        setSubtitleSaving(true)
+                        try {
+                          const res = await patchSubtitles({
+                            subtitle_enabled: subtitleDraft.enabled,
+                            subtitle_font_size: subtitleDraft.fontSize,
+                            subtitle_font_name: subtitleDraft.fontName,
+                          })
+                          setSubtitleSettings(prev => prev ? { ...prev, ...res.data } : res.data)
+                        } finally {
+                          setSubtitleSaving(false)
+                        }
+                      }}
+                    >
+                      Save subtitle settings
+                    </Button>
+                    <p className="text-xs text-gray-500">Applies to all videos. No restart needed.</p>
+                  </>
+                ) : (
+                  <p className="text-gray-500">Loading…</p>
+                )}
+              </div>
+            </Card>
+
             {/* Topic: one-line or from buttons; optional if manual prompt is set */}
             <Card title="3. Topic (or use manual prompt above)">
               <div className="space-y-3">
@@ -796,6 +889,14 @@ export default function Generator() {
                   ))}
                   <span className="text-sm text-gray-500">{batchCount === 1 ? 'video' : 'videos'}</span>
                 </div>
+                {(effectiveTopic || (usePromptAsFullScript && manualPrompt?.trim())) && (
+                  <p className="text-xs text-gray-600 bg-gray-50 px-3 py-2 rounded-lg">
+                    {usePromptAsFullScript && manualPrompt?.trim()
+                      ? <>Will use <strong>your script</strong> as-is ({manualPrompt.trim().length} chars) — no LLM.</>
+                      : <>Will use <strong>topic</strong> for LLM to generate script: “{(effectiveTopic || '').slice(0, 50)}{(effectiveTopic?.length || 0) > 50 ? '…' : ''}”</>
+                    }
+                  </p>
+                )}
                 <Button
                   onClick={handleGenerateVideo}
                   loading={loading.video}
