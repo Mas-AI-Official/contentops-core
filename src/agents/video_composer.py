@@ -177,7 +177,11 @@ class VideoComposer:
         1. Fetch B-roll from Pexels based on script keywords
         2. Generate caption timing from audio
         3. Create base video (B-roll montage or color background)
-        4. Overlay Daena avatar (transparent WebM over B-roll)
+        4. Overlay Daena avatar with act-based timing:
+           - Acts 1-2 (0-15s): Daena VISIBLE with fade-in entrance
+           - Act 3 (15-45s): Daena HIDDEN — B-roll is the star
+           - Acts 4-5 (45s-end): Daena RE-APPEARS with fade-in for emotional peak + CTA
+           If no acts provided, avatar is visible for the entire video (backward compat).
         5. Burn captions as subtitles
         6. Add hook text overlay (first 3 seconds)
         7. Mux with audio
@@ -298,53 +302,110 @@ class VideoComposer:
 
         return None
 
+    def _get_act_timings(self, acts: list[dict], duration: float) -> dict:
+        """Extract act boundary timestamps from acts data or use defaults.
+
+        Returns dict with keys: act1_end, act2_end, act3_end, act4_end, duration.
+        These define the 5-act windows:
+          Act 1: 0 .. act1_end
+          Act 2: act1_end .. act2_end
+          Act 3: act2_end .. act3_end   (Daena HIDDEN — B-roll shines)
+          Act 4: act3_end .. act4_end   (Daena RE-APPEARS)
+          Act 5: act4_end .. duration
+        """
+        # Try to pull timing from acts metadata
+        if acts and len(acts) >= 5:
+            # Check if acts carry explicit timing (start_sec / end_sec keys)
+            if "end_sec" in acts[0]:
+                return {
+                    "act1_end": acts[0].get("end_sec", 3),
+                    "act2_end": acts[1].get("end_sec", 15),
+                    "act3_end": acts[2].get("end_sec", 45),
+                    "act4_end": acts[3].get("end_sec", 55),
+                    "duration": duration,
+                }
+
+        # Default 5-act timing (tuned for 60s short-form)
+        return {
+            "act1_end": 3,
+            "act2_end": 15,
+            "act3_end": min(45, duration * 0.75),
+            "act4_end": min(55, duration * 0.92),
+            "duration": duration,
+        }
+
     def _build_avatar_keyframes(self, acts: list[dict], duration: float, spec: VideoSpec) -> dict:
         """Build dynamic avatar size/position keyframes based on 5-act structure.
 
         Returns timing-based scaling rules for FFmpeg expressions:
-        - Act 1 (HOOK, 0-3s): BIG — Daena grabs attention, 55% height
-        - Act 2 (CURIOSITY, 3-15s): MEDIUM — talking head, 40% height
-        - Act 3 (VALUE, 15-45s): SMALL — B-roll focus, 30% height, bottom-right
-        - Act 4 (EMOTIONAL PEAK, 45-55s): BIG — Daena returns, 55% height
-        - Act 5 (CTA, 55-60s): MEDIUM — direct address, 40% height
+        - Act 1 (HOOK, 0-3s): BIG — Daena grabs attention, 55% height, centered
+        - Act 2 (CURIOSITY, 3-15s): SMALL — talking head, 40% height, bottom-right
+        - Act 3 (VALUE, 15-45s): HIDDEN — Daena disappears, B-roll is the star
+        - Act 4 (EMOTIONAL PEAK, 45-55s): BIG — Daena re-appears, 55% height, centered
+        - Act 5 (CTA, 55-60s): MEDIUM — stays centered, CTA moment
+
+        Also returns:
+        - enable_expr: FFmpeg enable expression (Daena visible during Acts 1-2 and 4-5 only)
+        - fade_expr: Fade-in alpha expressions for entrance animations
         """
-        # Default keyframes if no acts provided
+        timings = self._get_act_timings(acts or [], duration)
+        a1 = timings["act1_end"]
+        a2 = timings["act2_end"]
+        a3 = timings["act3_end"]
+        a4 = timings["act4_end"]
+
+        # Default keyframes if no acts provided (always visible, single size)
         if not acts or len(acts) < 3:
             return {
                 "scale_expr": str(int(spec.height * 0.45)),
                 "x_expr": "(W-w)/2",
                 "y_expr": f"H-h-{int(spec.height * 0.05)}",
+                "enable_expr": None,  # None = always visible (backward compat)
+                "fade_expr": None,
             }
 
         # Dynamic scale using FFmpeg expression: changes based on time (t)
         h = spec.height
         big = int(h * 0.55)
         medium = int(h * 0.40)
-        small = int(h * 0.30)
         margin = int(h * 0.05)
 
         # FFmpeg if expressions for dynamic height based on timestamp
-        # Act boundaries from the 5-act structure
+        # Act 3 is hidden so we only need sizes for Acts 1, 2, 4, 5
         scale_expr = (
-            f"if(lt(t,3),{big},"               # Act 1: HOOK — BIG
-            f"if(lt(t,15),{medium},"            # Act 2: CURIOSITY — MEDIUM
-            f"if(lt(t,{duration*0.75}),{small},"  # Act 3: VALUE — SMALL
-            f"if(lt(t,{duration*0.92}),{big},"  # Act 4: EMOTIONAL — BIG
-            f"{medium}))))"                      # Act 5: CTA — MEDIUM
+            f"if(lt(t,{a1}),{big},"               # Act 1: HOOK — BIG
+            f"if(lt(t,{a2}),{medium},"             # Act 2: CURIOSITY — MEDIUM (smaller, corner)
+            f"if(lt(t,{a4}),{big},"                # Act 4: EMOTIONAL — BIG (re-entry)
+            f"{medium})))"                          # Act 5: CTA — MEDIUM
         )
 
-        # Dynamic X position: centered when big, right-side when small
+        # Dynamic X position: centered when big, right-side when small (Act 2)
         x_expr = (
-            f"if(lt(t,3),(W-w)/2,"                    # Centered for hook
-            f"if(lt(t,15),(W-w)/2,"                    # Centered for curiosity
-            f"if(lt(t,{duration*0.75}),W-w-{int(spec.width*0.03)},"  # Right for value
-            f"(W-w)/2)))"                               # Back to center
+            f"if(lt(t,{a1}),(W-w)/2,"                    # Centered for hook
+            f"if(lt(t,{a2}),W-w-{int(spec.width*0.03)}," # Right corner for curiosity
+            f"(W-w)/2))"                                   # Centered for Acts 4-5
+        )
+
+        # Enable expression: visible during Acts 1-2 (0 to a2) and Acts 4-5 (a3 to end)
+        # Hidden during Act 3 (a2 to a3) — B-roll is the star
+        enable_expr = f"between(t,0,{a2})+between(t,{a3},{duration + 1})"
+
+        # Fade-in alpha: 0.5s fade at video start and when re-appearing at Act 4
+        # FFmpeg alpha expression: ramps from 0→1 over 0.5s at each entrance
+        fade_duration = 0.5
+        fade_expr = (
+            f"if(lt(t,{fade_duration}),t/{fade_duration},"            # Fade in at start
+            f"if(between(t,{a3},{a3 + fade_duration}),"
+            f"(t-{a3})/{fade_duration},"                               # Fade in at Act 4 re-entry
+            f"1))"                                                     # Fully visible otherwise
         )
 
         return {
             "scale_expr": scale_expr,
             "x_expr": x_expr,
             "y_expr": f"H-h-{margin}",
+            "enable_expr": enable_expr,
+            "fade_expr": fade_expr,
         }
 
     async def _overlay_avatar(self, base_video: str, avatar_path: str,
@@ -352,8 +413,18 @@ class VideoComposer:
                                acts: list[dict] = None) -> str:
         """Overlay Daena avatar on base video using colorkey background removal.
 
-        Pipeline: crop tight to Daena → colorkey remove white/black bg → scale up → overlay.
-        Supports dynamic sizing: Daena gets bigger/smaller based on 5-act structure.
+        Pipeline: crop tight to Daena -> colorkey remove white/black bg -> scale -> overlay.
+
+        Act-based timing (when acts are provided with >= 3 entries):
+        - Acts 1-2 (0 to ~15s): Daena VISIBLE — entrance with fade-in from right,
+          starts big (55% height) then shrinks to 40% in bottom-right corner.
+        - Act 3 (~15-45s): Daena HIDDEN — B-roll is the star, value delivery.
+        - Acts 4-5 (~45s-end): Daena RE-APPEARS with fade-in, large and centered
+          for emotional peak and CTA.
+
+        When no acts are provided (or < 3 acts), Daena is visible for the entire
+        video at 45% height, centered — backward compatible with v1 behavior.
+
         Looped with -stream_loop to cover the full video duration.
         """
         output = str(work_dir / "avatar_overlay.mp4")
@@ -365,17 +436,40 @@ class VideoComposer:
         # Get dynamic keyframes based on script acts
         keyframes = self._build_avatar_keyframes(acts or [], duration, spec)
 
-        # Static scale for now (FFmpeg scale filter doesn't support expressions well)
-        # Use a good default size — 45% of frame height
-        avatar_h = int(spec.height * 0.45)
-        margin_bottom = int(spec.height * 0.05)
+        enable_expr = keyframes.get("enable_expr")
+        fade_expr = keyframes.get("fade_expr")
+        scale_expr = keyframes["scale_expr"]
+        x_expr = keyframes["x_expr"]
+        y_expr = keyframes["y_expr"]
 
-        # Build filter chain: crop → colorkey → scale → overlay
-        filter_complex = (
-            f"[1:v]{crop_filter}colorkey={bg_color}:{similarity}:{blend},"
-            f"scale=-1:{avatar_h}[avatar];"
-            f"[0:v][avatar]overlay=(W-w)/2:H-h-{margin_bottom}:shortest=1[outv]"
-        )
+        # Build filter chain: crop -> colorkey -> scale -> [fade] -> overlay [+ enable]
+        # When we have act-based timing, use dynamic scale expression and enable filter
+        has_act_timing = enable_expr is not None
+
+        if has_act_timing:
+            # Dynamic pipeline: scale expression + alpha fade + timed overlay
+            avatar_filter = (
+                f"[1:v]{crop_filter}colorkey={bg_color}:{similarity}:{blend},"
+                f"scale=-1:'{scale_expr}',"
+                f"format=yuva420p,colorchannelmixer=aa='{fade_expr}'[avatar]"
+            )
+            overlay_filter = (
+                f"[0:v][avatar]overlay={x_expr}:{y_expr}:"
+                f"enable='{enable_expr}'[outv]"
+            )
+        else:
+            # Static pipeline (no acts / backward compat): fixed size, always visible
+            avatar_h = int(spec.height * 0.45)
+            margin_bottom = int(spec.height * 0.05)
+            avatar_filter = (
+                f"[1:v]{crop_filter}colorkey={bg_color}:{similarity}:{blend},"
+                f"scale=-1:{avatar_h}[avatar]"
+            )
+            overlay_filter = (
+                f"[0:v][avatar]overlay=(W-w)/2:H-h-{margin_bottom}:shortest=1[outv]"
+            )
+
+        filter_complex = f"{avatar_filter};{overlay_filter}"
 
         cmd = [
             "ffmpeg", "-y",
@@ -393,7 +487,8 @@ class VideoComposer:
         try:
             result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
             if Path(output).exists() and Path(output).stat().st_size > 10000:
-                logger.info(f"Avatar overlay applied (colorkey {bg_color}): {output}")
+                mode = "act-based" if has_act_timing else "static"
+                logger.info(f"Avatar overlay applied ({mode}, colorkey {bg_color}): {output}")
                 return output
             logger.warning("Avatar overlay output too small — trying PiP fallback")
             if result.stderr:

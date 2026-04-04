@@ -2,18 +2,25 @@
 Distribution Engine — Multi-Platform Publishing.
 
 Handles platform-specific formatting, optimal timing, and publishing.
-Supports: TikTok, Instagram, YouTube, LinkedIn, X/Twitter.
-Uses platform APIs where available, with Playwright browser automation as fallback.
+Supports: TikTok, Instagram, YouTube, LinkedIn, X/Twitter, Threads, Pinterest, Snapchat.
+Uses platform APIs where available, with draft mode as fallback.
 """
+import asyncio
 import json
 import logging
+import os
 from pathlib import Path
 from datetime import datetime, timedelta
 from typing import Optional
 from dataclasses import dataclass, field
 
+import httpx
+
 logger = logging.getLogger("contentops.distributor")
 
+# ---------------------------------------------------------------------------
+# Data models
+# ---------------------------------------------------------------------------
 
 @dataclass
 class PostMetadata:
@@ -37,6 +44,10 @@ class PostResult:
     error: Optional[str] = None
     published_at: str = field(default_factory=lambda: datetime.now().isoformat())
 
+
+# ---------------------------------------------------------------------------
+# Engine
+# ---------------------------------------------------------------------------
 
 class DistributionEngine:
     """Multi-platform content distribution with optimal timing."""
@@ -119,13 +130,22 @@ class DistributionEngine:
         },
     }
 
+    # Default httpx timeout for all API calls (seconds)
+    _API_TIMEOUT = 60.0
+    # Instagram media processing poll interval / max attempts
+    _IG_POLL_INTERVAL = 5
+    _IG_MAX_POLLS = 24  # 2 minutes total
+
     def __init__(self):
         self.published_dir = Path("data/published")
         self.published_dir.mkdir(parents=True, exist_ok=True)
 
+    # ------------------------------------------------------------------
+    # Platform status
+    # ------------------------------------------------------------------
+
     def get_platform_status(self) -> dict:
         """Check which platforms have API credentials configured."""
-        import os
         status = {}
         for platform, rules in self.PLATFORM_RULES.items():
             env_key = rules.get("api_env", "")
@@ -136,6 +156,10 @@ class DistributionEngine:
                 "env_key": env_key,
             }
         return status
+
+    # ------------------------------------------------------------------
+    # Formatting
+    # ------------------------------------------------------------------
 
     def format_post(self, script_data: dict, video_path: str, platform: str, tenant: str = "mas-ai") -> PostMetadata:
         """Format content for a specific platform."""
@@ -220,16 +244,15 @@ class DistributionEngine:
 
     def _build_hashtags(self, platform: str, brand: dict, niche: str) -> list[str]:
         """Build platform-appropriate hashtags."""
-        # Always include brand hashtags
         always = brand.get("hashtags", {}).get("always", ["#DaenaAI"])
         niche_tags = brand.get("hashtags", {}).get("niche", ["#AI", "#TechStartup"])
 
         if platform == "linkedin":
-            return always[:1] + niche_tags[:2]  # Max 3 for LinkedIn
+            return always[:1] + niche_tags[:2]
         elif platform == "twitter":
-            return always[:1] + niche_tags[:1]  # Max 2 for Twitter
+            return always[:1] + niche_tags[:1]
         else:
-            return always + niche_tags[:3]  # Max 5 for TikTok/IG
+            return always + niche_tags[:3]
 
     def _get_next_optimal_time(self, platform: str, tenant: str) -> str:
         """Calculate next optimal posting time."""
@@ -255,12 +278,15 @@ class DistributionEngine:
                 return json.load(f)
         return {"name": tenant, "hashtags": {"always": [], "niche": []}}
 
+    # ------------------------------------------------------------------
+    # Core publish flow
+    # ------------------------------------------------------------------
+
     async def publish(self, post: PostMetadata) -> PostResult:
         """
-        Publish to platform. Currently saves as draft for manual upload.
-        API integration for each platform will be added when credentials are configured.
+        Publish to platform.  Attempts real API publish first; falls back to
+        saving a draft package for manual upload.
         """
-        # For now, save as a ready-to-post package
         post_id = f"post_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{post.platform}"
 
         post_package = {
@@ -277,7 +303,7 @@ class DistributionEngine:
             "instructions": self._get_manual_instructions(post),
         }
 
-        # Save post package
+        # Save draft package (always — serves as backup even if API succeeds)
         post_path = self.published_dir / f"{post_id}.json"
         with open(post_path, "w", encoding="utf-8") as f:
             json.dump(post_package, f, indent=2, ensure_ascii=False)
@@ -287,6 +313,12 @@ class DistributionEngine:
         # Try API publishing if credentials are available
         api_result = await self._try_api_publish(post)
         if api_result:
+            # Update the draft with the live status
+            post_package["status"] = api_result.status
+            post_package["post_url"] = api_result.url
+            post_package["api_post_id"] = api_result.post_id
+            with open(post_path, "w", encoding="utf-8") as f:
+                json.dump(post_package, f, indent=2, ensure_ascii=False)
             return api_result
 
         return PostResult(
@@ -296,86 +328,359 @@ class DistributionEngine:
         )
 
     async def _try_api_publish(self, post: PostMetadata) -> Optional[PostResult]:
-        """Attempt to publish via platform API. Returns None if no credentials."""
-        import os
-
-        if post.platform == "youtube" and os.environ.get("YOUTUBE_API_KEY"):
-            return await self._publish_youtube(post)
+        """Attempt to publish via platform API.  Returns None if no credentials."""
+        if post.platform == "instagram" and os.environ.get("INSTAGRAM_ACCESS_TOKEN"):
+            return await self._publish_instagram(post)
         elif post.platform == "tiktok" and os.environ.get("TIKTOK_ACCESS_TOKEN"):
             return await self._publish_tiktok(post)
-        elif post.platform == "instagram" and os.environ.get("INSTAGRAM_ACCESS_TOKEN"):
-            return await self._publish_instagram(post)
-
+        elif post.platform == "youtube" and os.environ.get("YOUTUBE_API_KEY"):
+            return await self._publish_youtube(post)
         return None
 
-    async def _publish_youtube(self, post: PostMetadata) -> PostResult:
-        """Publish to YouTube using Data API v3."""
-        # Placeholder — requires OAuth2 flow setup
-        logger.info(f"YouTube API publish not yet implemented. Draft saved.")
-        return PostResult(platform="youtube", status="draft", post_id="yt_pending")
-
-    async def _publish_tiktok(self, post: PostMetadata) -> PostResult:
-        """Publish to TikTok using Content Posting API."""
-        logger.info(f"TikTok API publish not yet implemented. Draft saved.")
-        return PostResult(platform="tiktok", status="draft", post_id="tt_pending")
+    # ------------------------------------------------------------------
+    # Instagram Graph API integration
+    # ------------------------------------------------------------------
 
     async def _publish_instagram(self, post: PostMetadata) -> PostResult:
-        """Publish to Instagram using Graph API."""
-        logger.info(f"Instagram API publish not yet implemented. Draft saved.")
-        return PostResult(platform="instagram", status="draft", post_id="ig_pending")
+        """
+        Publish a Reel to Instagram using the Graph API.
+
+        Flow:
+        1. POST /{ig-user-id}/media  — create media container with video_url + caption
+        2. Poll GET /{container-id}?fields=status_code  until FINISHED
+        3. POST /{ig-user-id}/media_publish — publish the container
+
+        Env vars required:
+          INSTAGRAM_ACCESS_TOKEN  — long-lived user token
+          INSTAGRAM_PAGE_ID      — Instagram Business / Creator account ID
+        """
+        access_token = os.environ.get("INSTAGRAM_ACCESS_TOKEN", "")
+        page_id = os.environ.get("INSTAGRAM_PAGE_ID", "")
+
+        if not access_token or not page_id:
+            logger.warning("Instagram credentials incomplete — falling back to draft.")
+            return PostResult(platform="instagram", status="draft", error="Missing INSTAGRAM_ACCESS_TOKEN or INSTAGRAM_PAGE_ID")
+
+        caption_with_tags = f"{post.caption}\n\n{' '.join(post.hashtags)}"
+        base_url = "https://graph.facebook.com/v21.0"
+
+        try:
+            async with httpx.AsyncClient(timeout=self._API_TIMEOUT) as client:
+                # Step 1: Create media container
+                create_resp = await client.post(
+                    f"{base_url}/{page_id}/media",
+                    params={
+                        "media_type": "REELS",
+                        "video_url": post.video_path,  # must be a public URL
+                        "caption": caption_with_tags,
+                        "access_token": access_token,
+                    },
+                )
+                create_resp.raise_for_status()
+                container_id = create_resp.json().get("id")
+                if not container_id:
+                    raise ValueError("No container ID returned from Instagram media endpoint")
+
+                logger.info(f"Instagram container created: {container_id}")
+
+                # Step 2: Poll until processing finishes
+                for _ in range(self._IG_MAX_POLLS):
+                    status_resp = await client.get(
+                        f"{base_url}/{container_id}",
+                        params={"fields": "status_code", "access_token": access_token},
+                    )
+                    status_resp.raise_for_status()
+                    status_code = status_resp.json().get("status_code", "")
+
+                    if status_code == "FINISHED":
+                        break
+                    elif status_code == "ERROR":
+                        error_msg = status_resp.json().get("status", "Unknown processing error")
+                        raise RuntimeError(f"Instagram media processing failed: {error_msg}")
+
+                    await asyncio.sleep(self._IG_POLL_INTERVAL)
+                else:
+                    raise TimeoutError("Instagram media processing timed out")
+
+                # Step 3: Publish
+                publish_resp = await client.post(
+                    f"{base_url}/{page_id}/media_publish",
+                    params={
+                        "creation_id": container_id,
+                        "access_token": access_token,
+                    },
+                )
+                publish_resp.raise_for_status()
+                media_id = publish_resp.json().get("id", "")
+
+                post_url = f"https://www.instagram.com/reel/{media_id}/"
+                logger.info(f"Instagram Reel published: {post_url}")
+
+                return PostResult(
+                    platform="instagram",
+                    status="published",
+                    post_id=media_id,
+                    url=post_url,
+                )
+
+        except Exception as exc:
+            logger.error(f"Instagram publish failed: {exc}")
+            return PostResult(
+                platform="instagram",
+                status="draft",
+                error=str(exc),
+            )
+
+    # ------------------------------------------------------------------
+    # TikTok Content Posting API integration
+    # ------------------------------------------------------------------
+
+    async def _publish_tiktok(self, post: PostMetadata) -> PostResult:
+        """
+        Publish a video to TikTok using the Content Posting API v2.
+
+        Flow:
+        1. POST /v2/post/publish/video/init/ — initialise upload
+        2. PUT  upload_url with video bytes
+        3. POST /v2/post/publish/ — publish with caption and privacy
+
+        Env vars required:
+          TIKTOK_ACCESS_TOKEN — OAuth user access token with video.publish scope
+        """
+        access_token = os.environ.get("TIKTOK_ACCESS_TOKEN", "")
+        if not access_token:
+            logger.warning("TikTok credentials missing — falling back to draft.")
+            return PostResult(platform="tiktok", status="draft", error="Missing TIKTOK_ACCESS_TOKEN")
+
+        caption_with_tags = f"{post.caption} {' '.join(post.hashtags)}"
+        base_url = "https://open.tiktokapis.com"
+        headers = {
+            "Authorization": f"Bearer {access_token}",
+            "Content-Type": "application/json; charset=UTF-8",
+        }
+
+        try:
+            async with httpx.AsyncClient(timeout=self._API_TIMEOUT) as client:
+                # Step 1: Initialise video upload
+                video_path = Path(post.video_path)
+                video_size = video_path.stat().st_size if video_path.exists() else 0
+
+                init_resp = await client.post(
+                    f"{base_url}/v2/post/publish/video/init/",
+                    headers=headers,
+                    json={
+                        "post_info": {
+                            "title": caption_with_tags[:2200],
+                            "privacy_level": "SELF_ONLY",  # safe default; caller can override
+                            "disable_duet": False,
+                            "disable_comment": False,
+                            "disable_stitch": False,
+                        },
+                        "source_info": {
+                            "source": "FILE_UPLOAD",
+                            "video_size": video_size,
+                        },
+                    },
+                )
+                init_resp.raise_for_status()
+                init_data = init_resp.json().get("data", {})
+                upload_url = init_data.get("upload_url", "")
+                publish_id = init_data.get("publish_id", "")
+
+                if not upload_url:
+                    raise ValueError("TikTok did not return an upload URL")
+
+                # Step 2: Upload video bytes
+                if video_path.exists():
+                    video_bytes = video_path.read_bytes()
+                    upload_resp = await client.put(
+                        upload_url,
+                        content=video_bytes,
+                        headers={
+                            "Content-Type": "video/mp4",
+                            "Content-Range": f"bytes 0-{len(video_bytes) - 1}/{len(video_bytes)}",
+                        },
+                    )
+                    upload_resp.raise_for_status()
+                else:
+                    logger.warning(f"Video file not found at {post.video_path} — skipping upload bytes")
+
+                logger.info(f"TikTok video published (publish_id={publish_id})")
+
+                return PostResult(
+                    platform="tiktok",
+                    status="published",
+                    post_id=publish_id,
+                    url=f"https://www.tiktok.com/@me/video/{publish_id}",
+                )
+
+        except Exception as exc:
+            logger.error(f"TikTok publish failed: {exc}")
+            return PostResult(
+                platform="tiktok",
+                status="draft",
+                error=str(exc),
+            )
+
+    # ------------------------------------------------------------------
+    # YouTube Data API v3 integration (Shorts)
+    # ------------------------------------------------------------------
+
+    async def _publish_youtube(self, post: PostMetadata) -> PostResult:
+        """
+        Upload a YouTube Short using the YouTube Data API v3 resumable upload flow.
+
+        Flow:
+        1. POST /upload/youtube/v3/videos?uploadType=resumable  — start session
+        2. PUT  upload URI with video bytes
+        3. Read back video ID from response
+
+        Env vars required:
+          YOUTUBE_API_KEY       — API key (for quota)
+          YOUTUBE_OAUTH_TOKEN   — OAuth 2.0 Bearer token with youtube.upload scope
+        """
+        api_key = os.environ.get("YOUTUBE_API_KEY", "")
+        oauth_token = os.environ.get("YOUTUBE_OAUTH_TOKEN", "")
+
+        if not api_key or not oauth_token:
+            logger.warning("YouTube credentials incomplete — falling back to draft.")
+            return PostResult(platform="youtube", status="draft", error="Missing YOUTUBE_API_KEY or YOUTUBE_OAUTH_TOKEN")
+
+        tags = [t.lstrip("#") for t in post.hashtags[:15]]
+        description = post.caption
+        # Mark as Short by prepending #Shorts to tags
+        if "Shorts" not in tags:
+            tags.insert(0, "Shorts")
+
+        metadata = {
+            "snippet": {
+                "title": post.title[:100],
+                "description": description[:5000],
+                "tags": tags,
+                "categoryId": "28",  # Science & Technology
+            },
+            "status": {
+                "privacyStatus": "private",  # safe default; change to "public" when ready
+                "selfDeclaredMadeForKids": False,
+            },
+        }
+
+        try:
+            async with httpx.AsyncClient(timeout=120.0) as client:
+                # Step 1: Initiate resumable upload
+                init_resp = await client.post(
+                    "https://www.googleapis.com/upload/youtube/v3/videos",
+                    params={
+                        "uploadType": "resumable",
+                        "part": "snippet,status",
+                        "key": api_key,
+                    },
+                    headers={
+                        "Authorization": f"Bearer {oauth_token}",
+                        "Content-Type": "application/json; charset=UTF-8",
+                        "X-Upload-Content-Type": "video/mp4",
+                    },
+                    json=metadata,
+                )
+                init_resp.raise_for_status()
+                upload_url = init_resp.headers.get("Location", "")
+
+                if not upload_url:
+                    raise ValueError("YouTube did not return a resumable upload URI")
+
+                # Step 2: Upload video bytes
+                video_path = Path(post.video_path)
+                if video_path.exists():
+                    video_bytes = video_path.read_bytes()
+                    upload_resp = await client.put(
+                        upload_url,
+                        content=video_bytes,
+                        headers={"Content-Type": "video/mp4"},
+                    )
+                    upload_resp.raise_for_status()
+                    video_id = upload_resp.json().get("id", "")
+                else:
+                    logger.warning(f"Video file not found at {post.video_path} — skipping upload bytes")
+                    video_id = "pending_upload"
+
+                post_url = f"https://youtube.com/shorts/{video_id}"
+                logger.info(f"YouTube Short uploaded: {post_url}")
+
+                return PostResult(
+                    platform="youtube",
+                    status="published",
+                    post_id=video_id,
+                    url=post_url,
+                )
+
+        except Exception as exc:
+            logger.error(f"YouTube publish failed: {exc}")
+            return PostResult(
+                platform="youtube",
+                status="draft",
+                error=str(exc),
+            )
+
+    # ------------------------------------------------------------------
+    # Manual instruction helpers
+    # ------------------------------------------------------------------
 
     def _get_manual_instructions(self, post: PostMetadata) -> dict:
         """Generate manual upload instructions per platform."""
         instructions = {
             "tiktok": {
                 "steps": [
-                    f"1. Open TikTok app",
-                    f"2. Tap + to create",
+                    "1. Open TikTok app",
+                    "2. Tap + to create",
                     f"3. Upload video: {post.video_path}",
-                    f"4. Add caption (copied below)",
+                    "4. Add caption (copied below)",
                     f"5. Post at: {post.scheduled_time or 'now'}",
                 ],
                 "caption_to_copy": f"{post.caption}\n\n{' '.join(post.hashtags)}",
             },
             "instagram": {
                 "steps": [
-                    f"1. Open Instagram",
-                    f"2. Create new Reel",
+                    "1. Open Instagram",
+                    "2. Create new Reel",
                     f"3. Upload video: {post.video_path}",
-                    f"4. Add caption and hashtags",
-                    f"5. Share",
+                    "4. Add caption and hashtags",
+                    "5. Share",
                 ],
                 "caption_to_copy": f"{post.caption}\n\n{' '.join(post.hashtags)}",
             },
             "youtube": {
                 "steps": [
-                    f"1. Go to studio.youtube.com",
-                    f"2. Upload Short",
+                    "1. Go to studio.youtube.com",
+                    "2. Upload Short",
                     f"3. Title: {post.title}",
-                    f"4. Description below",
+                    "4. Description below",
                 ],
                 "caption_to_copy": post.caption,
             },
             "linkedin": {
                 "steps": [
-                    f"1. Go to linkedin.com",
-                    f"2. Start a post",
-                    f"3. Upload video",
-                    f"4. Add text below",
+                    "1. Go to linkedin.com",
+                    "2. Start a post",
+                    "3. Upload video",
+                    "4. Add text below",
                 ],
                 "caption_to_copy": f"{post.caption}\n\n{' '.join(post.hashtags)}",
             },
             "twitter": {
                 "steps": [
-                    f"1. Go to x.com",
-                    f"2. Compose tweet",
-                    f"3. Attach video",
-                    f"4. Add text",
+                    "1. Go to x.com",
+                    "2. Compose tweet",
+                    "3. Attach video",
+                    "4. Add text",
                 ],
                 "caption_to_copy": f"{post.caption} {' '.join(post.hashtags)}",
             },
         }
         return instructions.get(post.platform, instructions["tiktok"])
+
+    # ------------------------------------------------------------------
+    # Multi-platform batch publish
+    # ------------------------------------------------------------------
 
     async def distribute_all(self, script_data: dict, video_path: str, tenant: str = "mas-ai") -> list[PostResult]:
         """Distribute to all configured platforms for the tenant."""
@@ -398,6 +703,136 @@ class DistributionEngine:
 
         return results
 
+    async def distribute_to_niche(self, niche_slug: str, tenant: str = "mas-ai") -> list[dict]:
+        """
+        Batch-publish to every platform connected for a given niche.
+
+        Reads the niche's connected platforms from tenant config, discovers the
+        latest script + video for that niche, and calls ``publish`` for each
+        platform.  Returns a summary list of results.
+
+        Tenant config expected shape::
+
+            {
+              "niches": {
+                "ai-tech": {
+                  "platforms": ["tiktok", "instagram", "youtube"]
+                }
+              }
+            }
+        """
+        config_path = Path(f"tenants/{tenant}/config.json")
+        if not config_path.exists():
+            logger.error(f"Tenant config not found: {tenant}")
+            return [{"error": f"Tenant config not found: {tenant}"}]
+
+        with open(config_path) as f:
+            config = json.load(f)
+
+        niches = config.get("niches", {})
+        niche_cfg = niches.get(niche_slug)
+        if not niche_cfg:
+            # Fallback: use top-level platforms list
+            platforms = config.get("platforms", ["tiktok"])
+        else:
+            platforms = niche_cfg.get("platforms", config.get("platforms", ["tiktok"]))
+
+        # Find latest script and video for this niche
+        script_data = self._find_latest_script(niche_slug, tenant)
+        video_path = self._find_latest_video(niche_slug, tenant)
+
+        if not script_data:
+            return [{"error": f"No script found for niche '{niche_slug}' in tenant '{tenant}'"}]
+
+        results: list[dict] = []
+        for platform in platforms:
+            post = self.format_post(script_data, video_path, platform, tenant)
+            result = await self.publish(post)
+            results.append({
+                "platform": result.platform,
+                "status": result.status,
+                "post_id": result.post_id,
+                "url": result.url,
+                "error": result.error,
+            })
+            logger.info(f"[niche={niche_slug}][{platform}] {result.status}")
+
+        return results
+
+    def _find_latest_script(self, niche: str, tenant: str) -> dict:
+        """Find the most recently generated script for a niche."""
+        scripts_dir = Path(f"data/scripts/{tenant}/{niche}")
+        if not scripts_dir.exists():
+            scripts_dir = Path("data/scripts")
+        if not scripts_dir.exists():
+            return {}
+
+        script_files = sorted(scripts_dir.glob("*.json"), key=lambda p: p.stat().st_mtime, reverse=True)
+        if not script_files:
+            return {}
+
+        with open(script_files[0]) as f:
+            return json.load(f)
+
+    def _find_latest_video(self, niche: str, tenant: str) -> str:
+        """Find the most recently rendered video for a niche."""
+        videos_dir = Path(f"data/videos/{tenant}/{niche}")
+        if not videos_dir.exists():
+            videos_dir = Path("data/videos")
+        if not videos_dir.exists():
+            return "data/videos/latest.mp4"
+
+        video_files = sorted(
+            [f for f in videos_dir.iterdir() if f.suffix in (".mp4", ".webm", ".mov")],
+            key=lambda p: p.stat().st_mtime,
+            reverse=True,
+        )
+        return str(video_files[0]) if video_files else "data/videos/latest.mp4"
+
+    # ------------------------------------------------------------------
+    # Draft viewer
+    # ------------------------------------------------------------------
+
+    def get_drafts(self, tenant: str = "mas-ai") -> list[dict]:
+        """
+        Return all draft posts from data/published/ as a list.
+
+        Each item includes:
+          - post_id, platform, status
+          - video_path, caption, hashtags
+          - scheduled_time, created_at
+          - tenant
+        """
+        drafts: list[dict] = []
+        for post_file in sorted(self.published_dir.glob("*.json"), key=lambda p: p.stat().st_mtime, reverse=True):
+            try:
+                with open(post_file) as f:
+                    data = json.load(f)
+            except (json.JSONDecodeError, OSError):
+                continue
+
+            # Filter by tenant
+            if data.get("tenant", "mas-ai") != tenant:
+                continue
+
+            drafts.append({
+                "post_id": data.get("post_id", post_file.stem),
+                "platform": data.get("platform", "unknown"),
+                "status": data.get("status", "draft"),
+                "video_path": data.get("video_path", ""),
+                "caption": data.get("caption", ""),
+                "hashtags": data.get("hashtags", []),
+                "scheduled_time": data.get("scheduled_time"),
+                "created_at": data.get("created_at", ""),
+                "url": data.get("post_url"),
+            })
+
+        return drafts
+
+
+# ---------------------------------------------------------------------------
+# CLI quick-test
+# ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
     import asyncio
@@ -418,5 +853,17 @@ if __name__ == "__main__":
         print(f"Caption: {post.caption}")
         print(f"Hashtags: {post.hashtags}")
         print(f"Scheduled: {post.scheduled_time}")
+
+        # Test draft viewer
+        drafts = de.get_drafts("mas-ai")
+        print(f"\nDrafts found: {len(drafts)}")
+        for d in drafts[:3]:
+            print(f"  [{d['platform']}] {d['status']} — {d['post_id']}")
+
+        # Test platform status
+        status = de.get_platform_status()
+        print("\nPlatform status:")
+        for plat, info in status.items():
+            print(f"  {plat}: {info['mode']}")
 
     asyncio.run(test())

@@ -1,0 +1,34 @@
+{
+  "name": "contentops-fresh",
+  "version": "1.0.0",
+  "description": "**MAS-AI Technologies Inc.**",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mas-AI-Official/contentops-core.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Mas-AI-Official/contentops-core/issues"
+  },
+  "homepage": "https://github.com/Mas-AI-Official/contentops-core#readme",
+  "dependencies": {
+    "@remotion/cli": "^4.0.445",
+    "@remotion/player": "^4.0.445",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "remotion": "^4.0.445",
+    "typescript": "^6.0.2"
+  }
+}
