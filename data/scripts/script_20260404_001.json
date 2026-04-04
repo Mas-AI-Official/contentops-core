@@ -10,93 +10,86 @@
     {
       "act": 1,
       "label": "HOOK",
-      "text": "Okay, here\u2019s the TikTok hook text: Claude 4\u2019s just quietly raised the bar on conversations\u2026 most people haven't even *seen* what it can do yet. Seriously, it\u2019s a different level.",
+      "text": "Claude 4\u2019s performance shift just quietly leveled up\u2014most people didn\u2019t notice\u2026 It\u2019s like, suddenly it *gets* things. Seriously, the way it thinks is just\u2026 different.",
       "duration_estimate": "3s",
       "emotion": "curiosity"
     },
     {
       "act": 2,
       "label": "CURIOSITY BUILD",
-      "text": "You\u2019re probably scrolling, feeling overwhelmed by chatbots.  They\u2019re clunky, repetitive, and frankly, useless.",
-      "duration_estimate": "12s",
+      "text": "For years, we\u2019ve been pushing LLMs, hoping for that breakthrough. We\u2019ve seen incremental improvements, but the gaps felt massive.",
+      "duration_estimate": "9s",
+      "emotion": "intrigue"
+    },
+    {
+      "act": 2,
+      "label": "CURIOSITY BUILD",
+      "text": "Remember struggling to get complex prompts understood? The frustrating loops of irrelevant responses?",
+      "duration_estimate": "6s",
       "emotion": "frustration"
     },
     {
       "act": 2,
-      "label": "CURIOSITY BUILD (cont)",
-      "text": "Every AI assistant promises a revolution, but delivers the same frustrating limitations.  It\u2019s exhausting, isn\u2019t it?",
-      "duration_estimate": "3s",
-      "emotion": "disappointment"
+      "label": "CURIOSITY BUILD",
+      "text": "That\u2019s fundamentally changed with Claude 4\u2019s architecture \u2013 it\u2019s not just bigger.",
+      "duration_estimate": "6s",
+      "emotion": "realization"
     },
     {
       "act": 3,
       "label": "VALUE DELIVERY",
-      "text": "That\u2019s where Claude 4 changes everything. It\u2019s not just *better*; it\u2019s fundamentally different.",
-      "duration_estimate": "9s",
-      "emotion": "excitement"
-    },
-    {
-      "act": 3,
-      "label": "VALUE DELIVERY (cont)",
-      "text": "Claude 4 understands context at a level no other conversational AI achieves.  It remembers past interactions seamlessly.",
-      "duration_estimate": "6s",
+      "text": "This isn't just about more parameters; it\u2019s about scaling and aligning models in a completely new way. They\u2019ve mastered contextual understanding like never before.",
+      "duration_estimate": "12s",
       "emotion": "insight"
     },
     {
       "act": 3,
-      "label": "VALUE DELIVERY (cont)",
-      "text": "I\u2019m talking nuanced debates, complex creative writing, and genuinely helpful problem-solving.",
-      "duration_estimate": "6s",
+      "label": "VALUE DELIVERY",
+      "text": "Claude 4 actually *reasoned* through multi-step problems \u2013 something previous models couldn't reliably do.",
+      "duration_estimate": "8s",
       "emotion": "validation"
     },
     {
       "act": 3,
-      "label": "VALUE DELIVERY (cont)",
-      "text": "Watch this: I asked Claude 4 to write a short story about a lonely robot discovering friendship.  It\u2019s beautiful.",
-      "duration_estimate": "6s",
-      "emotion": "wonder"
+      "label": "VALUE DELIVERY",
+      "text": "Think about it: nuanced creative writing, complex data analysis, even coding \u2013 it\u2019s all significantly improved.",
+      "duration_estimate": "9s",
+      "emotion": "excitement"
     },
     {
       "act": 4,
       "label": "EMOTIONAL PEAK",
-      "text": "Think about the possibilities.  No more wasted time wrestling with robotic responses.  Imagine truly collaborative brainstorming.",
+      "text": "Suddenly, working with AI feels\u2026 intuitive. Like you\u2019re collaborating with a truly intelligent partner, not just a sophisticated chatbot.",
       "duration_estimate": "10s",
-      "emotion": "hope"
+      "emotion": "relief"
     },
     {
       "act": 4,
-      "label": "EMOTIONAL PEAK (cont)",
-      "text": "It\u2019s about unlocking your creative potential, accelerating your workflow, and feeling empowered.",
-      "duration_estimate": "5s",
-      "emotion": "inspiration"
-    },
-    {
-      "act": 4,
-      "label": "EMOTIONAL PEAK (cont)",
-      "text": "Suddenly, the future of AI feels exciting, doesn't it?",
-      "duration_estimate": "5s",
-      "emotion": "anticipation"
+      "label": "EMOTIONAL PEAK",
+      "text": "It\u2019s that feeling of finally unlocking a tool that actually *gets* your vision\u2014that\u2019s power.",
+      "duration_estimate": "6s",
+      "emotion": "empowerment"
     },
     {
       "act": 5,
       "label": "CTA",
-      "text": "This is just the beginning.  Follow Daena for more on the AI revolution.",
-      "duration_estimate": "10s",
-      "emotion": "call_to_action"
+      "text": "This shift is a game-changer.  Keep an eye on this space \u2013 it\u2019s evolving rapidly.",
+      "duration_estimate": "6s",
+      "emotion": "urgency"
     },
     {
       "act": 5,
-      "label": "CTA (cont)",
-      "text": "Or save this video \u2013 you won't want to miss this!",
-      "duration_estimate": "10s",
-      "emotion": "urgency"
+      "label": "CTA",
+      "text": "Follow Daena for more deep dives into the future of AI \u2013 trust me, you won\u2019t want to miss this!",
+      "duration_estimate": "6s",
+      "emotion": "enthusiasm"
     }
   ],
-  "full_voiceover_text": "Okay, here\u2019s the TikTok hook text: Claude 4\u2019s just quietly raised the bar on conversations\u2026 most people haven't even *seen* what it can do yet. Seriously, it\u2019s a different level. You\u2019re probably scrolling, feeling overwhelmed by chatbots.  They\u2019re clunky, repetitive, and frankly, useless. Every AI assistant promises a revolution, but delivers the same frustrating limitations.  It\u2019s exhausting, isn\u2019t it? That\u2019s where Claude 4 changes everything. It\u2019s not just *better*; it\u2019s fundamentally different. Claude 4 understands context at a level no other conversational AI achieves.  It remembers past interactions seamlessly. I\u2019m talking nuanced debates, complex creative writing, and genuinely helpful problem-solving. Watch this: I asked Claude 4 to write a short story about a lonely robot discovering friendship.  It\u2019s beautiful. Think about the possibilities.  No more wasted time wrestling with robotic responses.  Imagine truly collaborative brainstorming. It\u2019s about unlocking your creative potential, accelerating your workflow, and feeling empowered. Suddenly, the future of AI feels exciting, doesn't it? This is just the beginning.  Follow Daena for more on the AI revolution. Or save this video \u2013 you won't want to miss this!",
-  "word_count": 180,
-  "estimated_duration": "72s",
-  "quality_score": 6.2,
+  "full_voiceover_text": "Claude 4\u2019s performance shift just quietly leveled up\u2014most people didn\u2019t notice\u2026 It\u2019s like, suddenly it *gets* things. Seriously, the way it thinks is just\u2026 different. For years, we\u2019ve been pushing LLMs, hoping for that breakthrough. We\u2019ve seen incremental improvements, but the gaps felt massive. Remember struggling to get complex prompts understood? The frustrating loops of irrelevant responses? That\u2019s fundamentally changed with Claude 4\u2019s architecture \u2013 it\u2019s not just bigger. This isn't just about more parameters; it\u2019s about scaling and aligning models in a completely new way. They\u2019ve mastered contextual understanding like never before. Claude 4 actually *reasoned* through multi-step problems \u2013 something previous models couldn't reliably do. Think about it: nuanced creative writing, complex data analysis, even coding \u2013 it\u2019s all significantly improved. Suddenly, working with AI feels\u2026 intuitive. Like you\u2019re collaborating with a truly intelligent partner, not just a sophisticated chatbot. It\u2019s that feeling of finally unlocking a tool that actually *gets* your vision\u2014that\u2019s power. This shift is a game-changer.  Keep an eye on this space \u2013 it\u2019s evolving rapidly. Follow Daena for more deep dives into the future of AI \u2013 trust me, you won\u2019t want to miss this!",
+  "word_count": 191,
+  "estimated_duration": "76s",
+  "quality_score": 6.5,
   "production_status": "approved",
   "method_tag": "curiosity_gap_v1",
-  "created_at": "2026-04-04T14:18:09.691570"
+  "created_at": "2026-04-04T14:23:09.467902"
 }

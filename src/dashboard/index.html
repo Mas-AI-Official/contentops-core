@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ContentOps Dashboard</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0a0a1a; color: #e0e0e0; }
+
+    .header { background: linear-gradient(135deg, #0f1419 0%, #1a1f2e 100%); padding: 20px 32px; border-bottom: 1px solid #2a2f3e; display: flex; justify-content: space-between; align-items: center; }
+    .header h1 { font-size: 24px; color: #00c8ff; }
+    .header .status { color: #2dd4bf; font-size: 14px; }
+
+    .container { max-width: 1400px; margin: 0 auto; padding: 24px; }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 24px; margin-bottom: 24px; }
+
+    .card { background: #12141f; border: 1px solid #2a2f3e; border-radius: 12px; padding: 24px; }
+    .card h2 { font-size: 18px; color: #00c8ff; margin-bottom: 16px; border-bottom: 1px solid #1e2130; padding-bottom: 8px; }
+    .card h3 { font-size: 14px; color: #8899aa; margin: 12px 0 8px; text-transform: uppercase; letter-spacing: 1px; }
+
+    .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+    .stat { background: #12141f; border: 1px solid #2a2f3e; border-radius: 8px; padding: 16px; text-align: center; }
+    .stat .value { font-size: 32px; font-weight: 700; color: #00c8ff; }
+    .stat .label { font-size: 12px; color: #8899aa; margin-top: 4px; }
+
+    .niche-card { background: #181b28; border: 1px solid #2a2f3e; border-radius: 8px; padding: 16px; margin-bottom: 12px; }
+    .niche-card .niche-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .niche-card .niche-name { font-size: 16px; font-weight: 600; color: #e0e0e0; }
+    .niche-card .niche-audience { font-size: 12px; color: #8899aa; }
+
+    .platform-tag { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: 16px; font-size: 12px; font-weight: 500; margin: 2px; }
+    .platform-tag.tiktok { background: #1a1a2e; color: #ff0050; border: 1px solid #ff005033; }
+    .platform-tag.instagram { background: #1a1a2e; color: #e1306c; border: 1px solid #e1306c33; }
+    .platform-tag.youtube { background: #1a1a2e; color: #ff0000; border: 1px solid #ff000033; }
+    .platform-tag.linkedin { background: #1a1a2e; color: #0077b5; border: 1px solid #0077b533; }
+    .platform-tag.twitter { background: #1a1a2e; color: #1da1f2; border: 1px solid #1da1f233; }
+    .platform-tag.threads { background: #1a1a2e; color: #ffffff; border: 1px solid #ffffff33; }
+
+    .btn { padding: 8px 16px; border-radius: 6px; border: none; cursor: pointer; font-size: 13px; font-weight: 500; transition: all 0.2s; }
+    .btn-primary { background: #00c8ff; color: #0a0a1a; }
+    .btn-primary:hover { background: #00a8dd; }
+    .btn-secondary { background: #2a2f3e; color: #e0e0e0; }
+    .btn-secondary:hover { background: #3a3f4e; }
+    .btn-danger { background: #ff4444; color: white; }
+    .btn-sm { padding: 4px 10px; font-size: 12px; }
+
+    input, select, textarea { background: #181b28; border: 1px solid #2a2f3e; color: #e0e0e0; padding: 8px 12px; border-radius: 6px; font-size: 14px; width: 100%; margin-bottom: 8px; }
+    input:focus, select:focus { border-color: #00c8ff; outline: none; }
+
+    .form-row { display: flex; gap: 12px; }
+    .form-row > * { flex: 1; }
+
+    .trend-item { padding: 8px 0; border-bottom: 1px solid #1e2130; }
+    .trend-item .source { font-size: 11px; color: #00c8ff; text-transform: uppercase; }
+    .trend-item .title { font-size: 14px; margin-top: 2px; }
+    .trend-item .score { font-size: 12px; color: #d4a843; }
+
+    .queue-item { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #1e2130; }
+    .queue-item .id { font-size: 13px; color: #00c8ff; }
+    .queue-item .score { font-size: 13px; color: #2dd4bf; }
+    .queue-item .status { font-size: 12px; padding: 2px 8px; border-radius: 4px; }
+    .status-approved { background: #2dd4bf22; color: #2dd4bf; }
+    .status-escalated { background: #ff444422; color: #ff4444; }
+    .status-draft { background: #d4a84322; color: #d4a843; }
+
+    .schedule-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+    .schedule-day { text-align: center; padding: 8px 4px; }
+    .schedule-day .day-name { font-size: 11px; color: #8899aa; text-transform: uppercase; }
+    .schedule-day .slots { margin-top: 4px; }
+    .schedule-slot { font-size: 10px; padding: 2px 4px; border-radius: 3px; margin: 2px 0; }
+
+    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.7); display: flex; align-items: center; justify-content: center; z-index: 100; }
+    .modal { background: #12141f; border: 1px solid #2a2f3e; border-radius: 12px; padding: 24px; min-width: 400px; max-width: 600px; }
+    .modal h2 { color: #00c8ff; margin-bottom: 16px; }
+
+    .hidden { display: none; }
+    .loading { color: #8899aa; font-style: italic; }
+
+    @media (max-width: 768px) {
+      .grid { grid-template-columns: 1fr; }
+      .stat-grid { grid-template-columns: repeat(2, 1fr); }
+      .form-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>ContentOps Dashboard</h1>
+    <div class="status" id="systemStatus">Loading...</div>
+  </div>
+
+  <div class="container">
+    <!-- Stats -->
+    <div class="stat-grid" id="stats"></div>
+
+    <!-- Main Grid -->
+    <div class="grid">
+      <!-- Niches & Platforms -->
+      <div class="card" style="grid-column: span 2;">
+        <h2>
+          Niches & Platforms
+          <button class="btn btn-primary btn-sm" style="float:right" onclick="showAddNiche()">+ Add Niche</button>
+        </h2>
+        <div id="nichesList" class="loading">Loading niches...</div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- Weekly Schedule -->
+      <div class="card">
+        <h2>Weekly Schedule</h2>
+        <div id="schedule" class="loading">Loading schedule...</div>
+      </div>
+
+      <!-- Content Queue -->
+      <div class="card">
+        <h2>Content Queue</h2>
+        <div id="queue" class="loading">Loading queue...</div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- Trending Topics -->
+      <div class="card">
+        <h2>
+          Trending Topics
+          <button class="btn btn-secondary btn-sm" style="float:right" onclick="scanTrends()">Scan Now</button>
+        </h2>
+        <div id="trends" class="loading">Loading trends...</div>
+      </div>
+
+      <!-- Pipeline -->
+      <div class="card">
+        <h2>Generate Content</h2>
+        <div>
+          <textarea id="pipelineTopic" rows="3" placeholder="Enter topic or paste trending topic..."></textarea>
+          <div class="form-row">
+            <select id="pipelinePlatform">
+              <option value="tiktok">TikTok</option>
+              <option value="instagram">Instagram</option>
+              <option value="youtube">YouTube</option>
+              <option value="linkedin">LinkedIn</option>
+              <option value="twitter">X/Twitter</option>
+            </select>
+            <select id="pipelineMode">
+              <option value="test">Test (Kokoro TTS)</option>
+              <option value="production">Production (ElevenLabs)</option>
+            </select>
+          </div>
+          <button class="btn btn-primary" onclick="runPipeline()" id="pipelineBtn">Generate Video</button>
+          <div id="pipelineResult" style="margin-top: 12px;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Niche Modal -->
+  <div class="modal-overlay hidden" id="addNicheModal">
+    <div class="modal">
+      <h2>Add New Niche</h2>
+      <input id="nicheName" placeholder="Niche name (e.g., AI Tech, Fitness, Cooking)" />
+      <input id="nicheAudience" placeholder="Target audience (e.g., AI founders, gym enthusiasts)" />
+      <input id="nicheHashtags" placeholder="Hashtags (comma separated, e.g., #AITools, #TechStartup)" />
+      <select id="nicheTone">
+        <option value="expert_accessible">Expert but Accessible</option>
+        <option value="casual">Casual / Friendly</option>
+        <option value="professional">Professional</option>
+        <option value="edgy">Edgy / Bold</option>
+        <option value="educational">Educational</option>
+      </select>
+      <div style="margin-top: 12px; display: flex; gap: 8px; justify-content: flex-end;">
+        <button class="btn btn-secondary" onclick="hideModal('addNicheModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="createNiche()">Create Niche</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Platform Modal -->
+  <div class="modal-overlay hidden" id="addPlatformModal">
+    <div class="modal">
+      <h2>Connect Platform</h2>
+      <input type="hidden" id="platformNicheSlug" />
+      <select id="platformSelect">
+        <option value="tiktok">TikTok</option>
+        <option value="instagram">Instagram</option>
+        <option value="youtube">YouTube</option>
+        <option value="linkedin">LinkedIn</option>
+        <option value="twitter">X/Twitter</option>
+        <option value="threads">Threads</option>
+        <option value="pinterest">Pinterest</option>
+        <option value="snapchat">Snapchat</option>
+      </select>
+      <input id="platformHandle" placeholder="@username or handle" />
+      <div class="form-row">
+        <div>
+          <label style="font-size:12px;color:#8899aa">Audience Region</label>
+          <select id="platformRegion"></select>
+        </div>
+        <div>
+          <label style="font-size:12px;color:#8899aa">Posts/Week</label>
+          <input type="number" id="platformPostsPerWeek" value="3" min="1" max="14" />
+        </div>
+      </div>
+      <p style="font-size:12px;color:#8899aa;margin:8px 0">Posting times will auto-calculate based on region and platform best practices.</p>
+      <div style="margin-top: 12px; display: flex; gap: 8px; justify-content: flex-end;">
+        <button class="btn btn-secondary" onclick="hideModal('addPlatformModal')">Cancel</button>
+        <button class="btn btn-primary" onclick="connectPlatform()">Connect</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API = '';  // Same origin
+    const TENANT = 'mas-ai';  // Default tenant
+
+    // === API Calls ===
+    async function api(path, method = 'GET', body = null) {
+      const opts = { method, headers: { 'Content-Type': 'application/json' } };
+      if (body) opts.body = JSON.stringify(body);
+      const res = await fetch(API + path, opts);
+      return res.json();
+    }
+
+    // === Load Dashboard ===
+    async function loadDashboard() {
+      await Promise.all([loadStatus(), loadNiches(), loadSchedule(), loadQueue(), loadTrends(), loadRegions()]);
+    }
+
+    async function loadStatus() {
+      const data = await api('/api/status');
+      document.getElementById('systemStatus').textContent =
+        `${data.status} | ${data.tenants} tenants | ${data.niches} niches | ${data.platform_connections} platforms`;
+
+      const analytics = await api('/api/analytics');
+      document.getElementById('stats').innerHTML = `
+        <div class="stat"><div class="value">${analytics.scripts}</div><div class="label">Scripts</div></div>
+        <div class="stat"><div class="value">${analytics.audio}</div><div class="label">Audio Files</div></div>
+        <div class="stat"><div class="value">${analytics.videos}</div><div class="label">Videos</div></div>
+        <div class="stat"><div class="value">${analytics.trends_cached}</div><div class="label">Trends Cached</div></div>
+      `;
+    }
+
+    async function loadNiches() {
+      const data = await api(`/api/tenant/${TENANT}`);
+      const container = document.getElementById('nichesList');
+
+      if (!data.niches || data.niches.length === 0) {
+        container.innerHTML = '<p style="color:#8899aa">No niches yet. Click "+ Add Niche" to get started.</p>';
+        return;
+      }
+
+      container.innerHTML = data.niches.map(niche => `
+        <div class="niche-card">
+          <div class="niche-header">
+            <div>
+              <div class="niche-name">${niche.name}</div>
+              <div class="niche-audience">${niche.target_audience || 'No audience defined'}</div>
+            </div>
+            <div>
+              <button class="btn btn-primary btn-sm" onclick="showAddPlatform('${niche.slug}')">+ Platform</button>
+              <button class="btn btn-danger btn-sm" onclick="deleteNiche('${niche.slug}')">Remove</button>
+            </div>
+          </div>
+          <div style="margin-top: 8px;">
+            ${(niche.platforms || []).map(p => `
+              <span class="platform-tag ${p.platform}">
+                ${platformIcon(p.platform)} ${p.platform} ${p.handle || ''}
+                <span style="opacity:0.6">${p.posts_per_week}/wk</span>
+                <span style="opacity:0.4;cursor:pointer" onclick="removePlatform('${niche.slug}','${p.id}')">&times;</span>
+              </span>
+            `).join('')}
+            ${(niche.platforms || []).length === 0 ? '<span style="color:#8899aa;font-size:12px">No platforms connected</span>' : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function loadSchedule() {
+      const data = await api(`/api/tenant/${TENANT}/schedule`);
+      const container = document.getElementById('schedule');
+
+      const days = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+      const dayNames = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+      const byDay = {};
+      days.forEach(d => byDay[d] = []);
+      (data.schedule || []).forEach(s => {
+        if (byDay[s.day]) byDay[s.day].push(s);
+      });
+
+      container.innerHTML = `
+        <p style="font-size:12px;color:#8899aa;margin-bottom:8px">${data.total_slots || 0} posts/week</p>
+        <div class="schedule-grid">
+          ${days.map((day, i) => `
+            <div class="schedule-day">
+              <div class="day-name">${dayNames[i]}</div>
+              <div class="slots">
+                ${byDay[day].map(s => `
+                  <div class="schedule-slot platform-tag ${s.platform}" style="display:block">${s.time}</div>
+                `).join('')}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+
+    async function loadQueue() {
+      const data = await api('/api/queue');
+      const container = document.getElementById('queue');
+
+      if (!data.queue || data.queue.length === 0) {
+        container.innerHTML = '<p style="color:#8899aa">No content in queue. Generate some!</p>';
+        return;
+      }
+
+      container.innerHTML = data.queue.map(q => `
+        <div class="queue-item">
+          <span class="id">${q.script_id}</span>
+          <span class="score">Score: ${q.quality_score}</span>
+          <span class="status status-${q.status}">${q.status}</span>
+        </div>
+      `).join('');
+    }
+
+    async function loadTrends() {
+      const data = await api('/api/trends');
+      const container = document.getElementById('trends');
+
+      if (!data.trends || data.trends.length === 0) {
+        container.innerHTML = '<p style="color:#8899aa">No trends cached. Click "Scan Now".</p>';
+        return;
+      }
+
+      container.innerHTML = data.trends.slice(0, 10).map(t => `
+        <div class="trend-item" onclick="useTrend('${t.title.replace(/'/g, '')}')">
+          <span class="source">${t.source}</span>
+          <span class="score" style="float:right">${t.relevance_score}/10</span>
+          <div class="title">${t.title}</div>
+        </div>
+      `).join('');
+    }
+
+    async function loadRegions() {
+      const data = await api('/api/regions');
+      const select = document.getElementById('platformRegion');
+      select.innerHTML = Object.entries(data.regions || {}).map(([key, val]) =>
+        `<option value="${key}" ${key === 'canada_east' ? 'selected' : ''}>${val.label} (${val.timezone})</option>`
+      ).join('');
+    }
+
+    // === Actions ===
+    function showAddNiche() { document.getElementById('addNicheModal').classList.remove('hidden'); }
+    function showAddPlatform(nicheSlug) {
+      document.getElementById('platformNicheSlug').value = nicheSlug;
+      document.getElementById('addPlatformModal').classList.remove('hidden');
+    }
+    function hideModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+    async function createNiche() {
+      const name = document.getElementById('nicheName').value;
+      const audience = document.getElementById('nicheAudience').value;
+      const hashtags = document.getElementById('nicheHashtags').value.split(',').map(h => h.trim()).filter(Boolean);
+      const tone = document.getElementById('nicheTone').value;
+
+      await api(`/api/tenant/${TENANT}/niche`, 'POST', { name, target_audience: audience, hashtags, tone });
+      hideModal('addNicheModal');
+      document.getElementById('nicheName').value = '';
+      document.getElementById('nicheAudience').value = '';
+      document.getElementById('nicheHashtags').value = '';
+      await loadNiches();
+      await loadSchedule();
+    }
+
+    async function deleteNiche(slug) {
+      if (!confirm(`Delete niche "${slug}" and all its platform connections?`)) return;
+      await api(`/api/tenant/${TENANT}/niche/${slug}`, 'DELETE');
+      await loadNiches();
+      await loadSchedule();
+    }
+
+    async function connectPlatform() {
+      const nicheSlug = document.getElementById('platformNicheSlug').value;
+      const platform = document.getElementById('platformSelect').value;
+      const handle = document.getElementById('platformHandle').value;
+      const region = document.getElementById('platformRegion').value;
+      const posts_per_week = parseInt(document.getElementById('platformPostsPerWeek').value);
+
+      const result = await api(`/api/tenant/${TENANT}/niche/${nicheSlug}/platform`, 'POST',
+        { platform, handle, region, posts_per_week });
+
+      hideModal('addPlatformModal');
+      document.getElementById('platformHandle').value = '';
+      await loadNiches();
+      await loadSchedule();
+
+      if (result.posting_schedule) {
+        alert(`${platform} connected!\nPosting: ${result.posting_schedule.days.join(', ')} at ${result.posting_schedule.times.join(', ')}\nTimezone: ${result.timezone}`);
+      }
+    }
+
+    async function removePlatform(nicheSlug, platformId) {
+      if (!confirm('Disconnect this platform?')) return;
+      await api(`/api/tenant/${TENANT}/niche/${nicheSlug}/platform/${platformId}`, 'DELETE');
+      await loadNiches();
+      await loadSchedule();
+    }
+
+    async function scanTrends() {
+      document.getElementById('trends').innerHTML = '<p class="loading">Scanning 6 sources...</p>';
+      await api('/api/trends/scan', 'POST');
+      await loadTrends();
+    }
+
+    function useTrend(title) {
+      document.getElementById('pipelineTopic').value = title;
+    }
+
+    async function runPipeline() {
+      const btn = document.getElementById('pipelineBtn');
+      const resultDiv = document.getElementById('pipelineResult');
+      const topic = document.getElementById('pipelineTopic').value;
+      const platform = document.getElementById('pipelinePlatform').value;
+      const mode = document.getElementById('pipelineMode').value;
+
+      if (!topic) { alert('Enter a topic first'); return; }
+
+      btn.disabled = true;
+      btn.textContent = 'Generating...';
+      resultDiv.innerHTML = '<p class="loading">Running pipeline (this takes 1-3 minutes)...</p>';
+
+      try {
+        const result = await api('/api/pipeline/run', 'POST', { source_material: topic, platform, mode });
+        resultDiv.innerHTML = `
+          <div style="padding:12px;background:#181b28;border-radius:8px">
+            <div style="color:${result.status === 'completed' ? '#2dd4bf' : '#ff4444'};font-weight:600">${result.status.toUpperCase()}</div>
+            <div style="font-size:13px;margin-top:4px">Script: ${result.script_id} (score: ${result.script_score})</div>
+            ${result.audio_path ? `<div style="font-size:13px">Audio: ${result.audio_path}</div>` : ''}
+            ${result.video_path ? `<div style="font-size:13px">Video: ${result.video_path}</div>` : ''}
+            <div style="font-size:12px;color:#8899aa;margin-top:4px">Stages: ${result.stages_completed.join(' → ')}</div>
+          </div>
+        `;
+        await loadQueue();
+      } catch (e) {
+        resultDiv.innerHTML = `<div style="color:#ff4444">Error: ${e.message}</div>`;
+      }
+
+      btn.disabled = false;
+      btn.textContent = 'Generate Video';
+    }
+
+    function platformIcon(p) {
+      const icons = { tiktok: '♪', instagram: '📷', youtube: '▶', linkedin: '💼', twitter: '𝕏', threads: '🧵', pinterest: '📌', snapchat: '👻' };
+      return icons[p] || '🌐';
+    }
+
+    // === Init ===
+    loadDashboard();
+    setInterval(() => loadStatus(), 30000);  // Refresh status every 30s
+  </script>
+</body>
+</html>

@@ -12,10 +12,15 @@ load_dotenv(os.path.join(project_root, ".env"))
 
 if __name__ == "__main__":
     import uvicorn
+
+    # Ensure we're running from project root
+    os.chdir(project_root)
+
     uvicorn.run(
         "src.api.dashboard:app",
         host="127.0.0.1",
         port=8080,
         reload=True,
+        reload_dirs=[os.path.join(project_root, "src")],
         log_level="info",
     )

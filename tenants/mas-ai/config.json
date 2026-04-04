@@ -1,33 +1,379 @@
 {
-  "tenant_id": "mas-ai",
-  "display_name": "MAS-AI Technologies / Daena",
+  "id": "mas-ai",
+  "display_name": "MAS-AI Technologies",
   "avatar_name": "Daena",
-  "niche": "ai-tech-startups",
-  "sub_niches": ["ai-tools", "startup-insights", "tech-for-builders", "governed-ai"],
-  "platforms": ["tiktok", "instagram", "youtube", "linkedin", "twitter"],
-  "content_mix": {
-    "educational": 0.40,
-    "opinion": 0.25,
-    "behind_scenes": 0.20,
-    "news_commentary": 0.10,
-    "community": 0.05
-  },
-  "posting_schedule": {
-    "tiktok": {"days": ["tue", "thu", "fri", "sat"], "times": ["07:00", "12:00", "19:00"]},
-    "instagram": {"days": ["mon", "wed", "fri"], "times": ["08:00", "11:00", "17:00"]},
-    "youtube": {"days": ["mon", "wed", "fri"], "times": ["14:00", "20:00"]},
-    "linkedin": {"days": ["tue", "wed", "thu"], "times": ["08:00", "10:00"]},
-    "twitter": {"days": ["mon", "tue", "wed", "thu", "fri"], "times": ["08:00", "12:00", "17:00"]}
-  },
   "brand_color": "#00c8ff",
   "brand_accent": "#d4a853",
-  "default_avatar": "daena_neutral.png",
-  "cta_style": "follow_and_save",
+  "tagline": "Governed AI That Gets Things Done",
+  "logo_path": "",
+  "persona_name": "Daena",
+  "persona_personality": "Confident, intellectually sharp, slightly witty, data-driven",
+  "persona_tone": "Expert but accessible, founder energy, not corporate",
+  "voice_provider": "kokoro",
+  "voice_id": "XrExE9yKIg1WjnnlVkGX",
+  "voice_reference_audio": "",
+  "default_region": "canada_east",
   "active": true,
-  "persona": {
-    "name": "Daena",
-    "personality": "Confident, intellectually sharp, slightly witty, data-driven",
-    "tone": "Expert but accessible, founder energy, not corporate",
-    "voice_style": "Warm, clear, authoritative"
-  }
+  "created_at": "2026-04-04T14:33:54.532813",
+  "cta_templates": {
+    "follow": "Follow {persona} for more.",
+    "save": "Save this \u2014 you'll need it.",
+    "share": "Share this with someone who needs it.",
+    "comment": "Drop a comment if you've seen this.",
+    "subscribe": "Subscribe \u2014 Part 2 is coming."
+  },
+  "niches": [
+    {
+      "id": "ca769f3e",
+      "name": "AI Tech",
+      "slug": "ai-tech",
+      "description": "",
+      "content_mix": {
+        "educational": 0.4,
+        "opinion": 0.25,
+        "behind_scenes": 0.2,
+        "news_commentary": 0.1,
+        "community": 0.05
+      },
+      "target_audience": "AI founders, builders, tech professionals",
+      "tone": "expert_accessible",
+      "hashtags_always": [
+        "#Daena"
+      ],
+      "hashtags_niche": [
+        "#AIGovernance",
+        "#AIAgents",
+        "#TechStartup",
+        "#AITools"
+      ],
+      "tracked_influencers": [
+        {
+          "handle": "@aiexplained",
+          "platform": "youtube",
+          "priority": 1
+        },
+        {
+          "handle": "@gregisenberg",
+          "platform": "tiktok",
+          "priority": 1
+        },
+        {
+          "handle": "@alexhormozi",
+          "platform": "youtube",
+          "priority": 2
+        },
+        {
+          "handle": "@levelsio",
+          "platform": "twitter",
+          "priority": 2
+        }
+      ],
+      "active": true,
+      "created_at": "2026-04-04T14:33:54.532813",
+      "platforms": [
+        {
+          "id": "d02e70ef",
+          "platform": "tiktok",
+          "handle": "@daena_ai",
+          "display_name": "",
+          "connected": false,
+          "audience_timezone": "America/Toronto",
+          "audience_region": "canada_east",
+          "posting_times": [
+            "07:00",
+            "12:00",
+            "19:00",
+            "21:00"
+          ],
+          "posting_days": [
+            "tue",
+            "thu",
+            "fri",
+            "sat"
+          ],
+          "posts_per_week": 4,
+          "hashtag_strategy": [
+            "#Daena",
+            "#AIGovernance",
+            "#AIAgents",
+            "#TechStartup",
+            "#AITools"
+          ],
+          "caption_style": "engaging",
+          "cta_template": "",
+          "has_api_key": false,
+          "auth_method": "manual",
+          "follower_count": 0,
+          "avg_views": 0,
+          "last_posted": null
+        },
+        {
+          "id": "07eaf4a5",
+          "platform": "instagram",
+          "handle": "@daena.ai",
+          "display_name": "",
+          "connected": false,
+          "audience_timezone": "America/Toronto",
+          "audience_region": "canada_east",
+          "posting_times": [
+            "08:00",
+            "11:00",
+            "17:00"
+          ],
+          "posting_days": [
+            "mon",
+            "wed",
+            "fri"
+          ],
+          "posts_per_week": 3,
+          "hashtag_strategy": [
+            "#Daena",
+            "#AIGovernance",
+            "#AIAgents",
+            "#TechStartup",
+            "#AITools"
+          ],
+          "caption_style": "engaging",
+          "cta_template": "",
+          "has_api_key": false,
+          "auth_method": "manual",
+          "follower_count": 0,
+          "avg_views": 0,
+          "last_posted": null
+        },
+        {
+          "id": "99399a34",
+          "platform": "youtube",
+          "handle": "@DaenaAI",
+          "display_name": "",
+          "connected": false,
+          "audience_timezone": "America/Toronto",
+          "audience_region": "canada_east",
+          "posting_times": [
+            "14:00",
+            "16:00",
+            "20:00"
+          ],
+          "posting_days": [
+            "mon",
+            "wed",
+            "fri"
+          ],
+          "posts_per_week": 3,
+          "hashtag_strategy": [
+            "#Daena",
+            "#AIGovernance",
+            "#AIAgents",
+            "#TechStartup",
+            "#AITools"
+          ],
+          "caption_style": "engaging",
+          "cta_template": "",
+          "has_api_key": false,
+          "auth_method": "manual",
+          "follower_count": 0,
+          "avg_views": 0,
+          "last_posted": null
+        },
+        {
+          "id": "4d9eebbf",
+          "platform": "linkedin",
+          "handle": "@mas-ai-technologies",
+          "display_name": "",
+          "connected": false,
+          "audience_timezone": "America/Toronto",
+          "audience_region": "canada_east",
+          "posting_times": [
+            "08:00",
+            "10:00",
+            "12:00"
+          ],
+          "posting_days": [
+            "tue",
+            "wed",
+            "thu"
+          ],
+          "posts_per_week": 3,
+          "hashtag_strategy": [
+            "#Daena",
+            "#AIGovernance",
+            "#AIAgents",
+            "#TechStartup",
+            "#AITools"
+          ],
+          "caption_style": "engaging",
+          "cta_template": "",
+          "has_api_key": false,
+          "auth_method": "manual",
+          "follower_count": 0,
+          "avg_views": 0,
+          "last_posted": null
+        },
+        {
+          "id": "9c9d5d44",
+          "platform": "twitter",
+          "handle": "@daena_ai",
+          "display_name": "",
+          "connected": false,
+          "audience_timezone": "America/Toronto",
+          "audience_region": "canada_east",
+          "posting_times": [
+            "08:00",
+            "12:00",
+            "17:00",
+            "21:00"
+          ],
+          "posting_days": [
+            "mon",
+            "tue",
+            "wed",
+            "thu",
+            "fri"
+          ],
+          "posts_per_week": 5,
+          "hashtag_strategy": [
+            "#Daena",
+            "#AIGovernance",
+            "#AIAgents",
+            "#TechStartup",
+            "#AITools"
+          ],
+          "caption_style": "engaging",
+          "cta_template": "",
+          "has_api_key": false,
+          "auth_method": "manual",
+          "follower_count": 0,
+          "avg_views": 0,
+          "last_posted": null
+        }
+      ]
+    },
+    {
+      "id": "6e4e851d",
+      "name": "Startup Insights",
+      "slug": "startup-insights",
+      "description": "",
+      "content_mix": {
+        "educational": 0.4,
+        "opinion": 0.25,
+        "behind_scenes": 0.2,
+        "news_commentary": 0.1,
+        "community": 0.05
+      },
+      "target_audience": "Startup founders, indie hackers, bootstrappers",
+      "tone": "expert_accessible",
+      "hashtags_always": [
+        "#Daena"
+      ],
+      "hashtags_niche": [
+        "#StartupLife",
+        "#FounderTips",
+        "#BuildInPublic",
+        "#IndieHacker"
+      ],
+      "tracked_influencers": [],
+      "active": true,
+      "created_at": "2026-04-04T14:33:54.532813",
+      "platforms": [
+        {
+          "id": "f2b4a726",
+          "platform": "tiktok",
+          "handle": "@daena_ai",
+          "display_name": "",
+          "connected": false,
+          "audience_timezone": "America/Toronto",
+          "audience_region": "canada_east",
+          "posting_times": [
+            "07:00",
+            "12:00"
+          ],
+          "posting_days": [
+            "tue",
+            "thu"
+          ],
+          "posts_per_week": 2,
+          "hashtag_strategy": [
+            "#Daena",
+            "#StartupLife",
+            "#FounderTips",
+            "#BuildInPublic",
+            "#IndieHacker"
+          ],
+          "caption_style": "engaging",
+          "cta_template": "",
+          "has_api_key": false,
+          "auth_method": "manual",
+          "follower_count": 0,
+          "avg_views": 0,
+          "last_posted": null
+        },
+        {
+          "id": "6aa48434",
+          "platform": "linkedin",
+          "handle": "@mas-ai-technologies",
+          "display_name": "",
+          "connected": false,
+          "audience_timezone": "America/Toronto",
+          "audience_region": "canada_east",
+          "posting_times": [
+            "08:00",
+            "10:00"
+          ],
+          "posting_days": [
+            "tue",
+            "wed"
+          ],
+          "posts_per_week": 2,
+          "hashtag_strategy": [
+            "#Daena",
+            "#StartupLife",
+            "#FounderTips",
+            "#BuildInPublic",
+            "#IndieHacker"
+          ],
+          "caption_style": "engaging",
+          "cta_template": "",
+          "has_api_key": false,
+          "auth_method": "manual",
+          "follower_count": 0,
+          "avg_views": 0,
+          "last_posted": null
+        },
+        {
+          "id": "8091daa9",
+          "platform": "twitter",
+          "handle": "@daena_ai",
+          "display_name": "",
+          "connected": false,
+          "audience_timezone": "America/Toronto",
+          "audience_region": "canada_east",
+          "posting_times": [
+            "08:00",
+            "12:00",
+            "17:00"
+          ],
+          "posting_days": [
+            "mon",
+            "tue",
+            "wed"
+          ],
+          "posts_per_week": 3,
+          "hashtag_strategy": [
+            "#Daena",
+            "#StartupLife",
+            "#FounderTips",
+            "#BuildInPublic",
+            "#IndieHacker"
+          ],
+          "caption_style": "engaging",
+          "cta_template": "",
+          "has_api_key": false,
+          "auth_method": "manual",
+          "follower_count": 0,
+          "avg_views": 0,
+          "last_posted": null
+        }
+      ]
+    }
+  ]
 }
