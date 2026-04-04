@@ -799,26 +799,48 @@ class VideoComposer:
         return video_path  # Return original if captions fail
 
     async def _add_hook_overlay(self, video_path: str, hook_text: str, spec: VideoSpec, work_dir: Path) -> str:
-        """Add hook text overlay with glass-card effect in first 3 seconds."""
+        """Add hook text overlay with glass-card effect in first 3 seconds.
+
+        Text is manually wrapped to ~25 chars per line for readability on mobile.
+        Positioned at 30% from top with dark glass-card background.
+        """
         output = str(work_dir / "hooked.mp4")
 
-        # Escape text for FFmpeg drawtext
+        # Escape and wrap text to ~25 chars per line
         safe_text = hook_text.replace("'", "").replace(":", "").replace("\\", "")
+        words = safe_text.split()
+        lines = []
+        current_line = ""
+        for word in words:
+            if len(current_line) + len(word) + 1 > 25:
+                lines.append(current_line.strip())
+                current_line = word
+            else:
+                current_line += " " + word if current_line else word
+        if current_line:
+            lines.append(current_line.strip())
+        lines = lines[:3]  # Max 3 lines
 
-        font_size = 24 if spec.width >= 1080 else 18
-        # Wrap long text: limit line width to ~30 chars worth of pixels
-        max_line_w = int(spec.width * 0.8)
+        font_size = 28 if spec.width >= 1080 else 20
+        box_pad = 16
+
+        # Write hook text to a temp file for FFmpeg textfile= approach
+        hook_file = work_dir / "hook_text.txt"
+        with open(hook_file, "w", encoding="utf-8") as f:
+            f.write("\n".join(lines))
+
+        hook_file_escaped = str(hook_file).replace("\\", "/").replace(":", "\\:")
 
         cmd = [
             "ffmpeg", "-y",
             "-i", video_path,
             "-vf", (
-                f"drawtext=text='{safe_text}':"
+                f"drawtext=textfile='{hook_file_escaped}':"
                 f"fontsize={font_size}:fontcolor=white:"
-                f"borderw=2:bordercolor=black:"
-                f"box=1:boxcolor=black@0.45:boxborderw=16:"
-                f"x=(w-text_w)/2:y=h*0.35:"
-                f"line_spacing=8:"
+                f"borderw=1:bordercolor=black:"
+                f"box=1:boxcolor=black@0.5:boxborderw={box_pad}:"
+                f"x=(w-text_w)/2:y=(h*0.25)-text_h/2:"
+                f"line_spacing=10:"
                 f"enable='lt(t,3)'"
             ),
             "-c:v", spec.codec, "-preset", "fast", "-crf", "23",
