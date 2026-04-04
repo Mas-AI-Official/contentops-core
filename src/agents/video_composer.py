@@ -191,10 +191,15 @@ class VideoComposer:
 
         logger.info(f"Composing video: {script_id} for {platform}")
 
-        # Step 1: Get B-roll
+        # Step 1: Get B-roll (mix Daena lifestyle + Pexels)
         visual_keywords = self._extract_visual_keywords(script_data)
         orientation = "portrait" if spec.height > spec.width else "landscape"
-        broll_clips = await self.pexels.fetch_clips(visual_keywords, orientation)
+
+        # Check for Daena lifestyle images first (penthouse, boardroom, tech)
+        lifestyle_clips = await self._create_lifestyle_broll(tenant, spec, work_dir)
+        pexels_clips = await self.pexels.fetch_clips(visual_keywords, orientation)
+        # Mix: lifestyle images first (personal touch), then Pexels (variety)
+        broll_clips = lifestyle_clips + pexels_clips
 
         # Step 2: Generate captions
         captions = CaptionGenerator.generate(audio_path, spec.fps)
@@ -486,6 +491,68 @@ class VideoComposer:
             logger.warning(f"Avatar PiP fallback failed: {e}")
 
         return base_video
+
+    async def _create_lifestyle_broll(self, tenant: str, spec: VideoSpec, work_dir: Path) -> list[str]:
+        """Create Ken Burns animated clips from Daena's lifestyle images.
+
+        Searches data/assets/daena/casual/ (penthouse), tech/, boardroom/
+        for still images and converts them into 6-second animated clips with
+        slow zoom + pan (Ken Burns effect). These clips feel personal and premium
+        compared to generic Pexels stock footage.
+        """
+        lifestyle_dirs = [
+            Path(f"data/assets/daena/casual"),
+            Path(f"data/assets/daena/tech"),
+            Path(f"data/assets/daena/boardroom"),
+        ]
+
+        images = []
+        for d in lifestyle_dirs:
+            if d.exists():
+                for f in d.glob("*.png"):
+                    images.append(str(f))
+                for f in d.glob("*.jpg"):
+                    images.append(str(f))
+
+        if not images:
+            return []
+
+        # Pick up to 2 lifestyle images (don't overwhelm with the same person)
+        import random
+        selected = random.sample(images, min(2, len(images)))
+        clips = []
+
+        for i, img_path in enumerate(selected):
+            output = str(work_dir / f"lifestyle_{i}.mp4")
+            clip_duration = 6
+
+            # Ken Burns: slow zoom in (1.0 → 1.15) with slight pan
+            cmd = [
+                "ffmpeg", "-y",
+                "-loop", "1", "-i", img_path,
+                "-vf", (
+                    f"scale={spec.width * 2}:{spec.height * 2},"
+                    f"zoompan=z='min(zoom+0.0008,1.15)':"
+                    f"x='iw/2-(iw/zoom/2)+sin(on/100)*20':"
+                    f"y='ih/2-(ih/zoom/2)':"
+                    f"d={clip_duration * spec.fps}:"
+                    f"s={spec.width}x{spec.height}:"
+                    f"fps={spec.fps}"
+                ),
+                "-t", str(clip_duration),
+                "-c:v", spec.codec, "-preset", "fast", "-crf", "23",
+                output
+            ]
+
+            try:
+                subprocess.run(cmd, capture_output=True, timeout=60)
+                if Path(output).exists() and Path(output).stat().st_size > 10000:
+                    logger.info(f"Lifestyle B-roll created: {Path(img_path).name}")
+                    clips.append(output)
+            except Exception as e:
+                logger.warning(f"Lifestyle B-roll failed for {img_path}: {e}")
+
+        return clips
 
     async def _add_dark_overlay(self, video_path: str, spec: VideoSpec,
                                 work_dir: Path, opacity: float = 0.35) -> str:
