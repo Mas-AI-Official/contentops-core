@@ -3,93 +3,51 @@
   "tenant": "mas-ai",
   "platform": "tiktok",
   "niche": "ai-tech",
-  "insight_source": "Claude 4 just changed everything",
+  "insight_source": "Claude Code just got Opus 4.6 with 1M context window. This changes everything for AI coding agents.",
   "hook_type": "curiosity_gap",
   "hook_vault_ref": "hook_007",
   "acts": [
     {
       "act": 1,
       "label": "HOOK",
-      "text": "Claude 4\u2019s performance shift just quietly leveled up\u2014most people didn\u2019t notice\u2026 It\u2019s like, suddenly it *gets* things. Seriously, the way it thinks is just\u2026 different.",
+      "text": "(Upbeat, slightly mysterious music intro) Claude Opus 4.6 just quietly doubled its context window to 1M. Seriously, nobody\u2019s talking about this game-changer for coding agents. It\u2019s about to completely rewrite the rules.",
       "duration_estimate": "3s",
       "emotion": "curiosity"
     },
     {
       "act": 2,
       "label": "CURIOSITY BUILD",
-      "text": "For years, we\u2019ve been pushing LLMs, hoping for that breakthrough. We\u2019ve seen incremental improvements, but the gaps felt massive.",
-      "duration_estimate": "9s",
-      "emotion": "intrigue"
-    },
-    {
-      "act": 2,
-      "label": "CURIOSITY BUILD",
-      "text": "Remember struggling to get complex prompts understood? The frustrating loops of irrelevant responses?",
-      "duration_estimate": "6s",
+      "text": "Remember wrestling with complex coding projects?  You\u2019d painstakingly copy and paste snippets, hoping for a connection.  Existing coding assistants struggled with anything beyond a few hundred lines.  That\u2019s the bottleneck \u2013 the inability to truly *understand* the whole project's context.",
+      "duration_estimate": "12s",
       "emotion": "frustration"
     },
     {
-      "act": 2,
-      "label": "CURIOSITY BUILD",
-      "text": "That\u2019s fundamentally changed with Claude 4\u2019s architecture \u2013 it\u2019s not just bigger.",
-      "duration_estimate": "6s",
-      "emotion": "realization"
-    },
-    {
       "act": 3,
       "label": "VALUE DELIVERY",
-      "text": "This isn't just about more parameters; it\u2019s about scaling and aligning models in a completely new way. They\u2019ve mastered contextual understanding like never before.",
-      "duration_estimate": "12s",
-      "emotion": "insight"
-    },
-    {
-      "act": 3,
-      "label": "VALUE DELIVERY",
-      "text": "Claude 4 actually *reasoned* through multi-step problems \u2013 something previous models couldn't reliably do.",
-      "duration_estimate": "8s",
-      "emotion": "validation"
-    },
-    {
-      "act": 3,
-      "label": "VALUE DELIVERY",
-      "text": "Think about it: nuanced creative writing, complex data analysis, even coding \u2013 it\u2019s all significantly improved.",
-      "duration_estimate": "9s",
+      "text": "Opus 4.6\u2019s massive 1 million context window changes everything.  It can now analyze entire codebases, understand complex dependencies, and even suggest improvements across multiple files simultaneously.  Imagine debugging with the full picture, not just isolated errors.  This isn\u2019t just about longer prompts; it\u2019s about genuine comprehension.",
+      "duration_estimate": "30s",
       "emotion": "excitement"
     },
     {
       "act": 4,
       "label": "EMOTIONAL PEAK",
-      "text": "Suddenly, working with AI feels\u2026 intuitive. Like you\u2019re collaborating with a truly intelligent partner, not just a sophisticated chatbot.",
+      "text": "Let\u2019s be honest \u2013 staring at a wall of code, feeling completely lost, is a universal developer experience.  This technology finally tackles that feeling head-on, offering real support and unlocking your potential.  It\u2019s like having a brilliant senior developer constantly reviewing your work, without the ego.",
       "duration_estimate": "10s",
       "emotion": "relief"
     },
     {
-      "act": 4,
-      "label": "EMOTIONAL PEAK",
-      "text": "It\u2019s that feeling of finally unlocking a tool that actually *gets* your vision\u2014that\u2019s power.",
-      "duration_estimate": "6s",
-      "emotion": "empowerment"
-    },
-    {
       "act": 5,
       "label": "CTA",
-      "text": "This shift is a game-changer.  Keep an eye on this space \u2013 it\u2019s evolving rapidly.",
-      "duration_estimate": "6s",
-      "emotion": "urgency"
-    },
-    {
-      "act": 5,
-      "label": "CTA",
-      "text": "Follow Daena for more deep dives into the future of AI \u2013 trust me, you won\u2019t want to miss this!",
-      "duration_estimate": "6s",
+      "text": "This is a seismic shift in AI coding.  Follow Daena for more insights into the future of AI development.  Save this video to revisit it later!",
+      "duration_estimate": "7s",
       "emotion": "enthusiasm"
     }
   ],
-  "full_voiceover_text": "Claude 4\u2019s performance shift just quietly leveled up\u2014most people didn\u2019t notice\u2026 It\u2019s like, suddenly it *gets* things. Seriously, the way it thinks is just\u2026 different. For years, we\u2019ve been pushing LLMs, hoping for that breakthrough. We\u2019ve seen incremental improvements, but the gaps felt massive. Remember struggling to get complex prompts understood? The frustrating loops of irrelevant responses? That\u2019s fundamentally changed with Claude 4\u2019s architecture \u2013 it\u2019s not just bigger. This isn't just about more parameters; it\u2019s about scaling and aligning models in a completely new way. They\u2019ve mastered contextual understanding like never before. Claude 4 actually *reasoned* through multi-step problems \u2013 something previous models couldn't reliably do. Think about it: nuanced creative writing, complex data analysis, even coding \u2013 it\u2019s all significantly improved. Suddenly, working with AI feels\u2026 intuitive. Like you\u2019re collaborating with a truly intelligent partner, not just a sophisticated chatbot. It\u2019s that feeling of finally unlocking a tool that actually *gets* your vision\u2014that\u2019s power. This shift is a game-changer.  Keep an eye on this space \u2013 it\u2019s evolving rapidly. Follow Daena for more deep dives into the future of AI \u2013 trust me, you won\u2019t want to miss this!",
-  "word_count": 191,
+  "full_voiceover_text": "(Upbeat, slightly mysterious music intro) Claude Opus 4.6 just quietly doubled its context window to 1M. Seriously, nobody\u2019s talking about this game-changer for coding agents. It\u2019s about to completely rewrite the rules. Remember wrestling with complex coding projects?  You\u2019d painstakingly copy and paste snippets, hoping for a connection.  Existing coding assistants struggled with anything beyond a few hundred lines.  That\u2019s the bottleneck \u2013 the inability to truly *understand* the whole project's context. Opus 4.6\u2019s massive 1 million context window changes everything.  It can now analyze entire codebases, understand complex dependencies, and even suggest improvements across multiple files simultaneously.  Imagine debugging with the full picture, not just isolated errors.  This isn\u2019t just about longer prompts; it\u2019s about genuine comprehension. Let\u2019s be honest \u2013 staring at a wall of code, feeling completely lost, is a universal developer experience.  This technology finally tackles that feeling head-on, offering real support and unlocking your potential.  It\u2019s like having a brilliant senior developer constantly reviewing your work, without the ego. This is a seismic shift in AI coding.  Follow Daena for more insights into the future of AI development.  Save this video to revisit it later!",
+  "word_count": 190,
   "estimated_duration": "76s",
-  "quality_score": 6.5,
+  "quality_score": 6.2,
   "production_status": "approved",
   "method_tag": "curiosity_gap_v1",
-  "created_at": "2026-04-04T14:23:09.467902"
+  "created_at": "2026-04-04T16:03:05.319364"
 }

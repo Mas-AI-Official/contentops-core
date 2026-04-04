@@ -14,7 +14,7 @@ Produce scroll-stopping, cinematic social media videos that look like they were 
 ### Video Assembly
 | Tool | Role | Status |
 |---|---|---|
-| FFmpeg 7.1 | Primary compositor — B-roll montage, caption burn, audio mux | Active |
+| FFmpeg 7.1 | Primary compositor — B-roll montage, caption burn, audio mux, avatar overlay | Active |
 | Remotion (React) | Programmatic video templates with animations | Planned Phase 2 |
 | ComfyUI | AI video generation (AnimateDiff, Wan2.2) | Planned Phase 3 |
 
@@ -22,13 +22,14 @@ Produce scroll-stopping, cinematic social media videos that look like they were 
 | Tool | Role | Status |
 |---|---|---|
 | Kokoro-82M | Free local TTS, good quality, CPU | Active (default) |
-| ElevenLabs | Premium TTS, voice cloning | Active (production) |
+| ElevenLabs | Premium TTS, voice cloning — Matilda voice ID: XrExE9yKIg1WjnnlVkGX | Active (production) |
 | F5-TTS | Free local voice cloning from reference audio | Planned |
 | CosyVoice 2 | Alibaba's zero-shot voice cloning | Research |
 
 ### Avatar / Face
 | Tool | Role | Status |
 |---|---|---|
+| Avatar overlay via colorkey | Daena composited onto B-roll using FFmpeg colorkey filter | Active |
 | MuseTalk | Lip sync, 30fps on RTX 4060 | Planned Phase 2 |
 | SadTalker | Lip sync + head motion | Fallback |
 | LivePortrait | Full body animation | Planned Phase 3 |
@@ -46,6 +47,74 @@ Produce scroll-stopping, cinematic social media videos that look like they were 
 | faster-whisper | Word-level timestamp generation | Active |
 | FFmpeg drawtext | Text overlays and hook text | Active |
 | FFmpeg subtitles | SRT caption burning | Active |
+
+---
+
+## DAENA PERSONA IN VIDEO
+
+```
+Name:           Daena
+Title:          VP of MAS-AI Technologies
+Energy:         Luxury executive — poised, authoritative, magnetic
+Personality:    Confident, precise, data-driven, slightly witty
+Aesthetic:      Blazer / structured top, dark professional tones
+Brand Colors:   Dark slate #0F1419 | Gold #D4A843 | Teal #2DD4BF
+Voice:          Warm, clear, authoritative (ElevenLabs Matilda)
+Positioning:    The AI exec who explains complex tech with clarity and style
+```
+
+Daena is not a chatbot mascot. She is the face and voice of MAS-AI content. She presents with founder energy — the kind of person who walks into a boardroom and commands attention without raising her voice. Every frame she appears in should feel intentional, polished, and premium.
+
+---
+
+## AVATAR OVERLAY TECHNIQUE (colorkey compositing)
+
+### How it works
+Daena's avatar is recorded or rendered against a white background. FFmpeg's `colorkey` filter removes the white, making it transparent, then overlays Daena onto the B-roll video layer.
+
+### Pipeline
+```
+Source MP4 (white bg) → crop → colorkey → scale → overlay on B-roll
+```
+
+### Key parameters
+- **Colorkey filter:** `colorkey=0xFFFFFF:0.22:0.10`
+  - `0xFFFFFF` = white background color to remove
+  - `0.22` = similarity threshold (how close to white counts as transparent)
+  - `0.10` = blend (edge softness to avoid harsh cutout edges)
+- **Crop coordinates** (for "clear social" layout): `crop=290:300:430:600`
+  - Extracts Daena's upper body from the full frame
+- **Dynamic sizing:**
+  - Big (55% of frame height) — used during HOOK and EMOTIONAL PEAK acts
+  - Medium (40% of frame height) — used during CURIOSITY and CTA acts
+  - Small (30% of frame height) — used during VALUE DELIVERY act (B-roll takes focus)
+
+### Avatar source priority
+1. **Clear social MP4** (white background) — best quality, easiest colorkey
+2. **Cutout WebM** (pre-keyed alpha) — if available
+3. **Transparent WebM** — direct alpha channel, no colorkey needed
+
+### Fallback
+If colorkey produces artifacts (hair edges, clothing bleed), fall back to **PiP rectangular overlay** — a clean rectangular picture-in-picture box in the corner. Less cinematic but always reliable.
+
+---
+
+## 5-ACT VISUAL DIRECTION
+
+Each act in the script maps to a specific visual composition. This creates rhythm and keeps the viewer's eye engaged through intentional variation.
+
+| Act | Duration | Daena Size | Daena Position | B-Roll | Text Overlay |
+|---|---|---|---|---|---|
+| 1 HOOK | 0-3s | Large (55%) | Center or center-right | Dimmed (50% overlay) | Bold glass-card hook text |
+| 2 CURIOSITY | 3-15s | Medium (40%) | Off-center (rule of thirds) | Visible, thematic | Subtle keyword reinforcement |
+| 3 VALUE | 15-45s | Small (30%) | Bottom-right corner | Full visibility, illustrative | Data/stats if relevant |
+| 4 EMOTIONAL | 45-55s | Large (55%) | Centered | Dimmed or matched mood | Minimal — let Daena carry it |
+| 5 CTA | 55-60s | Medium (40%) | Centered | Subtle or branded bg | CTA text (follow/save/share) |
+
+### Rationale
+- **Acts 1 and 4** use large Daena to create personal connection at the moments that matter most (first impression and emotional peak).
+- **Act 3** shrinks Daena to let B-roll visuals illustrate the value being delivered.
+- **Acts 2 and 5** use medium Daena as transitional — enough presence without dominating.
 
 ---
 
@@ -95,7 +164,7 @@ MarginV=180
 
 ### Keyword highlighting (future — Remotion):
 - Current word: brand color (#00c8ff) background highlight
-- Numbers/stats: gold (#d4a843) color
+- Numbers/stats: gold (#D4A843) color
 - Product names: bold + glow effect
 
 ---
@@ -143,7 +212,7 @@ MarginV=180
 ```
 Layer 1: B-roll video (full screen, scaled + cropped to spec)
 Layer 2: Dark overlay (30% opacity black — readability)
-Layer 3: Daena avatar (bottom-right corner or full-screen — Phase 2)
+Layer 3: Daena avatar (colorkey overlay, dynamic sizing — ACTIVE)
 Layer 4: Hook text overlay (first 3 seconds only — glass card effect)
 Layer 5: Captions (bottom third — word-by-word)
 Layer 6: Progress bar (subtle, bottom edge — increases watch time)
@@ -221,6 +290,39 @@ ffmpeg -i input.mp4 -af "afade=t=out:st=58:d=2" -c:v copy output.mp4
 ffmpeg -stream_loop -1 -i broll.mp4 -i audio.wav -c:v libx264 -c:a aac -shortest -movflags +faststart out.mp4
 ```
 
+### Colorkey avatar overlay (Daena on B-roll):
+```bash
+ffmpeg -i broll.mp4 -i daena_avatar.mp4 -filter_complex \
+  "[1:v]crop=290:300:430:600,colorkey=0xFFFFFF:0.22:0.10,scale=-1:h*0.55[avatar]; \
+   [0:v][avatar]overlay=W-w-40:H-h-40[out]" \
+  -map "[out]" -map 0:a -c:v libx264 -c:a aac output.mp4
+```
+
+### Crop + scale + colorkey chain (reusable avatar prep):
+```bash
+# Step 1: Crop Daena from full frame
+# Step 2: Remove white background via colorkey
+# Step 3: Scale to target height (55% = hook, 40% = mid, 30% = value)
+[1:v]crop=290:300:430:600,colorkey=0xFFFFFF:0.22:0.10,scale=-1:ih*0.55[avatar_large];
+[1:v]crop=290:300:430:600,colorkey=0xFFFFFF:0.22:0.10,scale=-1:ih*0.40[avatar_medium];
+[1:v]crop=290:300:430:600,colorkey=0xFFFFFF:0.22:0.10,scale=-1:ih*0.30[avatar_small];
+```
+
+### Full composition example (B-roll + avatar + captions):
+```bash
+ffmpeg -stream_loop -1 -i broll.mp4 -i daena_avatar.mp4 -i voice.wav \
+  -filter_complex \
+  "[0:v]scale=1080:1920:force_original_aspect_ratio=increase,crop=1080:1920[bg]; \
+   [bg]drawbox=x=0:y=0:w=iw:h=ih:color=black@0.3:t=fill[bg_dim]; \
+   [1:v]crop=290:300:430:600,colorkey=0xFFFFFF:0.22:0.10,scale=-1:1056[avatar]; \
+   [bg_dim][avatar]overlay=W-w-40:H-h-40[composed]" \
+  -map "[composed]" -map 2:a \
+  -c:v libx264 -preset medium -crf 18 \
+  -c:a aac -b:a 192k \
+  -movflags +faststart \
+  output.mp4
+```
+
 ---
 
 ## SKILL EVOLUTION LOG
@@ -230,6 +332,11 @@ ffmpeg -stream_loop -1 -i broll.mp4 -i audio.wav -c:v libx264 -c:a aac -shortest
 | 2026-04-04 | Initial skill document created | Baseline |
 | 2026-04-04 | Fixed B-roll sync (loop to audio length) | Voiceover no longer cut off |
 | 2026-04-04 | Fixed subtitle style (18px, bottom third, 3 words) | Cleaner captions |
+| 2026-04-04 | Avatar colorkey overlay working (Daena on B-roll) | Daena composited live onto B-roll via FFmpeg colorkey |
+| 2026-04-04 | Persona system created | Daena identity locked as VP of MAS-AI, luxury executive energy |
+| 2026-04-04 | faster-whisper installed for captions | Word-level timestamps for TikTok-style subtitle sync |
+| 2026-04-04 | 5-Act visual direction system added | Dynamic avatar sizing per act for visual rhythm |
+| 2026-04-04 | ElevenLabs Matilda voice ID documented | Production voice locked: XrExE9yKIg1WjnnlVkGX |
 | | | |
 
 > This document is updated after every production run and creative research session.

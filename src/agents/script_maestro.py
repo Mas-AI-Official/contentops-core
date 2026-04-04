@@ -18,6 +18,8 @@ from dataclasses import dataclass, field
 
 import httpx
 
+from src.persona import get_persona
+
 logger = logging.getLogger("contentops.script_maestro")
 
 
@@ -125,13 +127,16 @@ class ScriptMaestro:
         self.hook_vault = HookVault()
         self._script_counter = 0
 
-    async def _ollama_generate(self, prompt: str, model: str = None) -> str:
+    async def _ollama_generate(self, prompt: str, model: str = None, system: str = None) -> str:
         """Call Ollama for text generation."""
         model = model or self.ollama_model
+        payload = {"model": model, "prompt": prompt, "stream": False, "options": {"temperature": 0.7, "num_predict": 2048}}
+        if system:
+            payload["system"] = system
         async with httpx.AsyncClient(timeout=120) as client:
             response = await client.post(
                 f"{self.ollama_host}/api/generate",
-                json={"model": model, "prompt": prompt, "stream": False, "options": {"temperature": 0.7, "num_predict": 2048}},
+                json=payload,
             )
             response.raise_for_status()
             return response.json().get("response", "")
@@ -207,9 +212,13 @@ Respond ONLY with JSON: {{"pass": true/false, "score": X.X, "weak_act": N_or_nul
         self._script_counter += 1
         script_id = f"script_{datetime.now().strftime('%Y%m%d')}_{self._script_counter:03d}"
 
+        # Load persona for this tenant — drives voice across all stages
+        persona = get_persona(tenant)
+        system_prompt = persona.script_system_prompt(platform)
+
         # S1: EXTRACT — one sharp insight
         logger.info(f"[{script_id}] S1: Extracting insight...")
-        insight = await self._s1_extract(source_material)
+        insight = await self._s1_extract(source_material, system_prompt)
         logger.info(f"[{script_id}] Insight: {insight[:100]}...")
 
         # Get hooks for attempts
@@ -224,10 +233,10 @@ Respond ONLY with JSON: {{"pass": true/false, "score": X.X, "weak_act": N_or_nul
             logger.info(f"[{script_id}] Attempt {attempt + 1}/3 — hook: {hook['category']}")
 
             # S2: ANGLE — generate hook variants
-            hook_text = await self._s2_angle(insight, hook, platform)
+            hook_text = await self._s2_angle(insight, hook, platform, persona, system_prompt)
 
             # S3: STRUCTURE — build 5-act script
-            acts, full_text = await self._s3_structure(insight, hook_text, platform)
+            acts, full_text = await self._s3_structure(insight, hook_text, platform, persona, system_prompt)
 
             # S4: QA — quality check
             logger.info(f"[{script_id}] S4: Quality check...")
@@ -274,7 +283,7 @@ Respond ONLY with JSON: {{"pass": true/false, "score": X.X, "weak_act": N_or_nul
             method_tag="escalated",
         )
 
-    async def _s1_extract(self, source_material: str) -> str:
+    async def _s1_extract(self, source_material: str, system_prompt: str = None) -> str:
         """S1: Extract the single sharpest insight from source material."""
         prompt = f"""Source material: {source_material}
 
@@ -283,21 +292,29 @@ Rules:
 - One sentence max
 - Must be something an AI founder or builder would find genuinely valuable
 - Do NOT summarize everything — extract ONE sharp point
+- Frame it the way the persona would naturally express it
 
 Output ONLY the insight sentence, nothing else."""
 
-        result = await self._ollama_generate(prompt)
+        result = await self._ollama_generate(prompt, system=system_prompt)
         return result.strip().strip('"').strip("'")
 
-    async def _s2_angle(self, insight: str, hook: dict, platform: str) -> str:
+    async def _s2_angle(self, insight: str, hook: dict, platform: str, persona=None, system_prompt: str = None) -> str:
         """S2: Generate a viral hook opening using the insight and a hook template."""
+        catchphrase_block = ""
+        if persona and persona.catchphrases:
+            catchphrase_block = f"""
+You may also use one of these signature catchphrases as a hook opener or closer:
+{chr(10).join(f'- "{c}"' for c in persona.catchphrases)}
+"""
+
         prompt = f"""Insight: {insight}
 Hook template: {hook['template']}
 Hook example: {hook['example']}
 Hook type: {hook['category']}
 Platform: {platform}
 Target audience: AI founders, builders, tech professionals
-
+{catchphrase_block}
 Write the opening 2-3 sentences for a {platform} video using this hook type.
 The hook must stop the scroll in 3 seconds.
 Do NOT use filler phrases like "So today we're going to talk about..."
@@ -305,10 +322,10 @@ Write in spoken language with natural rhythm.
 
 Output ONLY the hook text (2-3 sentences), nothing else."""
 
-        result = await self._ollama_generate(prompt)
+        result = await self._ollama_generate(prompt, system=system_prompt)
         return result.strip().strip('"')
 
-    async def _s3_structure(self, insight: str, hook_text: str, platform: str) -> tuple[list[dict], str]:
+    async def _s3_structure(self, insight: str, hook_text: str, platform: str, persona=None, system_prompt: str = None) -> tuple[list[dict], str]:
         """S3: Build full 5-act voiceover script."""
         duration_map = {
             "tiktok": "60s",
@@ -319,18 +336,37 @@ Output ONLY the hook text (2-3 sentences), nothing else."""
         }
         target_duration = duration_map.get(platform, "60s")
 
+        # Build persona-aware intro and CTA blocks
+        intro_block = ""
+        cta_block = ""
+        speaker_desc = "Daena — AI expert, confident, founder energy, accessible"
+        if persona:
+            speaker_desc = f"{persona.name}, {persona.title} at {persona.company}"
+            non_empty_intros = [v for v in persona.intro_variants if v]
+            if non_empty_intros:
+                intro_block = f"""
+OPTIONAL INTRO LINES (use at most one, or skip entirely for variety):
+{chr(10).join(f'- "{i}"' for i in non_empty_intros)}
+"""
+            platform_ctas = persona.cta_variants.get(platform, persona.cta_variants.get("default", []))
+            if platform_ctas:
+                cta_block = f"""
+CTA OPTIONS (pick one or adapt naturally):
+{chr(10).join(f'- "{c}"' for c in platform_ctas)}
+"""
+
         prompt = f"""Insight: {insight}
 Hook (use exactly): {hook_text}
 Platform: {platform} (target duration: {target_duration})
-Speaker: Daena — AI expert, confident, founder energy, accessible
-
+Speaker: {speaker_desc}
+{intro_block}
 Write a FULL voiceover script in 5 acts:
 - Act 1 (0-3s): HOOK — Use exactly the hook text provided above
 - Act 2 (3-15s): CURIOSITY BUILD — Expand the problem/question, build tension
 - Act 3 (15-45s): VALUE DELIVERY — Explain, prove, demonstrate the insight
 - Act 4 (45-55s): EMOTIONAL PEAK — Relatable moment or identity trigger
-- Act 5 (55-60s): CTA — "Follow Daena for more" or "Save this"
-
+- Act 5 (55-60s): CTA — Use one of the CTA options below
+{cta_block}
 RULES:
 - Every sentence must earn its place
 - No filler phrases
@@ -341,7 +377,7 @@ RULES:
 Output as JSON array of acts:
 [{{"act": 1, "label": "HOOK", "text": "...", "duration_estimate": "3s", "emotion": "curiosity"}}, ...]"""
 
-        result = await self._ollama_generate(prompt)
+        result = await self._ollama_generate(prompt, system=system_prompt)
 
         # Parse acts from response
         try:

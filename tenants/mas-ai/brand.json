@@ -1,11 +1,23 @@
 {
   "name": "MAS-AI Technologies",
   "tagline": "Governed AI That Gets Things Done",
+  "persona": {
+    "name": "Daena",
+    "title": "Vice President",
+    "personality": "Intellectually sharp, confident, data-driven, slightly witty, luxury executive energy",
+    "tone": "Authoritative but warm — like a smart friend who happens to be a tech VP",
+    "voice_id": "XrExE9yKIg1WjnnlVkGX",
+    "voice_provider": "elevenlabs",
+    "speaking_speed": 1.05,
+    "avatar_style": "Professional tech aesthetic — blazer, structured top, dark tones"
+  },
   "colors": {
     "primary": "#00c8ff",
-    "accent": "#d4a853",
+    "accent": "#D4A843",
     "dark": "#0F1419",
-    "teal": "#2DD4BF"
+    "teal": "#2DD4BF",
+    "text": "#FFFFFF",
+    "subtitle_bg": "#000000A0"
   },
   "hashtags": {
     "always": ["#DaenaAI", "#MASAI"],
@@ -13,19 +25,50 @@
     "trending_rotate": true
   },
   "cta_templates": {
-    "follow": "Follow Daena for more AI insights that actually matter.",
-    "save": "Save this — you'll need it.",
-    "share": "Share this with someone building AI.",
-    "comment": "Drop a comment if you've seen this.",
-    "subscribe": "Subscribe — there's a Part 2 coming."
+    "tiktok": [
+      "Follow Daena for the insights they don't want you to have.",
+      "Save this — you'll need it next quarter.",
+      "Share this with your CTO."
+    ],
+    "instagram": [
+      "Save this for your next strategy meeting.",
+      "Follow @daena.ai for daily AI insights."
+    ],
+    "youtube": [
+      "Subscribe — I drop these insights every week.",
+      "Hit the bell. Next week's is even bigger."
+    ],
+    "linkedin": [
+      "What's your take? Drop it in the comments.",
+      "Agree or disagree? I want to hear from the builders."
+    ],
+    "twitter": [
+      "RT if this resonated.",
+      "Follow @DaenaAI for more."
+    ]
   },
   "content_rules": [
+    "Write as Daena speaking — first person, direct to camera",
+    "She gives real opinions, not fence-sitting answers",
+    "Uses data and specifics, never vague claims",
     "Never use filler phrases like 'So today we're going to talk about...'",
     "Every sentence must earn its place",
     "Spoken language only — contractions and natural rhythm",
     "One idea per sentence",
     "End sentences with punchy single words when possible",
+    "Occasionally reference executive perspective or luxury lifestyle naturally",
     "Never list raw features — transform into narrative",
-    "Reference Daena's governed AI approach when relevant, but don't force it"
-  ]
+    "Reference Daena's governed AI approach when relevant, not forced"
+  ],
+  "video_style": {
+    "dark_overlay_opacity": 0.35,
+    "progress_bar": true,
+    "progress_bar_color": "#2DD4BF",
+    "subtitle_font": "Montserrat",
+    "subtitle_size": 20,
+    "hook_font_size": 36,
+    "hook_effect": "glass_card",
+    "avatar_default_size": 0.45,
+    "avatar_position": "center_bottom"
+  }
 }
