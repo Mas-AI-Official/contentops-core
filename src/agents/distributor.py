@@ -56,8 +56,9 @@ class DistributionEngine:
             "max_caption": 2200,
             "max_hashtags": 5,
             "max_duration": 60,
-            "hashtag_style": "niche_only",  # No generic hashtags
+            "hashtag_style": "niche_only",
             "aspect_ratio": "9:16",
+            "api_env": "TIKTOK_ACCESS_TOKEN",
         },
         "instagram": {
             "max_caption": 2200,
@@ -65,6 +66,7 @@ class DistributionEngine:
             "max_duration": 60,
             "hashtag_style": "mixed",
             "aspect_ratio": "9:16",
+            "api_env": "INSTAGRAM_ACCESS_TOKEN",
         },
         "youtube": {
             "max_title": 100,
@@ -73,6 +75,7 @@ class DistributionEngine:
             "max_duration": 60,
             "hashtag_style": "seo",
             "aspect_ratio": "9:16",
+            "api_env": "YOUTUBE_API_KEY",
         },
         "linkedin": {
             "max_caption": 3000,
@@ -80,6 +83,7 @@ class DistributionEngine:
             "max_duration": 180,
             "hashtag_style": "professional",
             "aspect_ratio": "16:9",
+            "api_env": "LINKEDIN_ACCESS_TOKEN",
         },
         "twitter": {
             "max_caption": 280,
@@ -87,12 +91,51 @@ class DistributionEngine:
             "max_duration": 140,
             "hashtag_style": "trending",
             "aspect_ratio": "9:16",
+            "api_env": "TWITTER_BEARER_TOKEN",
+        },
+        "threads": {
+            "max_caption": 500,
+            "max_hashtags": 5,
+            "max_duration": 300,
+            "hashtag_style": "mixed",
+            "aspect_ratio": "9:16",
+            "api_env": "THREADS_ACCESS_TOKEN",
+        },
+        "pinterest": {
+            "max_caption": 500,
+            "max_hashtags": 20,
+            "max_duration": 60,
+            "hashtag_style": "seo",
+            "aspect_ratio": "9:16",
+            "api_env": "PINTEREST_ACCESS_TOKEN",
+        },
+        "snapchat": {
+            "max_caption": 250,
+            "max_hashtags": 0,
+            "max_duration": 60,
+            "hashtag_style": "none",
+            "aspect_ratio": "9:16",
+            "api_env": "SNAPCHAT_ACCESS_TOKEN",
         },
     }
 
     def __init__(self):
         self.published_dir = Path("data/published")
         self.published_dir.mkdir(parents=True, exist_ok=True)
+
+    def get_platform_status(self) -> dict:
+        """Check which platforms have API credentials configured."""
+        import os
+        status = {}
+        for platform, rules in self.PLATFORM_RULES.items():
+            env_key = rules.get("api_env", "")
+            has_key = bool(os.environ.get(env_key)) if env_key else False
+            status[platform] = {
+                "connected": has_key,
+                "mode": "api" if has_key else "draft",
+                "env_key": env_key,
+            }
+        return status
 
     def format_post(self, script_data: dict, video_path: str, platform: str, tenant: str = "mas-ai") -> PostMetadata:
         """Format content for a specific platform."""

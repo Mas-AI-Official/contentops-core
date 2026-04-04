@@ -268,6 +268,69 @@ class ContentOpsPipeline:
         with open(result_path, "w") as f:
             json.dump(result.to_dict(), f, indent=2)
 
+    async def script_to_video(self, script_text: str, platform: str = "tiktok",
+                              tenant: str = "mas-ai", mode: str = "test",
+                              with_avatar: bool = True) -> PipelineResult:
+        """Direct script-to-video — skip ScriptMaestro, go straight to production.
+
+        Use case: customer provides a finished script, wants a video with no AI rewriting.
+        """
+        from src.agents.script_maestro import Script, ScriptAct
+
+        pipeline_id = f"pipeline_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        result = PipelineResult(pipeline_id=pipeline_id, tenant=tenant, platform=platform)
+
+        # Create a Script object from raw text
+        script = Script(
+            script_id=f"manual_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
+            tenant=tenant,
+            platform=platform,
+            niche="custom",
+            insight_source="manual_input",
+            hook_type="custom",
+            hook_vault_ref="",
+            acts=[
+                ScriptAct(act=1, label="HOOK", text=script_text[:100], duration_estimate="3s", emotion="hook"),
+                ScriptAct(act=2, label="CURIOSITY", text=script_text[100:300] if len(script_text) > 100 else "", duration_estimate="12s", emotion="curiosity"),
+                ScriptAct(act=3, label="VALUE", text=script_text[300:] if len(script_text) > 300 else script_text, duration_estimate="30s", emotion="value"),
+            ],
+            full_voiceover_text=script_text,
+            word_count=len(script_text.split()),
+            estimated_duration=f"{len(script_text.split()) / 2.5:.0f}s",
+            quality_score=10.0,
+            production_status="approved",
+            method_tag="manual_script",
+        )
+        result.script_id = script.script_id
+        result.script_score = 10.0
+        result.stages_completed.append("script_manual")
+
+        logger.info(f"[{pipeline_id}] Manual script-to-video: {len(script_text)} chars")
+
+        try:
+            # Voice
+            audio_path = await self._stage_voice(script, mode, result)
+            if not audio_path:
+                result.status = "failed"
+                self._save_result(result)
+                return result
+
+            # Video
+            video_path = await self._stage_compose(script, audio_path, platform, tenant, result)
+            if not video_path:
+                result.stages_failed.append("compose")
+
+            result.status = "completed" if not result.stages_failed else "partial"
+            result.completed_at = datetime.now().isoformat()
+        except Exception as e:
+            logger.error(f"[{pipeline_id}] Script-to-video failed: {e}")
+            result.status = "failed"
+        finally:
+            self.tool_manager.deactivate_all()
+
+        self._save_result(result)
+        return result
+
     async def run_batch(self, topics: list[str], platform: str = "tiktok",
                         tenant: str = "mas-ai", mode: str = "test") -> list[PipelineResult]:
         """Run pipeline for multiple topics sequentially."""
