@@ -1,7 +1,7 @@
 """
 ContentOps Dashboard API — Multi-tenant, Multi-niche, Multi-platform.
 
-Hierarchy: Tenant → Niches → Platform Connections
+Hierarchy: Tenant -> Niches -> Platform Connections
 Each platform auto-calculates optimal posting schedule from audience timezone.
 """
 import json
@@ -100,6 +100,18 @@ class IdeaRequest(BaseModel):
     niche_slug: str = ""
     platform: str = "tiktok"
     priority: str = "normal"
+
+class ManualTopicRequest(BaseModel):
+    topic: str
+    platform: str = "tiktok"
+    mode: str = "test"
+    niche_slug: str = ""
+
+class ScriptToVideoRequest(BaseModel):
+    script_text: str
+    platform: str = "tiktok"
+    mode: str = "test"
+    niche_slug: str = ""
 
 
 # === Helper: get TenantStore ===
@@ -444,6 +456,167 @@ async def get_queue():
     return {"queue": queue, "total": len(queue)}
 
 
+# === Content Queue (enhanced) ===
+
+@app.get("/api/content/queue")
+async def get_content_queue():
+    """List all content items with status — scripts, audio, video."""
+    items = []
+
+    # Gather scripts
+    scripts_dir = Path("data/scripts")
+    if scripts_dir.exists():
+        for f in sorted(scripts_dir.glob("*.json"), reverse=True)[:50]:
+            try:
+                with open(f) as fh:
+                    data = json.load(fh)
+                    script_id = data.get("script_id", f.stem)
+                    # Check if audio/video exist for this script
+                    has_audio = any(Path("data/audio").glob(f"*{script_id}*")) if Path("data/audio").exists() else False
+                    has_video = any(Path("data/videos").rglob(f"*{script_id}*.mp4")) if Path("data/videos").exists() else False
+
+                    if has_video:
+                        stage = "completed"
+                    elif has_audio:
+                        stage = "audio_ready"
+                    elif data.get("production_status") == "approved":
+                        stage = "script_approved"
+                    else:
+                        stage = "script_draft"
+
+                    items.append({
+                        "id": script_id,
+                        "type": "content",
+                        "topic": data.get("source_material", data.get("topic", ""))[:80],
+                        "platform": data.get("platform", "unknown"),
+                        "status": data.get("production_status", "draft"),
+                        "stage": stage,
+                        "quality_score": data.get("quality_score", 0),
+                        "hook_type": data.get("hook_type", ""),
+                        "created_at": data.get("created_at", ""),
+                        "has_audio": has_audio,
+                        "has_video": has_video,
+                    })
+            except (json.JSONDecodeError, OSError):
+                continue
+
+    # Gather ideas
+    ideas_dir = Path("data/ideas")
+    if ideas_dir.exists():
+        for f in sorted(ideas_dir.glob("*.json"), reverse=True)[:20]:
+            try:
+                with open(f) as fh:
+                    data = json.load(fh)
+                    items.append({
+                        "id": f.stem,
+                        "type": "idea",
+                        "topic": data.get("topic", ""),
+                        "platform": data.get("platform", ""),
+                        "status": data.get("status", "queued"),
+                        "stage": "idea",
+                        "quality_score": 0,
+                        "hook_type": "",
+                        "created_at": data.get("created_at", ""),
+                        "has_audio": False,
+                        "has_video": False,
+                    })
+            except (json.JSONDecodeError, OSError):
+                continue
+
+    return {"items": items, "total": len(items)}
+
+
+# === Manual Topic Pipeline ===
+
+@app.post("/api/content/manual-topic")
+async def manual_topic_pipeline(req: ManualTopicRequest):
+    """Accept a topic string, generate script via ScriptMaestro, then optionally produce video."""
+    try:
+        from src.agents.script_maestro import ScriptMaestro
+        maestro = ScriptMaestro()
+        result = await maestro.generate(
+            source_material=req.topic,
+            platform=req.platform,
+            tenant="mas-ai",
+        )
+        return {
+            "status": "completed",
+            "script_id": result.get("script_id", ""),
+            "script_text": result.get("final_script", result.get("script", "")),
+            "quality_score": result.get("quality_score", 0),
+            "hook_type": result.get("hook_type", ""),
+            "platform": req.platform,
+        }
+    except ImportError:
+        # Fallback if ScriptMaestro not available — use pipeline
+        try:
+            from src.agents.pipeline import ContentOpsPipeline
+            pipeline = ContentOpsPipeline()
+            result = await pipeline.run_full(
+                req.topic, req.platform, tenant="mas-ai", mode=req.mode, skip_video=True,
+            )
+            return result.to_dict()
+        except Exception as e:
+            logger.error(f"Manual topic pipeline failed: {e}")
+            return {"status": "error", "message": str(e)}
+    except Exception as e:
+        logger.error(f"Manual topic pipeline failed: {e}")
+        return {"status": "error", "message": str(e)}
+
+
+# === Script-to-Video ===
+
+@app.post("/api/content/script-to-video")
+async def script_to_video(req: ScriptToVideoRequest):
+    """Accept finished script text, skip ScriptMaestro, go directly to voice + video."""
+    try:
+        from src.agents.pipeline import ContentOpsPipeline
+        pipeline = ContentOpsPipeline()
+
+        # Save the script first
+        script_id = f"manual_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        scripts_dir = Path("data/scripts")
+        scripts_dir.mkdir(parents=True, exist_ok=True)
+
+        script_data = {
+            "script_id": script_id,
+            "final_script": req.script_text,
+            "platform": req.platform,
+            "tenant": "mas-ai",
+            "production_status": "approved",
+            "quality_score": 8.0,
+            "source": "manual_input",
+            "created_at": datetime.now().isoformat(),
+        }
+        with open(scripts_dir / f"{script_id}.json", "w") as f:
+            json.dump(script_data, f, indent=2)
+
+        # Run voice + video stages only
+        result = await pipeline.run_from_script(
+            script_text=req.script_text,
+            script_id=script_id,
+            platform=req.platform,
+            tenant="mas-ai",
+            mode=req.mode,
+        )
+        return result.to_dict() if hasattr(result, "to_dict") else result
+    except AttributeError:
+        # If pipeline doesn't have run_from_script, do full run with the script as source
+        try:
+            from src.agents.pipeline import ContentOpsPipeline
+            pipeline = ContentOpsPipeline()
+            result = await pipeline.run_full(
+                req.script_text, req.platform, tenant="mas-ai", mode=req.mode, skip_video=False,
+            )
+            return result.to_dict()
+        except Exception as e:
+            logger.error(f"Script-to-video failed: {e}")
+            return {"status": "error", "message": str(e)}
+    except Exception as e:
+        logger.error(f"Script-to-video failed: {e}")
+        return {"status": "error", "message": str(e)}
+
+
 # === Analytics ===
 
 @app.get("/api/analytics")
@@ -455,6 +628,111 @@ async def get_analytics():
         "published": len(list(Path("data/published").glob("*.json"))) if Path("data/published").exists() else 0,
         "trends_cached": len(json.load(open("src/intelligence/trend_cache.json")).get("trends", [])) if Path("src/intelligence/trend_cache.json").exists() else 0,
     }
+
+
+@app.get("/api/analytics/summary")
+async def get_analytics_summary():
+    """Platform performance summary — views, engagement, followers."""
+    store = _get_store()
+    tenant = store.load("mas-ai")
+
+    platform_stats = []
+    if tenant:
+        for niche in tenant.niches:
+            for p in niche.platforms:
+                platform_stats.append({
+                    "platform": p.platform,
+                    "handle": p.handle,
+                    "niche": niche.name,
+                    "follower_count": p.follower_count,
+                    "avg_views": p.avg_views,
+                    "posts_per_week": p.posts_per_week,
+                    "last_posted": p.last_posted,
+                    "connected": p.connected,
+                })
+
+    # Count content produced
+    scripts_count = len(list(Path("data/scripts").glob("*.json"))) if Path("data/scripts").exists() else 0
+    videos_count = len(list(Path("data/videos").glob("*/*.mp4"))) if Path("data/videos").exists() else 0
+    published_count = len(list(Path("data/published").glob("*.json"))) if Path("data/published").exists() else 0
+
+    return {
+        "platforms": platform_stats,
+        "totals": {
+            "scripts": scripts_count,
+            "videos": videos_count,
+            "published": published_count,
+            "total_followers": sum(p["follower_count"] for p in platform_stats),
+            "total_avg_views": sum(p["avg_views"] for p in platform_stats),
+        },
+    }
+
+
+@app.get("/api/analytics/methods")
+async def get_analytics_methods():
+    """Method scoreboard — which hooks and angles perform best."""
+    # Read from method scores file if exists
+    method_path = Path("src/intelligence/method_scores.json")
+    if method_path.exists():
+        try:
+            with open(method_path) as f:
+                return json.load(f)
+        except (json.JSONDecodeError, OSError):
+            pass
+
+    # Aggregate from scripts
+    hook_stats = {}
+    scripts_dir = Path("data/scripts")
+    if scripts_dir.exists():
+        for f in scripts_dir.glob("*.json"):
+            try:
+                with open(f) as fh:
+                    data = json.load(fh)
+                    hook = data.get("hook_type", "unknown")
+                    score = data.get("quality_score", 0)
+                    if hook not in hook_stats:
+                        hook_stats[hook] = {"count": 0, "total_score": 0, "avg_score": 0}
+                    hook_stats[hook]["count"] += 1
+                    hook_stats[hook]["total_score"] += score
+                    hook_stats[hook]["avg_score"] = round(hook_stats[hook]["total_score"] / hook_stats[hook]["count"], 1)
+            except (json.JSONDecodeError, OSError):
+                continue
+
+    methods = [
+        {"hook_type": k, "count": v["count"], "avg_score": v["avg_score"]}
+        for k, v in sorted(hook_stats.items(), key=lambda x: x[1]["avg_score"], reverse=True)
+    ]
+
+    return {"methods": methods}
+
+
+@app.get("/api/analytics/viral-signals")
+async def get_viral_signals():
+    """Recent viral signals from trend scanning."""
+    # Check trend cache for viral signals
+    cache_path = Path("src/intelligence/trend_cache.json")
+    if cache_path.exists():
+        try:
+            with open(cache_path) as f:
+                data = json.load(f)
+                trends = data.get("trends", [])
+                # Filter for high-relevance (viral-worthy) signals
+                viral = [
+                    {
+                        "title": t.get("title", ""),
+                        "source": t.get("source", ""),
+                        "relevance_score": t.get("relevance_score", 0),
+                        "category": t.get("category", ""),
+                        "url": t.get("url", ""),
+                        "discovered_at": t.get("discovered_at", data.get("scanned_at", "")),
+                    }
+                    for t in trends if t.get("relevance_score", 0) >= 6
+                ]
+                return {"signals": viral, "total": len(viral), "scanned_at": data.get("scanned_at")}
+        except (json.JSONDecodeError, OSError):
+            pass
+
+    return {"signals": [], "total": 0, "scanned_at": None}
 
 
 # === Hooks ===
