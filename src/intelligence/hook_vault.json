@@ -1,0 +1,115 @@
+{
+  "hooks": [
+    {
+      "id": "hook_001",
+      "category": "curiosity_gap",
+      "template": "Most {audience} don't know {fact}...",
+      "example": "Most AI engineers don't know ChatGPT's hidden memory mode...",
+      "viral_score_avg": 8.7,
+      "best_platforms": [
+        "tiktok",
+        "instagram"
+      ]
+    },
+    {
+      "id": "hook_002",
+      "category": "bold_claim",
+      "template": "{thing} will not {expected} \u2014 it'll {unexpected}",
+      "example": "AI will not replace programmers \u2014 it'll make bad ones invisible",
+      "viral_score_avg": 8.2,
+      "best_platforms": [
+        "tiktok",
+        "linkedin"
+      ]
+    },
+    {
+      "id": "hook_003",
+      "category": "shocking_stat",
+      "template": "{percentage}% of {group} {shocking_outcome}. Here's the pattern.",
+      "example": "87% of AI startups fail in their first year. Here's the pattern.",
+      "viral_score_avg": 7.9,
+      "best_platforms": [
+        "tiktok",
+        "youtube"
+      ]
+    },
+    {
+      "id": "hook_004",
+      "category": "relatable_problem",
+      "template": "If you've been {activity} for more than {time}, you know this feeling...",
+      "example": "If you've been building AI agents for more than 6 months, you know this feeling...",
+      "viral_score_avg": 8.1,
+      "best_platforms": [
+        "tiktok",
+        "instagram"
+      ]
+    },
+    {
+      "id": "hook_005",
+      "category": "pattern_interrupt",
+      "template": "\u2014 which is why I {dramatic_action}. Let me explain.",
+      "example": "\u2014 which is why I deleted 2 years of code. Let me explain.",
+      "viral_score_avg": 8.5,
+      "best_platforms": [
+        "tiktok",
+        "youtube"
+      ]
+    },
+    {
+      "id": "hook_006",
+      "category": "tutorial",
+      "template": "How to {specific_skill} in {time} that actually works",
+      "example": "How to build a Claude agent in 60 seconds that actually works",
+      "viral_score_avg": 7.8,
+      "best_platforms": [
+        "youtube",
+        "tiktok"
+      ]
+    },
+    {
+      "id": "hook_007",
+      "category": "curiosity_gap",
+      "template": "{product} just quietly {changed_something} most people didn't notice...",
+      "example": "ChatGPT just quietly deleted a feature most people didn't know existed",
+      "viral_score_avg": 9.1,
+      "best_platforms": [
+        "tiktok",
+        "instagram"
+      ]
+    },
+    {
+      "id": "hook_008",
+      "category": "bold_claim",
+      "template": "Stop using {popular_tool}. Here's why.",
+      "example": "Stop using LangChain. Here's why.",
+      "viral_score_avg": 8.4,
+      "best_platforms": [
+        "tiktok",
+        "linkedin"
+      ]
+    },
+    {
+      "id": "hook_009",
+      "category": "shocking_stat",
+      "template": "This {small_thing} makes ${amount}/year with {constraint}.",
+      "example": "This 2-person AI startup makes $4M/year with zero employees.",
+      "viral_score_avg": 8.6,
+      "best_platforms": [
+        "tiktok",
+        "youtube"
+      ]
+    },
+    {
+      "id": "hook_010",
+      "category": "relatable_problem",
+      "template": "Every {role} who's used {tool} has hit this exact wall.",
+      "example": "Every developer who's used Claude has hit this exact wall.",
+      "viral_score_avg": 7.7,
+      "best_platforms": [
+        "tiktok",
+        "linkedin"
+      ]
+    }
+  ],
+  "patterns": []
+}

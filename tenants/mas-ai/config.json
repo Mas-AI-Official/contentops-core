@@ -1,0 +1,33 @@
+{
+  "tenant_id": "mas-ai",
+  "display_name": "MAS-AI Technologies / Daena",
+  "avatar_name": "Daena",
+  "niche": "ai-tech-startups",
+  "sub_niches": ["ai-tools", "startup-insights", "tech-for-builders", "governed-ai"],
+  "platforms": ["tiktok", "instagram", "youtube", "linkedin", "twitter"],
+  "content_mix": {
+    "educational": 0.40,
+    "opinion": 0.25,
+    "behind_scenes": 0.20,
+    "news_commentary": 0.10,
+    "community": 0.05
+  },
+  "posting_schedule": {
+    "tiktok": {"days": ["tue", "thu", "fri", "sat"], "times": ["07:00", "12:00", "19:00"]},
+    "instagram": {"days": ["mon", "wed", "fri"], "times": ["08:00", "11:00", "17:00"]},
+    "youtube": {"days": ["mon", "wed", "fri"], "times": ["14:00", "20:00"]},
+    "linkedin": {"days": ["tue", "wed", "thu"], "times": ["08:00", "10:00"]},
+    "twitter": {"days": ["mon", "tue", "wed", "thu", "fri"], "times": ["08:00", "12:00", "17:00"]}
+  },
+  "brand_color": "#00c8ff",
+  "brand_accent": "#d4a853",
+  "default_avatar": "daena_neutral.png",
+  "cta_style": "follow_and_save",
+  "active": true,
+  "persona": {
+    "name": "Daena",
+    "personality": "Confident, intellectually sharp, slightly witty, data-driven",
+    "tone": "Expert but accessible, founder energy, not corporate",
+    "voice_style": "Warm, clear, authoritative"
+  }
+}

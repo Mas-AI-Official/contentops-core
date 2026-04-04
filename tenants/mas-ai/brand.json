@@ -1,0 +1,31 @@
+{
+  "name": "MAS-AI Technologies",
+  "tagline": "Governed AI That Gets Things Done",
+  "colors": {
+    "primary": "#00c8ff",
+    "accent": "#d4a853",
+    "dark": "#0F1419",
+    "teal": "#2DD4BF"
+  },
+  "hashtags": {
+    "always": ["#DaenaAI", "#MASAI"],
+    "niche": ["#AIGovernance", "#AIAgents", "#TechStartup", "#AITools"],
+    "trending_rotate": true
+  },
+  "cta_templates": {
+    "follow": "Follow Daena for more AI insights that actually matter.",
+    "save": "Save this — you'll need it.",
+    "share": "Share this with someone building AI.",
+    "comment": "Drop a comment if you've seen this.",
+    "subscribe": "Subscribe — there's a Part 2 coming."
+  },
+  "content_rules": [
+    "Never use filler phrases like 'So today we're going to talk about...'",
+    "Every sentence must earn its place",
+    "Spoken language only — contractions and natural rhythm",
+    "One idea per sentence",
+    "End sentences with punchy single words when possible",
+    "Never list raw features — transform into narrative",
+    "Reference Daena's governed AI approach when relevant, but don't force it"
+  ]
+}

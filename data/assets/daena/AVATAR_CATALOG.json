@@ -1,0 +1,101 @@
+{
+    "character": "Daena",
+    "role": "VP of MAS-AI Technologies",
+    "location": "Toronto luxury penthouse, CN Tower view",
+    "style": "Quiet Luxury - Executive Tech Aesthetic",
+    "palette": {
+        "deep_space_blue": "#0F1419",
+        "gunmetal_grey": "#4A5568",
+        "stark_white": "#F7FAFC",
+        "gold_accent": "#D4A843",
+        "teal_accent": "#2DD4BF"
+    },
+
+    "outfits": {
+        "penthouse_casual": {
+            "description": "Cream cashmere cardigan, grey silk camisole, navy tailored trousers, suede loafers",
+            "use_for": ["daily tips", "casual advice", "lifestyle content", "morning routine"],
+            "images": [
+                "casual/penthouse_standing_front_smile.png",
+                "casual/penthouse_standing_hand_pocket.png",
+                "casual/penthouse_standing_confident.png",
+                "casual/penthouse_sitting_window.png",
+                "casual/penthouse_multipose_collage.png"
+            ]
+        },
+        "boardroom_vp": {
+            "description": "Gunmetal grey suit, deep space blue silk camisole, black pumps",
+            "use_for": ["tool reviews", "comparisons", "serious takes", "product demos"],
+            "images": [
+                "boardroom/vp_dual_pose.png",
+                "boardroom/vp_standing_documents.png"
+            ]
+        },
+        "tech_forward": {
+            "description": "Navy blazer, deep blue shirt, charcoal trousers, suede loafers",
+            "use_for": ["AI tutorials", "coding content", "tech deep-dives", "industry analysis"],
+            "images": [
+                "tech/tech_standing_blazer.png",
+                "tech/tech_sitting_thoughtful.png"
+            ]
+        }
+    },
+
+    "headshots": {
+        "corporate": "headshots/headshot_corporate.png",
+        "futuristic": "headshots/headshot_futuristic.png",
+        "best_for_lipsync": "headshots/headshot_corporate.png",
+        "best_for_avatar": "casual/penthouse_standing_front_smile.png"
+    },
+
+    "brand_elements": {
+        "logo_gold": "logos/logo_clear_gold.png",
+        "logo_blue": "logos/logo_clear_blue.png",
+        "logo_original": "logos/logo_original.png",
+        "orb_full": "orb/orb_neon_full.png",
+        "orb_compact": "orb/orb_neon_compact.png",
+        "sunflower_honeycomb": "orb/sunflower_honeycomb_ui.png"
+    },
+
+    "composition_avatar_mapping": {
+        "AiTipReel": {
+            "outfit": "penthouse_casual",
+            "preferred_image": "casual/penthouse_standing_front_smile.png",
+            "position": "bottom-right"
+        },
+        "ToolReview": {
+            "outfit": "boardroom_vp",
+            "preferred_image": "boardroom/vp_dual_pose.png",
+            "position": "bottom-left"
+        },
+        "HookStory": {
+            "outfit": "tech_forward",
+            "preferred_image": "tech/tech_standing_blazer.png",
+            "position": "bottom-right"
+        },
+        "ComparisonReel": {
+            "outfit": "boardroom_vp",
+            "preferred_image": "boardroom/vp_standing_documents.png",
+            "position": "center-bottom"
+        },
+        "FounderTake": {
+            "outfit": "penthouse_casual",
+            "preferred_image": "casual/penthouse_sitting_window.png",
+            "position": "center-bottom"
+        }
+    },
+
+    "lipsync_config": {
+        "best_front_facing": "headshots/headshot_corporate.png",
+        "best_casual_front": "casual/penthouse_standing_front_smile.png",
+        "best_vp_front": "boardroom/vp_dual_pose.png",
+        "resolution_note": "Use headshots for lip-sync (clearer face, less background noise for AI)"
+    },
+
+    "3d_avatar_roadmap": {
+        "phase_1_now": "Static photo overlays in Remotion (DONE)",
+        "phase_2_week2": "Lip-sync talking head via HeyGen/D-ID ($25/mo) or HF Pro ($9/mo)",
+        "phase_3_month2": "Ready Player Me 3D model from photos -> Three.js animation",
+        "phase_4_month3": "Full 3D avatar with walking/sitting/presenting in Unreal or Unity"
+    }
+}

@@ -1,0 +1,12 @@
+{
+  "niche": "ai-tech",
+  "influencers": [
+    {"handle": "@aiexplained", "platform": "youtube", "sub_niche": "ai-education", "priority": 1},
+    {"handle": "@gregisenberg", "platform": "tiktok", "sub_niche": "startup-ideas", "priority": 1},
+    {"handle": "@alexhormozi", "platform": "youtube", "sub_niche": "business", "priority": 2},
+    {"handle": "@levelsio", "platform": "twitter", "sub_niche": "indie-founder", "priority": 2},
+    {"handle": "@firabordo", "platform": "youtube", "sub_niche": "ai-tools", "priority": 1}
+  ],
+  "refresh_schedule": "weekly",
+  "last_refreshed": null
+}

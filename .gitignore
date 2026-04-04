@@ -1,47 +1,56 @@
-# Node / Next
-node_modules/
-.next/
-out/
-dist/
-*.log
-
 # Python
 venv/
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
+.pytest_cache/
+*.egg-info/
 
-# Large local assets / models
-/models/
-LTX-2/
-comfyui/
-comfyui_ltx/
-data/
-outputs/
-uploads/
-logs/
-tmp/
-cache/
+# Node
+node_modules/
+.next/
+dist/
+
+# Large models (download separately)
 *.safetensors
 *.ckpt
 *.pt
-*.bin
 *.onnx
+models/
 
 # Env / secrets
 .env
-*.env
-!*.env.example
+!.env.template
+tenants/*/credentials.env
 
-# Embedded / generated
-backend/LTX-Video/
-backend/remotion/public/runtime/
-backend/*_err.txt
-backend/*_out.txt
-frontend/*_err.txt
-frontend/*_out.txt
+# Runtime data (generated, not tracked)
+data/scraped/
+data/transcripts/
+data/audio/
+data/videos/
+data/broll/
+data/published/
+data/outputs/
+data/ideas/
+data/music/*.mp3
+data/music/*.wav
+*.db
+
+# Logs
+*.log
+logs/
+
+# Large assets (keep local, too big for git)
+data/assets/daena/avatar_clean/
+data/assets/voices/
+Daena avatar/*.mp4
 
 # OS
 .DS_Store
 Thumbs.db
+nul
+
+# IDE
+.vscode/
+.idea/
