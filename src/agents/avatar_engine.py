@@ -23,9 +23,15 @@ class AvatarEngine:
 
     async def generate_voice(self, text: str, script_id: str, mode: str = "test") -> str:
         """Generate voice audio. mode='test' uses Kokoro (free), mode='production' uses ElevenLabs."""
+        # Strip stage directions before TTS — e.g. "(Upbeat music intro)" should not be spoken
+        import re
+        clean_text = re.sub(r'\([^)]*\)\s*', '', text).strip()
+        if not clean_text:
+            clean_text = text  # Fallback if regex removes everything
+
         if mode == "production" and os.environ.get("ELEVENLABS_API_KEY"):
-            return await self._generate_elevenlabs(text, script_id)
-        return await self._generate_kokoro(text, script_id)
+            return await self._generate_elevenlabs(clean_text, script_id)
+        return await self._generate_kokoro(clean_text, script_id)
 
     async def _generate_kokoro(self, text: str, script_id: str) -> str:
         """Free local TTS using Kokoro-82M (PyTorch version)."""

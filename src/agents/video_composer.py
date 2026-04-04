@@ -160,6 +160,7 @@ class VideoComposer:
         "data/assets/daena/avatar_clean/daena_transparent.webm",
         "data/assets/daena/dana_avatar_clear.mp4",
         "Daena avatar/daena clear social 1 .mp4",
+        "Daena avatar/daena avatar  1 .mp4",
     ]
 
     def __init__(self):
@@ -433,6 +434,10 @@ class VideoComposer:
 
         name = Path(avatar_path).stem.lower()
 
+        # "avatar 1" landscape layout: 1280x720, Daena at roughly x=960, y=370, size ~320x350
+        if w == 1280 and h == 720 and ("avatar" in name):
+            return "crop=320:350:960:370,"
+
         # "clear social 1" layout: 720x900, Daena in bottom-right corner (~290x300 at 430,600)
         if w == 720 and h == 900 and ("clear" in name or "social" in name):
             return "crop=290:300:430:600,"
@@ -670,7 +675,7 @@ class VideoComposer:
 
         for word in captions:
             current_chunk.append(word)
-            if len(current_chunk) >= 3:
+            if len(current_chunk) >= 2:
                 chunks.append(current_chunk)
                 current_chunk = []
         if current_chunk:
@@ -693,15 +698,15 @@ class VideoComposer:
         """Burn SRT captions into video using FFmpeg subtitles filter."""
         output = str(work_dir / "captioned.mp4")
 
-        # Style: cinematic subtitle — clean white text, dark translucent box, bottom center
-        # Montserrat for modern tech aesthetic, sized for mobile readability
+        # Style: cinematic subtitle — small white text, dark box, bottom of screen
+        # MarginV=60 means 60px from bottom edge (Alignment=2 = bottom center)
         style = (
-            "FontSize=20,FontName=Montserrat,Bold=1,"
+            "FontSize=13,FontName=Arial,Bold=0,"
             "PrimaryColour=&H00FFFFFF,"
             "OutlineColour=&H00000000,Outline=1,"
             "BackColour=&HA0000000,Shadow=0,"
             "BorderStyle=4,"
-            "Alignment=2,MarginV=200"
+            "Alignment=2,MarginV=60"
         )
 
         # FFmpeg subtitle filter - need to escape path for Windows
@@ -733,7 +738,7 @@ class VideoComposer:
         # Escape text for FFmpeg drawtext
         safe_text = hook_text.replace("'", "").replace(":", "").replace("\\", "")
 
-        font_size = 36 if spec.width >= 1080 else 24
+        font_size = 24 if spec.width >= 1080 else 18
         # Wrap long text: limit line width to ~30 chars worth of pixels
         max_line_w = int(spec.width * 0.8)
 
