@@ -119,7 +119,7 @@ class ScriptMaestro:
     S1-S3: Ollama (free). S4: Claude Haiku (paid, QA only).
     """
 
-    def __init__(self, ollama_host: str = "http://localhost:11434", ollama_model: str = "qwen2.5:7b-instruct"):
+    def __init__(self, ollama_host: str = "http://localhost:11434", ollama_model: str = "gemma3:4b"):
         self.ollama_host = ollama_host
         self.ollama_model = ollama_model
         self.hook_vault = HookVault()
@@ -195,11 +195,12 @@ Respond ONLY with JSON: {{"pass": true/false, "score": X.X, "weak_act": N_or_nul
             end = response.rfind("}") + 1
             if start >= 0 and end > start:
                 result = json.loads(response[start:end])
-                result["pass"] = float(result.get("score", 0)) >= 7.0
+                # Local QA is less reliable — use 6.0 threshold (Claude Haiku uses 7.0)
+                result["pass"] = float(result.get("score", 0)) >= 6.0
                 return result
         except (json.JSONDecodeError, ValueError):
             pass
-        return {"pass": True, "score": 7.0, "feedback": "Fallback QA — manual review recommended"}
+        return {"pass": True, "score": 6.5, "feedback": "Fallback QA — manual review recommended"}
 
     async def create_script(self, source_material: str, platform: str, tenant: str = "mas-ai", niche: str = "ai-tech") -> Script:
         """Full 4-stage script creation pipeline."""

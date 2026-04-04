@@ -11,62 +11,57 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 async def main():
     parser = argparse.ArgumentParser(description="ContentOps Pipeline Runner")
     parser.add_argument("topic", help="Topic or source material for content")
-    parser.add_argument("--platform", default="tiktok", choices=["tiktok", "youtube_short", "instagram_reel", "linkedin", "twitter"])
+    parser.add_argument("--platform", default="tiktok",
+                        choices=["tiktok", "youtube_short", "instagram_reel", "linkedin", "twitter"])
     parser.add_argument("--tenant", default="mas-ai")
     parser.add_argument("--mode", default="test", choices=["test", "production"])
+    parser.add_argument("--skip-video", action="store_true", help="Skip video composition")
+    parser.add_argument("--skip-distribute", action="store_true", help="Skip distribution")
+    parser.add_argument("--batch", nargs="+", help="Multiple topics for batch processing")
     args = parser.parse_args()
 
-    from src.agents.tool_manager import tool_manager
-    from src.agents.script_maestro import ScriptMaestro
-    from src.agents.avatar_engine import AvatarEngine
+    from src.agents.pipeline import ContentOpsPipeline
+
+    pipeline = ContentOpsPipeline()
 
     print("=" * 60)
-    print("ContentOps Pipeline Runner")
+    print("ContentOps Pipeline Runner v2")
     print("=" * 60)
 
-    # Estimate cost
-    stages = ["script", f"voice_{args.mode}"]
-    estimate = tool_manager.estimate_pipeline_cost(stages)
-    print(f"\nEstimated cost: {estimate['estimated_api_cost']}")
-    print(f"Estimated time: {estimate['estimated_time_min']} min\n")
+    if args.batch:
+        print(f"Batch mode: {len(args.batch)} topics")
+        results = await pipeline.run_batch(args.batch, args.platform, args.tenant, args.mode)
+        for r in results:
+            status_icon = "OK" if r.status == "completed" else "PARTIAL" if r.status == "partial" else "FAIL"
+            print(f"  [{status_icon}] {r.script_id}: score={r.script_score}")
+    else:
+        print(f"Topic: {args.topic[:80]}")
+        print(f"Platform: {args.platform} | Tenant: {args.tenant} | Mode: {args.mode}")
+        print(f"Video: {'skip' if args.skip_video else 'yes'} | Distribute: {'skip' if args.skip_distribute else 'yes'}")
+        print()
 
-    # Stage 1: Script
-    print("[1/2] Generating script...")
-    tool_manager.activate(tool_manager.for_stage("script"))
-    sm = ScriptMaestro()
-    script = await sm.create_script(args.topic, args.platform, args.tenant)
-    tool_manager.deactivate_all()
+        result = await pipeline.run_full(
+            args.topic, args.platform, args.tenant, args.mode,
+            skip_video=args.skip_video, skip_distribute=args.skip_distribute
+        )
 
-    if script.production_status != "approved":
-        print(f"\nScript {script.production_status}. Score: {script.quality_score}")
-        print("Escalate to operator for manual review.")
-        return
-
-    script_path = sm.save_script(script)
-    print(f"Script approved! Score: {script.quality_score}")
-    print(f"   Saved: {script_path}")
-    print(f"   Hook type: {script.hook_type}")
-    print(f"   Duration: {script.estimated_duration}")
-    print(f"   Words: {script.word_count}")
-
-    # Stage 2: Voice
-    print(f"\n[2/2] Generating voice ({args.mode} mode)...")
-    voice_stage = f"voice_{args.mode}"
-    tool_manager.activate(tool_manager.for_stage(voice_stage))
-    ae = AvatarEngine()
-    audio_path = await ae.generate_voice(script.full_voiceover_text, script.script_id, args.mode)
-    tool_manager.deactivate_all()
-
-    print(f"Audio generated: {audio_path}")
-
-    # Summary
-    print("\n" + "=" * 60)
-    print("PIPELINE COMPLETE")
-    print("=" * 60)
-    print(f"Script: {script_path}")
-    print(f"Audio:  {audio_path}")
-    print(f"Cost:   {estimate['estimated_api_cost']}")
-    print(f"\nTool status: {json.dumps(tool_manager.status(), indent=2)}")
+        print()
+        print("=" * 60)
+        print(f"RESULT: {result.status.upper()}")
+        print("=" * 60)
+        print(f"Pipeline ID: {result.pipeline_id}")
+        print(f"Stages completed: {', '.join(result.stages_completed)}")
+        if result.stages_failed:
+            print(f"Stages failed: {', '.join(result.stages_failed)}")
+        print(f"Script: {result.script_id} (score: {result.script_score})")
+        if result.audio_path:
+            print(f"Audio: {result.audio_path}")
+        if result.video_path:
+            print(f"Video: {result.video_path}")
+        if result.post_results:
+            for pr in result.post_results:
+                print(f"Post [{pr['platform']}]: {pr['status']}")
+        print(f"API cost: ${result.total_api_cost:.4f}")
 
 
 if __name__ == "__main__":

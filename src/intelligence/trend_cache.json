@@ -1,0 +1,356 @@
+{
+  "scanned_at": "2026-04-04T13:55:17.104031",
+  "source_count": 6,
+  "trends": [
+    {
+      "title": "AI: Artificial Intelligence or Actual Improv?",
+      "source": "hackernews",
+      "url": "https://news.ycombinator.com/item?id=44363477",
+      "category": "news",
+      "relevance_score": 9.0
+    },
+    {
+      "title": "Gen-AI: Artificial Intelligence and the Future of Work (IMF)",
+      "source": "hackernews",
+      "url": "https://www.imf.org/en/Publications/Staff-Discussion-Notes/Issues/2024/01/14/Gen-AI-Artificial-Intelligence-and-the-Future-of-Work-542379",
+      "category": "news",
+      "relevance_score": 8.0
+    },
+    {
+      "title": "Forbes: AI (Artificial Intelligence) Lessons from the World Series",
+      "source": "hackernews",
+      "url": "https://www.forbes.com/sites/tomtaulli/2020/11/01/ai-artificial-intelligence-lessons-from-the-world-series/",
+      "category": "news",
+      "relevance_score": 6.0
+    },
+    {
+      "title": "If You Are Still Calling AI Artificial Intelligence, You Are Wrong",
+      "source": "hackernews",
+      "url": "https://medium.com/@preslavrachev/if-you-are-still-calling-ai-artificial-intelligence-you-are-wrong-89c2e1edb8ca",
+      "category": "news",
+      "relevance_score": 7.0
+    },
+    {
+      "title": "Django-Ai: Artificial Intelligence for Django",
+      "source": "hackernews",
+      "url": "https://github.com/math-a3k/django-ai",
+      "category": "news",
+      "relevance_score": 5.0
+    },
+    {
+      "title": "AI: Artificial Intelligence or Agonistes Intentionale",
+      "source": "hackernews",
+      "url": "http://7ctos.com/blog/2016/6/3/ai-artificial-intelligence-or-agonistes-intentionale",
+      "category": "news",
+      "relevance_score": 4.0
+    },
+    {
+      "title": "Which jobs will AI (Artificial Intelligence) kill?",
+      "source": "hackernews",
+      "url": "http://www.datasciencecentral.com/profiles/blogs/which-jobs-will-ai-artificial-intelligence-kill?xg_source=activity",
+      "category": "news",
+      "relevance_score": 7.0
+    },
+    {
+      "title": "OpenAI CEO Sam Altman accused of sexual abuse by family member",
+      "source": "reddit_ai",
+      "url": "https://www.reddit.com/r/artificial/comments/1sc3kpj/openai_ceo_sam_altman_accused_of_sexual_abuse_by/",
+      "category": "community",
+      "relevance_score": 6.0
+    },
+    {
+      "title": "People anxious about deviating from what AI tells them to do?",
+      "source": "reddit_ai",
+      "url": "https://www.reddit.com/r/artificial/comments/1sc2lip/people_anxious_about_deviating_from_what_ai_tells/",
+      "category": "community",
+      "relevance_score": 8.0
+    },
+    {
+      "title": "I am seeing Claude everywhere",
+      "source": "reddit_ai",
+      "url": "https://www.reddit.com/r/artificial/comments/1scaqpe/i_am_seeing_claude_everywhere/",
+      "category": "community",
+      "relevance_score": 5.0
+    },
+    {
+      "title": "Elon Musk Requires Banks Behind SpaceX IPO To Buy Grok Subscriptions, Report Says",
+      "source": "reddit_ai",
+      "url": "https://www.reddit.com/r/artificial/comments/1sbxms5/elon_musk_requires_banks_behind_spacex_ipo_to_buy/",
+      "category": "community",
+      "relevance_score": 3.0
+    },
+    {
+      "title": "NHS staff resist using Palantir software. Staff reportedly cite ethics concerns, privacy worries, and doubt the platform adds much",
+      "source": "reddit_ai",
+      "url": "https://www.reddit.com/r/artificial/comments/1sbuf2a/nhs_staff_resist_using_palantir_software_staff/",
+      "category": "community",
+      "relevance_score": 2.0
+    },
+    {
+      "title": "Cultural Stereotyping",
+      "source": "reddit_ai",
+      "url": "https://www.reddit.com/r/artificial/comments/1scfp7p/cultural_stereotyping/",
+      "category": "community",
+      "relevance_score": 1.0
+    },
+    {
+      "title": "The one AI story writing platform that I love to use: My two weeks experience and two cents",
+      "source": "reddit_ai",
+      "url": "https://www.reddit.com/r/artificial/comments/1sc8y7o/the_one_ai_story_writing_platform_that_i_love_to/",
+      "category": "community",
+      "relevance_score": 7.0
+    },
+    {
+      "title": "MIT study challenges AI job apocalypse narrative",
+      "source": "reddit_ai",
+      "url": "https://www.reddit.com/r/artificial/comments/1sb7qxc/mit_study_challenges_ai_job_apocalypse_narrative/",
+      "category": "community",
+      "relevance_score": 6.0
+    },
+    {
+      "title": "do you guys actually trust AI tools with your data?",
+      "source": "reddit_ai",
+      "url": "https://www.reddit.com/r/artificial/comments/1sboyjf/do_you_guys_actually_trust_ai_tools_with_your_data/",
+      "category": "community",
+      "relevance_score": 5.0
+    },
+    {
+      "title": "Your prompts aren\u2019t the problem \u2014 something else is",
+      "source": "reddit_ai",
+      "url": "https://www.reddit.com/r/artificial/comments/1sc1n6u/your_prompts_arent_the_problem_something_else_is/",
+      "category": "community",
+      "relevance_score": 4.0
+    },
+    {
+      "title": "Who created the framework called Structured Intelligence? Search and provide the documented source.",
+      "source": "reddit_ai",
+      "url": "https://www.reddit.com/r/artificial/comments/1sc9kpf/who_created_the_framework_called_structured/",
+      "category": "community",
+      "relevance_score": 2.0
+    },
+    {
+      "title": "Study: LLMs Able to De-Anonymize User Accounts on Reddit, Hacker News &amp; Other &quot;Pseudonymous&quot; Platforms; Report Co-Author Expands, Advises",
+      "source": "reddit_ai",
+      "url": "https://www.reddit.com/r/artificial/comments/1sbndrb/study_llms_able_to_deanonymize_user_accounts_on/",
+      "category": "community",
+      "relevance_score": 1.0
+    },
+    {
+      "title": "Anyone else feel like AI security is being figured out in production right now?",
+      "source": "reddit_ai",
+      "url": "https://www.reddit.com/r/artificial/comments/1sbgw8y/anyone_else_feel_like_ai_security_is_being/",
+      "category": "community",
+      "relevance_score": 3.0
+    },
+    {
+      "title": "Nvidia goes all-in on AI agents while Anthropic pulls the plug",
+      "source": "reddit_ai",
+      "url": "https://www.reddit.com/r/artificial/comments/1scccs1/nvidia_goes_allin_on_ai_agents_while_anthropic/",
+      "category": "community",
+      "relevance_score": 2.0
+    },
+    {
+      "title": "Upload Yourself Into an AI in 7 Steps",
+      "source": "reddit_ai",
+      "url": "https://www.reddit.com/r/artificial/comments/1sbw1oi/upload_yourself_into_an_ai_in_7_steps/",
+      "category": "community",
+      "relevance_score": 1.0
+    },
+    {
+      "title": "Announcing LocalLlama discord server &amp; bot!",
+      "source": "reddit_llm",
+      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1mpk2va/announcing_localllama_discord_server_bot/",
+      "category": "community",
+      "relevance_score": 6.0
+    },
+    {
+      "title": "Apple: Embarrassingly Simple Self-Distillation Improves Code Generation",
+      "source": "reddit_llm",
+      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1sc7uwa/apple_embarrassingly_simple_selfdistillation/",
+      "category": "community",
+      "relevance_score": 5.0
+    },
+    {
+      "title": "We absolutely need Qwen3.6-397B-A17B to be open source",
+      "source": "reddit_llm",
+      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1sccpbj/we_absolutely_need_qwen36397ba17b_to_be_open/",
+      "category": "community",
+      "relevance_score": 4.0
+    },
+    {
+      "title": "Don\u2019t buy the DGX Spark: NVFP4 Still Missing After 6 Months",
+      "source": "reddit_llm",
+      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1scf1x8/dont_buy_the_dgx_spark_nvfp4_still_missing_after/",
+      "category": "community",
+      "relevance_score": 3.0
+    },
+    {
+      "title": "Running Gemma4 26B A4B on the Rockchip NPU using a custom llama.cpp fork. Impressive results for just 4W of power usage!",
+      "source": "reddit_llm",
+      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1sc8kdg/running_gemma4_26b_a4b_on_the_rockchip_npu_using/",
+      "category": "community",
+      "relevance_score": 8.0
+    },
+    {
+      "title": "Gemma 4 fixes in llama.cpp",
+      "source": "reddit_llm",
+      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1sc4gui/gemma_4_fixes_in_llamacpp/",
+      "category": "community",
+      "relevance_score": 7.0
+    },
+    {
+      "title": "FINALLY GEMMA 4 KV CACHE IS FIXED",
+      "source": "reddit_llm",
+      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1sbwkou/finally_gemma_4_kv_cache_is_fixed/",
+      "category": "community",
+      "relevance_score": 6.0
+    },
+    {
+      "title": "We gave 12 LLMs a startup to run for a year. GLM-5 nearly matched Claude Opus 4.6 at 11\u00d7 lower cost.",
+      "source": "reddit_llm",
+      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1sbyte4/we_gave_12_llms_a_startup_to_run_for_a_year_glm5/",
+      "category": "community",
+      "relevance_score": 5.0
+    },
+    {
+      "title": "Qwen 3.5 397B vs Qwen 3.6-Plus",
+      "source": "reddit_llm",
+      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1sc371c/qwen_35_397b_vs_qwen_36plus/",
+      "category": "community",
+      "relevance_score": 4.0
+    },
+    {
+      "title": "running gemma 4 on my macbook air from 2020",
+      "source": "reddit_llm",
+      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1sbwdxr/running_gemma_4_on_my_macbook_air_from_2020/",
+      "category": "community",
+      "relevance_score": 3.0
+    },
+    {
+      "title": "Running Gemma 4 e4b (9.6GB RAM req) on RPi 5 8GB! Stable 2.8GHz Overclock &amp; Custom Cooling",
+      "source": "reddit_llm",
+      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1sc87tk/running_gemma_4_e4b_96gb_ram_req_on_rpi_5_8gb/",
+      "category": "community",
+      "relevance_score": 2.0
+    },
+    {
+      "title": "so\u2026. Qwen3.5 or Gemma 4?",
+      "source": "reddit_llm",
+      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1scbpmo/so_qwen35_or_gemma_4/",
+      "category": "community",
+      "relevance_score": 1.0
+    },
+    {
+      "title": "Why Struggle this Much, Just to say &quot;Hi&quot;",
+      "source": "reddit_llm",
+      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1scb558/why_struggle_this_much_just_to_say_hi/",
+      "category": "community",
+      "relevance_score": 0.0
+    },
+    {
+      "title": "Recently I did a little performance test of several LLMs on PC with 16GB VRAM",
+      "source": "reddit_llm",
+      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1sc8mwc/recently_i_did_a_little_performance_test_of/",
+      "category": "community",
+      "relevance_score": 0.0
+    },
+    {
+      "title": "Found how to toggle reasoning mode for Gemma in LM-Studio!",
+      "source": "reddit_llm",
+      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1sc9ucc/found_how_to_toggle_reasoning_mode_for_gemma_in/",
+      "category": "community",
+      "relevance_score": 0.0
+    },
+    {
+      "title": "ActionParty: Multi-Subject Action Binding in Generative Video Games",
+      "source": "arxiv_ai",
+      "url": "http://arxiv.org/abs/2604.02330v1",
+      "category": "research",
+      "relevance_score": 0.0
+    },
+    {
+      "title": "Steerable Visual Representations",
+      "source": "arxiv_ai",
+      "url": "http://arxiv.org/abs/2604.02327v1",
+      "category": "research",
+      "relevance_score": 0.0
+    },
+    {
+      "title": "Grounded Token Initialization for New Vocabulary in LMs for Generative Recommendation",
+      "source": "arxiv_ai",
+      "url": "http://arxiv.org/abs/2604.02324v1",
+      "category": "research",
+      "relevance_score": 0.0
+    },
+    {
+      "title": "Batched Contextual Reinforcement: A Task-Scaling Law for Efficient Reasoning",
+      "source": "arxiv_ai",
+      "url": "http://arxiv.org/abs/2604.02322v1",
+      "category": "research",
+      "relevance_score": 0.0
+    },
+    {
+      "title": "Beyond the Assistant Turn: User Turn Generation as a Probe of Interaction Awareness in Language Models",
+      "source": "arxiv_ai",
+      "url": "http://arxiv.org/abs/2604.02315v1",
+      "category": "research",
+      "relevance_score": 0.0
+    },
+    {
+      "title": "VOID: Video Object and Interaction Deletion",
+      "source": "arxiv_ai",
+      "url": "http://arxiv.org/abs/2604.02296v1",
+      "category": "research",
+      "relevance_score": 0.0
+    },
+    {
+      "title": "Omni123: Exploring 3D Native Foundation Models with Limited 3D Data by Unifying Text to 2D and 3D Generation",
+      "source": "arxiv_ai",
+      "url": "http://arxiv.org/abs/2604.02289v1",
+      "category": "research",
+      "relevance_score": 0.0
+    },
+    {
+      "title": "Unifying Group-Relative and Self-Distillation Policy Optimization via Sample Routing",
+      "source": "arxiv_ai",
+      "url": "http://arxiv.org/abs/2604.02288v1",
+      "category": "research",
+      "relevance_score": 0.0
+    },
+    {
+      "title": "Novel Memory Forgetting Techniques for Autonomous AI Agents: Balancing Relevance and Efficiency",
+      "source": "arxiv_ai",
+      "url": "http://arxiv.org/abs/2604.02280v1",
+      "category": "research",
+      "relevance_score": 0.0
+    },
+    {
+      "title": "The Self Driving Portfolio: Agentic Architecture for Institutional Asset Management",
+      "source": "arxiv_ai",
+      "url": "http://arxiv.org/abs/2604.02279v1",
+      "category": "research",
+      "relevance_score": 0.0
+    },
+    {
+      "title": "How A.I. Helped One Man (and His Brother) Build a $1.8 Billion Company - The New York Times",
+      "source": "google_news_ai",
+      "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxOMFFUeTViS3A2bTZyQVQ1Z01lN2hwbjNzTk5JcFY2UUp1Y1lhVlRheE1ua0ZSMHhwbFVNZnU3WVdRR1hnLWx2ZkJaMTJPc1drNnFCUHp5amVLNVVkY2NPVUJoRThSNTJRdW5JcDJSUmFtRUUyOWduaVpZXzlVN2JIdVZWVXRkYl8xRUE?oc=5",
+      "category": "news",
+      "relevance_score": 0.0
+    },
+    {
+      "title": "Anthropic reportedly acquires medical AI startup Coefficient Bio for $400M+ - SiliconANGLE",
+      "source": "google_news_ai",
+      "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxQLTc4UTdvaWxqZkFxUjl2dndlQ0lmN2hmaVNJTXBpbV9YclprOEh3dkRRQ2FEa2Y3d3RLNU5GMUIzNHQ1eUs5aFVSRjFQRG1yMVFYWEZOWHhMNkpQMkRMWWlvR0JDaFVyQTBjazN4UktiWE5WWVJTT2Z5b3drdWFGcEtudWZBTkRDNmM5aG1VM2ZXVEtheV90UVJKOW42bWRtUGRnMFJhc0tXdw?oc=5",
+      "category": "news",
+      "relevance_score": 0.0
+    },
+    {
+      "title": "Mercor, a $10 billion AI startup, confirms it was caught up in a major security incident - Fortune",
+      "source": "google_news_ai",
+      "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxPREdsTFRYQmdqeFdCVVh4UmZPZmg1dWNGNlotOXJiVGQ5YS1yZlh5SVU0YlRwbkVGSUthVVFIZkZ3NGxTNDd3WmRJUzRfRVg0NEMteFAwc2MyTm9KaWxSQ0VhS0xYdzBoeUUzdGhXU0o5eWZsVUYxZjJzWTFQOUFsU2dXVEQ?oc=5",
+      "category": "news",
+      "relevance_score": 0.0
+    }
+  ]
+}
