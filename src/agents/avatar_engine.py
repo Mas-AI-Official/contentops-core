@@ -28,25 +28,32 @@ class AvatarEngine:
         return await self._generate_kokoro(text, script_id)
 
     async def _generate_kokoro(self, text: str, script_id: str) -> str:
-        """Free local TTS using Kokoro-82M."""
+        """Free local TTS using Kokoro-82M (PyTorch version)."""
         output_path = self.audio_dir / f"{script_id}.wav"
         try:
-            from kokoro_onnx import Kokoro
+            from kokoro import KPipeline
             import soundfile as sf
+            import numpy as np
 
-            kokoro = Kokoro(
-                os.environ.get("KOKORO_MODEL_PATH", "models/kokoro-v0_19.onnx"),
-                os.environ.get("KOKORO_VOICES_PATH", "models/voices.bin"),
-            )
-            samples, sample_rate = kokoro.create(
-                text, voice="af_bella", speed=1.05, lang="en-us"
-            )
-            sf.write(str(output_path), samples, sample_rate)
-            logger.info(f"Kokoro TTS generated: {output_path}")
-            return str(output_path)
+            pipeline = KPipeline(lang_code='a')  # American English
+            voice = os.environ.get("KOKORO_VOICE", "af_heart")
+
+            # Generate all audio chunks
+            audio_chunks = []
+            for _, _, audio in pipeline(text, voice=voice, speed=1.05):
+                audio_chunks.append(audio)
+
+            if audio_chunks:
+                full_audio = np.concatenate(audio_chunks)
+                sf.write(str(output_path), full_audio, 24000)
+                duration = len(full_audio) / 24000
+                logger.info(f"Kokoro TTS generated: {output_path} ({duration:.1f}s)")
+                return str(output_path)
+
+            logger.warning("Kokoro produced no audio")
+            return await self._generate_silence(script_id, duration=30)
         except ImportError:
-            logger.warning("kokoro_onnx not installed. Install: pip install kokoro-onnx soundfile")
-            # Generate silence placeholder
+            logger.warning("kokoro not installed. Install: pip install kokoro soundfile")
             return await self._generate_silence(script_id, duration=30)
         except Exception as e:
             logger.error(f"Kokoro TTS failed: {e}")
