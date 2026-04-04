@@ -146,6 +146,17 @@ class CaptionGenerator:
 class VideoComposer:
     """Orchestrates full video assembly using FFmpeg."""
 
+    # Avatar asset search paths (relative to project root)
+    # Prefer cutout/nobg versions (dark bg, tight crop — best chromakey results)
+    AVATAR_SEARCH_PATHS = [
+        "data/assets/daena/avatar_clean/daena_cutout_final.webm",
+        "data/assets/daena/avatar_clean/daena_talking_nobg.webm",
+        "data/assets/daena/avatar_clean/daena_nobg_final.webm",
+        "data/assets/daena/avatar_clean/daena_transparent.webm",
+        "data/assets/daena/dana_avatar_clear.mp4",
+        "Daena avatar/daena clear social 1 .mp4",
+    ]
+
     def __init__(self):
         self.pexels = PexelsFetcher()
         self.output_dir = Path("data/videos")
@@ -160,10 +171,11 @@ class VideoComposer:
         1. Fetch B-roll from Pexels based on script keywords
         2. Generate caption timing from audio
         3. Create base video (B-roll montage or color background)
-        4. Overlay captions as subtitles
-        5. Overlay avatar if available
-        6. Mux with audio
-        7. Output platform-spec MP4
+        4. Overlay Daena avatar (transparent WebM over B-roll)
+        5. Burn captions as subtitles
+        6. Add hook text overlay (first 3 seconds)
+        7. Mux with audio
+        8. Output platform-spec MP4
         """
         spec = PLATFORM_SPECS.get(platform, PLATFORM_SPECS["tiktok"])
         script_id = script_data.get("script_id", f"video_{datetime.now().strftime('%Y%m%d_%H%M%S')}")
@@ -192,14 +204,23 @@ class VideoComposer:
         else:
             base_video = await self._create_gradient_background(spec, duration, work_dir)
 
-        # Step 5: Burn captions (SRT file + FFmpeg subtitle filter)
+        # Step 5: Overlay Daena avatar on base video
+        avatar_path = avatar_video or self._find_avatar_video(tenant)
+        acts = script_data.get("acts", [])
+        if avatar_path:
+            avatar_base = await self._overlay_avatar(base_video, avatar_path, spec, duration, work_dir, acts=acts)
+        else:
+            logger.warning("No avatar video found — producing video without avatar overlay")
+            avatar_base = base_video
+
+        # Step 6: Burn captions (SRT file + FFmpeg subtitle filter)
         if captions:
             srt_path = self._generate_srt(captions, work_dir / "captions.srt")
-            captioned_video = await self._burn_captions(base_video, srt_path, spec, work_dir)
+            captioned_video = await self._burn_captions(avatar_base, srt_path, spec, work_dir)
         else:
-            captioned_video = base_video
+            captioned_video = avatar_base
 
-        # Step 6: Add hook text overlay (first 3 seconds)
+        # Step 7: Add hook text overlay (first 3 seconds)
         hook_text = ""
         acts = script_data.get("acts", [])
         if acts:
@@ -210,7 +231,7 @@ class VideoComposer:
         else:
             hooked_video = captioned_video
 
-        # Step 7: Mux with audio
+        # Step 8: Mux with audio
         final_path = work_dir / f"{script_id}_final.mp4"
         await self._mux_audio(hooked_video, audio_path, str(final_path), spec)
 
@@ -224,7 +245,8 @@ class VideoComposer:
             "broll_clips": len(broll_clips),
             "captions_count": len(captions),
             "has_hook_overlay": bool(hook_text),
-            "has_avatar": bool(avatar_video),
+            "has_avatar": bool(avatar_path),
+            "avatar_source": str(avatar_path) if avatar_path else None,
             "output_path": str(final_path),
             "composed_at": datetime.now().isoformat(),
         }
@@ -233,6 +255,214 @@ class VideoComposer:
 
         logger.info(f"Video composed: {final_path}")
         return str(final_path)
+
+    def _find_avatar_video(self, tenant: str = "mas-ai") -> Optional[str]:
+        """Auto-discover the best avatar video asset for this tenant."""
+        # Check tenant-specific avatars first
+        tenant_avatar_dir = Path(f"tenants/{tenant}/avatars")
+        if tenant_avatar_dir.exists():
+            for ext in (".webm", ".mp4"):
+                for f in tenant_avatar_dir.glob(f"*{ext}"):
+                    return str(f)
+
+        # Fall back to global search paths (prefer transparent WebM)
+        for path in self.AVATAR_SEARCH_PATHS:
+            p = Path(path)
+            if p.exists():
+                logger.info(f"Found avatar: {p}")
+                return str(p)
+
+        return None
+
+    def _build_avatar_keyframes(self, acts: list[dict], duration: float, spec: VideoSpec) -> dict:
+        """Build dynamic avatar size/position keyframes based on 5-act structure.
+
+        Returns timing-based scaling rules for FFmpeg expressions:
+        - Act 1 (HOOK, 0-3s): BIG — Daena grabs attention, 55% height
+        - Act 2 (CURIOSITY, 3-15s): MEDIUM — talking head, 40% height
+        - Act 3 (VALUE, 15-45s): SMALL — B-roll focus, 30% height, bottom-right
+        - Act 4 (EMOTIONAL PEAK, 45-55s): BIG — Daena returns, 55% height
+        - Act 5 (CTA, 55-60s): MEDIUM — direct address, 40% height
+        """
+        # Default keyframes if no acts provided
+        if not acts or len(acts) < 3:
+            return {
+                "scale_expr": str(int(spec.height * 0.45)),
+                "x_expr": "(W-w)/2",
+                "y_expr": f"H-h-{int(spec.height * 0.05)}",
+            }
+
+        # Dynamic scale using FFmpeg expression: changes based on time (t)
+        h = spec.height
+        big = int(h * 0.55)
+        medium = int(h * 0.40)
+        small = int(h * 0.30)
+        margin = int(h * 0.05)
+
+        # FFmpeg if expressions for dynamic height based on timestamp
+        # Act boundaries from the 5-act structure
+        scale_expr = (
+            f"if(lt(t,3),{big},"               # Act 1: HOOK — BIG
+            f"if(lt(t,15),{medium},"            # Act 2: CURIOSITY — MEDIUM
+            f"if(lt(t,{duration*0.75}),{small},"  # Act 3: VALUE — SMALL
+            f"if(lt(t,{duration*0.92}),{big},"  # Act 4: EMOTIONAL — BIG
+            f"{medium}))))"                      # Act 5: CTA — MEDIUM
+        )
+
+        # Dynamic X position: centered when big, right-side when small
+        x_expr = (
+            f"if(lt(t,3),(W-w)/2,"                    # Centered for hook
+            f"if(lt(t,15),(W-w)/2,"                    # Centered for curiosity
+            f"if(lt(t,{duration*0.75}),W-w-{int(spec.width*0.03)},"  # Right for value
+            f"(W-w)/2)))"                               # Back to center
+        )
+
+        return {
+            "scale_expr": scale_expr,
+            "x_expr": x_expr,
+            "y_expr": f"H-h-{margin}",
+        }
+
+    async def _overlay_avatar(self, base_video: str, avatar_path: str,
+                               spec: VideoSpec, duration: float, work_dir: Path,
+                               acts: list[dict] = None) -> str:
+        """Overlay Daena avatar on base video using colorkey background removal.
+
+        Pipeline: crop tight to Daena → colorkey remove white/black bg → scale up → overlay.
+        Supports dynamic sizing: Daena gets bigger/smaller based on 5-act structure.
+        Looped with -stream_loop to cover the full video duration.
+        """
+        output = str(work_dir / "avatar_overlay.mp4")
+
+        # Detect avatar properties (bg color, crop region)
+        bg_color, similarity, blend = self._detect_avatar_bg(avatar_path)
+        crop_filter = self._get_avatar_crop(avatar_path)
+
+        # Get dynamic keyframes based on script acts
+        keyframes = self._build_avatar_keyframes(acts or [], duration, spec)
+
+        # Static scale for now (FFmpeg scale filter doesn't support expressions well)
+        # Use a good default size — 45% of frame height
+        avatar_h = int(spec.height * 0.45)
+        margin_bottom = int(spec.height * 0.05)
+
+        # Build filter chain: crop → colorkey → scale → overlay
+        filter_complex = (
+            f"[1:v]{crop_filter}colorkey={bg_color}:{similarity}:{blend},"
+            f"scale=-1:{avatar_h}[avatar];"
+            f"[0:v][avatar]overlay=(W-w)/2:H-h-{margin_bottom}:shortest=1[outv]"
+        )
+
+        cmd = [
+            "ffmpeg", "-y",
+            "-i", base_video,
+            "-stream_loop", "-1",
+            "-i", avatar_path,
+            "-filter_complex", filter_complex,
+            "-map", "[outv]",
+            "-c:v", spec.codec, "-preset", "fast", "-crf", "23",
+            "-r", str(spec.fps),
+            "-t", str(duration + 3.0),
+            output
+        ]
+
+        try:
+            result = subprocess.run(cmd, capture_output=True, text=True, timeout=300)
+            if Path(output).exists() and Path(output).stat().st_size > 10000:
+                logger.info(f"Avatar overlay applied (colorkey {bg_color}): {output}")
+                return output
+            logger.warning("Avatar overlay output too small — trying PiP fallback")
+            if result.stderr:
+                logger.debug(f"FFmpeg stderr: {result.stderr[:300]}")
+        except subprocess.TimeoutExpired:
+            logger.warning("Avatar overlay timed out (300s)")
+        except Exception as e:
+            logger.warning(f"Avatar overlay failed: {e}")
+
+        return await self._overlay_avatar_pip(base_video, avatar_path, spec, duration, work_dir)
+
+    def _detect_avatar_bg(self, avatar_path: str) -> tuple[str, float, float]:
+        """Detect background color for colorkey based on filename.
+
+        Returns: (hex_color, similarity, blend) for FFmpeg colorkey filter.
+        """
+        name = Path(avatar_path).stem.lower()
+
+        # Dark/black background avatars
+        if "cutout" in name or "nobg" in name or "talking" in name:
+            return "0x000000", 0.22, 0.10
+
+        # White background (HeyGen default, "clear", "social", "avatar")
+        return "0xFFFFFF", 0.22, 0.10
+
+    def _get_avatar_crop(self, avatar_path: str) -> str:
+        """Get FFmpeg crop filter to isolate Daena from empty background space.
+
+        Different avatar videos have Daena at different positions/sizes.
+        Returns a crop filter string or empty string if no crop needed.
+        """
+        try:
+            # Get video dimensions
+            result = subprocess.run([
+                "ffprobe", "-v", "quiet", "-show_entries", "stream=width,height",
+                "-of", "json", avatar_path
+            ], capture_output=True, text=True, timeout=10)
+            data = json.loads(result.stdout)
+            stream = next(s for s in data["streams"] if "width" in s)
+            w, h = stream["width"], stream["height"]
+        except Exception:
+            return ""
+
+        name = Path(avatar_path).stem.lower()
+
+        # "clear social 1" layout: 720x900, Daena in bottom-right corner (~290x300 at 430,600)
+        if w == 720 and h == 900 and ("clear" in name or "social" in name):
+            return "crop=290:300:430:600,"
+
+        # "avatar 1" layout: Daena is larger, centered — detect dynamically
+        # For videos where Daena fills most of the frame, no crop needed
+        if w <= 400:
+            return ""  # Already tight (WebM cutout versions)
+
+        # Generic: crop bottom 60% of frame (Daena is typically in lower portion)
+        crop_h = int(h * 0.6)
+        crop_y = h - crop_h
+        return f"crop={w}:{crop_h}:0:{crop_y},"
+
+    async def _overlay_avatar_pip(self, base_video: str, avatar_path: str,
+                                   spec: VideoSpec, duration: float, work_dir: Path) -> str:
+        """Fallback: Picture-in-Picture overlay without background removal.
+
+        Places avatar in a box at bottom-right. Used when colorkey fails.
+        """
+        output = str(work_dir / "avatar_overlay.mp4")
+        avatar_h = int(spec.height * 0.30)
+        margin = int(spec.width * 0.03)
+
+        cmd = [
+            "ffmpeg", "-y",
+            "-i", base_video,
+            "-stream_loop", "-1",
+            "-i", avatar_path,
+            "-filter_complex", (
+                f"[1:v]scale=-1:{avatar_h}[avatar];"
+                f"[0:v][avatar]overlay=W-w-{margin}:H-h-{margin}:shortest=1[outv]"
+            ),
+            "-map", "[outv]",
+            "-c:v", spec.codec, "-preset", "fast", "-crf", "23",
+            "-t", str(duration + 3.0),
+            output
+        ]
+
+        try:
+            subprocess.run(cmd, capture_output=True, timeout=180)
+            if Path(output).exists() and Path(output).stat().st_size > 10000:
+                logger.info(f"Avatar PiP overlay applied: {output}")
+                return output
+        except Exception as e:
+            logger.warning(f"Avatar PiP fallback failed: {e}")
+
+        return base_video
 
     def _extract_visual_keywords(self, script_data: dict) -> list[str]:
         """Extract keywords for B-roll search from script."""

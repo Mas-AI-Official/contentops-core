@@ -98,25 +98,68 @@ class AvatarEngine:
         return str(output_path)
 
     def get_avatar_image(self, mood: str = "default", tenant: str = "mas-ai") -> Optional[str]:
-        """Select avatar image based on content mood."""
+        """Select avatar still image based on content mood. Used for MuseTalk lip-sync (Phase 2)."""
+        # Map moods to actual Daena pics we have
         mood_map = {
-            "technical": "daena_professional_dark.png",
-            "casual": "daena_casual_light.png",
-            "urgent": "daena_urgent_high_contrast.png",
-            "inspiring": "daena_inspiring_warm.png",
-            "educational": "daena_professional_dark.png",
-            "controversial": "daena_urgent_high_contrast.png",
-            "humorous": "daena_casual_light.png",
-            "default": "daena_neutral.png",
+            "technical": ["daena_corporate.png", "daena_office.png", "daena face.png"],
+            "casual": ["daena casual 2.png", "daena casual 3.png", "daena casual 4.png",
+                       "daena casual 7.png", "daena casal 6 .png"],
+            "urgent": ["daena_corporate.png", "daena face.png"],
+            "inspiring": ["daena casual 11.png", "daena asual 5.png", "daena asssual 10 .png"],
+            "educational": ["daena_office.png", "daena_corporate.png"],
+            "controversial": ["daena face.png", "daena_corporate.png"],
+            "humorous": ["daena casual 3.png", "daena casual 4.png"],
+            "default": ["daena_reference.png", "daena face.png"],
         }
-        filename = mood_map.get(mood, mood_map["default"])
-        avatar_path = Path(f"tenants/{tenant}/avatars/{filename}")
-        if avatar_path.exists():
-            return str(avatar_path)
-        # Fallback to any available avatar
-        avatars_dir = Path(f"tenants/{tenant}/avatars")
-        if avatars_dir.exists():
-            for f in avatars_dir.iterdir():
-                if f.suffix in (".png", ".jpg", ".jpeg"):
-                    return str(f)
+
+        # Search in tenant avatars dir and global assets
+        search_dirs = [
+            Path(f"tenants/{tenant}/avatars"),
+            Path("data/assets/daena/daena pics"),
+            Path("data/assets/daena"),
+        ]
+
+        candidates = mood_map.get(mood, mood_map["default"])
+        for filename in candidates:
+            for search_dir in search_dirs:
+                candidate = search_dir / filename
+                if candidate.exists():
+                    return str(candidate)
+
+        # Fallback: any image in any search dir
+        for search_dir in search_dirs:
+            if search_dir.exists():
+                for f in search_dir.iterdir():
+                    if f.suffix in (".png", ".jpg", ".jpeg"):
+                        return str(f)
+        return None
+
+    def get_avatar_video(self, tenant: str = "mas-ai") -> Optional[str]:
+        """Get the best avatar video for overlay composition.
+
+        Priority: larger Daena first (clear social MP4 > cutout WebM > transparent WebM).
+        The composer will crop tight to Daena + colorkey the background.
+        """
+        search_paths = [
+            # Best: Daena clearly visible on white bg (known crop coordinates)
+            Path("Daena avatar/daena avatar  1 .mp4"),
+            Path("Daena avatar/daena clear social 1 .mp4"),
+            Path("data/assets/daena/dana_avatar_clear.mp4"),
+            # Fallback: WebM cutouts (tight crop, dark bg)
+            Path("data/assets/daena/avatar_clean/daena_cutout_final.webm"),
+            Path("data/assets/daena/avatar_clean/daena_talking_nobg.webm"),
+            Path("data/assets/daena/avatar_clean/daena_nobg_final.webm"),
+            Path("data/assets/daena/avatar_clean/daena_transparent.webm"),
+        ]
+        # Also check tenant dir
+        tenant_dir = Path(f"tenants/{tenant}/avatars")
+        if tenant_dir.exists():
+            for f in tenant_dir.glob("*.webm"):
+                return str(f)
+            for f in tenant_dir.glob("*.mp4"):
+                return str(f)
+
+        for p in search_paths:
+            if p.exists():
+                return str(p)
         return None

@@ -191,14 +191,23 @@ class ContentOpsPipeline:
             self.tool_manager.deactivate_all()
 
     async def _stage_compose(self, script, audio_path, platform, tenant, result):
-        """Stage 3: Compose video."""
+        """Stage 3: Compose video with avatar overlay."""
         logger.info("=== STAGE 3: COMPOSE ===")
         self.tool_manager.activate(self.tool_manager.for_stage("compose"))
 
         try:
+            from src.agents.avatar_engine import AvatarEngine
             from src.agents.video_composer import VideoComposer
+
+            # Find the best avatar video for this tenant
+            ae = AvatarEngine()
+            avatar_video = ae.get_avatar_video(tenant)
+            if avatar_video:
+                logger.info(f"Using avatar: {avatar_video}")
+
             vc = VideoComposer()
-            video_path = await vc.compose(script.to_dict(), audio_path, platform, tenant=tenant)
+            video_path = await vc.compose(script.to_dict(), audio_path, platform,
+                                          avatar_video=avatar_video, tenant=tenant)
 
             if video_path and Path(video_path).exists():
                 result.video_path = video_path
