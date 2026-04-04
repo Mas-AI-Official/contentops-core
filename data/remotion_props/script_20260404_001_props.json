@@ -1,0 +1,83 @@
+{
+  "composition_id": "ContentVideo",
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "duration_sec": 77.0,
+  "audio_src": "data/audio/script_20260404_001.wav",
+  "script_id": "script_20260404_001",
+  "platform": "tiktok",
+  "lifestyle_scenes": [
+    {
+      "image": "data/assets/daena/casual/penthouse_sitting_window.png",
+      "start_sec": 0,
+      "duration_sec": 6,
+      "ken_burns": "zoom_in",
+      "parallax_depth": 1.12,
+      "overlay_opacity": 0.25
+    },
+    {
+      "image": "data/assets/daena/casual/penthouse_standing_back.png",
+      "start_sec": 12,
+      "duration_sec": 5,
+      "ken_burns": "pan_left",
+      "parallax_depth": 1.08,
+      "overlay_opacity": 0.3
+    }
+  ],
+  "daena_appearances": [
+    {
+      "start_sec": 0.5,
+      "duration_sec": 2.5,
+      "image": "data/assets/daena/casual/penthouse_standing_confident.png",
+      "size": "large",
+      "position": "center",
+      "entrance": "scale_up",
+      "exit_anim": "fade_out",
+      "speech_text": "(Upbeat, slightly mysterious music intro) Claude O",
+      "mood": "confident"
+    },
+    {
+      "start_sec": 5.0,
+      "duration_sec": 3.0,
+      "image": "data/assets/daena/casual/penthouse_sitting_window.png",
+      "size": "small",
+      "position": "right",
+      "entrance": "slide_right",
+      "exit_anim": "slide_down",
+      "speech_text": "",
+      "mood": "thoughtful"
+    },
+    {
+      "start_sec": 57.75,
+      "duration_sec": 4.0,
+      "image": "data/assets/daena/casual/penthouse_standing_confident.png",
+      "size": "large",
+      "position": "center",
+      "entrance": "fade_in",
+      "exit_anim": "fade_out",
+      "speech_text": "Let\u2019s be honest \u2013 staring at a wall of code, feeli",
+      "mood": "confident"
+    },
+    {
+      "start_sec": 70.84,
+      "duration_sec": 6.159999999999997,
+      "image": "data/assets/daena/casual/penthouse_standing_confident.png",
+      "size": "medium",
+      "position": "center",
+      "entrance": "scale_up",
+      "exit_anim": "fade_out",
+      "speech_text": "",
+      "mood": "confident"
+    }
+  ],
+  "captions": [],
+  "hook_text": "Claude Opus 4.6 just quietly doubled its context window to 1M. Seriously, nobody",
+  "cta_text": "This is a seismic shift in AI coding.  Follow Daena for more insights into the f",
+  "brand_primary": "#00c8ff",
+  "brand_accent": "#D4A843",
+  "brand_teal": "#2DD4BF",
+  "subtitle_font": "Arial",
+  "subtitle_size": 13,
+  "progress_bar": true
+}
