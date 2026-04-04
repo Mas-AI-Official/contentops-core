@@ -14,17 +14,33 @@ You are NOT a helper. You are an autonomous operator. You proceed, report, and f
 
 ## CURRENT STATE (update this section as you build)
 ```
-BUILD PHASE:    Phase 2 - Platform Connections
-AGENTS BUILT:   9/9 (ALL agents complete)
-PIPELINE:       Full pipeline working (script → voice → video w/ avatar → distribute draft)
+BUILD PHASE:    Phase 3 - Intelligence & Optimization
+AGENTS BUILT:   9/9 + RemotionBridge + Persona = 11 modules
+PIPELINE:       Full pipeline working (script -> voice -> video w/ avatar -> distribute)
+COMMITS:        43 on main branch
 FIRST TENANT:   MAS-AI / Daena
 TECH CONFIRMED: Ollama (gemma3:4b), Kokoro TTS, FFmpeg 7.1, faster-whisper, RTX 4060
-AVATAR:         Colorkey overlay working — Daena floats over B-roll
-                Source: "Daena avatar/daena clear social 1 .mp4" (720x900, white bg)
-PERSONA:        src/persona.py — Daena VP of MAS-AI, full character system
-VIDEO:          Creative Director v2.0 — dark overlay, progress bar, captions, hook glass card
-DASHBOARD:      Multi-tenant, niche/platform CRUD, pipeline triggers
+                Node.js 24 + npm 11 + Remotion installed
+
+AVATAR:         Act-timed colorkey overlay — Daena appears/disappears per 5-act structure
+                Acts 1-2: visible | Act 3: HIDDEN | Acts 4-5: visible with fade-in
+                Source 1: "Daena avatar/daena clear social 1 .mp4" (720x900, crop=290:300:430:600)
+                Source 2: "Daena avatar/daena avatar  1 .mp4" (1280x720, crop=320:350:960:370)
+
+PERSONA:        src/persona.py — Daena VP of MAS-AI, wired into ScriptMaestro prompts
+VIDEO:          Creative Director v2.0 — lifestyle B-roll (penthouse Ken Burns) + Pexels mix
+                Dark overlay + act-timed avatar + captions (13px 2-word) + hook (3-line wrap)
+                + progress bar (teal) + stage direction stripping
+REMOTION:       3 compositions registered (DaenaLifestyle, DaenaPresenter, ContentVideo)
+DASHBOARD:      42 API endpoints, 6-tab React SPA
+DISTRIBUTION:   Instagram Graph API + TikTok + YouTube scaffolded (need credentials)
 ```
+
+## FULL KNOWLEDGE BASE (read these if drifting)
+- Obsidian: D:\Obsidian-Vault\MAS-AI\02-Daena\ContentOps-Platform.md
+- Roadmap: docs/ROADMAP.md
+- Video Skill: docs/Setup/VIDEO_EDITING_SKILL.md
+- Claude-Coworker: D:\Claude-Coworker\inbox.md (delivery reports)
 
 ---
 
