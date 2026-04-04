@@ -263,17 +263,21 @@ class VideoComposer:
             return 0
 
     async def _create_broll_montage(self, clips: list[str], spec: VideoSpec, duration: float, work_dir: Path) -> str:
-        """Create a B-roll montage by concatenating and scaling clips."""
+        """Create a B-roll montage by concatenating and looping clips to cover full audio + padding."""
         output = str(work_dir / "base_broll.mp4")
 
-        # Calculate clip duration
-        clip_duration = duration / max(len(clips), 1)
+        # Add 3 seconds padding so video always outlasts audio
+        target_duration = duration + 3.0
+
+        # Calculate per-clip duration; loop clips to fill the full target duration
+        clip_duration = target_duration / max(len(clips), 1)
 
         # Build FFmpeg filter for concatenation with scaling
+        # Use stream_loop=-1 on each input to ensure clip repeats if shorter than clip_duration
         filter_parts = []
         inputs = []
         for i, clip in enumerate(clips):
-            inputs.extend(["-i", clip])
+            inputs.extend(["-stream_loop", "-1", "-i", clip])
             filter_parts.append(
                 f"[{i}:v]scale={spec.width}:{spec.height}:force_original_aspect_ratio=increase,"
                 f"crop={spec.width}:{spec.height},setsar=1,trim=duration={clip_duration},setpts=PTS-STARTPTS[v{i}]"
@@ -287,7 +291,7 @@ class VideoComposer:
             "-map", "[outv]",
             "-c:v", spec.codec, "-preset", "fast", "-crf", "23",
             "-r", str(spec.fps),
-            "-t", str(duration),
+            "-t", str(target_duration),
             output
         ]
 
@@ -318,13 +322,13 @@ class VideoComposer:
 
     def _generate_srt(self, captions: list[dict], output_path: Path) -> str:
         """Generate SRT subtitle file from caption data."""
-        # Group words into subtitle chunks (3-5 words per chunk)
+        # Group words into subtitle chunks (3 words per chunk for TikTok-style rapid flow)
         chunks = []
         current_chunk = []
 
         for word in captions:
             current_chunk.append(word)
-            if len(current_chunk) >= 4:
+            if len(current_chunk) >= 3:
                 chunks.append(current_chunk)
                 current_chunk = []
         if current_chunk:
@@ -347,8 +351,15 @@ class VideoComposer:
         """Burn SRT captions into video using FFmpeg subtitles filter."""
         output = str(work_dir / "captioned.mp4")
 
-        # Style: bold white text, bottom-center, with shadow
-        style = "FontSize=24,FontName=Arial,Bold=1,PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,Outline=2,Shadow=1,Alignment=2,MarginV=120"
+        # Style: clean modern subtitle — small white text, thin black outline, dark box, bottom center
+        style = (
+            "FontSize=18,FontName=Montserrat,Bold=0,"
+            "PrimaryColour=&H00FFFFFF,"
+            "OutlineColour=&H00000000,Outline=2,"
+            "BackColour=&H80000000,Shadow=1,"
+            "BorderStyle=4,"
+            "Alignment=2,MarginV=180"
+        )
 
         # FFmpeg subtitle filter - need to escape path for Windows
         srt_escaped = srt_path.replace("\\", "/").replace(":", "\\:")
@@ -373,21 +384,26 @@ class VideoComposer:
         return video_path  # Return original if captions fail
 
     async def _add_hook_overlay(self, video_path: str, hook_text: str, spec: VideoSpec, work_dir: Path) -> str:
-        """Add hook text overlay in first 3 seconds."""
+        """Add hook text overlay with glass-card effect in first 3 seconds."""
         output = str(work_dir / "hooked.mp4")
 
         # Escape text for FFmpeg drawtext
         safe_text = hook_text.replace("'", "").replace(":", "").replace("\\", "")
 
-        font_size = 48 if spec.width >= 1080 else 32
+        font_size = 36 if spec.width >= 1080 else 24
+        # Wrap long text: limit line width to ~30 chars worth of pixels
+        max_line_w = int(spec.width * 0.8)
 
         cmd = [
             "ffmpeg", "-y",
             "-i", video_path,
             "-vf", (
                 f"drawtext=text='{safe_text}':"
-                f"fontsize={font_size}:fontcolor=white:borderw=3:bordercolor=black:"
-                f"x=(w-text_w)/2:y=h*0.25:"
+                f"fontsize={font_size}:fontcolor=white:"
+                f"borderw=2:bordercolor=black:"
+                f"box=1:boxcolor=black@0.45:boxborderw=16:"
+                f"x=(w-text_w)/2:y=h*0.35:"
+                f"line_spacing=8:"
                 f"enable='lt(t,3)'"
             ),
             "-c:v", spec.codec, "-preset", "fast", "-crf", "23",
@@ -405,14 +421,22 @@ class VideoComposer:
         return video_path
 
     async def _mux_audio(self, video_path: str, audio_path: str, output_path: str, spec: VideoSpec):
-        """Combine video and audio into final output."""
+        """Combine video and audio into final output. Video must be longer than audio."""
+        # Get audio duration for fade-out calculation
+        audio_duration = self._get_audio_duration(audio_path)
+        fade_start = max(audio_duration - 1.0, 0) if audio_duration > 0 else 0
+
+        # No -shortest: video is already padded longer than audio.
+        # Audio ends naturally; apply 1s fade-out at the end of audio.
+        af_filter = f"afade=t=out:st={fade_start}:d=1" if fade_start > 0 else "anull"
+
         cmd = [
             "ffmpeg", "-y",
             "-i", video_path,
             "-i", audio_path,
             "-c:v", "copy",
+            "-af", af_filter,
             "-c:a", "aac", "-b:a", "192k",
-            "-shortest",
             "-movflags", "+faststart",
             output_path
         ]
