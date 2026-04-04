@@ -31,11 +31,15 @@ class AvatarEngine:
         """Free local TTS using Kokoro-82M (PyTorch version)."""
         output_path = self.audio_dir / f"{script_id}.wav"
         try:
+            import warnings
+            warnings.filterwarnings("ignore", category=UserWarning)
+            warnings.filterwarnings("ignore", category=FutureWarning)
+
             from kokoro import KPipeline
             import soundfile as sf
             import numpy as np
 
-            pipeline = KPipeline(lang_code='a')  # American English
+            pipeline = KPipeline(lang_code='a', repo_id='hexgrad/Kokoro-82M')
             voice = os.environ.get("KOKORO_VOICE", "af_heart")
 
             # Generate all audio chunks

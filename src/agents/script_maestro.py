@@ -137,11 +137,11 @@ class ScriptMaestro:
             return response.json().get("response", "")
 
     async def _claude_qa(self, script_text: str) -> dict:
-        """Call Claude Haiku for QA scoring. Returns {"pass": bool, "score": float, "feedback": str}."""
+        """QA scoring. Uses Claude API if key available, otherwise Ollama local QA."""
         import os
         api_key = os.environ.get("ANTHROPIC_API_KEY")
         if not api_key:
-            logger.warning("No ANTHROPIC_API_KEY — using local QA fallback")
+            # Using Claude Max subscription — QA runs via local Ollama
             return await self._local_qa_fallback(script_text)
 
         async with httpx.AsyncClient(timeout=60) as client:

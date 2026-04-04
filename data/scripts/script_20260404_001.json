@@ -3,51 +3,100 @@
   "tenant": "mas-ai",
   "platform": "tiktok",
   "niche": "ai-tech",
-  "insight_source": "AI agents are now replacing entire QA teams. A startup just shipped with zero human testers and their bug rate dropped by 40 percent.",
+  "insight_source": "Claude 4 just changed everything",
   "hook_type": "curiosity_gap",
   "hook_vault_ref": "hook_007",
   "acts": [
     {
       "act": 1,
       "label": "HOOK",
-      "text": "40% fewer bugs? Seriously? Our AI testing just quietly learned to find them before *anyone* else could.",
+      "text": "Okay, here\u2019s the TikTok hook text: Claude 4\u2019s just quietly raised the bar on conversations\u2026 most people haven't even *seen* what it can do yet. Seriously, it\u2019s a different level.",
       "duration_estimate": "3s",
       "emotion": "curiosity"
     },
     {
       "act": 2,
       "label": "CURIOSITY BUILD",
-      "text": "Let\u2019s be honest, software development is a nightmare, right? Constant deadlines, stressful releases, and a never-ending battle against bugs.",
+      "text": "You\u2019re probably scrolling, feeling overwhelmed by chatbots.  They\u2019re clunky, repetitive, and frankly, useless.",
       "duration_estimate": "12s",
       "emotion": "frustration"
     },
     {
+      "act": 2,
+      "label": "CURIOSITY BUILD (cont)",
+      "text": "Every AI assistant promises a revolution, but delivers the same frustrating limitations.  It\u2019s exhausting, isn\u2019t it?",
+      "duration_estimate": "3s",
+      "emotion": "disappointment"
+    },
+    {
       "act": 3,
       "label": "VALUE DELIVERY",
-      "text": "That\u2019s where AI testing steps in. We\u2019ve been piloting a new system using machine learning to proactively identify vulnerabilities. It\u2019s analyzing code patterns and simulating user interactions with incredible speed.",
-      "duration_estimate": "30s",
-      "emotion": "assurance"
+      "text": "That\u2019s where Claude 4 changes everything. It\u2019s not just *better*; it\u2019s fundamentally different.",
+      "duration_estimate": "9s",
+      "emotion": "excitement"
+    },
+    {
+      "act": 3,
+      "label": "VALUE DELIVERY (cont)",
+      "text": "Claude 4 understands context at a level no other conversational AI achieves.  It remembers past interactions seamlessly.",
+      "duration_estimate": "6s",
+      "emotion": "insight"
+    },
+    {
+      "act": 3,
+      "label": "VALUE DELIVERY (cont)",
+      "text": "I\u2019m talking nuanced debates, complex creative writing, and genuinely helpful problem-solving.",
+      "duration_estimate": "6s",
+      "emotion": "validation"
+    },
+    {
+      "act": 3,
+      "label": "VALUE DELIVERY (cont)",
+      "text": "Watch this: I asked Claude 4 to write a short story about a lonely robot discovering friendship.  It\u2019s beautiful.",
+      "duration_estimate": "6s",
+      "emotion": "wonder"
     },
     {
       "act": 4,
       "label": "EMOTIONAL PEAK",
-      "text": "Imagine spending weeks meticulously testing, only to discover a critical bug just before launch. That's devastating for your team and your users.  It\u2019s a constant source of anxiety.",
+      "text": "Think about the possibilities.  No more wasted time wrestling with robotic responses.  Imagine truly collaborative brainstorming.",
       "duration_estimate": "10s",
-      "emotion": "vulnerability"
+      "emotion": "hope"
+    },
+    {
+      "act": 4,
+      "label": "EMOTIONAL PEAK (cont)",
+      "text": "It\u2019s about unlocking your creative potential, accelerating your workflow, and feeling empowered.",
+      "duration_estimate": "5s",
+      "emotion": "inspiration"
+    },
+    {
+      "act": 4,
+      "label": "EMOTIONAL PEAK (cont)",
+      "text": "Suddenly, the future of AI feels exciting, doesn't it?",
+      "duration_estimate": "5s",
+      "emotion": "anticipation"
     },
     {
       "act": 5,
       "label": "CTA",
-      "text": "Our AI testing achieved a 40% reduction in bugs \u2013 demonstrating the transformative power of automated quality control.  Follow Daena for more insights into the future of software development!",
+      "text": "This is just the beginning.  Follow Daena for more on the AI revolution.",
       "duration_estimate": "10s",
-      "emotion": "enthusiasm"
+      "emotion": "call_to_action"
+    },
+    {
+      "act": 5,
+      "label": "CTA (cont)",
+      "text": "Or save this video \u2013 you won't want to miss this!",
+      "duration_estimate": "10s",
+      "emotion": "urgency"
     }
   ],
-  "full_voiceover_text": "40% fewer bugs? Seriously? Our AI testing just quietly learned to find them before *anyone* else could. Let\u2019s be honest, software development is a nightmare, right? Constant deadlines, stressful releases, and a never-ending battle against bugs. That\u2019s where AI testing steps in. We\u2019ve been piloting a new system using machine learning to proactively identify vulnerabilities. It\u2019s analyzing code patterns and simulating user interactions with incredible speed. Imagine spending weeks meticulously testing, only to discover a critical bug just before launch. That's devastating for your team and your users.  It\u2019s a constant source of anxiety. Our AI testing achieved a 40% reduction in bugs \u2013 demonstrating the transformative power of automated quality control.  Follow Daena for more insights into the future of software development!",
-  "word_count": 123,
-  "estimated_duration": "49s",
+  "full_voiceover_text": "Okay, here\u2019s the TikTok hook text: Claude 4\u2019s just quietly raised the bar on conversations\u2026 most people haven't even *seen* what it can do yet. Seriously, it\u2019s a different level. You\u2019re probably scrolling, feeling overwhelmed by chatbots.  They\u2019re clunky, repetitive, and frankly, useless. Every AI assistant promises a revolution, but delivers the same frustrating limitations.  It\u2019s exhausting, isn\u2019t it? That\u2019s where Claude 4 changes everything. It\u2019s not just *better*; it\u2019s fundamentally different. Claude 4 understands context at a level no other conversational AI achieves.  It remembers past interactions seamlessly. I\u2019m talking nuanced debates, complex creative writing, and genuinely helpful problem-solving. Watch this: I asked Claude 4 to write a short story about a lonely robot discovering friendship.  It\u2019s beautiful. Think about the possibilities.  No more wasted time wrestling with robotic responses.  Imagine truly collaborative brainstorming. It\u2019s about unlocking your creative potential, accelerating your workflow, and feeling empowered. Suddenly, the future of AI feels exciting, doesn't it? This is just the beginning.  Follow Daena for more on the AI revolution. Or save this video \u2013 you won't want to miss this!",
+  "word_count": 180,
+  "estimated_duration": "72s",
   "quality_score": 6.2,
   "production_status": "approved",
   "method_tag": "curiosity_gap_v1",
-  "created_at": "2026-04-04T13:58:18.612430"
+  "created_at": "2026-04-04T14:18:09.691570"
 }

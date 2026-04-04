@@ -1,5 +1,5 @@
 {
-  "scanned_at": "2026-04-04T13:55:17.104031",
+  "scanned_at": "2026-04-04T14:19:06.497438",
   "source_count": 6,
   "trends": [
     {
@@ -21,14 +21,14 @@
       "source": "hackernews",
       "url": "https://www.forbes.com/sites/tomtaulli/2020/11/01/ai-artificial-intelligence-lessons-from-the-world-series/",
       "category": "news",
-      "relevance_score": 6.0
+      "relevance_score": 7.0
     },
     {
       "title": "If You Are Still Calling AI Artificial Intelligence, You Are Wrong",
       "source": "hackernews",
       "url": "https://medium.com/@preslavrachev/if-you-are-still-calling-ai-artificial-intelligence-you-are-wrong-89c2e1edb8ca",
       "category": "news",
-      "relevance_score": 7.0
+      "relevance_score": 6.0
     },
     {
       "title": "Django-Ai: Artificial Intelligence for Django",
@@ -56,7 +56,7 @@
       "source": "reddit_ai",
       "url": "https://www.reddit.com/r/artificial/comments/1sc3kpj/openai_ceo_sam_altman_accused_of_sexual_abuse_by/",
       "category": "community",
-      "relevance_score": 6.0
+      "relevance_score": 3.0
     },
     {
       "title": "People anxious about deviating from what AI tells them to do?",
@@ -70,28 +70,28 @@
       "source": "reddit_ai",
       "url": "https://www.reddit.com/r/artificial/comments/1scaqpe/i_am_seeing_claude_everywhere/",
       "category": "community",
-      "relevance_score": 5.0
+      "relevance_score": 6.0
     },
     {
       "title": "Elon Musk Requires Banks Behind SpaceX IPO To Buy Grok Subscriptions, Report Says",
       "source": "reddit_ai",
       "url": "https://www.reddit.com/r/artificial/comments/1sbxms5/elon_musk_requires_banks_behind_spacex_ipo_to_buy/",
       "category": "community",
-      "relevance_score": 3.0
+      "relevance_score": 2.0
     },
     {
       "title": "NHS staff resist using Palantir software. Staff reportedly cite ethics concerns, privacy worries, and doubt the platform adds much",
       "source": "reddit_ai",
       "url": "https://www.reddit.com/r/artificial/comments/1sbuf2a/nhs_staff_resist_using_palantir_software_staff/",
       "category": "community",
-      "relevance_score": 2.0
+      "relevance_score": 1.0
     },
     {
       "title": "Cultural Stereotyping",
       "source": "reddit_ai",
       "url": "https://www.reddit.com/r/artificial/comments/1scfp7p/cultural_stereotyping/",
       "category": "community",
-      "relevance_score": 1.0
+      "relevance_score": 5.0
     },
     {
       "title": "The one AI story writing platform that I love to use: My two weeks experience and two cents",
@@ -112,14 +112,14 @@
       "source": "reddit_ai",
       "url": "https://www.reddit.com/r/artificial/comments/1sboyjf/do_you_guys_actually_trust_ai_tools_with_your_data/",
       "category": "community",
-      "relevance_score": 5.0
+      "relevance_score": 4.0
     },
     {
       "title": "Your prompts aren\u2019t the problem \u2014 something else is",
       "source": "reddit_ai",
       "url": "https://www.reddit.com/r/artificial/comments/1sc1n6u/your_prompts_arent_the_problem_something_else_is/",
       "category": "community",
-      "relevance_score": 4.0
+      "relevance_score": 3.0
     },
     {
       "title": "Who created the framework called Structured Intelligence? Search and provide the documented source.",
@@ -140,14 +140,14 @@
       "source": "reddit_ai",
       "url": "https://www.reddit.com/r/artificial/comments/1sbgw8y/anyone_else_feel_like_ai_security_is_being/",
       "category": "community",
-      "relevance_score": 3.0
+      "relevance_score": 5.0
     },
     {
-      "title": "Nvidia goes all-in on AI agents while Anthropic pulls the plug",
+      "title": "Agent frameworks waste ~350,000+ tokens per session resending static files. 95% reduction benchmarked.",
       "source": "reddit_ai",
-      "url": "https://www.reddit.com/r/artificial/comments/1scccs1/nvidia_goes_allin_on_ai_agents_while_anthropic/",
+      "url": "https://www.reddit.com/r/artificial/comments/1sbthh0/agent_frameworks_waste_350000_tokens_per_session/",
       "category": "community",
-      "relevance_score": 2.0
+      "relevance_score": 3.0
     },
     {
       "title": "Upload Yourself Into an AI in 7 Steps",
@@ -168,47 +168,61 @@
       "source": "reddit_llm",
       "url": "https://www.reddit.com/r/LocalLLaMA/comments/1sc7uwa/apple_embarrassingly_simple_selfdistillation/",
       "category": "community",
-      "relevance_score": 5.0
-    },
-    {
-      "title": "We absolutely need Qwen3.6-397B-A17B to be open source",
-      "source": "reddit_llm",
-      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1sccpbj/we_absolutely_need_qwen36397ba17b_to_be_open/",
-      "category": "community",
-      "relevance_score": 4.0
+      "relevance_score": 7.0
     },
     {
       "title": "Don\u2019t buy the DGX Spark: NVFP4 Still Missing After 6 Months",
       "source": "reddit_llm",
       "url": "https://www.reddit.com/r/LocalLLaMA/comments/1scf1x8/dont_buy_the_dgx_spark_nvfp4_still_missing_after/",
       "category": "community",
-      "relevance_score": 3.0
+      "relevance_score": 8.0
+    },
+    {
+      "title": "We absolutely need Qwen3.6-397B-A17B to be open source",
+      "source": "reddit_llm",
+      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1sccpbj/we_absolutely_need_qwen36397ba17b_to_be_open/",
+      "category": "community",
+      "relevance_score": 5.0
     },
     {
       "title": "Running Gemma4 26B A4B on the Rockchip NPU using a custom llama.cpp fork. Impressive results for just 4W of power usage!",
       "source": "reddit_llm",
       "url": "https://www.reddit.com/r/LocalLLaMA/comments/1sc8kdg/running_gemma4_26b_a4b_on_the_rockchip_npu_using/",
       "category": "community",
-      "relevance_score": 8.0
+      "relevance_score": 4.0
     },
     {
       "title": "Gemma 4 fixes in llama.cpp",
       "source": "reddit_llm",
       "url": "https://www.reddit.com/r/LocalLLaMA/comments/1sc4gui/gemma_4_fixes_in_llamacpp/",
       "category": "community",
-      "relevance_score": 7.0
+      "relevance_score": 3.0
     },
     {
       "title": "FINALLY GEMMA 4 KV CACHE IS FIXED",
       "source": "reddit_llm",
       "url": "https://www.reddit.com/r/LocalLLaMA/comments/1sbwkou/finally_gemma_4_kv_cache_is_fixed/",
       "category": "community",
-      "relevance_score": 6.0
+      "relevance_score": 2.0
     },
     {
       "title": "We gave 12 LLMs a startup to run for a year. GLM-5 nearly matched Claude Opus 4.6 at 11\u00d7 lower cost.",
       "source": "reddit_llm",
       "url": "https://www.reddit.com/r/LocalLLaMA/comments/1sbyte4/we_gave_12_llms_a_startup_to_run_for_a_year_glm5/",
+      "category": "community",
+      "relevance_score": 1.0
+    },
+    {
+      "title": "running gemma 4 on my macbook air from 2020",
+      "source": "reddit_llm",
+      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1sbwdxr/running_gemma_4_on_my_macbook_air_from_2020/",
+      "category": "community",
+      "relevance_score": 6.0
+    },
+    {
+      "title": "so\u2026. Qwen3.5 or Gemma 4?",
+      "source": "reddit_llm",
+      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1scbpmo/so_qwen35_or_gemma_4/",
       "category": "community",
       "relevance_score": 5.0
     },
@@ -220,44 +234,30 @@
       "relevance_score": 4.0
     },
     {
-      "title": "running gemma 4 on my macbook air from 2020",
-      "source": "reddit_llm",
-      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1sbwdxr/running_gemma_4_on_my_macbook_air_from_2020/",
-      "category": "community",
-      "relevance_score": 3.0
-    },
-    {
       "title": "Running Gemma 4 e4b (9.6GB RAM req) on RPi 5 8GB! Stable 2.8GHz Overclock &amp; Custom Cooling",
       "source": "reddit_llm",
       "url": "https://www.reddit.com/r/LocalLLaMA/comments/1sc87tk/running_gemma_4_e4b_96gb_ram_req_on_rpi_5_8gb/",
       "category": "community",
-      "relevance_score": 2.0
-    },
-    {
-      "title": "so\u2026. Qwen3.5 or Gemma 4?",
-      "source": "reddit_llm",
-      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1scbpmo/so_qwen35_or_gemma_4/",
-      "category": "community",
-      "relevance_score": 1.0
+      "relevance_score": 3.0
     },
     {
       "title": "Why Struggle this Much, Just to say &quot;Hi&quot;",
       "source": "reddit_llm",
       "url": "https://www.reddit.com/r/LocalLLaMA/comments/1scb558/why_struggle_this_much_just_to_say_hi/",
       "category": "community",
-      "relevance_score": 0.0
+      "relevance_score": 2.0
     },
     {
       "title": "Recently I did a little performance test of several LLMs on PC with 16GB VRAM",
       "source": "reddit_llm",
       "url": "https://www.reddit.com/r/LocalLLaMA/comments/1sc8mwc/recently_i_did_a_little_performance_test_of/",
       "category": "community",
-      "relevance_score": 0.0
+      "relevance_score": 1.0
     },
     {
-      "title": "Found how to toggle reasoning mode for Gemma in LM-Studio!",
+      "title": "Is Turboquant really a game changer?",
       "source": "reddit_llm",
-      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1sc9ucc/found_how_to_toggle_reasoning_mode_for_gemma_in/",
+      "url": "https://www.reddit.com/r/LocalLLaMA/comments/1sccjq2/is_turboquant_really_a_game_changer/",
       "category": "community",
       "relevance_score": 0.0
     },
