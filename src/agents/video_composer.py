@@ -169,19 +169,22 @@ class VideoComposer:
         self.output_dir.mkdir(parents=True, exist_ok=True)
 
     async def compose(self, script_data: dict, audio_path: str, platform: str = "tiktok",
-                      avatar_video: str = None, tenant: str = "mas-ai") -> str:
+                      avatar_video: str = None, tenant: str = "mas-ai",
+                      content_mode: str = "avatar_overlay") -> str:
         """
         Full video composition pipeline.
+
+        content_mode:
+          "avatar_overlay" — Daena avatar on B-roll (MAS-AI branded content)
+          "pure_video"     — No avatar. B-roll + voiceover + captions only (niches)
+          "penthouse_lifestyle" — Ken Burns on lifestyle photos, no avatar
 
         Steps:
         1. Fetch B-roll from Pexels based on script keywords
         2. Generate caption timing from audio
         3. Create base video (B-roll montage or color background)
-        4. Overlay Daena avatar with act-based timing:
-           - Acts 1-2 (0-15s): Daena VISIBLE with fade-in entrance
-           - Act 3 (15-45s): Daena HIDDEN — B-roll is the star
-           - Acts 4-5 (45s-end): Daena RE-APPEARS with fade-in for emotional peak + CTA
-           If no acts provided, avatar is visible for the entire video (backward compat).
+        4. If avatar_overlay: Overlay avatar with act-based timing
+           If pure_video: Skip avatar, use full B-roll as hero
         5. Burn captions as subtitles
         6. Add hook text overlay (first 3 seconds)
         7. Mux with audio
@@ -222,13 +225,18 @@ class VideoComposer:
         # Step 5: Add dark cinematic overlay (makes text + avatar pop)
         darkened_video = await self._add_dark_overlay(base_video, spec, work_dir, opacity=0.35)
 
-        # Step 6: Overlay Daena avatar
-        avatar_path = avatar_video or self._find_avatar_video(tenant)
+        # Step 6: Overlay avatar (only in avatar_overlay mode)
         acts = script_data.get("acts", [])
-        if avatar_path:
-            avatar_base = await self._overlay_avatar(darkened_video, avatar_path, spec, duration, work_dir, acts=acts)
+        if content_mode == "avatar_overlay":
+            avatar_path = avatar_video or self._find_avatar_video(tenant)
+            if avatar_path:
+                avatar_base = await self._overlay_avatar(darkened_video, avatar_path, spec, duration, work_dir, acts=acts)
+            else:
+                logger.warning("No avatar video found — producing video without avatar overlay")
+                avatar_base = darkened_video
         else:
-            logger.warning("No avatar video found — producing video without avatar overlay")
+            # pure_video or penthouse_lifestyle — no avatar, B-roll is the hero
+            logger.info("Content mode: %s — skipping avatar overlay", content_mode)
             avatar_base = darkened_video
 
         # Step 7: Burn captions (SRT file + FFmpeg subtitle filter)
@@ -269,10 +277,11 @@ class VideoComposer:
             "broll_clips": len(broll_clips),
             "captions_count": len(captions),
             "has_hook_overlay": bool(hook_text),
-            "has_avatar": bool(avatar_path),
+            "content_mode": content_mode,
+            "has_avatar": content_mode == "avatar_overlay" and bool(avatar_path if content_mode == "avatar_overlay" else False),
             "has_dark_overlay": True,
             "has_progress_bar": True,
-            "avatar_source": str(avatar_path) if avatar_path else None,
+            "avatar_source": str(avatar_path) if content_mode == "avatar_overlay" and 'avatar_path' in dir() else None,
             "visual_keywords": visual_keywords,
             "output_path": str(final_path),
             "composed_at": datetime.now().isoformat(),
