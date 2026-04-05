@@ -102,7 +102,7 @@ class DistributionEngine:
             "max_duration": 140,
             "hashtag_style": "trending",
             "aspect_ratio": "9:16",
-            "api_env": "TWITTER_BEARER_TOKEN",
+            "api_env": "TWITTER_API_KEY",
         },
         "threads": {
             "max_caption": 500,
@@ -371,7 +371,7 @@ class DistributionEngine:
             return await self._publish_tiktok_direct(post)
         elif post.platform == "youtube" and os.environ.get("YOUTUBE_API_KEY"):
             return await self._publish_youtube(post)
-        elif post.platform == "twitter" and os.environ.get("TWITTER_BEARER_TOKEN"):
+        elif post.platform == "twitter" and os.environ.get("TWITTER_API_KEY"):
             return await self._publish_twitter(post)
         return None
 
