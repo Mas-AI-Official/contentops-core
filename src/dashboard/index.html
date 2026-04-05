@@ -1089,6 +1089,143 @@
       );
     }
 
+    // ==================== POST HISTORY PAGE ====================
+    function PostHistoryPage({ addToast }) {
+      const [posts, setPosts] = useState([]);
+      const [summary, setSummary] = useState(null);
+      const [loading, setLoading] = useState(true);
+      const [platformFilter, setPlatformFilter] = useState('');
+      const [collecting, setCollecting] = useState(false);
+      const [cleaning, setCleaning] = useState(false);
+
+      const loadData = async () => {
+        try {
+          const params = platformFilter ? `?platform=${platformFilter}&limit=50` : '?limit=50';
+          const [historyRes, analyticsRes] = await Promise.all([
+            api(`/api/posts/history${params}`).catch(() => ({ posts: [], total: 0 })),
+            api(`/api/analytics/posts?limit=50${platformFilter ? '&platform=' + platformFilter : ''}`).catch(() => ({ posts: [], summary: {} })),
+          ]);
+          // Merge analytics into history
+          const metricsMap = {};
+          (analyticsRes.posts || []).forEach(p => { metricsMap[p.id] = p; });
+          const merged = (historyRes.posts || []).map(p => ({
+            ...p,
+            views: metricsMap[p.id]?.views || 0,
+            likes: metricsMap[p.id]?.likes || 0,
+            comments: metricsMap[p.id]?.comments || 0,
+            viral_signal: metricsMap[p.id]?.viral_signal || null,
+          }));
+          setPosts(merged);
+          setSummary(analyticsRes.summary || { total_posts: historyRes.total, total_views: 0, total_likes: 0, viral_posts: 0 });
+        } catch (e) { addToast('Load failed: ' + e.message, 'error'); }
+        setLoading(false);
+      };
+
+      useEffect(() => { setLoading(true); loadData(); }, [platformFilter]);
+
+      const handleCollect = async () => {
+        setCollecting(true);
+        try {
+          const res = await api('/api/analytics/collect', 'POST');
+          addToast(`Collected metrics for ${res.total_collected || 0} posts`, 'success');
+          loadData();
+        } catch (e) { addToast('Collection failed: ' + e.message, 'error'); }
+        setCollecting(false);
+      };
+
+      const handleCleanup = async () => {
+        setCleaning(true);
+        try {
+          const res = await api('/api/posts/cleanup?days=3', 'POST');
+          addToast(`Cleaned ${res.files_deleted} files (${res.bytes_freed_mb} MB freed)`, 'success');
+        } catch (e) { addToast('Cleanup failed: ' + e.message, 'error'); }
+        setCleaning(false);
+      };
+
+      const platforms = ['', 'instagram', 'tiktok', 'youtube', 'twitter', 'linkedin'];
+
+      if (loading) return <Loading />;
+
+      return (
+        <div>
+          {/* Summary stats */}
+          <div className="stat-grid mb-20">
+            <div className="stat-card"><div className="stat-icon">{'\uD83D\uDCE4'}</div><div className="stat-value">{summary?.total_posts || 0}</div><div className="stat-label">Total Posts</div></div>
+            <div className="stat-card"><div className="stat-icon">{'\uD83D\uDC41\uFE0F'}</div><div className="stat-value">{(summary?.total_views || 0).toLocaleString()}</div><div className="stat-label">Total Views</div></div>
+            <div className="stat-card"><div className="stat-icon">{'\u2764\uFE0F'}</div><div className="stat-value">{(summary?.total_likes || 0).toLocaleString()}</div><div className="stat-label">Total Likes</div></div>
+            <div className="stat-card"><div className="stat-icon">{'\uD83D\uDD25'}</div><div className="stat-value">{summary?.viral_posts || 0}</div><div className="stat-label">Viral Posts</div></div>
+          </div>
+
+          {/* Controls */}
+          <div className="card mb-20">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
+              <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                <label style={{ margin: 0 }}>Platform:</label>
+                <select value={platformFilter} onChange={e => setPlatformFilter(e.target.value)} style={{ width: 160 }}>
+                  {platforms.map(p => <option key={p} value={p}>{p || 'All Platforms'}</option>)}
+                </select>
+              </div>
+              <div className="btn-group">
+                <button className="btn btn-teal btn-sm" onClick={handleCollect} disabled={collecting}>
+                  {collecting ? 'Collecting...' : '\uD83D\uDCE1 Collect Metrics'}
+                </button>
+                <button className="btn btn-danger btn-sm" onClick={handleCleanup} disabled={cleaning}>
+                  {cleaning ? 'Cleaning...' : '\uD83E\uDDF9 Cleanup Old Renders'}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Post table */}
+          <div className="card">
+            <div className="card-header">
+              <div className="card-title">Post History</div>
+              <div className="card-subtitle">{posts.length} posts shown</div>
+            </div>
+            {posts.length === 0 ? (
+              <Empty icon={'\uD83D\uDCE4'} text="No posts yet. Create content in the Studio!" />
+            ) : (
+              <div style={{ overflowX: 'auto' }}>
+                <table className="data-table">
+                  <thead>
+                    <tr>
+                      <th>Platform</th>
+                      <th>Date</th>
+                      <th>Caption</th>
+                      <th>Views</th>
+                      <th>Likes</th>
+                      <th>Comments</th>
+                      <th>Status</th>
+                      <th>Link</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {posts.map((p, i) => (
+                      <tr key={i} style={p.viral_signal ? { borderLeft: '3px solid #D4A843' } : {}}>
+                        <td><span className={`platform-badge ${p.platform}`}>{platformIcon(p.platform)} {p.platform}</span></td>
+                        <td style={{ whiteSpace: 'nowrap', fontSize: 12, color: '#8899aa' }}>
+                          {p.published_at ? new Date(p.published_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '-'}
+                        </td>
+                        <td style={{ maxWidth: 300, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: 13 }}>
+                          {p.caption || '-'}
+                          {p.viral_signal && <span style={{ marginLeft: 6, color: '#D4A843', fontSize: 11 }}>{'\uD83D\uDD25'} VIRAL</span>}
+                        </td>
+                        <td>{(p.views || 0).toLocaleString()}</td>
+                        <td>{(p.likes || 0).toLocaleString()}</td>
+                        <td>{(p.comments || 0).toLocaleString()}</td>
+                        <td><span className={`badge ${p.status === 'published' ? 'badge-success' : p.status === 'duplicate' ? 'badge-warning' : 'badge-info'}`}>{p.status}</span></td>
+                        <td>{p.url ? <a href={p.url} target="_blank" rel="noopener" style={{ color: '#00c8ff', fontSize: 12 }}>View</a> : '-'}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        </div>
+      );
+    }
+
     // ==================== APP ROOT ====================
     function App() {
       const [currentPage, setCurrentPage] = useState('overview');
@@ -1129,6 +1266,7 @@
         { id: 'niches', icon: '\uD83C\uDFAF', label: 'Niches & Platforms' },
         { id: 'analytics', icon: '\uD83D\uDCC8', label: 'Analytics' },
         { id: 'distribution', icon: '\uD83D\uDE80', label: 'Distribution' },
+        { id: 'history', icon: '\uD83D\uDCCB', label: 'Post History' },
         { id: 'settings', icon: '\u2699\uFE0F', label: 'Settings' },
       ];
 
@@ -1141,6 +1279,7 @@
           case 'niches': return <NichesPage addToast={addToast} />;
           case 'analytics': return <AnalyticsPage addToast={addToast} />;
           case 'distribution': return <DistributionPage addToast={addToast} />;
+          case 'history': return <PostHistoryPage addToast={addToast} />;
           case 'settings': return <SettingsPage addToast={addToast} />;
           default: return <OverviewPage addToast={addToast} />;
         }

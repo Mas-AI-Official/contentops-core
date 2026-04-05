@@ -808,6 +808,66 @@ async def scan_trends():
     return result
 
 
+# === Post History & Content Tracking ===
+
+@app.get("/api/posts/history")
+async def get_post_history(limit: int = 50, platform: Optional[str] = None, tenant: str = "mas-ai"):
+    """Get post history with dedup hashes, captions, and URLs."""
+    from src.agents.content_tracker import ContentTracker
+    tracker = ContentTracker()
+    posts = tracker.get_post_history(limit=limit, platform=platform, tenant_id=tenant)
+    return {"posts": posts, "total": tracker.get_post_count(platform=platform)}
+
+
+@app.get("/api/posts/count")
+async def get_post_count(platform: Optional[str] = None):
+    """Get total post count."""
+    from src.agents.content_tracker import ContentTracker
+    tracker = ContentTracker()
+    return {"count": tracker.get_post_count(platform=platform)}
+
+
+@app.post("/api/posts/cleanup")
+async def cleanup_old_renders(days: int = 3):
+    """Delete rendered video files older than N days."""
+    from src.agents.content_tracker import ContentTracker
+    tracker = ContentTracker()
+    result = tracker.cleanup_old_renders(days=days)
+    return result
+
+
+@app.get("/api/posts/check-duplicate")
+async def check_duplicate(video_path: str, platform: str):
+    """Check if a video has already been posted to a platform."""
+    from src.agents.content_tracker import ContentTracker
+    import os
+    if not os.path.exists(video_path):
+        raise HTTPException(status_code=404, detail=f"Video file not found: {video_path}")
+    tracker = ContentTracker()
+    is_dup = tracker.has_been_posted(video_path, platform)
+    return {"duplicate": is_dup, "video_path": video_path, "platform": platform}
+
+
+# === Analytics Collection (Instagram via instagrapi) ===
+
+@app.post("/api/analytics/collect")
+async def collect_analytics(tenant: str = "mas-ai"):
+    """Scrape latest metrics from Instagram for all recent posts."""
+    from src.agents.content_tracker import ContentTracker
+    from src.agents.analytics_collector import AnalyticsCollector
+    collector = AnalyticsCollector()
+    result = await collector.collect_all(tenant_id=tenant)
+    return result
+
+
+@app.get("/api/analytics/posts")
+async def get_post_analytics(limit: int = 20, platform: Optional[str] = None):
+    """Get posts with their latest engagement metrics."""
+    from src.agents.analytics_collector import AnalyticsCollector
+    collector = AnalyticsCollector()
+    return collector.get_posts_with_metrics(limit=limit, platform=platform)
+
+
 # === Dashboard Frontend ===
 
 @app.get("/")

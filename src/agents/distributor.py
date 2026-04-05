@@ -69,7 +69,7 @@ class DistributionEngine:
             "max_duration": 60,
             "hashtag_style": "niche_only",
             "aspect_ratio": "9:16",
-            "api_env": "TIKTOK_ACCESS_TOKEN",
+            "api_env": "TIKTOK_COOKIES_PATH",
         },
         "instagram": {
             "max_caption": 2200,
@@ -140,6 +140,10 @@ class DistributionEngine:
         self.published_dir = Path("data/published")
         self.published_dir.mkdir(parents=True, exist_ok=True)
 
+        # Content tracker for dedup + post history
+        from src.agents.content_tracker import ContentTracker
+        self.tracker = ContentTracker()
+
     # ------------------------------------------------------------------
     # Platform status
     # ------------------------------------------------------------------
@@ -149,7 +153,11 @@ class DistributionEngine:
         status = {}
         for platform, rules in self.PLATFORM_RULES.items():
             env_key = rules.get("api_env", "")
-            has_key = bool(os.environ.get(env_key)) if env_key else False
+            # TikTok uses cookie file, not env var
+            if platform == "tiktok":
+                has_key = Path(os.environ.get("TIKTOK_COOKIES_PATH", "config/tiktok_cookies.txt")).exists()
+            else:
+                has_key = bool(os.environ.get(env_key)) if env_key else False
             status[platform] = {
                 "connected": has_key,
                 "mode": "api" if has_key else "draft",
@@ -286,7 +294,21 @@ class DistributionEngine:
         """
         Publish to platform.  Attempts real API publish first; falls back to
         saving a draft package for manual upload.
+
+        Dedup: checks content hash before publishing.  Records post after success.
         """
+        # --- Dedup guard ---
+        if os.path.exists(post.video_path):
+            if self.tracker.has_been_posted(post.video_path, post.platform):
+                logger.warning("DEDUP BLOCKED: video already posted to %s", post.platform)
+                return PostResult(
+                    platform=post.platform,
+                    status="duplicate",
+                    error="This exact video has already been posted to this platform",
+                )
+        if post.caption and self.tracker.caption_already_used(post.caption, post.platform):
+            logger.warning("DEDUP WARNING: caption already used on %s (proceeding)", post.platform)
+
         post_id = f"post_{datetime.now().strftime('%Y%m%d_%H%M%S')}_{post.platform}"
 
         post_package = {
@@ -319,8 +341,21 @@ class DistributionEngine:
             post_package["api_post_id"] = api_result.post_id
             with open(post_path, "w", encoding="utf-8") as f:
                 json.dump(post_package, f, indent=2, ensure_ascii=False)
+
+            # --- Record in content tracker ---
+            if api_result.status == "published":
+                self.tracker.record_post(
+                    post_id=post_id,
+                    video_path=post.video_path,
+                    caption=post.caption,
+                    platform=post.platform,
+                    url=api_result.url,
+                    tenant_id=post.tenant,
+                    external_post_id=api_result.post_id,
+                )
             return api_result
 
+        # Draft mode — still record for history (status will be 'draft' in DB)
         return PostResult(
             platform=post.platform,
             status="draft",
@@ -331,10 +366,13 @@ class DistributionEngine:
         """Attempt to publish via platform API.  Returns None if no credentials."""
         if post.platform == "instagram" and os.environ.get("INSTAGRAM_USERNAME"):
             return await self._publish_instagram_direct(post)
-        elif post.platform == "tiktok" and os.environ.get("TIKTOK_ACCESS_TOKEN"):
-            return await self._publish_tiktok(post)
+        elif post.platform == "tiktok":
+            # Try cookie-based upload first (no developer portal needed)
+            return await self._publish_tiktok_direct(post)
         elif post.platform == "youtube" and os.environ.get("YOUTUBE_API_KEY"):
             return await self._publish_youtube(post)
+        elif post.platform == "twitter" and os.environ.get("TWITTER_BEARER_TOKEN"):
+            return await self._publish_twitter(post)
         return None
 
     # ------------------------------------------------------------------
@@ -483,92 +521,51 @@ class DistributionEngine:
     # TikTok Content Posting API integration
     # ------------------------------------------------------------------
 
-    async def _publish_tiktok(self, post: PostMetadata) -> PostResult:
+    async def _publish_tiktok_direct(self, post: PostMetadata) -> PostResult:
         """
-        Publish a video to TikTok using the Content Posting API v2.
+        Publish to TikTok via tiktok-uploader (Playwright + cookies).
+        No TikTok Developer account required.
 
-        Flow:
-        1. POST /v2/post/publish/video/init/ — initialise upload
-        2. PUT  upload_url with video bytes
-        3. POST /v2/post/publish/ — publish with caption and privacy
-
-        Env vars required:
-          TIKTOK_ACCESS_TOKEN — OAuth user access token with video.publish scope
+        Setup: Export cookies.txt from Chrome after logging into TikTok.
         """
-        access_token = os.environ.get("TIKTOK_ACCESS_TOKEN", "")
-        if not access_token:
-            logger.warning("TikTok credentials missing — falling back to draft.")
-            return PostResult(platform="tiktok", status="draft", error="Missing TIKTOK_ACCESS_TOKEN")
-
-        caption_with_tags = f"{post.caption} {' '.join(post.hashtags)}"
-        base_url = "https://open.tiktokapis.com"
-        headers = {
-            "Authorization": f"Bearer {access_token}",
-            "Content-Type": "application/json; charset=UTF-8",
-        }
-
         try:
-            async with httpx.AsyncClient(timeout=self._API_TIMEOUT) as client:
-                # Step 1: Initialise video upload
-                video_path = Path(post.video_path)
-                video_size = video_path.stat().st_size if video_path.exists() else 0
+            from src.agents.tiktok_publisher import TikTokPublisher
 
-                init_resp = await client.post(
-                    f"{base_url}/v2/post/publish/video/init/",
-                    headers=headers,
-                    json={
-                        "post_info": {
-                            "title": caption_with_tags[:2200],
-                            "privacy_level": "SELF_ONLY",  # safe default; caller can override
-                            "disable_duet": False,
-                            "disable_comment": False,
-                            "disable_stitch": False,
-                        },
-                        "source_info": {
-                            "source": "FILE_UPLOAD",
-                            "video_size": video_size,
-                        },
-                    },
-                )
-                init_resp.raise_for_status()
-                init_data = init_resp.json().get("data", {})
-                upload_url = init_data.get("upload_url", "")
-                publish_id = init_data.get("publish_id", "")
-
-                if not upload_url:
-                    raise ValueError("TikTok did not return an upload URL")
-
-                # Step 2: Upload video bytes
-                if video_path.exists():
-                    video_bytes = video_path.read_bytes()
-                    upload_resp = await client.put(
-                        upload_url,
-                        content=video_bytes,
-                        headers={
-                            "Content-Type": "video/mp4",
-                            "Content-Range": f"bytes 0-{len(video_bytes) - 1}/{len(video_bytes)}",
-                        },
-                    )
-                    upload_resp.raise_for_status()
-                else:
-                    logger.warning(f"Video file not found at {post.video_path} — skipping upload bytes")
-
-                logger.info(f"TikTok video published (publish_id={publish_id})")
-
+            pub = TikTokPublisher()
+            if not pub.is_configured():
                 return PostResult(
                     platform="tiktok",
-                    status="published",
-                    post_id=publish_id,
-                    url=f"https://www.tiktok.com/@me/video/{publish_id}",
+                    status="draft",
+                    error="TikTok cookies not found. Export cookies.txt from Chrome.",
                 )
 
-        except Exception as exc:
-            logger.error(f"TikTok publish failed: {exc}")
-            return PostResult(
-                platform="tiktok",
-                status="draft",
-                error=str(exc),
+            result = pub.publish_video(
+                video_path=post.video_path,
+                caption=post.caption,
+                hashtags=post.hashtags,
+                headless=True,
             )
+
+            if result["status"] in ("published", "scheduled"):
+                return PostResult(
+                    platform="tiktok",
+                    status=result["status"],
+                    post_id=result.get("publish_id", ""),
+                    url="",  # TikTok doesn't return URL from upload
+                )
+            else:
+                return PostResult(
+                    platform="tiktok",
+                    status="draft",
+                    error=result.get("error", "Unknown error"),
+                )
+
+        except ImportError:
+            logger.error("tiktok-uploader not installed. Run: pip install tiktok-uploader")
+            return PostResult(platform="tiktok", status="draft", error="tiktok-uploader not installed")
+        except Exception as exc:
+            logger.error(f"TikTok direct publish failed: {exc}")
+            return PostResult(platform="tiktok", status="draft", error=str(exc))
 
     # ------------------------------------------------------------------
     # YouTube Data API v3 integration (Shorts)
@@ -668,6 +665,50 @@ class DistributionEngine:
                 status="draft",
                 error=str(exc),
             )
+
+    # ------------------------------------------------------------------
+    # X/Twitter (tweepy — API v1.1 media + v2 tweet)
+    # ------------------------------------------------------------------
+
+    async def _publish_twitter(self, post: PostMetadata) -> PostResult:
+        """Publish video to X/Twitter via tweepy."""
+        try:
+            from src.agents.twitter_publisher import TwitterPublisher
+
+            pub = TwitterPublisher()
+            if not pub.is_configured():
+                return PostResult(
+                    platform="twitter",
+                    status="draft",
+                    error="Twitter API credentials not configured in .env",
+                )
+
+            result = pub.publish_video(
+                video_path=post.video_path,
+                caption=post.caption,
+                hashtags=post.hashtags,
+            )
+
+            if result["status"] == "published":
+                return PostResult(
+                    platform="twitter",
+                    status="published",
+                    post_id=result.get("tweet_id", ""),
+                    url=result.get("url", ""),
+                )
+            else:
+                return PostResult(
+                    platform="twitter",
+                    status="draft",
+                    error=result.get("error", "Unknown error"),
+                )
+
+        except ImportError:
+            logger.error("tweepy not installed. Run: pip install tweepy")
+            return PostResult(platform="twitter", status="draft", error="tweepy not installed")
+        except Exception as exc:
+            logger.error(f"Twitter publish failed: {exc}")
+            return PostResult(platform="twitter", status="draft", error=str(exc))
 
     # ------------------------------------------------------------------
     # Manual instruction helpers
