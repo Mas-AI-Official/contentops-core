@@ -28,11 +28,11 @@ echo [2/4] Starting backend API on :8080 ...
 start "ContentOps Backend" cmd /k "cd /d D:\Ideas\contentops-fresh && venv\Scripts\python.exe scripts\start_server.py"
 
 :: Wait for backend to boot
-timeout /t 3 /noq >nul
+ping -n 4 127.0.0.1 >nul
 
 :: Open dashboard in browser
 echo [3/4] Opening dashboard...
-start http://127.0.0.1:8080/dashboard
+start http://127.0.0.1:8080
 
 echo.
 echo [4/4] ContentOps is running!

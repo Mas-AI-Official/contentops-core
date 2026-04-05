@@ -1,0 +1,274 @@
+{
+  "accounts": {
+    "daena_tiktok": {
+      "platform": "tiktok",
+      "handle": "@daena_ai",
+      "persona": "daena",
+      "auth_method": "cookies",
+      "auth_ref": "TIKTOK_COOKIES_PATH",
+      "content_tier": "viral",
+      "aspect_ratio": "9:16",
+      "max_duration": 60,
+      "posting_days": ["tue", "wed", "thu", "fri", "sat"],
+      "posting_times": ["07:00", "12:00", "19:00"],
+      "posts_per_week": 5,
+      "cross_influence": {
+        "cta_to": ["daena_instagram", "masai_youtube"],
+        "cta_templates": [
+          "Full breakdown on our YouTube →",
+          "More on my Instagram @daena.ai"
+        ]
+      }
+    },
+    "daena_instagram": {
+      "platform": "instagram",
+      "handle": "@daena.ai",
+      "persona": "daena",
+      "auth_method": "instagrapi",
+      "auth_ref": "INSTAGRAM_DAENA",
+      "env_keys": ["INSTAGRAM_DAENA_USERNAME", "INSTAGRAM_DAENA_PASSWORD"],
+      "content_tier": "viral",
+      "aspect_ratio": "9:16",
+      "max_duration": 90,
+      "posting_days": ["mon", "wed", "fri", "sat"],
+      "posting_times": ["08:00", "11:00", "17:00"],
+      "posts_per_week": 4,
+      "cross_influence": {
+        "cta_to": ["daena_tiktok", "masai_discord"],
+        "cta_templates": [
+          "Catch the full version on TikTok →",
+          "Join our Discord community →"
+        ]
+      }
+    },
+    "masai_instagram": {
+      "platform": "instagram",
+      "handle": "@mas_ai.co",
+      "persona": "masai",
+      "auth_method": "instagrapi",
+      "auth_ref": "INSTAGRAM_MASAI",
+      "env_keys": ["INSTAGRAM_USERNAME", "INSTAGRAM_PASSWORD"],
+      "content_tier": "professional",
+      "aspect_ratio": "9:16",
+      "max_duration": 90,
+      "posting_days": ["mon", "wed", "fri"],
+      "posting_times": ["08:00", "11:00", "17:00"],
+      "posts_per_week": 3,
+      "cross_influence": {
+        "cta_to": ["masai_youtube", "masai_discord"],
+        "cta_templates": [
+          "Watch the full demo on YouTube →",
+          "Join our community on Discord →"
+        ]
+      }
+    },
+    "daena_twitter": {
+      "platform": "twitter",
+      "handle": "@daena_ai",
+      "persona": "daena",
+      "auth_method": "oauth1",
+      "auth_ref": "TWITTER_DAENA",
+      "env_keys": ["TWITTER_API_KEY", "TWITTER_API_SECRET", "TWITTER_ACCESS_TOKEN", "TWITTER_ACCESS_SECRET"],
+      "content_tier": "viral",
+      "aspect_ratio": "16:9",
+      "max_duration": 140,
+      "posting_days": ["mon", "tue", "wed", "thu", "fri", "sat", "sun"],
+      "posting_times": ["08:00", "12:00", "17:00", "21:00"],
+      "posts_per_week": 7,
+      "cross_influence": {
+        "cta_to": ["masai_discord", "daena_tiktok"],
+        "cta_templates": [
+          "Join the conversation in our Discord →",
+          "Full video on TikTok →"
+        ],
+        "amplify": ["masoud_twitter", "masai_twitter"]
+      }
+    },
+    "masoud_twitter": {
+      "platform": "twitter",
+      "handle": "@masoud_personal",
+      "persona": "masoud",
+      "auth_method": "oauth1",
+      "auth_ref": "TWITTER_MASOUD",
+      "env_keys": ["TWITTER_MASOUD_API_KEY", "TWITTER_MASOUD_API_SECRET", "TWITTER_MASOUD_ACCESS_TOKEN", "TWITTER_MASOUD_ACCESS_SECRET"],
+      "content_tier": "founder",
+      "aspect_ratio": "16:9",
+      "max_duration": 140,
+      "posting_days": ["mon", "tue", "wed", "thu", "fri"],
+      "posting_times": ["08:00", "12:00", "17:00"],
+      "posts_per_week": 5,
+      "cross_influence": {
+        "cta_to": ["masoud_linkedin", "daena_twitter"],
+        "cta_templates": [
+          "Longer take on LinkedIn →",
+          "My VP @daena_ai broke this down →"
+        ],
+        "amplify": ["daena_twitter", "masai_twitter"]
+      }
+    },
+    "masai_twitter": {
+      "platform": "twitter",
+      "handle": "@masai_company",
+      "persona": "masai",
+      "auth_method": "oauth1",
+      "auth_ref": "TWITTER_MASAI",
+      "env_keys": ["TWITTER_MASAI_API_KEY", "TWITTER_MASAI_API_SECRET", "TWITTER_MASAI_ACCESS_TOKEN", "TWITTER_MASAI_ACCESS_SECRET"],
+      "content_tier": "professional",
+      "aspect_ratio": "16:9",
+      "max_duration": 140,
+      "posting_days": ["mon", "wed", "fri"],
+      "posting_times": ["10:00", "14:00"],
+      "posts_per_week": 3,
+      "cross_influence": {
+        "cta_to": ["masai_youtube", "masai_discord"],
+        "cta_templates": [
+          "Watch the demo →",
+          "Join our Discord →"
+        ],
+        "amplify": ["daena_twitter", "masoud_twitter"]
+      }
+    },
+    "masoud_linkedin": {
+      "platform": "linkedin",
+      "handle": "masoud-masoori",
+      "persona": "masoud",
+      "auth_method": "cookies",
+      "auth_ref": "LINKEDIN_MASOUD_COOKIES",
+      "content_tier": "founder",
+      "aspect_ratio": "16:9",
+      "max_duration": 600,
+      "posting_days": ["tue", "wed", "thu"],
+      "posting_times": ["08:00", "10:00"],
+      "posts_per_week": 3,
+      "cross_influence": {
+        "cta_to": ["masoud_twitter", "masai_youtube"],
+        "cta_templates": [
+          "Thread on X →",
+          "Watch the full demo on YouTube →"
+        ]
+      }
+    },
+    "masai_linkedin": {
+      "platform": "linkedin",
+      "handle": "mas-ai-technologies",
+      "persona": "masai",
+      "auth_method": "cookies",
+      "auth_ref": "LINKEDIN_MASAI_COOKIES",
+      "content_tier": "professional",
+      "aspect_ratio": "16:9",
+      "max_duration": 600,
+      "posting_days": ["tue", "thu"],
+      "posting_times": ["08:00", "10:00"],
+      "posts_per_week": 2,
+      "cross_influence": {
+        "cta_to": ["masai_youtube", "masai_discord"],
+        "cta_templates": [
+          "See the full demo →",
+          "Join our community →"
+        ]
+      }
+    },
+    "masai_youtube": {
+      "platform": "youtube",
+      "handle": "@MAS-AI",
+      "persona": "masai",
+      "auth_method": "oauth2",
+      "auth_ref": "YOUTUBE_MASAI",
+      "env_keys": ["YOUTUBE_API_KEY", "YOUTUBE_OAUTH_TOKEN"],
+      "content_tier": "professional",
+      "aspect_ratio": "9:16",
+      "max_duration": 60,
+      "posting_days": ["mon", "wed", "fri"],
+      "posting_times": ["14:00", "16:00", "20:00"],
+      "posts_per_week": 3,
+      "cross_influence": {
+        "cta_to": ["masai_discord", "masai_telegram"],
+        "cta_templates": [
+          "Discuss this in our Discord →",
+          "Subscribe for more →"
+        ]
+      }
+    },
+    "masai_discord": {
+      "platform": "discord",
+      "handle": "MAS-AI Community",
+      "persona": "masai",
+      "auth_method": "bot_token",
+      "auth_ref": "DISCORD_BOT_TOKEN",
+      "env_keys": ["DISCORD_BOT_TOKEN", "DISCORD_CHANNEL_ID"],
+      "content_tier": "community",
+      "posts_per_week": 7,
+      "cross_influence": {
+        "cta_to": ["masai_youtube", "daena_tiktok"],
+        "cta_templates": [
+          "New video just dropped →",
+          "Daena covered this on TikTok →"
+        ]
+      }
+    },
+    "masai_telegram": {
+      "platform": "telegram",
+      "handle": "@masai_tech",
+      "persona": "masai",
+      "auth_method": "bot_token",
+      "auth_ref": "TELEGRAM_BOT_TOKEN",
+      "env_keys": ["TELEGRAM_BOT_TOKEN", "TELEGRAM_CHANNEL_ID"],
+      "content_tier": "community",
+      "posts_per_week": 7,
+      "cross_influence": {
+        "cta_to": ["masai_youtube", "masai_discord"],
+        "cta_templates": [
+          "Watch the full video →",
+          "Join the discussion on Discord →"
+        ]
+      }
+    }
+  },
+  "personas": {
+    "daena": {
+      "name": "Daena",
+      "role": "VP of MAS-AI Technologies",
+      "tone": "Confident, intellectually sharp, slightly witty, data-driven",
+      "identity": "REAL PERSON — never call AI or virtual",
+      "niche": "AI trends, startup insights, tech for builders"
+    },
+    "masoud": {
+      "name": "Masoud Masoori",
+      "role": "CEO & Founder of MAS-AI Technologies",
+      "tone": "Authentic builder energy, transparent, technical depth",
+      "niche": "Founder journey, build-in-public, AI governance"
+    },
+    "masai": {
+      "name": "MAS-AI Technologies",
+      "role": "Company",
+      "tone": "Professional, authoritative, product-focused",
+      "niche": "Governed AI orchestration, product updates, demos"
+    }
+  },
+  "content_tiers": {
+    "viral": {
+      "description": "Hook-driven, casual, algorithm-optimized",
+      "script_style": "short punchy sentences, pattern interrupts, curiosity gaps",
+      "hashtag_count": 5,
+      "caption_max": 2200
+    },
+    "founder": {
+      "description": "Personal narrative, lessons learned, build-in-public",
+      "script_style": "storytelling, authentic, vulnerable moments mixed with wins",
+      "hashtag_count": 3,
+      "caption_max": 3000
+    },
+    "professional": {
+      "description": "Product-focused, data-backed, credibility-building",
+      "script_style": "clear structure, demo-driven, feature highlights, social proof",
+      "hashtag_count": 3,
+      "caption_max": 3000
+    },
+    "community": {
+      "description": "Conversational, announcement-style, engagement-driving",
+      "script_style": "direct, inclusive, call to discuss",
+      "hashtag_count": 0,
+      "caption_max": 4096
+    }
+  }
+}
