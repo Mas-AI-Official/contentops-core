@@ -23,6 +23,9 @@ models/
 .env
 !.env.template
 tenants/*/credentials.env
+config/tokens.json
+config/instagram/
+config/ig_session/
 
 # Runtime data (generated, not tracked)
 data/scraped/
@@ -45,6 +48,10 @@ logs/
 data/assets/daena/avatar_clean/
 data/assets/voices/
 Daena avatar/*.mp4
+
+# Remotion
+out/
+public/
 
 # OS
 .DS_Store

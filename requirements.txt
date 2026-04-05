@@ -29,6 +29,9 @@ sqlalchemy>=2.0.0
 alembic>=1.13.0
 aiosqlite>=0.20.0
 
+# Instagram (direct mobile API — no developer portal needed)
+instagrapi>=2.0.0
+
 # Utils
 aiohttp>=3.9.0
 loguru>=0.7.0

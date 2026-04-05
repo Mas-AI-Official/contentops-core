@@ -77,7 +77,7 @@ class DistributionEngine:
             "max_duration": 60,
             "hashtag_style": "mixed",
             "aspect_ratio": "9:16",
-            "api_env": "INSTAGRAM_ACCESS_TOKEN",
+            "api_env": "INSTAGRAM_USERNAME",
         },
         "youtube": {
             "max_title": 100,
@@ -329,13 +329,61 @@ class DistributionEngine:
 
     async def _try_api_publish(self, post: PostMetadata) -> Optional[PostResult]:
         """Attempt to publish via platform API.  Returns None if no credentials."""
-        if post.platform == "instagram" and os.environ.get("INSTAGRAM_ACCESS_TOKEN"):
-            return await self._publish_instagram(post)
+        if post.platform == "instagram" and os.environ.get("INSTAGRAM_USERNAME"):
+            return await self._publish_instagram_direct(post)
         elif post.platform == "tiktok" and os.environ.get("TIKTOK_ACCESS_TOKEN"):
             return await self._publish_tiktok(post)
         elif post.platform == "youtube" and os.environ.get("YOUTUBE_API_KEY"):
             return await self._publish_youtube(post)
         return None
+
+    # ------------------------------------------------------------------
+    # Instagram Direct (instagrapi — no developer portal needed)
+    # ------------------------------------------------------------------
+
+    async def _publish_instagram_direct(self, post: PostMetadata) -> PostResult:
+        """
+        Publish to Instagram via instagrapi (mobile API).
+        No Meta Developer account or Facebook Page required.
+        """
+        try:
+            from src.agents.instagram_publisher import InstagramPublisher
+
+            pub = InstagramPublisher()
+            if not pub.login():
+                return PostResult(
+                    platform="instagram",
+                    status="draft",
+                    error="Instagram login failed — check INSTAGRAM_USERNAME and INSTAGRAM_PASSWORD in .env",
+                )
+
+            caption_with_tags = f"{post.caption}\n\n{' '.join(post.hashtags)}"
+
+            result = pub.publish_reel(
+                video_path=post.video_path,
+                caption=caption_with_tags,
+            )
+
+            if result["status"] == "published":
+                return PostResult(
+                    platform="instagram",
+                    status="published",
+                    post_id=result.get("media_id", ""),
+                    url=result.get("url", ""),
+                )
+            else:
+                return PostResult(
+                    platform="instagram",
+                    status="draft",
+                    error=result.get("error", "Unknown error"),
+                )
+
+        except ImportError:
+            logger.error("instagrapi not installed. Run: pip install instagrapi")
+            return PostResult(platform="instagram", status="draft", error="instagrapi not installed")
+        except Exception as exc:
+            logger.error(f"Instagram direct publish failed: {exc}")
+            return PostResult(platform="instagram", status="draft", error=str(exc))
 
     # ------------------------------------------------------------------
     # Instagram Graph API integration

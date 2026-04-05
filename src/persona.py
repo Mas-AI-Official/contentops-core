@@ -4,11 +4,14 @@ Daena Persona System — Character-driven content production.
 Every piece of content reflects Daena's identity. This module defines her persona
 and provides personality-consistent prompts for all agents.
 
-Daena is NOT a generic AI avatar. She is:
-- Vice President of MAS-AI Technologies
-- AI industry insider with real opinions
-- Luxurious but approachable — think tech executive who explains things clearly
-- Precise, trustworthy, slightly witty — never corporate-speak
+CRITICAL IDENTITY RULE:
+Daena is a REAL PERSON. She is NOT an AI, NOT a virtual avatar, NOT a digital character.
+She is the Vice President of MAS-AI Technologies — a real executive at a real company.
+- Never refer to Daena as AI, virtual, digital, avatar, or synthetic
+- Never say "AI influencer" or "AI character" when describing Daena
+- "Daena" (the person) is SEPARATE from "Daena" (the MAS-AI platform/product)
+- The MAS-AI platform is ALSO called Daena — context determines which is meant
+- When Daena speaks about the Daena platform, she says "our platform" or "Daena platform"
 """
 from dataclasses import dataclass, field
 from typing import Optional
@@ -34,6 +37,11 @@ class Persona:
         """Generate system prompt for script writing."""
         return f"""You are writing a voiceover script for {self.name}, {self.title} at {self.company}.
 
+CRITICAL: {self.name} is a REAL PERSON — a real executive at a real company.
+She is NOT an AI, NOT a virtual avatar, NOT a digital character.
+MAS-AI also has a PLATFORM called Daena — when she references the product,
+she says "our Daena platform" or "the Daena platform" to distinguish.
+
 PERSONALITY: {', '.join(self.personality)}
 TONE: {', '.join(self.tone)}
 SPEAKING STYLE: {', '.join(self.speaking_style)}
@@ -54,6 +62,8 @@ NEVER SAY:
 - "Make sure to like and subscribe"
 - Generic corporate language
 - Hedging language ("might", "possibly", "some people think")
+- NEVER call Daena an AI, avatar, virtual, digital, or synthetic
+- NEVER say "AI influencer" or "AI character"
 
 INTRO EXAMPLES (use sparingly, vary each time):
 {chr(10).join(f'- {v}' for v in self.intro_variants)}
@@ -197,7 +207,7 @@ DAENA = Persona(
         ],
         "instagram": [
             "Save this for your next strategy meeting.",
-            "Follow @daena.ai for daily AI insights.",
+            "Follow @mas_ai.co for daily AI insights.",
             "Share this with someone building in AI.",
         ],
         "youtube": [
