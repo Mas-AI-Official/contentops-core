@@ -1,3 +1,22 @@
+<div align="center">
+
+<img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&weight=700&size=34&duration=3500&pause=900&color=D4A843&center=true&vCenter=true&width=760&height=50&lines=ContentOps;Autonomous+AI+Media+Agency" alt="ContentOps" />
+
+### 🎬 Trend → Script → Avatar Video → Publish — end-to-end, no human in the loop
+
+**A [MAS-AI Technologies](https://github.com/Mas-AI-Official) product · governed by [Daena](https://daena.mas-ai.co)**
+
+[![Python CI](https://github.com/Mas-AI-Official/contentops-core/actions/workflows/python-ci.yml/badge.svg)](https://github.com/Mas-AI-Official/contentops-core/actions/workflows/python-ci.yml)
+[![Python](https://img.shields.io/badge/-Python_3.11-3776AB?style=flat-square&logo=python&logoColor=white)](#)
+[![FastAPI](https://img.shields.io/badge/-FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)](#)
+[![Remotion](https://img.shields.io/badge/-Remotion-000000?style=flat-square&logo=react&logoColor=61DAFB)](#)
+[![License](https://img.shields.io/badge/license-Proprietary-F59E0B?style=flat-square)](#license)
+[![MAS-AI](https://img.shields.io/badge/MAS--AI-Official-181717?style=flat-square&logo=github&logoColor=white)](https://github.com/Mas-AI-Official)
+
+</div>
+
+---
+
 # ContentOps — Autonomous AI Media Agency
 
 **MAS-AI Technologies Inc.**
