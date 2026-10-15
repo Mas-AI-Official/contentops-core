@@ -1,0 +1,2 @@
+# Isolated optional environment; do not upgrade the renderer or main runtime.
+mcp==2.3.0

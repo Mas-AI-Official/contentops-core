@@ -1,4 +1,26 @@
 # CLAUDE.md — ContentOps Boot Protocol
+
+## Current MAS-AI growth work (2026-10-15)
+
+For campaign, LinkedIn and customer-research tasks, read `docs/GROWTHOPS.md`
+and the project skills in `.agents/skills/` first. The historical build notes
+below describe an older Daena/news pipeline, not current launch authority.
+Keep that scheduler and global publishing controls stopped. Do not follow the
+old session checklist by starting the server or a pipeline automatically.
+
+Claude directs the existing local renderer and tools. MAS-AI campaigns use the
+approved, disclosed AI representation of Masoud and his approved voice assets;
+do not request a new founder camera shoot or substitute Daena. Preserve local
+Windows work, the 18 completed exports and their still-open claims review.
+Use supported LinkedIn connections and separate verified personal/company
+actors. The old password publisher is disabled. Prospect research is a separate
+queue sharing the existing CRM, with evidence and contact eligibility recorded.
+Current owner decisions and actual budgets override older provider/price notes.
+
+Run `python scripts/growthops.py status` to inspect the scoped queue. This does
+not execute tasks or change STOP files. See the setup guide for Claude skills
+and the optional local MCP bridge.
+
 > READ THIS FIRST. Every Claude Code session in this folder starts here.
 > Full setup docs: docs/Setup/ (11 files — ARCHITECTURE, PIPELINE, AGENTS, etc.)
 

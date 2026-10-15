@@ -1,0 +1,4 @@
+interface:
+  display_name: "MAS-AI Growth Operations"
+  short_description: "Run campaigns with consistent assets and evidence"
+  default_prompt: "Use $mas-ai-growth-ops to direct ContentOps and prepare a MAS-AI campaign."

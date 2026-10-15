@@ -1,0 +1,4 @@
+interface:
+  display_name: "MAS-AI LinkedIn Operations"
+  short_description: "Audit profiles and manage both LinkedIn identities"
+  default_prompt: "Use $mas-ai-linkedin to audit MAS-AI and Masoud LinkedIn content and prepare verified updates."
