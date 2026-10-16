@@ -1,4 +1,6 @@
 import json
+import os
+import shutil
 import tempfile
 import unittest
 from concurrent.futures import ThreadPoolExecutor
@@ -118,6 +120,17 @@ class GrowthTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.store.reserve_research(self.job("next")["id"], 1)
 
+    def test_settlement_retry_returns_the_same_public_shape(self):
+        self.budget(cap=10, maximum=9)
+        job = self.job()
+        self.store.reserve_research(job["id"], 7)
+        first = self.store.settle_research(job["id"], 9, "provider-receipt-1")
+        retry = self.store.settle_research(job["id"], 9, "provider-receipt-1")
+        self.assertEqual(retry, first)
+        self.assertEqual(set(retry), {"job_id", "actual_usd", "over_quote"})
+        self.assertEqual(retry["actual_usd"], 9)
+        self.assertTrue(retry["over_quote"])
+
     def test_money_is_finite_nonnegative_and_rounds_up(self):
         self.assertEqual(money_units("0.0000001"), 1)
         for value in ("NaN", "Infinity", -1):
@@ -192,6 +205,40 @@ class InstallerTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             install(self.root, "python", True)
         self.assertEqual(path.read_bytes(), original)
+        self.assertFalse((self.root / ".claude" / "skills").exists())
+
+    def link_outside(self, link: Path, create_target: bool) -> Path:
+        outside = Path(tempfile.mkdtemp()) / "victim.json"
+        self.addCleanup(shutil.rmtree, outside.parent, True)
+        if create_target:
+            outside.write_text("keep", encoding="utf-8")
+        link.parent.mkdir(parents=True, exist_ok=True)
+        try:
+            os.symlink(outside, link)
+        except (OSError, NotImplementedError):
+            self.skipTest("symlinks are not available here")
+        return outside
+
+    def test_symlinked_receipt_is_refused_before_any_write(self):
+        receipt = self.root / ".claude" / "mas-ai-skill-install.json"
+        for create_target in (True, False):
+            with self.subTest(dangling=not create_target):
+                if receipt.is_symlink():
+                    receipt.unlink()
+                outside = self.link_outside(receipt, create_target)
+                with self.assertRaises(ValueError):
+                    install(self.root, "python")
+                if create_target:
+                    self.assertEqual(outside.read_text(encoding="utf-8"), "keep")
+                else:
+                    self.assertFalse(outside.exists())
+                self.assertFalse((self.root / ".claude" / "skills").exists())
+
+    def test_symlinked_mcp_temporary_file_is_refused_before_any_write(self):
+        outside = self.link_outside(self.root / ".mcp.json.growth-tmp", True)
+        with self.assertRaises(ValueError):
+            install(self.root, "python", True)
+        self.assertEqual(outside.read_text(encoding="utf-8"), "keep")
         self.assertFalse((self.root / ".claude" / "skills").exists())
 
 

@@ -248,16 +248,17 @@ class GrowthStore:
             row = db.execute("SELECT * FROM research_costs WHERE job_id=?", (job_id,)).fetchone()
             if not row:
                 raise ValueError("Unknown research reservation")
+            result = {"job_id": job_id, "actual_usd": actual / 1_000_000,
+                      "over_quote": actual > row["reserved"]}
             if row["state"] == "settled":
                 if row["actual"] != actual:
                     raise ValueError("Reservation already settled at another amount")
-                return dict(row)
+                return result
             db.execute("UPDATE research_costs SET actual=?,state='settled' WHERE job_id=?", (actual, job_id))
             self.event(db, "research.settled", job_id,
-                       {"actual_usd": actual / 1_000_000, "receipt": receipt,
-                        "over_quote": actual > row["reserved"]})
-            return {"job_id": job_id, "actual_usd": actual / 1_000_000,
-                    "over_quote": actual > row["reserved"]}
+                       {"actual_usd": result["actual_usd"], "receipt": receipt,
+                        "over_quote": result["over_quote"]})
+            return result
 
     def distribution_plan(self, campaign_id: str, source_hash: str, destinations: list[dict]) -> dict:
         if not re.fullmatch(r"[a-f0-9]{64}", source_hash):

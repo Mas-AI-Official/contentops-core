@@ -41,6 +41,8 @@ def install(root: Path, python_executable: str, configure_mcp: bool = False,
     if claude.is_symlink() or destination.is_symlink():
         raise ValueError("Refusing a symlink Claude configuration directory")
     receipt_path = claude / "mas-ai-skill-install.json"
+    if receipt_path.is_symlink():
+        raise ValueError("Refusing a symlink installer receipt")
     previous = load_json(receipt_path)
     plans = []
     sources = [(name, source_root / name) for name in NAMES]
@@ -67,8 +69,9 @@ def install(root: Path, python_executable: str, configure_mcp: bool = False,
         "args": [str(root / "scripts" / "growthops_mcp.py")],
         "env": {"CONTENTOPS_PROJECT_ROOT": str(root)},
     }
+    temporary = mcp_path.with_suffix(".json.growth-tmp")
     if configure_mcp:
-        if mcp_path.is_symlink():
+        if mcp_path.is_symlink() or temporary.is_symlink():
             raise ValueError("Refusing a symlink MCP configuration")
         servers = config.setdefault("mcpServers", {})
         current = servers.get("contentops-growth")
@@ -83,7 +86,6 @@ def install(root: Path, python_executable: str, configure_mcp: bool = False,
             shutil.rmtree(target)
         shutil.copytree(source, target)
     if configure_mcp:
-        temporary = mcp_path.with_suffix(".json.growth-tmp")
         temporary.write_text(json.dumps(config, indent=2) + "\n", encoding="utf-8")
         temporary.replace(mcp_path)
     receipt = {"skills": installed, "mcp": server if configure_mcp else previous.get("mcp")}
