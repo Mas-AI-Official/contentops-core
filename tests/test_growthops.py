@@ -131,6 +131,20 @@ class GrowthTests(unittest.TestCase):
         self.assertEqual(retry["actual_usd"], 9)
         self.assertTrue(retry["over_quote"])
 
+    def test_completion_waits_for_research_settlement(self):
+        self.budget(cap=10, maximum=9)
+        job = self.job()
+        self.store.reserve_research(job["id"], 7)
+        with self.assertRaises(ValueError):
+            self.store.finish(job["id"], {"done": True})
+        self.assertEqual(self.store.finish(job["id"], {"why": "provider down"}, "failed")["status"], "failed")
+        paid = self.job("paid")
+        self.store.reserve_research(paid["id"], 2)
+        self.store.settle_research(paid["id"], 2, "provider-receipt-2")
+        self.assertEqual(self.store.finish(paid["id"], {"done": True})["status"], "completed")
+        free = self.job("free")
+        self.assertEqual(self.store.finish(free["id"], {"done": True})["status"], "completed")
+
     def test_money_is_finite_nonnegative_and_rounds_up(self):
         self.assertEqual(money_units("0.0000001"), 1)
         for value in ("NaN", "Infinity", -1):

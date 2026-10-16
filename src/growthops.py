@@ -177,6 +177,11 @@ class GrowthStore:
                 if row["result"] != encoded(result) or status != "completed":
                     raise ValueError("Completed result is immutable; enqueue a new revision")
                 return self._job(row)
+            if status == "completed":
+                reservation = db.execute("SELECT state FROM research_costs WHERE job_id=?",
+                                         (job_id,)).fetchone()
+                if reservation and reservation["state"] == "reserved":
+                    raise ValueError("Settle the research reservation before completing the job")
             db.execute("UPDATE jobs SET status=?,result=?,updated=? WHERE id=?",
                        (status, encoded(result), now(), job_id))
             self.event(db, "job." + status, job_id, {"result": result})
