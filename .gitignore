@@ -61,3 +61,10 @@ nul
 # IDE
 .vscode/
 .idea/
+
+# Scoped growth runtime: business research, receipts and local adapter settings.
+data/growthops/
+.mcp.json
+.claude/skills/
+.claude/mas-ai-skill-install.json
+.venv-growth/
