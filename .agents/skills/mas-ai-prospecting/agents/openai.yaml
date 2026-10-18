@@ -1,0 +1,4 @@
+interface:
+  display_name: "MAS-AI Customer Research"
+  short_description: "Find business gaps and prepare qualified outreach"
+  default_prompt: "Use $mas-ai-prospecting to research GTA businesses and qualify evidence-backed opportunities."

@@ -1,0 +1,89 @@
+{
+  "checked_at": "2026-10-15",
+  "skills": [
+    {
+      "name": "mas-ai-growth-ops",
+      "source": "personal MAS-AI skills",
+      "project_path": ".agents/skills/mas-ai-growth-ops",
+      "sha256": "b89a8548ed3699013cc6afd82aad56479e21f5db03357264b0e265beadc844c6"
+    },
+    {
+      "name": "mas-ai-linkedin",
+      "source": "personal MAS-AI skills",
+      "project_path": ".agents/skills/mas-ai-linkedin",
+      "sha256": "115ff4b6e4f1fb196d3dd4127466c75bc5799e365107f934aa3fc722efe2b047"
+    },
+    {
+      "name": "mas-ai-prospecting",
+      "source": "personal MAS-AI skills",
+      "project_path": ".agents/skills/mas-ai-prospecting",
+      "sha256": "728ddde490f966959752278e6388abd33e99c8cd057da9d62fd90b0bf46c4617"
+    },
+    {
+      "name": "remotion-best-practices",
+      "source": "https://github.com/remotion-dev/skills",
+      "revision": "7ba4dcf8ebe1626b00baa41e1f2478113719b60b",
+      "version": "4.0.535",
+      "upstream_path": "skills/remotion-best-practices",
+      "install": "Use the pinned upstream checkout with scripts/install_growth_skills.py --remotion-source PATH"
+    }
+  ],
+  "capabilities": {
+    "metricool": {
+      "available": true,
+      "brand_id": 7443431,
+      "linked_social_networks_verified": false,
+      "last_result": "no social networks linked"
+    },
+    "linkedin_admin": {
+      "public_company_url": "https://www.linkedin.com/company/mas-ai-technologies/",
+      "public_personal_url": "https://www.linkedin.com/in/masoud-masoori/",
+      "authenticated_admin_verified": false
+    },
+    "higgsfield": {
+      "available": true,
+      "read_verified": true,
+      "masoud_avatar_search_count": 0,
+      "ready_soul_count": 0,
+      "paid_balance_verified": false,
+      "routes": [
+        "video-editing",
+        "motion-craft",
+        "thumbnail-generation",
+        "ugc-website-video",
+        "other format-specific UGC skills"
+      ]
+    },
+    "adobe": {
+      "available": true,
+      "read_verified": false,
+      "routes": [
+        "adobe-create-social-variations",
+        "adobe-design-from-template",
+        "adobe-edit-quick-cut",
+        "adobe-retouch-portraits",
+        "adobe-batch-edit-photos"
+      ]
+    },
+    "canva": {
+      "available": true,
+      "read_verified": false
+    },
+    "imagegen": {
+      "available": true
+    },
+    "apollo": {
+      "available": true,
+      "credit_impact_verified": false
+    },
+    "google_places": {
+      "credentials_verified": false,
+      "fallback": "web search and first-party business sites"
+    },
+    "claude_sdk": {
+      "optional": true,
+      "credit_balance_verified": false,
+      "worker_started": false
+    }
+  }
+}
